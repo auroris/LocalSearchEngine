@@ -47,7 +47,24 @@ public class VectorSearchService
         using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
         await connection.OpenAsync();
         using var command = connection.CreateCommand();
-        command.CommandText = "PRAGMA journal_mode=WAL;";
+        command.CommandText = @"
+            PRAGMA journal_mode=WAL;
+            
+            CREATE VIRTUAL TABLE IF NOT EXISTS text_chunks_fts USING fts5(Id UNINDEXED, Url UNINDEXED, Text, prefix='2 3');
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_ai AFTER INSERT ON text_chunks BEGIN
+              INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
+            END;
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_ad AFTER DELETE ON text_chunks BEGIN
+              DELETE FROM text_chunks_fts WHERE Id = old.Id;
+            END;
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_au AFTER UPDATE ON text_chunks BEGIN
+              DELETE FROM text_chunks_fts WHERE Id = old.Id;
+              INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
+            END;
+        ";
         await command.ExecuteNonQueryAsync();
     }
 
@@ -153,12 +170,22 @@ public class VectorSearchService
 
         try
         {
-            // Fetch exact matches directly from SQLite to ensure they are considered
+            // Fetch exact matches directly from SQLite FTS5 table for extremely fast, precise keyword matching
             using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
-            command.CommandText = "SELECT Url, Text, IsHeading FROM text_chunks WHERE Text LIKE @query LIMIT @limit";
-            command.Parameters.AddWithValue("@query", $"%{query}%");
+            
+            string escapedQuery = query.Replace("\"", "\"\"");
+            string ftsQuery = $"\"{escapedQuery}\"";
+
+            command.CommandText = @"
+                SELECT c.Url, c.Text, c.IsHeading, f.rank 
+                FROM text_chunks_fts f
+                JOIN text_chunks c ON f.Id = c.Id
+                WHERE text_chunks_fts MATCH @query 
+                ORDER BY f.rank
+                LIMIT @limit";
+            command.Parameters.AddWithValue("@query", ftsQuery);
             command.Parameters.AddWithValue("@limit", fetchLimit);
             
             using var reader = await command.ExecuteReaderAsync();
@@ -170,7 +197,11 @@ public class VectorSearchService
                     try { isHeading = reader.GetInt32(2) != 0; } catch { }
                 }
 
-                double score = 1.0;
+                // SQLite FTS5 rank is lower = better (typically negative values)
+                // We add a strong base score for an exact match, and a small variance based on the FTS rank
+                double ftsRank = reader.GetDouble(3);
+                double score = 1.2 + Math.Max(0, (ftsRank * -0.01));
+
                 if (isHeading) score += 0.3;
 
                 var url = reader.GetString(0);
@@ -197,7 +228,7 @@ public class VectorSearchService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to fetch exact matches from SQLite for query {Query}", query);
+            _logger.LogWarning(ex, "Failed to fetch exact matches from SQLite FTS5 for query {Query}", query);
         }
 
         var distinctResults = results

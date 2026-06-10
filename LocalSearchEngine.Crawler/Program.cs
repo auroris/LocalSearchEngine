@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using SmartComponents.LocalEmbeddings;
 using Microsoft.SemanticKernel;
 using LocalSearchEngine.Core;
+using Polly;
+using Polly.Extensions.Http;
 
 string url = "";
 string dbPath = "search.db";
@@ -45,7 +47,14 @@ services.AddLogging(configure => configure.AddSimpleConsole(options =>
 }));
 
 // Add Services
-services.AddHttpClient<CrawlerService>();
+services.AddHttpClient<CrawlerService>(client => 
+{
+    client.DefaultRequestHeaders.Add("User-Agent", "LocalSearchEngine-Bot/1.0");
+})
+.AddPolicyHandler(HttpPolicyExtensions
+    .HandleTransientHttpError()
+    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
+
 services.AddSingleton<LocalEmbedder>();
 services.AddSingleton(new DatabaseConfig(connectionString));
 services.AddSqliteVectorStore(_ => connectionString);

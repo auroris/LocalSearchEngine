@@ -72,6 +72,8 @@ public class CrawlerService
             _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
         }
 
+        await EnqueueSitemapUrlsAsync(baseUri, disallowedPaths, queue, visited);
+
         while (queue.Count > 0 && pagesCrawled < maxPages)
         {
             var currentUrl = queue.Dequeue();
@@ -372,6 +374,54 @@ public class CrawlerService
             }
         }
         return true;
+    }
+
+    private async Task EnqueueSitemapUrlsAsync(Uri baseUri, List<string> disallowedPaths, Queue<string> queue, HashSet<string> visited)
+    {
+        try
+        {
+            var sitemapUrl = new Uri(baseUri, "/sitemap.xml");
+            var response = await _httpClient.GetAsync(sitemapUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var doc = new System.Xml.XmlDocument();
+                doc.LoadXml(content);
+                var locNodes = doc.GetElementsByTagName("loc");
+                int addedFromSitemap = 0;
+                foreach (System.Xml.XmlNode node in locNodes)
+                {
+                    if (Uri.TryCreate(node.InnerText?.Trim(), UriKind.Absolute, out var locUri))
+                    {
+                        var builder = new UriBuilder(locUri);
+                        builder.Fragment = string.Empty;
+                        if (builder.Path.Length > 1 && builder.Path.EndsWith("/"))
+                        {
+                            builder.Path = builder.Path.TrimEnd('/');
+                        }
+                        var normalizedUrl = builder.Uri.ToString();
+
+                        if (locUri.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase) && IsValidExtension(normalizedUrl))
+                        {
+                            if (!visited.Contains(normalizedUrl))
+                            {
+                                visited.Add(normalizedUrl);
+                                if (IsAllowedByRobots(normalizedUrl, disallowedPaths))
+                                {
+                                    queue.Enqueue(normalizedUrl);
+                                    addedFromSitemap++;
+                                }
+                            }
+                        }
+                    }
+                }
+                _logger.LogInformation("Enqueued {Count} URLs from sitemap.xml", addedFromSitemap);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to fetch or parse sitemap.xml (it may not exist)");
+        }
     }
 
     private async Task RecordCrawlStateAsync(string url, int statusCode, string? extractedText, string? eTag, string? lastModified)
