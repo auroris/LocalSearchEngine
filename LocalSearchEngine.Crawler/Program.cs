@@ -39,7 +39,10 @@ string connectionString = $"Data Source={dbPath};Cache=Shared";
 var services = new ServiceCollection();
 
 // Add Logging
-services.AddLogging(configure => configure.AddConsole());
+services.AddLogging(configure => configure.AddSimpleConsole(options => 
+{
+    options.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
+}));
 
 // Add Services
 services.AddHttpClient<CrawlerService>();

@@ -41,9 +41,14 @@ public class VectorSearchService
         _logger = logger;
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        return _collection.EnsureCollectionExistsAsync();
+        await _collection.EnsureCollectionExistsAsync();
+        using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
+        await connection.OpenAsync();
+        using var command = connection.CreateCommand();
+        command.CommandText = "PRAGMA journal_mode=WAL;";
+        await command.ExecuteNonQueryAsync();
     }
 
     public async Task DeleteUrlChunksAsync(string url)

@@ -26,6 +26,7 @@ public class CrawlerService
         await connection.OpenAsync();
         using var command = connection.CreateCommand();
         command.CommandText = @"
+            PRAGMA journal_mode=WAL;
             CREATE TABLE IF NOT EXISTS CrawlState (
                 Url TEXT PRIMARY KEY,
                 LastCrawled DATETIME,
@@ -57,16 +58,25 @@ public class CrawlerService
         var queue = new Queue<string>();
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         
+        var disallowedPaths = await GetDisallowedPathsAsync(baseUri);
+
         int pagesCrawled = 0;
 
-        queue.Enqueue(normalizedSeed);
         visited.Add(normalizedSeed);
+        if (IsAllowedByRobots(normalizedSeed, disallowedPaths))
+        {
+            queue.Enqueue(normalizedSeed);
+        }
+        else
+        {
+            _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
+        }
 
         while (queue.Count > 0 && pagesCrawled < maxPages)
         {
             var currentUrl = queue.Dequeue();
             pagesCrawled++;
-            _logger.LogInformation("Crawling ({PagesCrawled}/{MaxPages}): {Url}", pagesCrawled, maxPages, currentUrl);
+            _logger.LogInformation("Crawling ({PagesCrawled} / {TotalDiscovered}): {Url}", pagesCrawled, visited.Count, currentUrl);
 
             try
             {
@@ -234,9 +244,16 @@ public class CrawlerService
                                     if (!visited.Contains(normalizedUrl))
                                     {
                                         visited.Add(normalizedUrl);
-                                        queue.Enqueue(normalizedUrl);
-                                        addedLinks++;
-                                        _logger.LogDebug("Discovered new link: {Url}", normalizedUrl);
+                                        if (IsAllowedByRobots(normalizedUrl, disallowedPaths))
+                                        {
+                                            queue.Enqueue(normalizedUrl);
+                                            addedLinks++;
+                                            _logger.LogDebug("Discovered new link: {Url}", normalizedUrl);
+                                        }
+                                        else
+                                        {
+                                            _logger.LogTrace("Skipped link (disallowed by robots.txt): {Url}", normalizedUrl);
+                                        }
                                     }
                                 }
                                 else
@@ -271,6 +288,25 @@ public class CrawlerService
         }
         
         _logger.LogInformation("Crawling completed for {SeedUrl}", seedUrl);
+        await OptimizeDatabaseAsync();
+    }
+
+    private async Task OptimizeDatabaseAsync()
+    {
+        try
+        {
+            _logger.LogInformation("Optimizing and vacuuming database...");
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = "PRAGMA optimize; VACUUM;";
+            await command.ExecuteNonQueryAsync();
+            _logger.LogInformation("Database optimization complete.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to optimize database.");
+        }
     }
 
     private bool IsValidExtension(string url)
@@ -280,6 +316,62 @@ public class CrawlerService
         
         var validExtensions = new[] { ".html", ".htm", ".pdf", ".docx" };
         return validExtensions.Contains(ext);
+    }
+
+    private async Task<List<string>> GetDisallowedPathsAsync(Uri baseUri)
+    {
+        var disallowed = new List<string>();
+        try
+        {
+            var robotsUrl = new Uri(baseUri, "/robots.txt");
+            var response = await _httpClient.GetAsync(robotsUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var lines = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                bool isWildcardAgent = true; // Assume true initially in case no user-agent is specified
+                foreach (var line in lines)
+                {
+                    var trimmed = line.Trim();
+                    if (trimmed.StartsWith("#")) continue;
+                    
+                    if (trimmed.StartsWith("User-agent:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var agent = trimmed.Substring("User-agent:".Length).Trim();
+                        isWildcardAgent = agent == "*";
+                    }
+                    else if (isWildcardAgent && trimmed.StartsWith("Disallow:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var path = trimmed.Substring("Disallow:".Length).Trim();
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            disallowed.Add(path);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch or parse robots.txt");
+        }
+        return disallowed;
+    }
+
+    private bool IsAllowedByRobots(string url, List<string> disallowedPaths)
+    {
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            var pathAndQuery = uri.PathAndQuery;
+            foreach (var disallowed in disallowedPaths)
+            {
+                if (pathAndQuery.StartsWith(disallowed, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private async Task RecordCrawlStateAsync(string url, int statusCode, string? extractedText, string? eTag, string? lastModified)
