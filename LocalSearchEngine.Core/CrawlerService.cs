@@ -27,6 +27,7 @@ public class CrawlerService
         using var command = connection.CreateCommand();
         command.CommandText = @"
             PRAGMA journal_mode=WAL;
+
             CREATE TABLE IF NOT EXISTS CrawlState (
                 Url TEXT PRIMARY KEY,
                 LastCrawled DATETIME,
@@ -34,7 +35,23 @@ public class CrawlerService
                 ExtractedText TEXT,
                 ETag TEXT,
                 LastModified TEXT
-            )";
+            );
+
+            CREATE VIRTUAL TABLE IF NOT EXISTS text_chunks_fts USING fts5(Id UNINDEXED, Url UNINDEXED, Text, prefix='2 3');
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_ai AFTER INSERT ON text_chunks BEGIN
+              INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
+            END;
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_ad AFTER DELETE ON text_chunks BEGIN
+              DELETE FROM text_chunks_fts WHERE Id = old.Id;
+            END;
+            
+            CREATE TRIGGER IF NOT EXISTS text_chunks_au AFTER UPDATE ON text_chunks BEGIN
+              DELETE FROM text_chunks_fts WHERE Id = old.Id;
+              INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
+            END;
+        ";
         await command.ExecuteNonQueryAsync();
     }
 
