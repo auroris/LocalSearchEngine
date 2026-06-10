@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LocalSearchEngine.Core/LocalSearchEngine.Core.csproj" />
+  <Project Path="LocalSearchEngine.Crawler/LocalSearchEngine.Crawler.csproj" />
+  <Project Path="LocalSearchEngine.ModelDownloader/LocalSearchEngine.ModelDownloader.csproj" />
+  <Project Path="LocalSearchEngine.Web/LocalSearchEngine.Web.csproj" />
+</Solution>
