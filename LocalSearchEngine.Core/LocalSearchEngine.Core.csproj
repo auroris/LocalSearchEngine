@@ -17,6 +17,7 @@
     <PackageReference Include="NPOI" Version="2.8.0" />
     <PackageReference Include="SmartComponents.LocalEmbeddings" Version="0.1.0-preview10148" />
     <PackageReference Include="SmartComponents.LocalEmbeddings.SemanticKernel" Version="0.1.0-preview10148" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.3" />
   </ItemGroup>
 
 </Project>

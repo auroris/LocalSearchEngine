@@ -29,6 +29,8 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 - **NPOI** (Microsoft Word `.docx` Text Extraction)
 - **Microsoft Semantic Kernel**
 
+> **Note**: Both `iText` and `NPOI` transitively depend on `System.Security.Cryptography.Xml` version `8.0.2`, which has known high-severity vulnerabilities (NU1903). To address this, we explicitly reference version `8.0.3` in `LocalSearchEngine.Core`.
+
 ## Getting Started
 
 1. Ensure you have the .NET SDK installed.
