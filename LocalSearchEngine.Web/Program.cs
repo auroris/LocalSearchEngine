@@ -1,4 +1,3 @@
-using SmartComponents.LocalEmbeddings;
 using LocalSearchEngine.Core;
 using Microsoft.SemanticKernel;
 using Microsoft.Data.Sqlite;
@@ -10,10 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
-// Register Local Embeddings (this downloads the model on first run if needed).
-// It defaults to all-MiniLM-L6-v2 which is highly efficient.
-builder.Services.AddSingleton<LocalEmbedder>();
-builder.Services.AddSingleton<IEmbedder>(sp => new LocalEmbedderAdapter(sp.GetRequiredService<LocalEmbedder>()));
+// Local embeddings run on the CPU via ONNX Runtime. The model (bge-small-en-v1.5,
+// 384-dim) is fetched at build time and copied next to the app; see Directory.Build.props.
+builder.Services.AddSingleton<IEmbedder>(_ => new LocalEmbedderAdapter());
 
 // The web app only issues SELECTs against the index the crawler builds, but it opens
 // the connection ReadWrite (not ReadOnly) on purpose: a WAL reader needs write access

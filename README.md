@@ -12,14 +12,14 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 - **Smart Caching**: Respects `ETag` and `Last-Modified` HTTP headers to prevent re-crawling unmodified content.
 - **Hybrid Search**: Combines semantic (vector) similarity with exact-phrase keyword matching (SQLite FTS5). Returns *every* result at or above a configurable similarity threshold (no fixed result-count cap), and boosts the ranking of exact-phrase, heading/title, and file-name matches.
 - **Vector Search & Embeddings**: Uses `Microsoft.SemanticKernel` to generate local embeddings and stores them using `sqlite-vec` for high-performance similarity searches.
-- **Local AI**: Fully local embeddings model (`LocalSearchEngine.ModelDownloader` component) ensures your indexed data never leaves your machine.
+- **Local AI**: A fully local embedding model (`bge-small-en-v1.5`, 384-dim) runs on the CPU via ONNX Runtime, so your indexed data never leaves your machine. The model is fetched once at build time and bundled next to the binaries.
 
 ## Project Structure
 
 - **`LocalSearchEngine.Core`**: The backbone of the application. Contains the `CrawlerService` (for fetching and parsing documents) and the `VectorSearchService` (for handling SQLite vector operations).
 - **`LocalSearchEngine.Crawler`**: A console application/worker that initiates and manages the crawling process.
-- **`LocalSearchEngine.ModelDownloader`**: Responsible for downloading and setting up the local embedding models required for Semantic Kernel.
 - **`LocalSearchEngine.Web`**: The web-based frontend interface where users can interact with the vector search engine.
+- **`LocalSearchEngine.Tests`**: xUnit unit and integration tests.
 
 ## Technologies Used
 
@@ -28,7 +28,7 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 - **HtmlAgilityPack** (HTML parsing)
 - **iText** (PDF Text Extraction)
 - **NPOI** (Microsoft Word `.docx` Text Extraction)
-- **Microsoft Semantic Kernel**
+- **Microsoft Semantic Kernel** & **SmartComponents.LocalEmbeddings** (`bge-small-en-v1.5` via ONNX Runtime)
 
 > **Note**: Both `iText` and `NPOI` transitively depend on `System.Security.Cryptography.Xml` version `8.0.2`, which has known high-severity vulnerabilities (NU1903). To address this, we explicitly reference version `8.0.3` in `LocalSearchEngine.Core`.
 
@@ -36,16 +36,15 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 
 1. Ensure you have the .NET SDK installed.
 2. Clone the repository and navigate to the project root.
-3. Build the solution to restore NuGet packages:
+3. Build the solution. This restores NuGet packages and, on the first build, downloads the local embedding model and bundles it next to the binaries:
    ```bash
    dotnet build
    ```
-4. Run the Model Downloader to fetch the required local embedding models.
-5. Start the Crawler to index your first seed URLs:
+4. Start the Crawler to index your first seed URLs:
    ```bash
    dotnet run --project LocalSearchEngine.Crawler -- https://example.com
    ```
-6. Launch the Web interface to search through your locally indexed documents!
+5. Launch the Web interface to search through your locally indexed documents!
 
 ### Database location
 

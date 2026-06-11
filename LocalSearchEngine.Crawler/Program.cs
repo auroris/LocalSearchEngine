@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SmartComponents.LocalEmbeddings;
 using Microsoft.SemanticKernel;
 using LocalSearchEngine.Core;
 using Polly;
@@ -62,8 +61,8 @@ services.AddHttpClient<CrawlerService>(client =>
     .HandleTransientHttpError()
     .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
 
-services.AddSingleton<LocalEmbedder>();
-services.AddSingleton<IEmbedder>(sp => new LocalEmbedderAdapter(sp.GetRequiredService<LocalEmbedder>()));
+// Local embeddings (bge-small-en-v1.5, CPU/ONNX); model bundled at build time.
+services.AddSingleton<IEmbedder>(_ => new LocalEmbedderAdapter());
 services.AddSingleton(new DatabaseConfig(connectionString));
 services.AddSqliteVectorStore(_ => connectionString);
 services.AddSingleton<VectorSearchService>();
