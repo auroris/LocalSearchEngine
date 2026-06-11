@@ -48,7 +48,8 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("Options:");
     Console.WriteLine("  --db <path>         Path to the SQLite database. Default is search.db or adjacent web project's DB.");
     Console.WriteLine("                      (Can also be set via 'db' in appsettings.json)");
-    Console.WriteLine("  --max-pages <n>     Maximum number of pages to crawl. Default is infinity.");
+    Console.WriteLine("  --max-pages <n>     Maximum number of pages to index this run (304s, skips, and");
+    Console.WriteLine("                      failures don't count). Default is infinity.");
     Console.WriteLine("                      (Can also be set via 'max-pages' in appsettings.json)");
     Console.WriteLine("  -help, --help       Show this help message and exit.");
     Console.WriteLine();

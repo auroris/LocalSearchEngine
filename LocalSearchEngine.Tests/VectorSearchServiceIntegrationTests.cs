@@ -120,6 +120,10 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
     /// <summary>Deterministic, model-free embedder: identical text yields an identical vector.</summary>
     private sealed class FakeEmbedder : IEmbedder
     {
+        // No asymmetric query instruction in the fake, so a query equal to a chunk's text
+        // reproduces that chunk's vector exactly (the self-match test depends on this).
+        public ReadOnlyMemory<float> EmbedQuery(string text) => Embed(text);
+
         public ReadOnlyMemory<float> Embed(string text)
         {
             // FNV-1a hash -> LCG fill, so the result is stable across runs and processes.

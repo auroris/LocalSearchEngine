@@ -9,7 +9,9 @@ public class SearchRankerTests
     {
         MinSimilarity = 0.5,
         ExactPhraseBoost = 0.5,
+        AndTermsBoost = 0.25,
         HeadingBoost = 0.3,
+        TitleBoost = 0.35,
         FilenameBoost = 0.4,
         TermInTextBoost = 0.2
     };
@@ -130,5 +132,44 @@ public class SearchRankerTests
         Assert.Single(results);
         // 0.70 sim + 0.50 exact + 0.30 heading + 0.40 filename + 0.20 term-in-text
         Assert.Equal(2.10, results[0].Score, 6);
+    }
+
+    [Fact]
+    public void And_terms_match_boosts_less_than_an_exact_phrase()
+    {
+        var vectors = new[] { new VectorCandidate("https://x/a", "body", false, 0.40) }; // 0.60
+        var keywords = new[] { new KeywordCandidate("https://x/a", "body", false, ExactPhrase: false) };
+
+        var results = SearchRanker.Rank(vectors, keywords, "zzz", Settings());
+
+        Assert.Equal(0.85, results[0].Score, 6); // 0.60 + and-terms 0.25 (not the 0.50 phrase boost)
+    }
+
+    [Fact]
+    public void Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+    {
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/a", "body", false, ExactPhrase: false),
+            new KeywordCandidate("https://x/a", "body", false, ExactPhrase: true),
+        };
+
+        var results = SearchRanker.Rank(NoVectors, keywords, "zzz", Settings());
+
+        Assert.Single(results);
+        // Only the exact-phrase boost applies; the boosts are not summed.
+        Assert.Equal(0.50, results[0].Score, 6);
+    }
+
+    [Fact]
+    public void Title_containing_query_boosts_and_is_returned()
+    {
+        var vectors = new[] { new VectorCandidate("https://x/a", "body", false, 0.40) }; // 0.60
+        var titles = new Dictionary<string, string?> { ["https://x/a"] = "Installation Guide" };
+
+        var results = SearchRanker.Rank(vectors, NoKeywords, "guide", Settings(), titles);
+
+        Assert.Equal("Installation Guide", results[0].Title);
+        Assert.Equal(0.95, results[0].Score, 6); // 0.60 + title 0.35 (query absent from body/filename)
     }
 }

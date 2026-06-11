@@ -19,8 +19,18 @@ public class SearchSettings
     /// <summary>Added when the query phrase appears verbatim (an exact FTS5 match).</summary>
     public double ExactPhraseBoost { get; set; } = 0.5;
 
+    /// <summary>
+    /// Added when every query term appears in a chunk but not as an adjacent phrase
+    /// (a looser FTS5 AND match). Smaller than <see cref="ExactPhraseBoost"/>, and only
+    /// applied when there is no exact-phrase hit for the same URL.
+    /// </summary>
+    public double AndTermsBoost { get; set; } = 0.25;
+
     /// <summary>Added when the match came from a page heading/title.</summary>
     public double HeadingBoost { get; set; } = 0.3;
+
+    /// <summary>Added when the query appears in the page's &lt;title&gt;.</summary>
+    public double TitleBoost { get; set; } = 0.35;
 
     /// <summary>Added when the URL's file name contains the query.</summary>
     public double FilenameBoost { get; set; } = 0.4;

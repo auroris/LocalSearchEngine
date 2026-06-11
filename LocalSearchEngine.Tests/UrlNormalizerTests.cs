@@ -23,6 +23,18 @@ public class UrlNormalizerTests
         Assert.Equal("https://example.com/search?q=hello&p=2", result);
     }
 
+    [Theory]
+    // utm_* and click ids are dropped; meaningful params (and their order) survive.
+    [InlineData("https://example.com/p?utm_source=news&utm_medium=email", "https://example.com/p")]
+    [InlineData("https://example.com/p?q=1&utm_campaign=spring&p=2", "https://example.com/p?q=1&p=2")]
+    [InlineData("https://example.com/p?gclid=abc123", "https://example.com/p")]
+    [InlineData("https://example.com/p?id=7&fbclid=xyz", "https://example.com/p?id=7")]
+    [InlineData("https://example.com/p?ref=home", "https://example.com/p?ref=home")] // 'ref' is not treated as tracking
+    public void Normalize_strips_tracking_parameters(string input, string expected)
+    {
+        Assert.Equal(expected, UrlNormalizer.Normalize(new Uri(input)));
+    }
+
     [Fact]
     public void TryNormalize_rejects_relative_urls()
     {

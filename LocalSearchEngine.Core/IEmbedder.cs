@@ -8,7 +8,15 @@ namespace LocalSearchEngine.Core;
 /// </summary>
 public interface IEmbedder
 {
+    /// <summary>Embeds a passage/document for indexing.</summary>
     ReadOnlyMemory<float> Embed(string text);
+
+    /// <summary>
+    /// Embeds a search query. BGE is an asymmetric retrieval model: queries must be
+    /// prefixed with a short instruction while passages are embedded raw, so this is a
+    /// distinct operation from <see cref="Embed"/>.
+    /// </summary>
+    ReadOnlyMemory<float> EmbedQuery(string text);
 }
 
 /// <summary>Adapts SmartComponents' <see cref="LocalEmbedder"/> to <see cref="IEmbedder"/>.</summary>
@@ -22,6 +30,13 @@ public sealed class LocalEmbedderAdapter : IEmbedder, IDisposable
     /// </summary>
     public const string ModelName = "bge-small-en-v1.5";
 
+    /// <summary>
+    /// The retrieval instruction bge-*-en-v1.5 expects prepended to queries (and only
+    /// queries). Embedding the query without it measurably hurts recall for this model
+    /// family; see the model card.
+    /// </summary>
+    public const string QueryInstruction = "Represent this sentence for searching relevant passages: ";
+
     private readonly LocalEmbedder _inner;
 
     public LocalEmbedderAdapter() : this(new LocalEmbedder(ModelName)) { }
@@ -29,6 +44,8 @@ public sealed class LocalEmbedderAdapter : IEmbedder, IDisposable
     public LocalEmbedderAdapter(LocalEmbedder inner) => _inner = inner;
 
     public ReadOnlyMemory<float> Embed(string text) => _inner.Embed(text).Values;
+
+    public ReadOnlyMemory<float> EmbedQuery(string text) => _inner.Embed(QueryInstruction + text).Values;
 
     public void Dispose() => _inner.Dispose();
 }

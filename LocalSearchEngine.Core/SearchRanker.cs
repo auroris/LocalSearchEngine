@@ -3,8 +3,11 @@ namespace LocalSearchEngine.Core;
 /// <summary>A semantic (vector) hit: a chunk and its cosine distance to the query (lower = nearer).</summary>
 public readonly record struct VectorCandidate(string Url, string Text, bool IsHeading, double Distance);
 
-/// <summary>An exact keyword (FTS5) hit for the query phrase.</summary>
-public readonly record struct KeywordCandidate(string Url, string Text, bool IsHeading);
+/// <summary>
+/// A keyword (FTS5) hit. <paramref name="ExactPhrase"/> distinguishes a verbatim phrase
+/// match from a looser all-terms (AND) match, which earn different boosts.
+/// </summary>
+public readonly record struct KeywordCandidate(string Url, string Text, bool IsHeading, bool ExactPhrase = true);
 
 /// <summary>
 /// Pure ranking logic, free of any database or embedding dependency so it can be
@@ -18,7 +21,8 @@ public static class SearchRanker
         IEnumerable<VectorCandidate> vectorHits,
         IEnumerable<KeywordCandidate> keywordHits,
         string query,
-        SearchSettings settings)
+        SearchSettings settings,
+        IReadOnlyDictionary<string, string?>? titles = null)
     {
         var byUrl = new Dictionary<string, Aggregate>(StringComparer.OrdinalIgnoreCase);
 
@@ -37,11 +41,13 @@ public static class SearchRanker
             agg.MatchedHeading |= hit.IsHeading;
         }
 
-        // Keyword pass: exact phrase matches are always relevant, threshold or not.
+        // Keyword pass: keyword matches are always relevant, threshold or not. A verbatim
+        // phrase hit outranks a looser all-terms (AND) hit for the same URL.
         foreach (var hit in keywordHits)
         {
             var agg = GetOrCreate(byUrl, hit.Url);
-            agg.ExactPhrase = true;
+            if (hit.ExactPhrase) agg.ExactPhrase = true;
+            else agg.AndTerms = true;
             agg.MatchedHeading |= hit.IsHeading;
             if (agg.Text.Length == 0) agg.Text = hit.Text; // only if no vector snippet chosen
         }
@@ -49,15 +55,21 @@ public static class SearchRanker
         var results = new List<SearchResultItem>(byUrl.Count);
         foreach (var agg in byUrl.Values)
         {
+            string? title = null;
+            titles?.TryGetValue(agg.Url, out title);
+
             double score = agg.Similarity;
             if (agg.ExactPhrase) score += settings.ExactPhraseBoost;
+            else if (agg.AndTerms) score += settings.AndTermsBoost;
             if (agg.MatchedHeading) score += settings.HeadingBoost;
             if (UrlFileNameContains(agg.Url, query)) score += settings.FilenameBoost;
             if (agg.Text.Contains(query, StringComparison.OrdinalIgnoreCase)) score += settings.TermInTextBoost;
+            if (!string.IsNullOrEmpty(title) && title.Contains(query, StringComparison.OrdinalIgnoreCase)) score += settings.TitleBoost;
 
             results.Add(new SearchResultItem
             {
                 Url = agg.Url,
+                Title = title,
                 Text = agg.Text,
                 Similarity = agg.Similarity,
                 Score = score
@@ -92,6 +104,7 @@ public static class SearchRanker
         public string Text = string.Empty;
         public double Similarity;
         public bool ExactPhrase;
+        public bool AndTerms;
         public bool MatchedHeading;
     }
 }
@@ -99,6 +112,8 @@ public static class SearchRanker
 public class SearchResultItem
 {
     public string Url { get; set; } = string.Empty;
+    /// <summary>The page's &lt;title&gt;, when known; null for pages indexed without one.</summary>
+    public string? Title { get; set; }
     public string Text { get; set; } = string.Empty;
     /// <summary>Cosine similarity (1 - distance) of the best matching chunk; 0 for keyword-only hits.</summary>
     public double Similarity { get; set; }

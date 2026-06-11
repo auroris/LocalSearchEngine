@@ -3,6 +3,8 @@ using Microsoft.SemanticKernel;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Data.Sqlite;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LocalSearchEngine.Core;
 
@@ -90,18 +92,23 @@ public class VectorSearchService
 
     public async Task IndexUrlChunksAsync(string url, string fullText, bool isHeading = false)
     {
+        var records = new List<TextChunkRecord>();
         foreach (var chunkText in TextChunker.Chunk(fullText))
         {
-            var record = new TextChunkRecord
+            records.Add(new TextChunkRecord
             {
                 Id = Guid.NewGuid().ToString(),
                 Url = url,
                 Text = chunkText,
                 IsHeading = isHeading,
                 Embedding = _embedder.Embed(chunkText) // generated locally on the CPU
-            };
+            });
+        }
 
-            await _collection.UpsertAsync(record);
+        // One batched upsert (a single transaction) per page instead of one per chunk.
+        if (records.Count > 0)
+        {
+            await _collection.UpsertAsync(records);
         }
     }
 
@@ -115,8 +122,10 @@ public class VectorSearchService
         int pool = _settings.CandidatePoolSize;
 
         // Semantic candidates: the connector returns nearest-first; Score is cosine distance.
+        // Queries go through EmbedQuery so BGE's retrieval instruction is applied (passages
+        // were indexed raw via Embed).
         var vectorHits = new List<VectorCandidate>();
-        var queryEmbedding = _embedder.Embed(query);
+        var queryEmbedding = _embedder.EmbedQuery(query);
         await foreach (var result in _collection.SearchAsync(queryEmbedding, pool))
         {
             vectorHits.Add(new VectorCandidate(
@@ -126,38 +135,105 @@ public class VectorSearchService
                 result.Score ?? double.MaxValue));
         }
 
-        // Exact keyword candidates: phrase match against the FTS5 index.
+        // Keyword candidates from the FTS5 index, in two tiers, plus per-URL titles.
         var keywordHits = new List<KeywordCandidate>();
+        var titles = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
         try
         {
             using var connection = new SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
-            using var command = connection.CreateCommand();
 
-            string escapedQuery = query.Replace("\"", "\"\"");
-            command.CommandText = @"
-                SELECT c.Url, c.Text, c.IsHeading
-                FROM text_chunks_fts f
-                JOIN text_chunks c ON f.Id = c.Id
-                WHERE text_chunks_fts MATCH @query
-                ORDER BY f.rank
-                LIMIT @limit";
-            command.Parameters.AddWithValue("@query", $"\"{escapedQuery}\"");
-            command.Parameters.AddWithValue("@limit", pool);
+            // Tier 1: verbatim phrase match.
+            await CollectKeywordHitsAsync(connection, BuildPhraseMatch(query), exactPhrase: true, pool, keywordHits);
+
+            // Tier 2: looser all-terms (AND) match. Skipped for single-term queries, where
+            // it would just duplicate the phrase tier.
+            var terms = ExtractTerms(query);
+            if (terms.Count > 1)
+            {
+                await CollectKeywordHitsAsync(connection, BuildAndMatch(terms), exactPhrase: false, pool, keywordHits);
+            }
+
+            // Titles for every candidate URL feed the title boost and the result list.
+            var urls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var v in vectorHits) urls.Add(v.Url);
+            foreach (var k in keywordHits) urls.Add(k.Url);
+            await LoadTitlesAsync(connection, urls, titles);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch keyword matches/titles from SQLite for query {Query}", query);
+        }
+
+        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings, titles);
+        return new SearchResponse { Items = items, TotalMatches = items.Count };
+    }
+
+    private static async Task CollectKeywordHitsAsync(
+        SqliteConnection connection, string matchExpr, bool exactPhrase, int limit, List<KeywordCandidate> into)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = @"
+            SELECT c.Url, c.Text, c.IsHeading
+            FROM text_chunks_fts f
+            JOIN text_chunks c ON f.Id = c.Id
+            WHERE text_chunks_fts MATCH @query
+            ORDER BY f.rank
+            LIMIT @limit";
+        command.Parameters.AddWithValue("@query", matchExpr);
+        command.Parameters.AddWithValue("@limit", limit);
+
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            bool isHeading = !reader.IsDBNull(2) && reader.GetBoolean(2);
+            into.Add(new KeywordCandidate(reader.GetString(0), reader.GetString(1), isHeading, exactPhrase));
+        }
+    }
+
+    private static async Task LoadTitlesAsync(
+        SqliteConnection connection, IReadOnlyCollection<string> urls, Dictionary<string, string?> into)
+    {
+        if (urls.Count == 0) return;
+
+        // Batch the IN-list so we never approach SQLite's bound-parameter ceiling.
+        const int batchSize = 400;
+        var list = urls as IList<string> ?? urls.ToList();
+        for (int start = 0; start < list.Count; start += batchSize)
+        {
+            int count = Math.Min(batchSize, list.Count - start);
+            using var command = connection.CreateCommand();
+            var sb = new StringBuilder("SELECT Url, Title FROM CrawlState WHERE Url IN (");
+            for (int i = 0; i < count; i++)
+            {
+                if (i > 0) sb.Append(',');
+                var name = "@u" + i;
+                sb.Append(name);
+                command.Parameters.AddWithValue(name, list[start + i]);
+            }
+            sb.Append(')');
+            command.CommandText = sb.ToString();
 
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                bool isHeading = !reader.IsDBNull(2) && reader.GetBoolean(2);
-                keywordHits.Add(new KeywordCandidate(reader.GetString(0), reader.GetString(1), isHeading));
+                into[reader.GetString(0)] = reader.IsDBNull(1) ? null : reader.GetString(1);
             }
         }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to fetch exact matches from SQLite FTS5 for query {Query}", query);
-        }
+    }
 
-        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings);
-        return new SearchResponse { Items = items, TotalMatches = items.Count };
+    /// <summary>A single quoted FTS5 phrase: the whole query matched verbatim and in order.</summary>
+    private static string BuildPhraseMatch(string query) => "\"" + query.Replace("\"", "\"\"") + "\"";
+
+    /// <summary>An FTS5 expression requiring every term (each quoted), in any order/position.</summary>
+    private static string BuildAndMatch(IEnumerable<string> terms) =>
+        string.Join(" ", terms.Select(t => "\"" + t.Replace("\"", "\"\"") + "\""));
+
+    /// <summary>Splits a query into word tokens (letters/digits), discarding punctuation.</summary>
+    private static List<string> ExtractTerms(string query)
+    {
+        var terms = new List<string>();
+        foreach (Match m in Regex.Matches(query, @"\w+")) terms.Add(m.Value);
+        return terms;
     }
 }

@@ -17,14 +17,21 @@ public sealed class RobotsRules
 
     public double? CrawlDelaySeconds { get; }
 
-    private RobotsRules(List<Rule> rules, double? crawlDelaySeconds)
+    /// <summary>
+    /// Absolute sitemap URLs declared via <c>Sitemap:</c> lines. These are global (not
+    /// tied to a user-agent group), so they are returned regardless of which group applies.
+    /// </summary>
+    public IReadOnlyList<string> Sitemaps { get; }
+
+    private RobotsRules(List<Rule> rules, double? crawlDelaySeconds, IReadOnlyList<string> sitemaps)
     {
         _rules = rules;
         CrawlDelaySeconds = crawlDelaySeconds;
+        Sitemaps = sitemaps;
     }
 
     /// <summary>An allow-everything ruleset (no robots.txt, or none applicable).</summary>
-    public static RobotsRules AllowAll { get; } = new(new List<Rule>(), null);
+    public static RobotsRules AllowAll { get; } = new(new List<Rule>(), null, Array.Empty<string>());
 
     /// <summary>
     /// Whether the path (plus query) may be fetched. Among all matching rules the
@@ -60,6 +67,7 @@ public sealed class RobotsRules
     public static RobotsRules Parse(string content, string userAgent)
     {
         var groups = new List<Group>();
+        var sitemaps = new List<string>();
         Group? current = null;
         bool lastLineWasRule = false;
 
@@ -107,6 +115,11 @@ public sealed class RobotsRules
                         current.CrawlDelay = delay;
                     lastLineWasRule = true;
                     break;
+
+                case "sitemap":
+                    // Global directive: independent of user-agent groups and grouping state.
+                    if (value.Length > 0) sitemaps.Add(value);
+                    break;
             }
         }
 
@@ -128,8 +141,12 @@ public sealed class RobotsRules
             }
         }
 
+        // Sitemap lines are global, so they are returned even when no group constrains us.
         var chosen = specific ?? wildcard;
-        if (chosen is null) return AllowAll;
+        if (chosen is null)
+        {
+            return sitemaps.Count == 0 ? AllowAll : new RobotsRules(new List<Rule>(), null, sitemaps);
+        }
 
         var compiled = new List<Rule>();
         foreach (var (allow, path) in chosen.Directives)
@@ -140,7 +157,7 @@ public sealed class RobotsRules
             compiled.Add(new Rule(allow, path.Length, new Regex(ToRegex(path), RegexOptions.CultureInvariant)));
         }
 
-        return new RobotsRules(compiled, chosen.CrawlDelay);
+        return new RobotsRules(compiled, chosen.CrawlDelay, sitemaps);
     }
 
     private static Group NewGroup(List<Group> groups)

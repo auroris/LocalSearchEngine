@@ -52,12 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'result-card';
             card.style.animationDelay = `${Math.min(index, 10) * 0.05}s`;
 
+            const title = result.title && result.title.trim();
+
+            // When a page title is known it becomes the clickable headline and the URL
+            // drops to a small line beneath it; otherwise the URL is the headline.
             const link = document.createElement('a');
-            link.className = 'result-url';
+            link.className = title ? 'result-title' : 'result-url';
             link.href = result.url;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.textContent = result.url;
+            link.textContent = title || result.url;
+
+            const parts = [link];
+            if (title) {
+                const urlLine = document.createElement('div');
+                urlLine.className = 'result-link-url';
+                urlLine.textContent = result.url;
+                parts.push(urlLine);
+            }
 
             const text = document.createElement('p');
             text.className = 'result-text';
@@ -68,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const similarity = typeof result.similarity === 'number' ? ` · similarity ${result.similarity.toFixed(3)}` : '';
             score.textContent = `Relevance ${Number(result.score).toFixed(3)}${similarity}`;
 
-            card.append(link, text, score);
+            card.append(...parts, text, score);
             resultsContainer.appendChild(card);
         });
     }

@@ -99,4 +99,30 @@ public class RobotsRulesTests
         var rules = RobotsRules.Parse(content, Bot);
         Assert.True(rules.IsAllowed("/anything"));
     }
+
+    [Fact]
+    public void Sitemap_directives_are_collected_globally()
+    {
+        var content =
+            "Sitemap: https://example.com/sitemap.xml\n" +
+            "User-agent: *\nDisallow: /private\n" +
+            "Sitemap: https://example.com/news-sitemap.xml\n";
+        var rules = RobotsRules.Parse(content, Bot);
+
+        Assert.Equal(
+            new[] { "https://example.com/sitemap.xml", "https://example.com/news-sitemap.xml" },
+            rules.Sitemaps);
+        Assert.False(rules.IsAllowed("/private")); // grouping is unaffected by sitemap lines
+    }
+
+    [Fact]
+    public void Sitemap_is_returned_even_with_no_applicable_group()
+    {
+        // Only a GoogleBot group (irrelevant to us) plus a global Sitemap line.
+        var content = "User-agent: GoogleBot\nDisallow: /\nSitemap: https://example.com/s.xml\n";
+        var rules = RobotsRules.Parse(content, Bot);
+
+        Assert.True(rules.IsAllowed("/anything"));
+        Assert.Equal(new[] { "https://example.com/s.xml" }, rules.Sitemaps);
+    }
 }
