@@ -4,14 +4,27 @@ using Microsoft.SemanticKernel;
 using LocalSearchEngine.Core;
 using Polly;
 using Polly.Extensions.Http;
+using Microsoft.Extensions.Configuration;
+
+var config = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .Build();
 
 string url = "";
-string dbPath = DefaultDbPath();
-int maxPages = int.MaxValue;
+string dbPath = config["db"] ?? DefaultDbPath();
+int maxPages = config.GetValue<int?>("max-pages") ?? int.MaxValue;
+var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
+
+bool showHelp = false;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if (args[i] == "--db" && i + 1 < args.Length)
+    if (args[i] == "-help" || args[i] == "--help")
+    {
+        showHelp = true;
+    }
+    else if (args[i] == "--db" && i + 1 < args.Length)
     {
         dbPath = args[++i];
     }
@@ -28,9 +41,29 @@ for (int i = 0; i < args.Length; i++)
     }
 }
 
+if (args.Length == 0 || showHelp)
+{
+    Console.WriteLine("Usage: dotnet run -- [options] <url>");
+    Console.WriteLine();
+    Console.WriteLine("Options:");
+    Console.WriteLine("  --db <path>         Path to the SQLite database. Default is search.db or adjacent web project's DB.");
+    Console.WriteLine("                      (Can also be set via 'db' in appsettings.json)");
+    Console.WriteLine("  --max-pages <n>     Maximum number of pages to crawl. Default is infinity.");
+    Console.WriteLine("                      (Can also be set via 'max-pages' in appsettings.json)");
+    Console.WriteLine("  -help, --help       Show this help message and exit.");
+    Console.WriteLine();
+    Console.WriteLine("Arguments:");
+    Console.WriteLine("  <url>               The starting URL to crawl.");
+    Console.WriteLine();
+    Console.WriteLine("Note: Additional allowed domains can be configured via the 'allowed-servers' array in appsettings.json.");
+    return;
+}
+
 if (string.IsNullOrEmpty(url))
 {
-    Console.WriteLine("Usage: dotnet run -- [--db <path>] [--max-pages <n>] <url>");
+    Console.WriteLine("Error: Missing required argument <url>.");
+    Console.WriteLine("Usage: dotnet run -- [options] <url>");
+    Console.WriteLine("Run with --help for more information.");
     return;
 }
 
@@ -85,8 +118,12 @@ Console.CancelKeyPress += (_, e) =>
 };
 
 Console.WriteLine($"Starting spider for: {url} with max pages: {(maxPages == int.MaxValue ? "infinity" : maxPages)}");
+if (allowedServers.Length > 0)
+{
+    Console.WriteLine($"Allowed additional servers: {string.Join(", ", allowedServers)}");
+}
 Console.WriteLine($"Database: {fullDbPath}");
-await crawlerService.CrawlAsync(url, maxPages, cts.Token);
+await crawlerService.CrawlAsync(url, maxPages, allowedServers, cts.Token);
 Console.WriteLine("Spider completed.");
 
 // By default, write the index into the web app's files so it can serve it without

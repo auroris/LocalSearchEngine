@@ -79,7 +79,7 @@ public class CrawlerService
         await command.ExecuteNonQueryAsync();
     }
 
-    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, CancellationToken cancellationToken = default)
+    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, CancellationToken cancellationToken = default)
     {
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
@@ -88,17 +88,30 @@ public class CrawlerService
         }
 
         var normalizedSeed = UrlNormalizer.Normalize(baseUri);
-        var host = baseUri.Host;
         var queue = new Queue<string>();
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        var robots = await GetRobotsRulesAsync(baseUri, cancellationToken);
-        var requestDelay = ResolveRequestDelay(robots);
+        var allowedHosts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (allowedServers != null)
+        {
+            foreach (var s in allowedServers) allowedHosts.Add(s);
+        }
+        allowedHosts.Add(baseUri.Host);
+
+        var robotsCache = new Dictionary<string, RobotsRules>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var host in allowedHosts)
+        {
+            var hostUri = new Uri($"{baseUri.Scheme}://{host}");
+            var rules = await GetRobotsRulesAsync(hostUri, cancellationToken);
+            robotsCache[host] = rules;
+            await EnqueueSitemapUrlsAsync(hostUri, rules, allowedHosts, queue, visited, cancellationToken);
+        }
 
         int pagesCrawled = 0;
 
         visited.Add(normalizedSeed);
-        if (IsAllowedByRobots(normalizedSeed, robots))
+        if (IsAllowedByRobots(normalizedSeed, robotsCache[baseUri.Host]))
         {
             queue.Enqueue(normalizedSeed);
         }
@@ -106,8 +119,6 @@ public class CrawlerService
         {
             _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
         }
-
-        await EnqueueSitemapUrlsAsync(baseUri, robots, queue, visited, cancellationToken);
 
         while (queue.Count > 0 && pagesCrawled < maxPages)
         {
@@ -123,6 +134,11 @@ public class CrawlerService
 
             try
             {
+                if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri)) continue;
+                var currentHost = currentUri.Host;
+                var currentRobots = robotsCache.TryGetValue(currentHost, out var r) ? r : RobotsRules.AllowAll;
+                var requestDelay = ResolveRequestDelay(currentRobots);
+
                 // Be a polite citizen: pause between requests to the same host.
                 await Task.Delay(requestDelay, cancellationToken);
 
@@ -215,7 +231,7 @@ public class CrawlerService
                     }
 
                     cleanedText = ExtractVisibleText(doc.DocumentNode);
-                    addedLinks = EnqueueLinks(doc, currentUrl, host, robots, queue, visited);
+                    addedLinks = EnqueueLinks(doc, currentUrl, allowedHosts, robotsCache, queue, visited);
                 }
 
                 // Replace any previously indexed chunks for this URL, then re-index.
@@ -247,7 +263,7 @@ public class CrawlerService
         await OptimizeDatabaseAsync();
     }
 
-    private int EnqueueLinks(HtmlDocument doc, string currentUrl, string host, RobotsRules robots, Queue<string> queue, HashSet<string> visited)
+    private int EnqueueLinks(HtmlDocument doc, string currentUrl, HashSet<string> allowedHosts, Dictionary<string, RobotsRules> robotsCache, Queue<string> queue, HashSet<string> visited)
     {
         var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
         if (linkNodes is null) return 0;
@@ -262,8 +278,9 @@ public class CrawlerService
             if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
 
             var normalizedUrl = UrlNormalizer.Normalize(absoluteUri);
+            var linkHost = absoluteUri.Host;
 
-            if (!absoluteUri.Host.Equals(host, StringComparison.OrdinalIgnoreCase) || !CrawlPolicy.IsIndexableExtension(normalizedUrl))
+            if (!allowedHosts.Contains(linkHost) || !CrawlPolicy.IsIndexableExtension(normalizedUrl))
             {
                 _logger.LogTrace("Skipped link (external or invalid extension): {Url}", normalizedUrl);
                 continue;
@@ -271,7 +288,9 @@ public class CrawlerService
 
             if (!visited.Add(normalizedUrl)) continue;
 
-            if (IsAllowedByRobots(normalizedUrl, robots))
+            var linkRobots = robotsCache.TryGetValue(linkHost, out var r) ? r : RobotsRules.AllowAll;
+
+            if (IsAllowedByRobots(normalizedUrl, linkRobots))
             {
                 queue.Enqueue(normalizedUrl);
                 addedLinks++;
@@ -452,11 +471,11 @@ public class CrawlerService
         return !Uri.TryCreate(url, UriKind.Absolute, out var uri) || robots.IsAllowed(uri.PathAndQuery);
     }
 
-    private async Task EnqueueSitemapUrlsAsync(Uri baseUri, RobotsRules robots, Queue<string> queue, HashSet<string> visited, CancellationToken cancellationToken)
+    private async Task EnqueueSitemapUrlsAsync(Uri hostUri, RobotsRules robots, HashSet<string> allowedHosts, Queue<string> queue, HashSet<string> visited, CancellationToken cancellationToken)
     {
         try
         {
-            var sitemapUrl = new Uri(baseUri, "/sitemap.xml");
+            var sitemapUrl = new Uri(hostUri, "/sitemap.xml");
             using var response = await _httpClient.GetAsync(sitemapUrl, cancellationToken);
             if (!response.IsSuccessStatusCode) return;
 
@@ -471,7 +490,7 @@ public class CrawlerService
                 if (!UrlNormalizer.TryNormalize(node.InnerText?.Trim(), out var normalizedUrl)) continue;
                 if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var locUri)) continue;
 
-                if (locUri.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase) &&
+                if (allowedHosts.Contains(locUri.Host) &&
                     CrawlPolicy.IsIndexableExtension(normalizedUrl) &&
                     visited.Add(normalizedUrl) &&
                     IsAllowedByRobots(normalizedUrl, robots))
@@ -481,11 +500,11 @@ public class CrawlerService
                 }
             }
 
-            _logger.LogInformation("Enqueued {Count} URLs from sitemap.xml", addedFromSitemap);
+            _logger.LogInformation("Enqueued {Count} URLs from sitemap.xml for {Host}", addedFromSitemap, hostUri.Host);
         }
         catch (Exception ex)
         {
-            _logger.LogDebug(ex, "Failed to fetch or parse sitemap.xml (it may not exist)");
+            _logger.LogDebug(ex, "Failed to fetch or parse sitemap.xml for {Host} (it may not exist)", hostUri.Host);
         }
     }
 
