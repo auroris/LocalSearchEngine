@@ -1,8 +1,8 @@
-using SmartComponents.LocalEmbeddings;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.Data.Sqlite;
 
 namespace LocalSearchEngine.Core;
 
@@ -26,13 +26,13 @@ public class TextChunkRecord
 
 public class VectorSearchService
 {
-    private readonly LocalEmbedder _embedder;
+    private readonly IEmbedder _embedder;
     private readonly VectorStoreCollection<string, TextChunkRecord> _collection;
     private readonly DatabaseConfig _dbConfig;
     private readonly SearchSettings _settings;
     private readonly ILogger<VectorSearchService> _logger;
 
-    public VectorSearchService(LocalEmbedder embedder, VectorStore vectorStore, DatabaseConfig dbConfig, IOptions<SearchSettings> options, ILogger<VectorSearchService> logger)
+    public VectorSearchService(IEmbedder embedder, VectorStore vectorStore, DatabaseConfig dbConfig, IOptions<SearchSettings> options, ILogger<VectorSearchService> logger)
     {
         _embedder = embedder;
         _collection = vectorStore.GetCollection<string, TextChunkRecord>("text_chunks");
@@ -41,10 +41,14 @@ public class VectorSearchService
         _logger = logger;
     }
 
-    public async Task InitializeAsync()
+    /// <summary>
+    /// Creates the vector collection (and its backing tables) if missing and enables
+    /// WAL. Writers (the crawler) call this; the read-only web app does not.
+    /// </summary>
+    public async Task EnsureCreatedAsync()
     {
         await _collection.EnsureCollectionExistsAsync();
-        using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
+        using var connection = new SqliteConnection(_dbConfig.ConnectionString);
         await connection.OpenAsync();
         using var command = connection.CreateCommand();
         command.CommandText = "PRAGMA journal_mode=WAL;";
@@ -55,13 +59,27 @@ public class VectorSearchService
     {
         try
         {
-            // Using Microsoft.Data.Sqlite directly to execute deletion by Url metadata.
-            using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
-            await connection.OpenAsync();
-            using var command = connection.CreateCommand();
-            command.CommandText = "DELETE FROM text_chunks WHERE Url = @Url";
-            command.Parameters.AddWithValue("@Url", url);
-            await command.ExecuteNonQueryAsync();
+            // Collect this URL's chunk ids, then delete them through the collection so
+            // the connector removes both the data row and its companion vector row.
+            // The AFTER DELETE trigger on text_chunks keeps the FTS index in sync.
+            var ids = new List<string>();
+            using (var connection = new SqliteConnection(_dbConfig.ConnectionString))
+            {
+                await connection.OpenAsync();
+                using var command = connection.CreateCommand();
+                command.CommandText = "SELECT Id FROM text_chunks WHERE Url = @Url";
+                command.Parameters.AddWithValue("@Url", url);
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    ids.Add(reader.GetString(0));
+                }
+            }
+
+            if (ids.Count > 0)
+            {
+                await _collection.DeleteAsync(ids);
+            }
         }
         catch (Exception ex)
         {
@@ -72,141 +90,66 @@ public class VectorSearchService
 
     public async Task IndexUrlChunksAsync(string url, string fullText, bool isHeading = false)
     {
-        var words = fullText.Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-        int chunkSize = 150;
-        int overlap = 30;
-        
-        for (int i = 0; i < words.Length; i += (chunkSize - overlap))
+        foreach (var chunkText in TextChunker.Chunk(fullText))
         {
-            var chunkWords = words.Skip(i).Take(chunkSize);
-            if (!chunkWords.Any()) break;
-            
-            var chunkText = string.Join(" ", chunkWords);
-            
-            // Generate embedding locally using the CPU
-            var embedding = _embedder.Embed(chunkText);
-            
             var record = new TextChunkRecord
             {
                 Id = Guid.NewGuid().ToString(),
                 Url = url,
                 Text = chunkText,
                 IsHeading = isHeading,
-                Embedding = embedding.Values
+                Embedding = _embedder.Embed(chunkText) // generated locally on the CPU
             };
 
             await _collection.UpsertAsync(record);
         }
     }
 
-    public async Task<PagedSearchResult> SearchAsync(string query, double? minScore = null)
+    /// <summary>
+    /// Hybrid search returning every "close enough" result (vector hits at or above
+    /// the similarity threshold, plus all exact keyword matches) — no count cap.
+    /// Ranking and thresholding live in <see cref="SearchRanker"/>.
+    /// </summary>
+    public async Task<SearchResponse> SearchAsync(string query)
     {
-        double effectiveMinScore = minScore ?? _settings.MinScore;
-        var queryEmbedding = _embedder.Embed(query).Values;
-        
-        var searchOptions = new VectorSearchOptions<TextChunkRecord>
+        int pool = _settings.CandidatePoolSize;
+
+        // Semantic candidates: the connector returns nearest-first; Score is cosine distance.
+        var vectorHits = new List<VectorCandidate>();
+        var queryEmbedding = _embedder.Embed(query);
+        await foreach (var result in _collection.SearchAsync(queryEmbedding, pool))
         {
-        };
-
-        // Fetch enough results to get good semantic coverage
-        int fetchLimit = _settings.SearchFetchLimit;
-        var searchResult = _collection.SearchAsync(queryEmbedding, fetchLimit, searchOptions);
-        
-        var results = new List<SearchResultItem>();
-        
-        await foreach (var record in searchResult)
-        {
-            double score = record.Score ?? 0.0;
-            
-            if (record.Record.IsHeading)
-            {
-                score += 0.3; // Boost for headings
-            }
-
-            // Give a score boost if the query term appears directly in the text
-            if (record.Record.Text.Contains(query, StringComparison.OrdinalIgnoreCase))
-            {
-                score += 0.2;
-            }
-
-            // Give a score boost if the file name contains the query
-            if (Uri.TryCreate(record.Record.Url, UriKind.Absolute, out var uri))
-            {
-                var segment = uri.Segments.LastOrDefault()?.TrimEnd('/');
-                if (segment != null)
-                {
-                    var fileName = System.IO.Path.GetFileNameWithoutExtension(segment);
-                    if (fileName.Contains(query, StringComparison.OrdinalIgnoreCase))
-                    {
-                        score += 0.4; // Strong boost for URL filename match
-                    }
-                }
-            }
-
-            results.Add(new SearchResultItem
-            {
-                Url = record.Record.Url,
-                Text = record.Record.Text,
-                Score = score
-            });
+            vectorHits.Add(new VectorCandidate(
+                result.Record.Url,
+                result.Record.Text,
+                result.Record.IsHeading,
+                result.Score ?? double.MaxValue));
         }
 
+        // Exact keyword candidates: phrase match against the FTS5 index.
+        var keywordHits = new List<KeywordCandidate>();
         try
         {
-            // Fetch exact matches directly from SQLite FTS5 table for extremely fast, precise keyword matching
-            using var connection = new Microsoft.Data.Sqlite.SqliteConnection(_dbConfig.ConnectionString);
+            using var connection = new SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
-            
-            string escapedQuery = query.Replace("\"", "\"\"");
-            string ftsQuery = $"\"{escapedQuery}\"";
 
+            string escapedQuery = query.Replace("\"", "\"\"");
             command.CommandText = @"
-                SELECT c.Url, c.Text, c.IsHeading, f.rank 
+                SELECT c.Url, c.Text, c.IsHeading
                 FROM text_chunks_fts f
                 JOIN text_chunks c ON f.Id = c.Id
-                WHERE text_chunks_fts MATCH @query 
+                WHERE text_chunks_fts MATCH @query
                 ORDER BY f.rank
                 LIMIT @limit";
-            command.Parameters.AddWithValue("@query", ftsQuery);
-            command.Parameters.AddWithValue("@limit", fetchLimit);
-            
+            command.Parameters.AddWithValue("@query", $"\"{escapedQuery}\"");
+            command.Parameters.AddWithValue("@limit", pool);
+
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                bool isHeading = false;
-                if (reader.FieldCount >= 3 && !reader.IsDBNull(2))
-                {
-                    try { isHeading = reader.GetInt32(2) != 0; } catch { }
-                }
-
-                // SQLite FTS5 rank is lower = better (typically negative values)
-                // We add a strong base score for an exact match, and a small variance based on the FTS rank
-                double ftsRank = reader.GetDouble(3);
-                double score = 1.2 + Math.Max(0, (ftsRank * -0.01));
-
-                if (isHeading) score += 0.3;
-
-                var url = reader.GetString(0);
-                if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
-                {
-                    var segment = uri.Segments.LastOrDefault()?.TrimEnd('/');
-                    if (segment != null)
-                    {
-                        var fileName = System.IO.Path.GetFileNameWithoutExtension(segment);
-                        if (fileName.Contains(query, StringComparison.OrdinalIgnoreCase))
-                        {
-                            score += 0.4;
-                        }
-                    }
-                }
-
-                results.Add(new SearchResultItem
-                {
-                    Url = url,
-                    Text = reader.GetString(1),
-                    Score = score // Assign a high baseline score so exact matches surface to the top
-                });
+                bool isHeading = !reader.IsDBNull(2) && reader.GetBoolean(2);
+                keywordHits.Add(new KeywordCandidate(reader.GetString(0), reader.GetString(1), isHeading));
             }
         }
         catch (Exception ex)
@@ -214,34 +157,7 @@ public class VectorSearchService
             _logger.LogWarning(ex, "Failed to fetch exact matches from SQLite FTS5 for query {Query}", query);
         }
 
-        var distinctResults = results
-            .GroupBy(r => r.Url)
-            .Select(g => g.OrderByDescending(r => r.Score).First())
-            .Where(r => r.Score >= effectiveMinScore)
-            .OrderByDescending(r => r.Score)
-            .ToList();
-
-        return new PagedSearchResult
-        {
-            Items = distinctResults,
-            TotalMatches = distinctResults.Count,
-            Page = 1,
-            PageSize = distinctResults.Count
-        };
+        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings);
+        return new SearchResponse { Items = items, TotalMatches = items.Count };
     }
-}
-
-public class SearchResultItem
-{
-    public string Url { get; set; } = string.Empty;
-    public string Text { get; set; } = string.Empty;
-    public double Score { get; set; }
-}
-
-public class PagedSearchResult
-{
-    public List<SearchResultItem> Items { get; set; } = new();
-    public int TotalMatches { get; set; }
-    public int Page { get; set; }
-    public int PageSize { get; set; }
 }

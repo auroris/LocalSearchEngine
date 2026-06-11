@@ -400,3 +400,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *.db
+
+# SQLite search index (built by the crawler) and its WAL sidecar files
+*.db-wal
+*.db-shm

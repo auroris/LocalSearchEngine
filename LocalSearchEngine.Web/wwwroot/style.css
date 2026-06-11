@@ -321,3 +321,14 @@ mark {
     padding: 0 0.2em;
     border-radius: 4px;
 }
+
+/* Results status / header */
+.results-status {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.results-header {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}

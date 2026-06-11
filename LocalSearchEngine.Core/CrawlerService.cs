@@ -1,12 +1,23 @@
 using HtmlAgilityPack;
 using Microsoft.Data.Sqlite;
-using System.Text.RegularExpressions;
+using System.Text;
 using Microsoft.Extensions.Logging;
 
 namespace LocalSearchEngine.Core;
 
 public class CrawlerService
 {
+    /// <summary>Identifies this crawler in request headers and for robots.txt matching.</summary>
+    public const string UserAgent = "LocalSearchEngine-Bot/1.0";
+
+    /// <summary>Hard cap on a single response body; larger documents are skipped.</summary>
+    private const long MaxDownloadBytes = 25L * 1024 * 1024;
+
+    /// <summary>Minimum politeness gap between requests to the same host.</summary>
+    private const int DefaultRequestDelayMs = 250;
+
+    private static readonly char[] WordSeparators = { ' ', '\n', '\r', '\t' };
+
     private readonly HttpClient _httpClient;
     private readonly VectorSearchService _vectorSearchService;
     private readonly ILogger<CrawlerService> _logger;
@@ -20,10 +31,24 @@ public class CrawlerService
         _connectionString = dbConfig.ConnectionString;
     }
 
-    public async Task InitializeAsync()
+    public async Task EnsureCreatedAsync()
     {
         using var connection = new SqliteConnection(_connectionString);
         await connection.OpenAsync();
+
+        // The FTS triggers below reference the vector store's data table, which is
+        // created by VectorSearchService.EnsureCreatedAsync(). Fail loudly if that
+        // step was skipped (or a package upgrade changed the table name).
+        using (var check = connection.CreateCommand())
+        {
+            check.CommandText = "SELECT 1 FROM sqlite_master WHERE type='table' AND name='text_chunks'";
+            if (await check.ExecuteScalarAsync() is null)
+            {
+                throw new InvalidOperationException(
+                    "The 'text_chunks' table is missing. Call VectorSearchService.EnsureCreatedAsync() before CrawlerService.EnsureCreatedAsync().");
+            }
+        }
+
         using var command = connection.CreateCommand();
         command.CommandText = @"
             PRAGMA journal_mode=WAL;
@@ -32,21 +57,20 @@ public class CrawlerService
                 Url TEXT PRIMARY KEY,
                 LastCrawled DATETIME,
                 StatusCode INTEGER,
-                ExtractedText TEXT,
                 ETag TEXT,
                 LastModified TEXT
             );
 
-            CREATE VIRTUAL TABLE IF NOT EXISTS text_chunks_fts USING fts5(Id UNINDEXED, Url UNINDEXED, Text, prefix='2 3');
-            
+            CREATE VIRTUAL TABLE IF NOT EXISTS text_chunks_fts USING fts5(Id UNINDEXED, Url UNINDEXED, Text);
+
             CREATE TRIGGER IF NOT EXISTS text_chunks_ai AFTER INSERT ON text_chunks BEGIN
               INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
             END;
-            
+
             CREATE TRIGGER IF NOT EXISTS text_chunks_ad AFTER DELETE ON text_chunks BEGIN
               DELETE FROM text_chunks_fts WHERE Id = old.Id;
             END;
-            
+
             CREATE TRIGGER IF NOT EXISTS text_chunks_au AFTER UPDATE ON text_chunks BEGIN
               DELETE FROM text_chunks_fts WHERE Id = old.Id;
               INSERT INTO text_chunks_fts(Id, Url, Text) VALUES (new.Id, new.Url, new.Text);
@@ -55,7 +79,7 @@ public class CrawlerService
         await command.ExecuteNonQueryAsync();
     }
 
-    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue)
+    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, CancellationToken cancellationToken = default)
     {
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
@@ -63,24 +87,18 @@ public class CrawlerService
             return;
         }
 
-        var seedBuilder = new UriBuilder(baseUri);
-        seedBuilder.Fragment = string.Empty;
-        if (seedBuilder.Path.Length > 1 && seedBuilder.Path.EndsWith("/"))
-        {
-            seedBuilder.Path = seedBuilder.Path.TrimEnd('/');
-        }
-        var normalizedSeed = seedBuilder.Uri.ToString();
-
+        var normalizedSeed = UrlNormalizer.Normalize(baseUri);
         var host = baseUri.Host;
         var queue = new Queue<string>();
         var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        
-        var disallowedPaths = await GetDisallowedPathsAsync(baseUri);
+
+        var robots = await GetRobotsRulesAsync(baseUri, cancellationToken);
+        var requestDelay = ResolveRequestDelay(robots);
 
         int pagesCrawled = 0;
 
         visited.Add(normalizedSeed);
-        if (IsAllowedByRobots(normalizedSeed, disallowedPaths))
+        if (IsAllowedByRobots(normalizedSeed, robots))
         {
             queue.Enqueue(normalizedSeed);
         }
@@ -89,52 +107,38 @@ public class CrawlerService
             _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
         }
 
-        await EnqueueSitemapUrlsAsync(baseUri, disallowedPaths, queue, visited);
+        await EnqueueSitemapUrlsAsync(baseUri, robots, queue, visited, cancellationToken);
 
         while (queue.Count > 0 && pagesCrawled < maxPages)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                _logger.LogInformation("Crawl cancelled after {PagesCrawled} pages.", pagesCrawled);
+                break;
+            }
+
             var currentUrl = queue.Dequeue();
             pagesCrawled++;
             _logger.LogInformation("Crawling ({PagesCrawled} / {TotalDiscovered}): {Url}", pagesCrawled, visited.Count, currentUrl);
 
             try
             {
-                string? existingETag = null;
-                string? existingLastModified = null;
-                
-                using (var connection = new SqliteConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-                    using var cmd = connection.CreateCommand();
-                    cmd.CommandText = "SELECT ETag, LastModified FROM CrawlState WHERE Url = @Url";
-                    cmd.Parameters.AddWithValue("@Url", currentUrl);
-                    using var reader = await cmd.ExecuteReaderAsync();
-                    if (await reader.ReadAsync())
-                    {
-                        // Check if column exists, since it might have been added
-                        // By checking reader field count we avoid errors if the try/catch in Init failed
-                        if (reader.FieldCount >= 2) 
-                        {
-                            existingETag = reader.IsDBNull(0) ? null : reader.GetString(0);
-                            existingLastModified = reader.IsDBNull(1) ? null : reader.GetString(1);
-                        }
-                    }
-                }
+                // Be a polite citizen: pause between requests to the same host.
+                await Task.Delay(requestDelay, cancellationToken);
+
+                (string? existingETag, string? existingLastModified) = await GetCachedValidatorsAsync(currentUrl, cancellationToken);
 
                 var request = new HttpRequestMessage(HttpMethod.Get, currentUrl);
                 if (!string.IsNullOrEmpty(existingETag))
                 {
                     request.Headers.IfNoneMatch.ParseAdd(existingETag);
                 }
-                if (!string.IsNullOrEmpty(existingLastModified))
+                if (!string.IsNullOrEmpty(existingLastModified) && DateTimeOffset.TryParse(existingLastModified, out var lastModDate))
                 {
-                    if (DateTimeOffset.TryParse(existingLastModified, out var lastModDate))
-                    {
-                        request.Headers.IfModifiedSince = lastModDate;
-                    }
+                    request.Headers.IfModifiedSince = lastModDate;
                 }
 
-                var response = await _httpClient.SendAsync(request);
+                using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
                 var statusCode = (int)response.StatusCode;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
@@ -146,14 +150,7 @@ public class CrawlerService
                 var finalUrl = response.RequestMessage?.RequestUri?.ToString();
                 if (finalUrl != null && !string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase))
                 {
-                    var builder = new UriBuilder(finalUrl);
-                    builder.Fragment = string.Empty;
-                    if (builder.Path.Length > 1 && builder.Path.EndsWith("/"))
-                    {
-                        builder.Path = builder.Path.TrimEnd('/');
-                    }
-                    var normalizedFinalUrl = builder.Uri.ToString();
-                    
+                    var normalizedFinalUrl = UrlNormalizer.TryNormalize(finalUrl, out var nf) ? nf : finalUrl;
                     if (!string.Equals(normalizedFinalUrl, currentUrl, StringComparison.OrdinalIgnoreCase) && visited.Contains(normalizedFinalUrl))
                     {
                         _logger.LogInformation("Redirected to already visited URL: {Url}", normalizedFinalUrl);
@@ -166,8 +163,21 @@ public class CrawlerService
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}", currentUrl, statusCode);
-                    await RecordCrawlStateAsync(currentUrl, statusCode, null, null, null);
+                    await RecordCrawlStateAsync(currentUrl, statusCode, null, null, cancellationToken);
                     await _vectorSearchService.DeleteUrlChunksAsync(currentUrl);
+                    continue;
+                }
+
+                if (response.Content.Headers.ContentLength > MaxDownloadBytes)
+                {
+                    _logger.LogWarning("Skipping {Url}: content length {Length} exceeds limit {Limit}", currentUrl, response.Content.Headers.ContentLength, MaxDownloadBytes);
+                    continue;
+                }
+
+                var body = await ReadBoundedAsync(response.Content, MaxDownloadBytes, cancellationToken);
+                if (body is null)
+                {
+                    _logger.LogWarning("Skipping {Url}: response body exceeds limit {Limit}", currentUrl, MaxDownloadBytes);
                     continue;
                 }
 
@@ -175,139 +185,229 @@ public class CrawlerService
                 string? newLastModified = response.Content.Headers.LastModified?.ToString("r");
 
                 var contentType = response.Content.Headers.ContentType?.MediaType?.ToLowerInvariant();
-                var extension = Path.GetExtension(finalUrl ?? currentUrl)?.ToLowerInvariant();
+                var extension = Path.GetExtension((finalUrl ?? currentUrl).Split('?')[0])?.ToLowerInvariant();
 
-                string cleanedText = string.Empty;
+                string cleanedText;
                 string joinedHeadings = string.Empty;
                 int addedLinks = 0;
 
                 if ((contentType != null && contentType.Contains("pdf")) || extension == ".pdf")
                 {
-                    using var stream = await response.Content.ReadAsStreamAsync();
-                    using var pdfReader = new iText.Kernel.Pdf.PdfReader(stream);
-                    using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(pdfReader);
-                    var sb = new System.Text.StringBuilder();
-                    for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
-                    {
-                        var page = pdfDoc.GetPage(i);
-                        sb.Append(iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(page, new iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy()));
-                        sb.Append(" ");
-                    }
-                    cleanedText = string.Join(" ", sb.ToString().Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+                    cleanedText = ExtractPdfText(body);
                 }
                 else if ((contentType != null && contentType.Contains("wordprocessingml")) || extension == ".docx")
                 {
-                    using var stream = await response.Content.ReadAsStreamAsync();
-                    var doc = new NPOI.XWPF.UserModel.XWPFDocument(stream);
-                    var extractor = new NPOI.XWPF.Extractor.XWPFWordExtractor(doc);
-                    cleanedText = string.Join(" ", extractor.Text.Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+                    cleanedText = ExtractDocxText(body);
                 }
                 else
                 {
-                    // HTML parsing
-                    var html = await response.Content.ReadAsStringAsync();
+                    var html = DecodeHtml(body, response.Content.Headers.ContentType?.CharSet);
                     var doc = new HtmlDocument();
                     doc.LoadHtml(html);
 
-                    var headingTexts = new List<string>();
-                    var titleNode = doc.DocumentNode.SelectSingleNode("//title");
-                    if (titleNode != null && !string.IsNullOrWhiteSpace(titleNode.InnerText)) headingTexts.Add(titleNode.InnerText.Trim());
-                    var hNodes = doc.DocumentNode.SelectNodes("//h1|//h2|//h3|//h4|//h5|//h6");
-                    if (hNodes != null)
-                    {
-                        foreach (var node in hNodes)
-                        {
-                            if (!string.IsNullOrWhiteSpace(node.InnerText)) headingTexts.Add(node.InnerText.Trim());
-                        }
-                    }
-                    joinedHeadings = string.Join(" ", headingTexts);
+                    joinedHeadings = ExtractHeadings(doc);
 
-                    // Remove non-content nodes
+                    // Remove non-content nodes before harvesting body text.
                     var nodesToRemove = doc.DocumentNode.SelectNodes("//script|//style|//nav|//footer|//header|//svg");
                     if (nodesToRemove != null)
                     {
-                        foreach (var node in nodesToRemove)
-                        {
-                            node.Remove();
-                        }
+                        foreach (var node in nodesToRemove) node.Remove();
                     }
 
-                    var text = doc.DocumentNode.InnerText;
-                    cleanedText = string.Join(" ", text.Split(new[] { ' ', '\n', '\r', '\t' }, StringSplitOptions.RemoveEmptyEntries));
-
-                    // Extract and enqueue links
-                    var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
-                    
-                    if (linkNodes != null)
-                    {
-                        foreach (var link in linkNodes)
-                        {
-                            var href = link.GetAttributeValue("href", string.Empty);
-                            if (string.IsNullOrWhiteSpace(href)) continue;
-
-                            if (Uri.TryCreate(new Uri(currentUrl), href, out var absoluteUri))
-                            {
-                                // Normalize URL (remove fragments but keep query string)
-                                var builder = new UriBuilder(absoluteUri);
-                                builder.Fragment = string.Empty;
-                                if (builder.Path.Length > 1 && builder.Path.EndsWith("/"))
-                                {
-                                    builder.Path = builder.Path.TrimEnd('/');
-                                }
-                                var normalizedUrl = builder.Uri.ToString();
-
-                                // Check domain and extensions
-                                if (absoluteUri.Host.Equals(host, StringComparison.OrdinalIgnoreCase) &&
-                                    IsValidExtension(normalizedUrl))
-                                {
-                                    if (!visited.Contains(normalizedUrl))
-                                    {
-                                        visited.Add(normalizedUrl);
-                                        if (IsAllowedByRobots(normalizedUrl, disallowedPaths))
-                                        {
-                                            queue.Enqueue(normalizedUrl);
-                                            addedLinks++;
-                                            _logger.LogDebug("Discovered new link: {Url}", normalizedUrl);
-                                        }
-                                        else
-                                        {
-                                            _logger.LogTrace("Skipped link (disallowed by robots.txt): {Url}", normalizedUrl);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    _logger.LogTrace("Skipped link (external or invalid extension): {Url}", normalizedUrl);
-                                }
-                            }
-                        }
-                    }
+                    cleanedText = ExtractVisibleText(doc.DocumentNode);
+                    addedLinks = EnqueueLinks(doc, currentUrl, host, robots, queue, visited);
                 }
 
-                // Clean old chunks and re-index
+                // Replace any previously indexed chunks for this URL, then re-index.
                 await _vectorSearchService.DeleteUrlChunksAsync(currentUrl);
                 await _vectorSearchService.IndexUrlChunksAsync(currentUrl, cleanedText, isHeading: false);
-                
+
                 if (!string.IsNullOrWhiteSpace(joinedHeadings))
                 {
                     await _vectorSearchService.IndexUrlChunksAsync(currentUrl, joinedHeadings, isHeading: true);
                 }
 
-                // Record success
-                await RecordCrawlStateAsync(currentUrl, statusCode, cleanedText, newETag, newLastModified);
-                
+                await RecordCrawlStateAsync(currentUrl, statusCode, newETag, newLastModified, cancellationToken);
                 _logger.LogInformation("Indexed {Url} and queued {AddedLinks} new internal links.", currentUrl, addedLinks);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                _logger.LogInformation("Crawl cancelled while processing {Url}.", currentUrl);
+                break;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while crawling {Url}", currentUrl);
-                await RecordCrawlStateAsync(currentUrl, 500, null, null, null);
+                await RecordCrawlStateAsync(currentUrl, 500, null, null, CancellationToken.None);
                 await _vectorSearchService.DeleteUrlChunksAsync(currentUrl);
             }
         }
-        
+
         _logger.LogInformation("Crawling completed for {SeedUrl}", seedUrl);
         await OptimizeDatabaseAsync();
+    }
+
+    private int EnqueueLinks(HtmlDocument doc, string currentUrl, string host, RobotsRules robots, Queue<string> queue, HashSet<string> visited)
+    {
+        var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
+        if (linkNodes is null) return 0;
+
+        var baseForLinks = new Uri(currentUrl);
+        int addedLinks = 0;
+
+        foreach (var link in linkNodes)
+        {
+            var href = link.GetAttributeValue("href", string.Empty);
+            if (string.IsNullOrWhiteSpace(href)) continue;
+            if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
+
+            var normalizedUrl = UrlNormalizer.Normalize(absoluteUri);
+
+            if (!absoluteUri.Host.Equals(host, StringComparison.OrdinalIgnoreCase) || !CrawlPolicy.IsIndexableExtension(normalizedUrl))
+            {
+                _logger.LogTrace("Skipped link (external or invalid extension): {Url}", normalizedUrl);
+                continue;
+            }
+
+            if (!visited.Add(normalizedUrl)) continue;
+
+            if (IsAllowedByRobots(normalizedUrl, robots))
+            {
+                queue.Enqueue(normalizedUrl);
+                addedLinks++;
+                _logger.LogDebug("Discovered new link: {Url}", normalizedUrl);
+            }
+            else
+            {
+                _logger.LogTrace("Skipped link (disallowed by robots.txt): {Url}", normalizedUrl);
+            }
+        }
+
+        return addedLinks;
+    }
+
+    private async Task<(string? ETag, string? LastModified)> GetCachedValidatorsAsync(string url, CancellationToken cancellationToken)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync(cancellationToken);
+        using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT ETag, LastModified FROM CrawlState WHERE Url = @Url";
+        cmd.Parameters.AddWithValue("@Url", url);
+        using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+        if (await reader.ReadAsync(cancellationToken))
+        {
+            string? etag = reader.IsDBNull(0) ? null : reader.GetString(0);
+            string? lastModified = reader.IsDBNull(1) ? null : reader.GetString(1);
+            return (etag, lastModified);
+        }
+        return (null, null);
+    }
+
+    private static string ExtractPdfText(byte[] body)
+    {
+        using var stream = new MemoryStream(body);
+        using var pdfReader = new iText.Kernel.Pdf.PdfReader(stream);
+        using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(pdfReader);
+        var sb = new StringBuilder();
+        for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
+        {
+            var page = pdfDoc.GetPage(i);
+            sb.Append(iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(page, new iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy()));
+            sb.Append(' ');
+        }
+        return CollapseWhitespace(sb.ToString());
+    }
+
+    private static string ExtractDocxText(byte[] body)
+    {
+        using var stream = new MemoryStream(body);
+        var doc = new NPOI.XWPF.UserModel.XWPFDocument(stream);
+        var extractor = new NPOI.XWPF.Extractor.XWPFWordExtractor(doc);
+        return CollapseWhitespace(extractor.Text);
+    }
+
+    private static string ExtractHeadings(HtmlDocument doc)
+    {
+        var headingTexts = new List<string>();
+        var titleNode = doc.DocumentNode.SelectSingleNode("//title");
+        if (titleNode != null && !string.IsNullOrWhiteSpace(titleNode.InnerText))
+        {
+            headingTexts.Add(HtmlEntity.DeEntitize(titleNode.InnerText).Trim());
+        }
+
+        var hNodes = doc.DocumentNode.SelectNodes("//h1|//h2|//h3|//h4|//h5|//h6");
+        if (hNodes != null)
+        {
+            foreach (var node in hNodes)
+            {
+                if (!string.IsNullOrWhiteSpace(node.InnerText))
+                {
+                    headingTexts.Add(HtmlEntity.DeEntitize(node.InnerText).Trim());
+                }
+            }
+        }
+
+        return CollapseWhitespace(string.Join(" ", headingTexts));
+    }
+
+    /// <summary>
+    /// Walks the text nodes and joins them with spaces so that adjacent block
+    /// elements don't fuse ("End.Next"), decoding HTML entities along the way.
+    /// </summary>
+    private static string ExtractVisibleText(HtmlNode root)
+    {
+        var sb = new StringBuilder();
+        foreach (var node in root.DescendantsAndSelf())
+        {
+            if (node.NodeType != HtmlNodeType.Text) continue;
+            var decoded = HtmlEntity.DeEntitize(node.InnerText);
+            if (string.IsNullOrWhiteSpace(decoded)) continue;
+            sb.Append(decoded.Trim()).Append(' ');
+        }
+        return CollapseWhitespace(sb.ToString());
+    }
+
+    private static string CollapseWhitespace(string text) =>
+        string.Join(" ", text.Split(WordSeparators, StringSplitOptions.RemoveEmptyEntries));
+
+    private static string DecodeHtml(byte[] bytes, string? charset)
+    {
+        if (!string.IsNullOrWhiteSpace(charset))
+        {
+            try
+            {
+                return Encoding.GetEncoding(charset.Trim('"', '\'')).GetString(bytes);
+            }
+            catch (ArgumentException)
+            {
+                // Unknown charset label — fall back to UTF-8.
+            }
+        }
+        return Encoding.UTF8.GetString(bytes);
+    }
+
+    private static async Task<byte[]?> ReadBoundedAsync(HttpContent content, long maxBytes, CancellationToken cancellationToken)
+    {
+        await using var stream = await content.ReadAsStreamAsync(cancellationToken);
+        using var buffer = new MemoryStream();
+        var chunk = new byte[81920];
+        int read;
+        while ((read = await stream.ReadAsync(chunk, cancellationToken)) > 0)
+        {
+            buffer.Write(chunk, 0, read);
+            if (buffer.Length > maxBytes) return null;
+        }
+        return buffer.ToArray();
+    }
+
+    private TimeSpan ResolveRequestDelay(RobotsRules robots)
+    {
+        double ms = DefaultRequestDelayMs;
+        if (robots.CrawlDelaySeconds is double seconds && seconds > 0)
+        {
+            ms = Math.Max(ms, seconds * 1000);
+        }
+        return TimeSpan.FromMilliseconds(ms);
     }
 
     private async Task OptimizeDatabaseAsync()
@@ -328,112 +428,60 @@ public class CrawlerService
         }
     }
 
-    private bool IsValidExtension(string url)
+    private async Task<RobotsRules> GetRobotsRulesAsync(Uri baseUri, CancellationToken cancellationToken)
     {
-        var ext = Path.GetExtension(url)?.ToLowerInvariant();
-        if (string.IsNullOrEmpty(ext)) return true; // No extension is usually an HTML page route
-        
-        var validExtensions = new[] { ".html", ".htm", ".pdf", ".docx" };
-        return validExtensions.Contains(ext);
-    }
-
-    private async Task<List<string>> GetDisallowedPathsAsync(Uri baseUri)
-    {
-        var disallowed = new List<string>();
         try
         {
             var robotsUrl = new Uri(baseUri, "/robots.txt");
-            var response = await _httpClient.GetAsync(robotsUrl);
+            using var response = await _httpClient.GetAsync(robotsUrl, cancellationToken);
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var lines = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                bool isWildcardAgent = true; // Assume true initially in case no user-agent is specified
-                foreach (var line in lines)
-                {
-                    var trimmed = line.Trim();
-                    if (trimmed.StartsWith("#")) continue;
-                    
-                    if (trimmed.StartsWith("User-agent:", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var agent = trimmed.Substring("User-agent:".Length).Trim();
-                        isWildcardAgent = agent == "*";
-                    }
-                    else if (isWildcardAgent && trimmed.StartsWith("Disallow:", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var path = trimmed.Substring("Disallow:".Length).Trim();
-                        if (!string.IsNullOrEmpty(path))
-                        {
-                            disallowed.Add(path);
-                        }
-                    }
-                }
+                var content = await response.Content.ReadAsStringAsync(cancellationToken);
+                return RobotsRules.Parse(content, UserAgent);
             }
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to fetch or parse robots.txt");
         }
-        return disallowed;
+        return RobotsRules.AllowAll;
     }
 
-    private bool IsAllowedByRobots(string url, List<string> disallowedPaths)
+    private static bool IsAllowedByRobots(string url, RobotsRules robots)
     {
-        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
-        {
-            var pathAndQuery = uri.PathAndQuery;
-            foreach (var disallowed in disallowedPaths)
-            {
-                if (pathAndQuery.StartsWith(disallowed, StringComparison.OrdinalIgnoreCase))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return !Uri.TryCreate(url, UriKind.Absolute, out var uri) || robots.IsAllowed(uri.PathAndQuery);
     }
 
-    private async Task EnqueueSitemapUrlsAsync(Uri baseUri, List<string> disallowedPaths, Queue<string> queue, HashSet<string> visited)
+    private async Task EnqueueSitemapUrlsAsync(Uri baseUri, RobotsRules robots, Queue<string> queue, HashSet<string> visited, CancellationToken cancellationToken)
     {
         try
         {
             var sitemapUrl = new Uri(baseUri, "/sitemap.xml");
-            var response = await _httpClient.GetAsync(sitemapUrl);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var doc = new System.Xml.XmlDocument();
-                doc.LoadXml(content);
-                var locNodes = doc.GetElementsByTagName("loc");
-                int addedFromSitemap = 0;
-                foreach (System.Xml.XmlNode node in locNodes)
-                {
-                    if (Uri.TryCreate(node.InnerText?.Trim(), UriKind.Absolute, out var locUri))
-                    {
-                        var builder = new UriBuilder(locUri);
-                        builder.Fragment = string.Empty;
-                        if (builder.Path.Length > 1 && builder.Path.EndsWith("/"))
-                        {
-                            builder.Path = builder.Path.TrimEnd('/');
-                        }
-                        var normalizedUrl = builder.Uri.ToString();
+            using var response = await _httpClient.GetAsync(sitemapUrl, cancellationToken);
+            if (!response.IsSuccessStatusCode) return;
 
-                        if (locUri.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase) && IsValidExtension(normalizedUrl))
-                        {
-                            if (!visited.Contains(normalizedUrl))
-                            {
-                                visited.Add(normalizedUrl);
-                                if (IsAllowedByRobots(normalizedUrl, disallowedPaths))
-                                {
-                                    queue.Enqueue(normalizedUrl);
-                                    addedFromSitemap++;
-                                }
-                            }
-                        }
-                    }
+            var content = await response.Content.ReadAsStringAsync(cancellationToken);
+            var doc = new System.Xml.XmlDocument();
+            doc.LoadXml(content);
+            var locNodes = doc.GetElementsByTagName("loc");
+            int addedFromSitemap = 0;
+
+            foreach (System.Xml.XmlNode node in locNodes)
+            {
+                if (!UrlNormalizer.TryNormalize(node.InnerText?.Trim(), out var normalizedUrl)) continue;
+                if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var locUri)) continue;
+
+                if (locUri.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase) &&
+                    CrawlPolicy.IsIndexableExtension(normalizedUrl) &&
+                    visited.Add(normalizedUrl) &&
+                    IsAllowedByRobots(normalizedUrl, robots))
+                {
+                    queue.Enqueue(normalizedUrl);
+                    addedFromSitemap++;
                 }
-                _logger.LogInformation("Enqueued {Count} URLs from sitemap.xml", addedFromSitemap);
             }
+
+            _logger.LogInformation("Enqueued {Count} URLs from sitemap.xml", addedFromSitemap);
         }
         catch (Exception ex)
         {
@@ -441,28 +489,26 @@ public class CrawlerService
         }
     }
 
-    private async Task RecordCrawlStateAsync(string url, int statusCode, string? extractedText, string? eTag, string? lastModified)
+    private async Task RecordCrawlStateAsync(string url, int statusCode, string? eTag, string? lastModified, CancellationToken cancellationToken)
     {
         using var connection = new SqliteConnection(_connectionString);
-        await connection.OpenAsync();
+        await connection.OpenAsync(cancellationToken);
         using var command = connection.CreateCommand();
         command.CommandText = @"
-            INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ExtractedText, ETag, LastModified)
-            VALUES (@Url, @LastCrawled, @StatusCode, @ExtractedText, @ETag, @LastModified)
+            INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ETag, LastModified)
+            VALUES (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified)
             ON CONFLICT(Url) DO UPDATE SET
                 LastCrawled = excluded.LastCrawled,
                 StatusCode = excluded.StatusCode,
-                ExtractedText = excluded.ExtractedText,
                 ETag = excluded.ETag,
                 LastModified = excluded.LastModified;";
-        
+
         command.Parameters.AddWithValue("@Url", url);
         command.Parameters.AddWithValue("@LastCrawled", DateTime.UtcNow);
         command.Parameters.AddWithValue("@StatusCode", statusCode);
-        command.Parameters.AddWithValue("@ExtractedText", extractedText ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@ETag", eTag ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@LastModified", lastModified ?? (object)DBNull.Value);
-        
-        await command.ExecuteNonQueryAsync();
+
+        await command.ExecuteNonQueryAsync(cancellationToken);
     }
 }

@@ -4,12 +4,13 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 
 ## Features
 
-- **Web Crawler**: A built-in crawler (`LocalSearchEngine.Crawler`) that traverses links, respects domains, and deduplicates URLs.
+- **Web Crawler**: A built-in crawler (`LocalSearchEngine.Crawler`) that traverses links, respects domains, and deduplicates URLs. It is a polite citizen: it honors `robots.txt` (groups, `Allow`/`Disallow` with `*`/`$` wildcards, longest-match precedence, and `Crawl-delay`), spaces out requests, caps per-document download size, and can be stopped cleanly with `Ctrl+C`.
 - **Document Parsing**: 
-  - Parses standard HTML pages.
+  - Parses standard HTML pages (decoding entities and preserving word boundaries between block elements).
   - Automatically extracts text from PDF documents.
   - Automatically extracts text from modern Microsoft Word (`.docx`) documents.
 - **Smart Caching**: Respects `ETag` and `Last-Modified` HTTP headers to prevent re-crawling unmodified content.
+- **Hybrid Search**: Combines semantic (vector) similarity with exact-phrase keyword matching (SQLite FTS5). Returns *every* result at or above a configurable similarity threshold (no fixed result-count cap), and boosts the ranking of exact-phrase, heading/title, and file-name matches.
 - **Vector Search & Embeddings**: Uses `Microsoft.SemanticKernel` to generate local embeddings and stores them using `sqlite-vec` for high-performance similarity searches.
 - **Local AI**: Fully local embeddings model (`LocalSearchEngine.ModelDownloader` component) ensures your indexed data never leaves your machine.
 
@@ -40,5 +41,35 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
    dotnet build
    ```
 4. Run the Model Downloader to fetch the required local embedding models.
-5. Start the Crawler to index your first seed URLs.
+5. Start the Crawler to index your first seed URLs:
+   ```bash
+   dotnet run --project LocalSearchEngine.Crawler -- https://example.com
+   ```
 6. Launch the Web interface to search through your locally indexed documents!
+
+### Database location
+
+The search index lives alongside the web app's own files (its content root), so the
+web app can serve it with no extra configuration. The crawler writes there by default
+too — in the repo/dev layout it finds the sibling `LocalSearchEngine.Web` folder. Point
+it somewhere else with the `--db <path>` flag, e.g.:
+
+```bash
+dotnet run --project LocalSearchEngine.Crawler -- --db LocalSearchEngine.Web/search.db https://example.com
+```
+
+On the web side, override the location with the `ConnectionStrings:SearchDb` configuration value.
+
+## Testing
+
+```bash
+dotnet test
+```
+
+Unit tests cover the pure logic — URL normalization, the crawl extension filter,
+robots.txt parsing/matching, text chunking, and search ranking (similarity threshold
+plus exact-match/heading/file-name boosts). Integration tests run the real sqlite-vec
+connector against a temporary database (with a deterministic fake embedder, so no model
+download) to verify that a self-match ranks first and that deleting a URL clears its
+data, vector, and FTS rows together. CI runs build + test on every push and pull
+request (`.github/workflows/dotnet.yml`).

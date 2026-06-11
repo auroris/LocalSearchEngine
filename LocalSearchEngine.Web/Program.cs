@@ -1,6 +1,7 @@
 using SmartComponents.LocalEmbeddings;
 using LocalSearchEngine.Core;
 using Microsoft.SemanticKernel;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,30 +10,39 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
-// Register Local Embeddings (this downloads the model on first run if needed)
+// Register Local Embeddings (this downloads the model on first run if needed).
 // It defaults to all-MiniLM-L6-v2 which is highly efficient.
 builder.Services.AddSingleton<LocalEmbedder>();
+builder.Services.AddSingleton<IEmbedder>(sp => new LocalEmbedderAdapter(sp.GetRequiredService<LocalEmbedder>()));
 
-// Register Sqlite Vector Store
-string connectionString = "Data Source=search.db;Mode=ReadOnly";
+// The web app only issues SELECTs against the index the crawler builds, but it opens
+// the connection ReadWrite (not ReadOnly) on purpose: a WAL reader needs write access
+// to the -shm wal-index to read a database the crawler is actively writing. The index
+// lives alongside the web app's own files (its content root) by default; point the
+// crawler here with its --db argument, or override with ConnectionStrings:SearchDb.
+string defaultDbPath = Path.Combine(builder.Environment.ContentRootPath, "search.db");
+string connectionString = builder.Configuration.GetConnectionString("SearchDb")
+    ?? $"Data Source={defaultDbPath};Mode=ReadWrite";
+
 builder.Services.AddSingleton(new DatabaseConfig(connectionString));
 builder.Services.AddSqliteVectorStore(_ => connectionString);
-
-// Register our custom simple in-memory vector store as a singleton
 builder.Services.AddSingleton<VectorSearchService>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+// Surface a clear message if the crawler hasn't produced an index yet, instead of
+// failing obscurely on the first query.
+var dataSource = new SqliteConnectionStringBuilder(connectionString).DataSource;
+if (!string.IsNullOrEmpty(dataSource) && !File.Exists(dataSource))
 {
-    var vectorService = scope.ServiceProvider.GetRequiredService<VectorSearchService>();
-    vectorService.InitializeAsync().GetAwaiter().GetResult();
+    app.Logger.LogWarning(
+        "Search database '{Path}' was not found. Build it first with: dotnet run --project LocalSearchEngine.Crawler -- <url>",
+        Path.GetFullPath(dataSource));
 }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // Development specific config
     app.UseDeveloperExceptionPage();
 }
 else
