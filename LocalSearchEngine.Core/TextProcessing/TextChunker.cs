@@ -8,9 +8,8 @@ using System.Text;
 namespace LocalSearchEngine.Core.TextProcessing;
 
 /// <summary>
-/// Split text in chunks, attempting to leave meaning intact.
-/// For plain text, split looking at new lines first, then periods, and so on.
-/// For markdown, split looking at punctuation first, and so on.
+/// Splits document text into overlapping chunks, attempting to leave semantic meaning intact.
+/// Supports plain text and markdown formatting splitting options.
 /// </summary>
 public static class TextChunker
 {
@@ -38,29 +37,70 @@ public static class TextChunker
     }
 
     /// <summary>
-    /// Represents a list of strings with token count.
-    /// Used to reduce the number of calls to the tokenizer.
+    /// Represents a list of strings along with their token counts, optimized to minimize tokenizer calls.
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="StringListWithTokenCount"/> class.
+    /// </remarks>
+    /// <param name="tokenCounter">The token counter delegate, or null to use character length heuristics.</param>
     private sealed class StringListWithTokenCount(TextChunker.TokenCounter? tokenCounter)
     {
         private readonly TokenCounter? _tokenCounter = tokenCounter;
 
+        /// <summary>
+        /// Adds a string value and calculates its token count.
+        /// </summary>
+        /// <param name="value">The string value to add.</param>
         public void Add(string value) => this.Values.Add((value, this._tokenCounter is null ? GetDefaultTokenCount(value.Length) : this._tokenCounter(value)));
 
+        /// <summary>
+        /// Adds a string value with a pre-calculated token count.
+        /// </summary>
+        /// <param name="value">The string value to add.</param>
+        /// <param name="tokenCount">The number of tokens in the string.</param>
         public void Add(string value, int tokenCount) => this.Values.Add((value, tokenCount));
 
+        /// <summary>
+        /// Adds all values from another string list with token counts.
+        /// </summary>
+        /// <param name="range">The list of values to add.</param>
         public void AddRange(StringListWithTokenCount range) => this.Values.AddRange(range.Values);
 
+        /// <summary>
+        /// Removes a range of elements from the list.
+        /// </summary>
+        /// <param name="index">The zero-based starting index of the range to remove.</param>
+        /// <param name="count">The number of elements to remove.</param>
         public void RemoveRange(int index, int count) => this.Values.RemoveRange(index, count);
 
+        /// <summary>
+        /// Gets the number of elements contained in the list.
+        /// </summary>
         public int Count => this.Values.Count;
 
+        /// <summary>
+        /// Converts the list elements to a standard list of strings.
+        /// </summary>
+        /// <returns>A list of strings.</returns>
         public List<string> ToStringList() => this.Values.Select(v => v.Value).ToList();
 
+        /// <summary>
+        /// Gets the internal list containing the string values and token counts.
+        /// </summary>
         private List<(string Value, int TokenCount)> Values { get; } = [];
 
+        /// <summary>
+        /// Gets the string value at the specified index.
+        /// </summary>
+        /// <param name="i">The zero-based index of the element to get.</param>
+        /// <returns>The string value.</returns>
         public string ValueAt(int i) => this.Values[i].Value;
 
+        /// <summary>
+        /// Gets the token count at the specified index.
+        /// </summary>
+        /// <param name="i">The zero-based index of the element to get.</param>
+        /// <returns>The token count.</returns>
         public int TokenCountAt(int i) => this.Values[i].TokenCount;
     }
 
@@ -76,34 +116,34 @@ public static class TextChunker
     private static readonly string?[] s_markdownSplitOptions = [".\u3002\uFF0E", "?!", ";", ":", ",\uFF0C\u3001", ")]}", " ", "-", "\n\r", null];
 
     /// <summary>
-    /// Split plain text into lines.
+    /// Splits plain text into lines, trimming the results.
     /// </summary>
-    /// <param name="text">Text to split</param>
-    /// <param name="maxTokensPerLine">Maximum number of tokens per line.</param>
-    /// <param name="tokenCounter">Function to count tokens in a string. If not supplied, the default counter will be used.</param>
-    /// <returns>List of lines.</returns>
+    /// <param name="text">The raw text to split.</param>
+    /// <param name="maxTokensPerLine">The maximum number of tokens allowed per line.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of split lines.</returns>
     public static List<string> SplitPlainTextLines(string text, int maxTokensPerLine, TokenCounter? tokenCounter = null) =>
         InternalSplitLines(text, maxTokensPerLine, trim: true, s_plaintextSplitOptions, tokenCounter);
 
     /// <summary>
-    /// Split markdown text into lines.
+    /// Splits markdown text into lines, trimming the results.
     /// </summary>
-    /// <param name="text">Text to split</param>
-    /// <param name="maxTokensPerLine">Maximum number of tokens per line.</param>
-    /// <param name="tokenCounter">Function to count tokens in a string. If not supplied, the default counter will be used.</param>
-    /// <returns>List of lines.</returns>
+    /// <param name="text">The raw markdown text to split.</param>
+    /// <param name="maxTokensPerLine">The maximum number of tokens allowed per line.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of split lines.</returns>
     public static List<string> SplitMarkDownLines(string text, int maxTokensPerLine, TokenCounter? tokenCounter = null) =>
         InternalSplitLines(text, maxTokensPerLine, trim: true, s_markdownSplitOptions, tokenCounter);
 
     /// <summary>
-    /// Split plain text into paragraphs.
+    /// Splits plain text lines into paragraphs based on maximum token constraints.
     /// </summary>
-    /// <param name="lines">Lines of text.</param>
-    /// <param name="maxTokensPerParagraph">Maximum number of tokens per paragraph.</param>
-    /// <param name="overlapTokens">Number of tokens to overlap between paragraphs.</param>
-    /// <param name="chunkHeader">Text to be prepended to each individual chunk.</param>
-    /// <param name="tokenCounter">Function to count tokens in a string. If not supplied, the default counter will be used.</param>
-    /// <returns>List of paragraphs.</returns>
+    /// <param name="lines">The collection of text lines.</param>
+    /// <param name="maxTokensPerParagraph">The maximum number of tokens allowed per paragraph.</param>
+    /// <param name="overlapTokens">The number of tokens to overlap between paragraphs.</param>
+    /// <param name="chunkHeader">Optional text prepended to each chunk.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of paragraphs.</returns>
     public static List<string> SplitPlainTextParagraphs(
         IEnumerable<string> lines,
         int maxTokensPerParagraph,
@@ -121,17 +161,28 @@ public static class TextChunker
             tokenCounter);
 
     /// <summary>
-    /// Split markdown text into paragraphs.
+    /// Splits markdown lines into paragraphs based on maximum token constraints.
     /// </summary>
-    /// <param name="lines">Lines of text.</param>
-    /// <param name="maxTokensPerParagraph">Maximum number of tokens per paragraph.</param>
-    /// <param name="overlapTokens">Number of tokens to overlap between paragraphs.</param>
-    /// <param name="chunkHeader">Text to be prepended to each individual chunk.</param>
-    /// <param name="tokenCounter">Function to count tokens in a string. If not supplied, the default counter will be used.</param>
-    /// <returns>List of paragraphs.</returns>
+    /// <param name="lines">The collection of markdown lines.</param>
+    /// <param name="maxTokensPerParagraph">The maximum number of tokens allowed per paragraph.</param>
+    /// <param name="overlapTokens">The number of tokens to overlap between paragraphs.</param>
+    /// <param name="chunkHeader">Optional text prepended to each chunk.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of paragraphs.</returns>
     public static List<string> SplitMarkdownParagraphs(IEnumerable<string> lines, int maxTokensPerParagraph, int overlapTokens = 0, string? chunkHeader = null, TokenCounter? tokenCounter = null) =>
         InternalSplitTextParagraphs(lines, maxTokensPerParagraph, overlapTokens, chunkHeader, static (text, maxTokens, tokenCounter) => InternalSplitLines(text, maxTokens, trim: false, s_markdownSplitOptions, tokenCounter), tokenCounter);
 
+    /// <summary>
+    /// Internal helper that splits lines into paragraphs using paragraph token size constraints.
+    /// </summary>
+    /// <param name="lines">The collection of text lines.</param>
+    /// <param name="maxTokensPerParagraph">The maximum number of tokens allowed per paragraph.</param>
+    /// <param name="overlapTokens">The number of tokens to overlap between paragraphs.</param>
+    /// <param name="chunkHeader">Optional text prepended to each chunk.</param>
+    /// <param name="longLinesSplitter">A function delegate used to split lines that exceed the token limit.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of paragraph strings.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="maxTokensPerParagraph"/> is non-positive or less than or equal to <paramref name="overlapTokens"/>.</exception>
     private static List<string> InternalSplitTextParagraphs(IEnumerable<string> lines, int maxTokensPerParagraph, int overlapTokens, string? chunkHeader, Func<string, int, TokenCounter?, List<string>> longLinesSplitter, TokenCounter? tokenCounter)
     {
         if (maxTokensPerParagraph <= 0)
@@ -162,6 +213,13 @@ public static class TextChunker
         return processedParagraphs;
     }
 
+    /// <summary>
+    /// Combines split lines into paragraph blocks within token constraints.
+    /// </summary>
+    /// <param name="truncatedLines">The collection of pre-split or truncated lines.</param>
+    /// <param name="maxTokensPerParagraph">The maximum number of tokens allowed per paragraph.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of built paragraph strings.</returns>
     private static List<string> BuildParagraph(IEnumerable<string> truncatedLines, int maxTokensPerParagraph, TokenCounter? tokenCounter)
     {
         StringBuilder paragraphBuilder = new();
@@ -202,6 +260,16 @@ public static class TextChunker
         return paragraphs;
     }
 
+    /// <summary>
+    /// Distributes paragraphs evenly and appends headers and overlapping text.
+    /// </summary>
+    /// <param name="paragraphs">The list of paragraphs to process.</param>
+    /// <param name="adjustedMaxTokensPerParagraph">The adjusted maximum tokens per paragraph.</param>
+    /// <param name="overlapTokens">The number of tokens to overlap between paragraphs.</param>
+    /// <param name="chunkHeader">Optional chunk header text.</param>
+    /// <param name="longLinesSplitter">A function delegate used to split lines that exceed the token limit.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A processed list of paragraph strings.</returns>
     private static List<string> ProcessParagraphs(List<string> paragraphs, int adjustedMaxTokensPerParagraph, int overlapTokens, string? chunkHeader, Func<string, int, TokenCounter?, List<string>> longLinesSplitter, TokenCounter? tokenCounter)
     {
         // distribute text more evenly in the last paragraphs when the last paragraph is too short.
@@ -266,6 +334,15 @@ public static class TextChunker
         return processedParagraphs;
     }
 
+    /// <summary>
+    /// Recursively splits text content into lines that conform to the token limit.
+    /// </summary>
+    /// <param name="text">The raw text to split.</param>
+    /// <param name="maxTokensPerLine">The maximum tokens allowed per line.</param>
+    /// <param name="trim"><c>true</c> to trim whitespace; otherwise, <c>false</c>.</param>
+    /// <param name="splitOptions">The order of punctuation/separators to try splitting on.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A list of split line strings.</returns>
     private static List<string> InternalSplitLines(string text, int maxTokensPerLine, bool trim, string?[] splitOptions, TokenCounter? tokenCounter)
     {
         var result = new StringListWithTokenCount(tokenCounter);
@@ -286,6 +363,15 @@ public static class TextChunker
         return result.ToStringList();
     }
 
+    /// <summary>
+    /// Iterates through the list of input strings and splits any that exceed token limits.
+    /// </summary>
+    /// <param name="input">The collection of input strings with token counts.</param>
+    /// <param name="maxTokens">The maximum tokens allowed per item.</param>
+    /// <param name="separators">The separator characters to split on.</param>
+    /// <param name="trim"><c>true</c> to trim whitespace; otherwise, <c>false</c>.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>A tuple containing the split string list and a boolean indicating if any splits were made.</returns>
     private static (StringListWithTokenCount, bool) Split(StringListWithTokenCount input, int maxTokens, ReadOnlySpan<char> separators, bool trim, TokenCounter? tokenCounter)
     {
         bool inputWasSplit = false;
@@ -300,6 +386,18 @@ public static class TextChunker
         return (result, inputWasSplit);
     }
 
+    /// <summary>
+    /// Splits a single span/string that exceeds the token count limit on separator characters.
+    /// </summary>
+    /// <param name="input">The span representing the text to split.</param>
+    /// <param name="inputString">The original input string (if materialized).</param>
+    /// <param name="maxTokens">The maximum tokens allowed per item.</param>
+    /// <param name="separators">The separator characters to split on.</param>
+    /// <param name="trim"><c>true</c> to trim whitespace; otherwise, <c>false</c>.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <param name="inputTokenCount">The current token count of the input.</param>
+    /// <returns>A tuple containing the split string list and a boolean indicating if a split was made.</returns>
+    /// <exception cref="Exception">Thrown if the input string does not match the span.</exception>
     private static (StringListWithTokenCount, bool) Split(ReadOnlySpan<char> input, string? inputString, int maxTokens, ReadOnlySpan<char> separators, bool trim, TokenCounter? tokenCounter, int inputTokenCount)
     {
         if (inputString is not null && !input.SequenceEqual(inputString.AsSpan())) { throw new Exception("inputString should be null or match input"); }
@@ -374,8 +472,20 @@ public static class TextChunker
         return (result, inputWasSplit);
     }
 
+    /// <summary>
+    /// Gets the token count for the specified input string.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <param name="tokenCounter">Optional delegate for counting tokens.</param>
+    /// <returns>The calculated number of tokens.</returns>
     private static int GetTokenCount(string input, TokenCounter? tokenCounter) => tokenCounter is null ? GetDefaultTokenCount(input.Length) : tokenCounter(input);
 
+    /// <summary>
+    /// Default token count calculation using character length division heuristic (characters divided by 4).
+    /// </summary>
+    /// <param name="length">The character length.</param>
+    /// <returns>The approximate token count.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="length"/> is negative.</exception>
     private static int GetDefaultTokenCount(int length)
     {
         if (length < 0) throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");
