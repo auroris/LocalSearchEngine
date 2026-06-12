@@ -1,4 +1,5 @@
 // Copyright (c) Microsoft. All rights reserved.
+// https://github.com/microsoft/semantic-kernel/blob/61331d834d4b8f5743064de7cf35472199ed61b4/dotnet/src/SemanticKernel.Core/Text/TextChunker.cs
 
 using System;
 using System.Collections.Generic;
