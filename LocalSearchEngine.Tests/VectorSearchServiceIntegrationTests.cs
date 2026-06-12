@@ -120,31 +120,6 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
         catch { /* temp file; best effort */ }
     }
 
-    [Fact]
-    public void TestReflection()
-    {
-        var type = typeof(SmartComponents.LocalEmbeddings.LocalEmbedder);
-        var sb = new System.Text.StringBuilder();
-        foreach (var ctor in type.GetConstructors())
-        {
-            sb.Append("Constructor: ").Append(ctor.Name).Append("(");
-            foreach (var p in ctor.GetParameters())
-            {
-                sb.Append(p.ParameterType.FullName).Append(" ").Append(p.Name).Append(", ");
-            }
-            sb.AppendLine(")");
-        }
-        foreach (var field in type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static))
-        {
-            sb.AppendLine($"Field: {field.FieldType.FullName} {field.Name}");
-        }
-        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static))
-        {
-            sb.AppendLine($"Property: {prop.PropertyType.FullName} {prop.Name}");
-        }
-        throw new Exception(sb.ToString());
-    }
-
     /// <summary>Deterministic, model-free embedder: identical text yields an identical vector.</summary>
     private sealed class FakeEmbedder : IEmbedder
     {
