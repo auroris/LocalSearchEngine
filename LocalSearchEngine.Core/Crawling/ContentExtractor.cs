@@ -1,6 +1,5 @@
 using HtmlAgilityPack;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace LocalSearchEngine.Core.Crawling;
 
@@ -10,9 +9,6 @@ namespace LocalSearchEngine.Core.Crawling;
 public static class ContentExtractor
 {
     private static readonly char[] WordSeparators = { ' ', '\n', '\r', '\t' };
-
-    private static readonly Regex CharsetRegex = new(
-        "charset\\s*=\\s*[\"']?([a-zA-Z0-9_\\-]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     static ContentExtractor()
     {
@@ -58,9 +54,19 @@ public static class ContentExtractor
         IReadOnlySet<string> allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache,
         string userAgentToken)
     {
-        var html = DecodeHtml(body, httpCharset);
         var doc = new HtmlDocument();
-        doc.LoadHtml(html);
+        using (var stream = new MemoryStream(body))
+        {
+            var encoding = ResolveEncoding(httpCharset);
+            if (encoding != null)
+            {
+                doc.Load(stream, encoding);
+            }
+            else
+            {
+                doc.Load(stream, detectEncodingFromByteOrderMarks: true);
+            }
+        }
 
         var analysis = new HtmlAnalysis
         {
@@ -82,7 +88,12 @@ public static class ContentExtractor
         }
 
         analysis.Headings = ExtractHeadings(doc);
-        analysis.Text = ExtractVisibleText(doc.DocumentNode);
+
+        var texts = doc.DocumentNode.DescendantsAndSelf()
+            .Where(n => n.NodeType == HtmlNodeType.Text)
+            .Select(n => HtmlEntity.DeEntitize(n.InnerText))
+            .Where(t => !string.IsNullOrWhiteSpace(t));
+        analysis.Text = CollapseWhitespace(string.Join(" ", texts));
 
         if (!analysis.NoFollow)
         {
@@ -95,11 +106,6 @@ public static class ContentExtractor
     /// <summary>
     /// Extracts all crawlable in-scope links from an HTML document.
     /// </summary>
-    /// <param name="doc">The HTML document to extract links from.</param>
-    /// <param name="currentUrl">The base URL of the document for resolving relative links.</param>
-    /// <param name="allowedHosts">The set of hostnames allowed within the crawl scope.</param>
-    /// <param name="robotsCache">The cached robots rules for check restrictions.</param>
-    /// <returns>A list of resolved and normalized absolute URLs.</returns>
     private static List<string> ExtractInScopeLinks(
         HtmlDocument doc, string currentUrl,
         IReadOnlySet<string> allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache)
@@ -113,10 +119,10 @@ public static class ContentExtractor
 
         foreach (var link in linkNodes)
         {
-            var rel = link.GetAttributeValue("rel", string.Empty);
+            var rel = link.GetAttributeValue("rel", "");
             if (rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
 
-            var href = link.GetAttributeValue("href", string.Empty);
+            var href = link.GetAttributeValue("href", "");
             if (string.IsNullOrWhiteSpace(href)) continue;
             if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
             if (!allowedHosts.Contains(absoluteUri.Host)) continue;
@@ -136,10 +142,6 @@ public static class ContentExtractor
     /// <summary>
     /// Parses the HTML meta tags and HTTP headers for robots directives.
     /// </summary>
-    /// <param name="doc">The HTML document to parse.</param>
-    /// <param name="xRobotsTag">The X-Robots-Tag HTTP header value, if any.</param>
-    /// <param name="userAgentToken">The lowercase user agent token of this crawler.</param>
-    /// <returns>A tuple indicating if noindex and nofollow directives are set.</returns>
     private static (bool NoIndex, bool NoFollow) ParseRobotsDirectives(HtmlDocument doc, string? xRobotsTag, string userAgentToken)
     {
         bool noIndex = false, noFollow = false;
@@ -162,10 +164,10 @@ public static class ContentExtractor
         {
             foreach (var meta in metas)
             {
-                var name = meta.GetAttributeValue("name", string.Empty).Trim().ToLowerInvariant();
+                var name = meta.GetAttributeValue("name", "").Trim().ToLowerInvariant();
                 if (name == "robots" || name == userAgentToken)
                 {
-                    Apply(HtmlEntity.DeEntitize(meta.GetAttributeValue("content", string.Empty)));
+                    Apply(HtmlEntity.DeEntitize(meta.GetAttributeValue("content", "")));
                 }
             }
         }
@@ -181,9 +183,6 @@ public static class ContentExtractor
     /// <summary>
     /// Strips any user agent prefix from an X-Robots-Tag HTTP header value, verifying if the rule applies to this bot.
     /// </summary>
-    /// <param name="value">The X-Robots-Tag header value.</param>
-    /// <param name="userAgentToken">The lowercase user agent token of this crawler.</param>
-    /// <returns>The directive part of the tag if applicable, or an empty string.</returns>
     private static string StripXRobotsAgent(string value, string userAgentToken)
     {
         int colon = value.IndexOf(':');
@@ -197,10 +196,6 @@ public static class ContentExtractor
     /// <summary>
     /// Resolves the canonical URL specified by a rel='canonical' link tag.
     /// </summary>
-    /// <param name="doc">The HTML document to parse.</param>
-    /// <param name="currentUrl">The current URL of the page.</param>
-    /// <param name="allowedHosts">The set of hosts in-scope for crawling.</param>
-    /// <returns>The absolute normalized canonical URL if present and valid; otherwise, <c>null</c>.</returns>
     private static string? ResolveCanonicalAlias(HtmlDocument doc, string currentUrl, IReadOnlySet<string> allowedHosts)
     {
         var links = doc.DocumentNode.SelectNodes("//link[@rel]");
@@ -208,10 +203,10 @@ public static class ContentExtractor
 
         foreach (var link in links)
         {
-            if (!string.Equals(link.GetAttributeValue("rel", string.Empty).Trim(), "canonical", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(link.GetAttributeValue("rel", "").Trim(), "canonical", StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            var href = link.GetAttributeValue("href", string.Empty);
+            var href = link.GetAttributeValue("href", "");
             if (string.IsNullOrWhiteSpace(href)) return null;
             if (!Uri.TryCreate(new Uri(currentUrl), href, out var canonicalUri)) return null;
 
@@ -228,8 +223,6 @@ public static class ContentExtractor
     /// <summary>
     /// Extracts document title and content text from a PDF document body.
     /// </summary>
-    /// <param name="body">The raw bytes of the PDF document.</param>
-    /// <returns>A tuple containing the metadata title (if found) and the extracted text content.</returns>
     public static (string? Title, string Text) ExtractPdf(byte[] body)
     {
         using var stream = new MemoryStream(body);
@@ -249,8 +242,6 @@ public static class ContentExtractor
     /// <summary>
     /// Extracts document title and content text from a Microsoft Word (DOCX) document body.
     /// </summary>
-    /// <param name="body">The raw bytes of the DOCX document.</param>
-    /// <returns>A tuple containing the core metadata title (if found) and the extracted text content.</returns>
     public static (string? Title, string Text) ExtractDocx(byte[] body)
     {
         using var stream = new MemoryStream(body);
@@ -263,8 +254,6 @@ public static class ContentExtractor
     /// <summary>
     /// Cleans and collapses whitespace in a document-metadata title.
     /// </summary>
-    /// <param name="title">The raw title string to clean.</param>
-    /// <returns>The cleaned title, or <c>null</c> if it is null or empty.</returns>
     private static string? CleanTitle(string? title)
     {
         if (string.IsNullOrWhiteSpace(title)) return null;
@@ -275,8 +264,6 @@ public static class ContentExtractor
     /// <summary>
     /// Extracts the page title from the HTML document's &lt;title&gt; tag.
     /// </summary>
-    /// <param name="doc">The HTML document.</param>
-    /// <returns>The cleaned title string, or <c>null</c> if not present.</returns>
     private static string? ExtractTitle(HtmlDocument doc)
     {
         var titleNode = doc.DocumentNode.SelectSingleNode("//title");
@@ -288,75 +275,33 @@ public static class ContentExtractor
     /// <summary>
     /// Extracts all heading elements (&lt;h1&gt; through &lt;h6&gt;) and the page title, merging them.
     /// </summary>
-    /// <param name="doc">The HTML document.</param>
-    /// <returns>A single space-separated string containing all heading text.</returns>
     private static string ExtractHeadings(HtmlDocument doc)
     {
-        var headingTexts = new List<string>();
-        var titleNode = doc.DocumentNode.SelectSingleNode("//title");
-        if (titleNode != null && !string.IsNullOrWhiteSpace(titleNode.InnerText))
-        {
-            headingTexts.Add(HtmlEntity.DeEntitize(titleNode.InnerText).Trim());
-        }
-
+        var titleText = doc.DocumentNode.SelectSingleNode("//title")?.InnerText;
         var hNodes = doc.DocumentNode.SelectNodes("//h1|//h2|//h3|//h4|//h5|//h6");
+        
+        var headings = new List<string>();
+        if (!string.IsNullOrWhiteSpace(titleText))
+        {
+            headings.Add(HtmlEntity.DeEntitize(titleText));
+        }
         if (hNodes != null)
         {
-            foreach (var node in hNodes)
-            {
-                if (!string.IsNullOrWhiteSpace(node.InnerText))
-                {
-                    headingTexts.Add(HtmlEntity.DeEntitize(node.InnerText).Trim());
-                }
-            }
+            headings.AddRange(hNodes.Select(n => HtmlEntity.DeEntitize(n.InnerText)));
         }
 
-        return CollapseWhitespace(string.Join(" ", headingTexts));
-    }
-
-    /// <summary>
-    /// Recursively walks the text nodes of an HTML element to gather visible text.
-    /// </summary>
-    /// <param name="root">The root HTML node to process.</param>
-    /// <returns>A space-separated string containing the visible text.</returns>
-    private static string ExtractVisibleText(HtmlNode root)
-    {
-        var sb = new StringBuilder();
-        foreach (var node in root.DescendantsAndSelf())
-        {
-            if (node.NodeType != HtmlNodeType.Text) continue;
-            var decoded = HtmlEntity.DeEntitize(node.InnerText);
-            if (string.IsNullOrWhiteSpace(decoded)) continue;
-            sb.Append(decoded.Trim()).Append(' ');
-        }
-        return CollapseWhitespace(sb.ToString());
+        return CollapseWhitespace(string.Join(" ", headings));
     }
 
     /// <summary>
     /// Collapses multiple consecutive whitespace characters into a single space.
     /// </summary>
-    /// <param name="text">The raw text string.</param>
-    /// <returns>The cleaned text with collapsed whitespace.</returns>
     private static string CollapseWhitespace(string text) =>
         string.Join(" ", text.Split(WordSeparators, StringSplitOptions.RemoveEmptyEntries));
 
     /// <summary>
-    /// Decodes the HTML bytes into a string, resolving encoding using http headers or sniffing metadata.
-    /// </summary>
-    /// <param name="bytes">The raw HTML page bytes.</param>
-    /// <param name="charset">The charset specified in HTTP headers, if any.</param>
-    /// <returns>The decoded HTML string.</returns>
-    private static string DecodeHtml(byte[] bytes, string? charset)
-    {
-        var encoding = ResolveEncoding(charset) ?? ResolveEncoding(SniffCharset(bytes));
-        return (encoding ?? Encoding.UTF8).GetString(bytes);
-    }
-
-    /// <summary>
     /// Attempts to resolve a character encoding name into an <see cref="Encoding"/> instance.
     /// </summary>
-    /// <param name="charset">The name of the encoding character set.</param>
-    /// <returns>An <see cref="Encoding"/> instance if resolved; otherwise, <c>null</c>.</returns>
     private static Encoding? ResolveEncoding(string? charset)
     {
         if (string.IsNullOrWhiteSpace(charset)) return null;
@@ -368,20 +313,5 @@ public static class ContentExtractor
         {
             return null;
         }
-    }
-
-    /// <summary>
-    /// Sniffs the first 4096 bytes of the page body for a &lt;meta charset&gt; tag.
-    /// </summary>
-    /// <param name="bytes">The raw page bytes.</param>
-    /// <returns>The detected charset name, or <c>null</c> if not found.</returns>
-    private static string? SniffCharset(byte[] bytes)
-    {
-        int len = Math.Min(bytes.Length, 4096);
-        var head = Encoding.Latin1.GetString(bytes, 0, len);
-        int headEnd = head.IndexOf("</head", StringComparison.OrdinalIgnoreCase);
-        if (headEnd >= 0) head = head[..headEnd];
-        var match = CharsetRegex.Match(head);
-        return match.Success ? match.Groups[1].Value : null;
     }
 }

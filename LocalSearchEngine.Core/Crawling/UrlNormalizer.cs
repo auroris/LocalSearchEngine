@@ -49,19 +49,13 @@ public static class UrlNormalizer
             if (pair.Length == 0) continue;
             int eq = pair.IndexOf('=');
             var key = eq >= 0 ? pair[..eq] : pair;
-            if (IsTrackingParam(key)) continue;
+            if (key.StartsWith("utm_", StringComparison.OrdinalIgnoreCase) || TrackingParams.Contains(key)) continue;
             kept.Add(pair);
         }
         return string.Join("&", kept);
     }
 
-    /// <summary>
-    /// Determines whether the specified query parameter key is a known tracking parameter.
-    /// </summary>
-    /// <param name="key">The query parameter key to check.</param>
-    /// <returns><c>true</c> if the key matches a tracking parameter or starts with "utm_"; otherwise, <c>false</c>.</returns>
-    private static bool IsTrackingParam(string key) =>
-        key.StartsWith("utm_", StringComparison.OrdinalIgnoreCase) || TrackingParams.Contains(key);
+
 
     /// <summary>
     /// Attempts to parse and normalize the specified URL string.

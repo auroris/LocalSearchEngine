@@ -325,7 +325,7 @@ public partial class CrawlerService
         // stored outlinks, skip the expensive re-embed. The chunk check makes this self-healing:
         // if a crash left the stored hash but wiped the chunks (or a noindex was lifted without
         // the bytes changing), we fall through and re-index instead of hiding the page forever.
-        string newHash = ComputeHash(body);
+        string newHash = Convert.ToHexString(SHA256.HashData(body));
         var finalState = string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase)
             ? state
             : await CrawlStore.GetCrawlStateAsync(ctx.Read, finalUrl, cancellationToken);
@@ -451,7 +451,13 @@ public partial class CrawlerService
                 switch (job)
                 {
                     case IndexJob j:
-                        await ReindexAsync(connection, j.Url, j.StatusCode, j.Title, j.Headings, j.Text, j.ETag, j.LastModified, j.ContentHash, CancellationToken.None);
+                        await _vectorSearchService.DeleteUrlChunksAsync(j.Url);
+                        await _vectorSearchService.IndexUrlChunksAsync(j.Url, j.Text, isHeading: false);
+                        if (!string.IsNullOrWhiteSpace(j.Headings))
+                        {
+                            await _vectorSearchService.IndexUrlChunksAsync(j.Url, j.Headings, isHeading: true);
+                        }
+                        await CrawlStore.RecordCrawlStateAsync(connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
                         await CrawlStore.StoreOutlinksAsync(connection, j.Url, j.Outlinks, CancellationToken.None);
                         _logger.LogInformation("Indexed {Url} ({Links} outlinks).", j.Url, j.Outlinks.Count);
                         break;
@@ -530,32 +536,6 @@ public partial class CrawlerService
         : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
     /// <summary>
-    /// Replaces the stored text chunks index for the specified URL and updates the crawl state.
-    /// </summary>
-    /// <param name="connection">The database connection.</param>
-    /// <param name="url">The URL being re-indexed.</param>
-    /// <param name="statusCode">The response status code.</param>
-    /// <param name="title">The page title.</param>
-    /// <param name="headings">The compiled headings text.</param>
-    /// <param name="text">The page body text.</param>
-    /// <param name="etag">The response ETag value.</param>
-    /// <param name="lastModified">The response Last-Modified value.</param>
-    /// <param name="contentHash">The body content SHA256 hash.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private async Task ReindexAsync(SqliteConnection connection, string url, int statusCode, string? title, string headings, string text,
-        string? etag, string? lastModified, string contentHash, CancellationToken cancellationToken)
-    {
-        await _vectorSearchService.DeleteUrlChunksAsync(url);
-        await _vectorSearchService.IndexUrlChunksAsync(url, text, isHeading: false);
-        if (!string.IsNullOrWhiteSpace(headings))
-        {
-            await _vectorSearchService.IndexUrlChunksAsync(url, headings, isHeading: true);
-        }
-        await CrawlStore.RecordCrawlStateAsync(connection, url, statusCode, etag, lastModified, title, contentHash, cancellationToken);
-    }
-
-    /// <summary>
     /// Validates and enqueues a single URL into the frontier queue.
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
@@ -609,12 +589,6 @@ public partial class CrawlerService
         ctx.LastFetchUtc[host] = DateTime.UtcNow;
     }
 
-    /// <summary>
-    /// Computes the hexadecimal SHA256 hash of a byte content body.
-    /// </summary>
-    /// <param name="body">The content byte array.</param>
-    /// <returns>The hexadecimal string representation of the hash.</returns>
-    private static string ComputeHash(byte[] body) => Convert.ToHexString(SHA256.HashData(body));
 
     /// <summary>
     /// Resolves the request delay gap duration configured in robots.txt rules.

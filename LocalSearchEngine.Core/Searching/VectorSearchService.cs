@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Data.Sqlite;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 using LocalSearchEngine.Core.TextProcessing;
 
@@ -203,14 +204,14 @@ public class VectorSearchService
             await connection.OpenAsync();
 
             // Tier 1: verbatim phrase match.
-            await CollectKeywordHitsAsync(connection, BuildPhraseMatch(query), exactPhrase: true, pool, keywordHits);
+            await CollectKeywordHitsAsync(connection, $"\"{query.Replace("\"", "\"\"")}\"", exactPhrase: true, pool, keywordHits);
 
             // Tier 2: looser all-terms (AND) match. Skipped for single-term queries, where
             // it would just duplicate the phrase tier.
-            var terms = ExtractTerms(query);
+            var terms = Regex.Matches(query, @"\w+").Select(m => m.Value).ToList();
             if (terms.Count > 1)
             {
-                await CollectKeywordHitsAsync(connection, BuildAndMatch(terms), exactPhrase: false, pool, keywordHits);
+                await CollectKeywordHitsAsync(connection, string.Join(" AND ", terms.Select(t => $"\"{t.Replace("\"", "\"\"")}\"")), exactPhrase: false, pool, keywordHits);
             }
         }
         catch (Exception ex)
@@ -317,30 +318,7 @@ public class VectorSearchService
         }
     }
 
-    /// <summary>
-    /// Builds a verbatim FTS5 phrase match expression from the query.
-    /// </summary>
-    /// <param name="query">The search query.</param>
-    /// <returns>A formatted match expression.</returns>
-    private static string BuildPhraseMatch(string query) => "\"" + query.Replace("\"", "\"\"") + "\"";
 
-    /// <summary>
-    /// Builds a multi-term AND FTS5 match expression.
-    /// </summary>
-    /// <param name="terms">The word terms to join with AND.</param>
-    /// <returns>A formatted match expression.</returns>
-    private static string BuildAndMatch(IEnumerable<string> terms) =>
-        string.Join(" AND ", terms.Select(t => "\"" + t.Replace("\"", "\"\"") + "\""));
 
-    /// <summary>
-    /// Splits the query text into word tokens, ignoring punctuation.
-    /// </summary>
-    /// <param name="query">The query string.</param>
-    /// <returns>A list of clean word tokens.</returns>
-    private static List<string> ExtractTerms(string query)
-    {
-        var terms = new List<string>();
-        foreach (Match m in Regex.Matches(query, @"\w+")) terms.Add(m.Value);
-        return terms;
-    }
+
 }
