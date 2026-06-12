@@ -1,5 +1,7 @@
 using System.Xml;
 using Microsoft.Extensions.Logging;
+using LocalSearchEngine.Core.Crawling.Policies;
+using LocalSearchEngine.Core.Crawling.Storage;
 
 namespace LocalSearchEngine.Core.Crawling;
 
@@ -12,9 +14,27 @@ namespace LocalSearchEngine.Core.Crawling;
 public partial class CrawlerService
 {
     /// <summary>
-    /// Fetches and parses the robots.txt file for a given host URL.
+    /// Returns the cached robots.txt rules for the URL's origin, fetching and caching them on
+    /// first contact. Robots are fetched lazily so that allowed hosts the crawl never actually
+    /// reaches are never contacted at all.
     /// </summary>
-    /// <param name="baseUri">The base URI of the host.</param>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="uri">A URI on the origin whose rules are needed.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="RobotsRules"/> instance containing the origin's rules.</returns>
+    private async Task<RobotsRules> GetOrFetchRobotsAsync(CrawlContext ctx, Uri uri, CancellationToken cancellationToken)
+    {
+        var origin = UrlOrigin.Key(uri);
+        if (ctx.RobotsCache.TryGetValue(origin, out var cached)) return cached;
+        var rules = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), cancellationToken);
+        ctx.RobotsCache[origin] = rules;
+        return rules;
+    }
+
+    /// <summary>
+    /// Fetches and parses the robots.txt file for a given origin.
+    /// </summary>
+    /// <param name="baseUri">The base URI of the origin (scheme, host, and port).</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="RobotsRules"/> instance containing the parsed rules.</returns>
     private async Task<RobotsRules> GetRobotsRulesAsync(Uri baseUri, CancellationToken cancellationToken)
@@ -46,21 +66,25 @@ public partial class CrawlerService
     }
 
     /// <summary>
-    /// Discovers sitemaps and enqueues sitemap location URLs into the crawl context queue.
+    /// Discovers sitemaps for the seed's origin and enqueues the entries that live on that
+    /// origin. Sitemap enumeration never extends to other allowed hosts: being allowed means
+    /// a page there MAY be fetched when links lead to it, not that the server is bulk-indexed.
+    /// To fully index another server, run the crawler with that server as the seed.
     /// </summary>
-    /// <param name="hostUri">The host base URI.</param>
+    /// <param name="originUri">The seed's origin base URI (scheme, host, and port).</param>
     /// <param name="ctx">The active crawl context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private async Task EnqueueSitemapUrlsAsync(Uri hostUri, CrawlContext ctx, CancellationToken cancellationToken)
+    private async Task EnqueueSitemapUrlsAsync(Uri originUri, CrawlContext ctx, CancellationToken cancellationToken)
     {
-        var robots = ctx.RobotsCache.TryGetValue(hostUri.Host, out var r) ? r : RobotsRules.AllowAll;
+        var originKey = UrlOrigin.Key(originUri);
+        var robots = ctx.RobotsCache.TryGetValue(originKey, out var r) ? r : RobotsRules.AllowAll;
 
         // Seed from robots.txt Sitemap: directives plus the conventional location.
         var pending = new Queue<string>();
         var processed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var sitemap in robots.Sitemaps) pending.Enqueue(sitemap);
-        pending.Enqueue(new Uri(hostUri, "/sitemap.xml").ToString());
+        pending.Enqueue(new Uri(originUri, "/sitemap.xml").ToString());
 
         int added = 0;
         int safety = 0;
@@ -80,12 +104,14 @@ public partial class CrawlerService
             {
                 if (!UrlNormalizer.TryNormalize(loc, out var normalizedUrl)) continue;
                 if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var locUri)) continue;
-                if (!ctx.AllowedHosts.Contains(locUri.Host)) continue;
-                if (!CrawlPolicy.IsIndexableExtension(normalizedUrl)) continue;
 
-                // Check each entry against ITS OWN host's robots, not the sitemap's host.
-                var locRobots = ctx.RobotsCache.TryGetValue(locUri.Host, out var lr) ? lr : RobotsRules.AllowAll;
-                if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, locRobots)) continue;
+                // Only entries on the seed's own origin are taken (the sitemap FILE itself may
+                // be hosted elsewhere, e.g. a CDN, when robots.txt declares it). Entries on
+                // other hosts — allowed or not — are ignored: links are the only way in.
+                if (!string.Equals(UrlOrigin.Key(locUri), originKey, StringComparison.OrdinalIgnoreCase)) continue;
+
+                // Same origin as the seed, so the seed's already-fetched robots apply.
+                if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, robots)) continue;
 
                 if (ctx.Visited.Add(normalizedUrl))
                 {
@@ -97,7 +123,7 @@ public partial class CrawlerService
 
         if (added > 0)
         {
-            _logger.LogInformation("Enqueued {Count} URLs from sitemaps for {Host}", added, hostUri.Host);
+            _logger.LogInformation("Enqueued {Count} URLs from sitemaps for {Origin}", added, originKey);
         }
     }
 

@@ -1,7 +1,8 @@
 using HtmlAgilityPack;
 using System.Text;
+using LocalSearchEngine.Core.Crawling.Policies;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Extraction;
 
 /// <summary>
 /// Extracts structured elements (title, headings, text, robots directives, canonical aliases, and outlinks) from raw HTML, PDF, or DOCX document bodies.
@@ -45,13 +46,13 @@ public static class ContentExtractor
     /// <param name="httpCharset">The character set specified in the HTTP Content-Type header, if any.</param>
     /// <param name="xRobotsTag">The X-Robots-Tag HTTP header value, if any.</param>
     /// <param name="currentUrl">The current URL of the page being crawled.</param>
-    /// <param name="allowedHosts">The set of hostnames that are in-scope for the crawl.</param>
-    /// <param name="robotsCache">A dictionary cache of robots.txt rules indexed by hostname.</param>
+    /// <param name="allowedHosts">The host rules that are in-scope for the crawl.</param>
+    /// <param name="robotsCache">A dictionary cache of robots.txt rules keyed by origin (scheme://host:port).</param>
     /// <param name="userAgentToken">The lowercase user agent token of this crawler.</param>
     /// <returns>An <see cref="HtmlAnalysis"/> object containing the extracted components.</returns>
     public static HtmlAnalysis AnalyzeHtml(
         byte[] body, string? httpCharset, string? xRobotsTag, string currentUrl,
-        IReadOnlySet<string> allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache,
+        AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache,
         string userAgentToken)
     {
         var doc = new HtmlDocument();
@@ -80,8 +81,13 @@ public static class ContentExtractor
 
         // Strip boilerplate BEFORE harvesting headings/text/links so footer "Quick Links"
         // headings and nav chrome don't pollute the index. noscript (enable-JS banners),
-        // template (inert DOM), form controls, and aside (related links/ads) are chrome too.
-        var nodesToRemove = doc.DocumentNode.SelectNodes("//script|//style|//nav|//footer|//header|//svg|//noscript|//template|//form|//aside");
+        // template (inert DOM), and aside (related links/ads) are chrome too. Form *controls*
+        // are stripped individually rather than whole <form> elements: platforms like Oracle
+        // APEX and ASP.NET WebForms wrap the entire page body in one form, so removing forms
+        // wholesale would throw away the page content.
+        var nodesToRemove = doc.DocumentNode.SelectNodes(
+            "//script|//style|//nav|//footer|//header|//svg|//noscript|//template|//aside" +
+            "|//input|//select|//textarea|//button|//label|//datalist|//output");
         if (nodesToRemove != null)
         {
             foreach (var node in nodesToRemove) node.Remove();
@@ -108,7 +114,7 @@ public static class ContentExtractor
     /// </summary>
     private static List<string> ExtractInScopeLinks(
         HtmlDocument doc, string currentUrl,
-        IReadOnlySet<string> allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache)
+        AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache)
     {
         var result = new List<string>();
         var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
@@ -125,12 +131,13 @@ public static class ContentExtractor
             var href = link.GetAttributeValue("href", "");
             if (string.IsNullOrWhiteSpace(href)) continue;
             if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
-            if (!allowedHosts.Contains(absoluteUri.Host)) continue;
+            if (!allowedHosts.IsAllowed(absoluteUri)) continue;
 
+            // No extension filtering here: whether a fetched body is indexable is decided by
+            // its Content-Type (or sniffed bytes), never by how its URL looks.
             var normalizedUrl = UrlNormalizer.Normalize(absoluteUri);
-            if (!CrawlPolicy.IsIndexableExtension(normalizedUrl)) continue;
 
-            var linkRobots = robotsCache.TryGetValue(absoluteUri.Host, out var lr) ? lr : RobotsRules.AllowAll;
+            var linkRobots = robotsCache.TryGetValue(UrlOrigin.Key(absoluteUri), out var lr) ? lr : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, linkRobots)) continue;
 
             if (seen.Add(normalizedUrl)) result.Add(normalizedUrl);
@@ -196,7 +203,7 @@ public static class ContentExtractor
     /// <summary>
     /// Resolves the canonical URL specified by a rel='canonical' link tag.
     /// </summary>
-    private static string? ResolveCanonicalAlias(HtmlDocument doc, string currentUrl, IReadOnlySet<string> allowedHosts)
+    private static string? ResolveCanonicalAlias(HtmlDocument doc, string currentUrl, AllowedHosts allowedHosts)
     {
         var links = doc.DocumentNode.SelectNodes("//link[@rel]");
         if (links is null) return null;
@@ -212,8 +219,7 @@ public static class ContentExtractor
 
             var normalized = UrlNormalizer.Normalize(canonicalUri);
             if (string.Equals(normalized, currentUrl, StringComparison.OrdinalIgnoreCase)) return null; // self-canonical
-            if (!allowedHosts.Contains(canonicalUri.Host)) return null;                                  // out of scope
-            if (!CrawlPolicy.IsIndexableExtension(normalized)) return null;
+            if (!allowedHosts.IsAllowed(canonicalUri)) return null;                                      // out of scope
             return normalized;
         }
 

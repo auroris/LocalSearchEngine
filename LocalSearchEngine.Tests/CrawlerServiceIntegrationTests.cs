@@ -1,5 +1,8 @@
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Crawling.Extraction;
+using LocalSearchEngine.Core.Crawling.Policies;
+using LocalSearchEngine.Core.Crawling.Storage;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.Data.Sqlite;
@@ -203,6 +206,47 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Page_body_wrapped_in_a_form_is_still_indexed()
+    {
+        await EnsureSchemaAsync();
+
+        // Platforms like Oracle APEX and ASP.NET WebForms wrap the entire page body in one
+        // <form>; only the controls inside it are chrome, not the content.
+        _handler.Routes[Seed] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(
+                "<html><head><title>Form</title></head><body><form id=\"wwvFlowForm\">" +
+                "<h1>Report heading</h1><p>narrative content inside the form</p>" +
+                "<label>ZZLABELZZ</label><input type=\"text\" value=\"x\"><button>ZZBUTTONZZ</button>" +
+                "</form></body></html>",
+                Encoding.UTF8, "text/html")
+        };
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(HasChunkContaining(Seed, "narrative content inside the form"));
+        Assert.False(HasChunkContaining(Seed, "ZZLABELZZ"));  // form controls stay chrome
+        Assert.False(HasChunkContaining(Seed, "ZZBUTTONZZ"));
+    }
+
+    [Fact]
+    public async Task Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type()
+    {
+        await EnsureSchemaAsync();
+
+        // URLs are never filtered by how their path looks (".0" or ".php" are not file
+        // extensions to us); the fetched Content-Type decides what gets indexed.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/release-1.0\">notes</a> <a href=\"/page.php\">php</a>");
+        _handler.Routes["http://test.local/release-1.0"] = _ => Html("<title>Release</title><p>release notes</p>");
+        _handler.Routes["http://test.local/page.php"] = _ => Html("<title>PHP</title><p>dynamic page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        Assert.True(ChunkCount("http://test.local/release-1.0") > 0);
+        Assert.True(ChunkCount("http://test.local/page.php") > 0);
+    }
+
+    [Fact]
     public async Task Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
     {
         await EnsureSchemaAsync();
@@ -222,17 +266,88 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
-    public async Task Www_variant_of_seed_host_is_in_scope_by_default()
+    public async Task Www_variant_of_seed_host_is_out_of_scope_unless_allowed()
     {
         await EnsureSchemaAsync();
 
-        // Seed is the apex host; a link points at the www host. They should share scope.
+        // The www variant is a different host and is NOT implied by the apex seed.
         _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://www.test.local/page\">www</a>");
         _handler.Routes["http://www.test.local/page"] = _ => Html("<title>WWW</title><p>on the www host</p>");
 
         await NewCrawler().CrawlAsync(Seed, maxPages: 50);
 
+        Assert.Equal(0, ChunkCount("http://www.test.local/page"));
+        Assert.DoesNotContain(_handler.Requested, u => u.Contains("www.test.local"));
+    }
+
+    [Fact]
+    public async Task Allowed_servers_bring_additional_hosts_into_scope()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://www.test.local/page\">www</a>");
+        _handler.Routes["http://www.test.local/page"] = _ => Html("<title>WWW</title><p>on the www host</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "www.test.local" });
+
         Assert.True(ChunkCount("http://www.test.local/page") > 0);
+    }
+
+    [Fact]
+    public async Task Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
+    {
+        await EnsureSchemaAsync();
+
+        // Listing a host as allowed is a filter, not a request to go probe it: no robots.txt,
+        // sitemap, or page fetch may hit an allowed host that nothing links to.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home, no outlinks</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, allowedServers: new[] { "other.local" });
+
+        Assert.DoesNotContain(_handler.Requested, u => u.Contains("other.local"));
+    }
+
+    [Fact]
+    public async Task Sitemap_entries_are_limited_to_the_seed_origin()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed's sitemap lists one of its own pages plus a page on another *allowed*
+        // host. Sitemaps only bulk-enumerate the seed's origin: allowed hosts may be fetched
+        // when links lead there, but their sitemap entries must be ignored entirely.
+        _handler.Routes["http://test.local/sitemap.xml"] = _ => Xml(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
+            "<url><loc>http://test.local/from-sitemap</loc></url>" +
+            "<url><loc>http://other.local/from-sitemap</loc></url>" +
+            "</urlset>");
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p>");
+        _handler.Routes["http://test.local/from-sitemap"] = _ => Html("<title>Mine</title><p>seed sitemap page</p>");
+        _handler.Routes["http://other.local/from-sitemap"] = _ => Html("<title>Other</title><p>other host page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "other.local" });
+
+        Assert.True(ChunkCount("http://test.local/from-sitemap") > 0);
+        Assert.Equal(0, ChunkCount("http://other.local/from-sitemap"));
+        Assert.DoesNotContain("http://other.local/from-sitemap", _handler.Requested);
+    }
+
+    [Fact]
+    public async Task Robots_and_sitemap_requests_use_the_seeds_port()
+    {
+        await EnsureSchemaAsync();
+
+        // A seed on a non-default port must have robots.txt and the sitemap probed on that
+        // port, and pages on the default port stay out of scope.
+        const string portSeed = "http://test.local:8080/";
+        _handler.Routes[portSeed] = _ => Html("<title>Home</title><p>home on a port</p>");
+
+        await NewCrawler().CrawlAsync(portSeed, maxPages: 5);
+
+        Assert.Contains("http://test.local:8080/robots.txt", _handler.Requested);
+        Assert.Contains("http://test.local:8080/sitemap.xml", _handler.Requested);
+        Assert.DoesNotContain("http://test.local/robots.txt", _handler.Requested);
+        Assert.True(ChunkCount(portSeed) > 0);
     }
 
     [Fact]
@@ -359,6 +474,17 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         return (long)(command.ExecuteScalar() ?? 0L);
     }
 
+    private bool HasChunkContaining(string url, string fragment)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM text_chunks WHERE Url = @u AND Text LIKE '%' || @f || '%'";
+        command.Parameters.AddWithValue("@u", url);
+        command.Parameters.AddWithValue("@f", fragment);
+        return (long)(command.ExecuteScalar() ?? 0L) > 0;
+    }
+
     private long CountIndexedUrls()
     {
         using var connection = new SqliteConnection(_connectionString);
@@ -384,6 +510,10 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         try { if (File.Exists(path)) File.Delete(path); }
         catch { /* temp file; best effort */ }
     }
+
+    /// <summary>Returns an XML 200, e.g. for a sitemap.</summary>
+    private static HttpResponseMessage Xml(string body) =>
+        new(HttpStatusCode.OK) { Content = new StringContent(body, Encoding.UTF8, "application/xml") };
 
     /// <summary>Returns an HTML 200 with an optional strong ETag.</summary>
     private static HttpResponseMessage Html(string body, string? etag = null)

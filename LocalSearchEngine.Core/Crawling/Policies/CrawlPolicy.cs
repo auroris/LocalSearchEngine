@@ -1,7 +1,7 @@
 using System.IO.Compression;
 using System.Text;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Policies;
 
 /// <summary>
 /// Specifies the kinds of documents that can be processed and indexed.
@@ -13,21 +13,6 @@ public enum DocKind { Unknown, Html, Pdf, Docx }
 /// </summary>
 public static class CrawlPolicy
 {
-    private static readonly string[] IndexableExtensions = { ".html", ".htm", ".pdf", ".docx" };
-
-    /// <summary>
-    /// Determines whether the specified URL points to a file extension that is indexable.
-    /// </summary>
-    /// <param name="url">The absolute or relative URL string to check.</param>
-    /// <returns><c>true</c> if the URL is indexable (e.g., extensionless or has a supported extension like .html, .pdf, or .docx); otherwise, <c>false</c>.</returns>
-    public static bool IsIndexableExtension(string url)
-    {
-        var path = Uri.TryCreate(url, UriKind.Absolute, out var uri) ? uri.AbsolutePath : url;
-        var ext = Path.GetExtension(path);
-        if (string.IsNullOrEmpty(ext)) return true;
-        return IndexableExtensions.Contains(ext.ToLowerInvariant());
-    }
-
     /// <summary>
     /// Determines whether the crawl policy allows fetching the specified URL according to robots.txt rules.
     /// </summary>

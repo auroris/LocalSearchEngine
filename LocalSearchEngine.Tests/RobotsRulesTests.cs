@@ -1,4 +1,5 @@
 using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Crawling.Policies;
 using Xunit;
 
 namespace LocalSearchEngine.Tests;
@@ -85,8 +86,29 @@ public class RobotsRulesTests
     [Fact]
     public void Crawl_delay_is_parsed_for_the_chosen_group()
     {
+        var rules = RobotsRules.Parse("User-agent: *\nCrawl-delay: 2\nDisallow: /x", Bot);
+        Assert.Equal(2.0, rules.CrawlDelaySeconds);
+    }
+
+    [Fact]
+    public void Fractional_crawl_delay_rounds_up_to_whole_seconds()
+    {
+        // RobotsExclusionTools reads Crawl-delay as an integer, so fractional values are
+        // normalized (rounded up, never down) before parsing instead of being dropped.
         var rules = RobotsRules.Parse("User-agent: *\nCrawl-delay: 2.5\nDisallow: /x", Bot);
-        Assert.Equal(2.5, rules.CrawlDelaySeconds);
+        Assert.Equal(3.0, rules.CrawlDelaySeconds);
+    }
+
+    [Fact]
+    public void Fractional_crawl_delay_applies_only_to_the_matching_group()
+    {
+        // The normalization rewrites the value in place, so the library still decides which
+        // group's delay applies; another agent's fractional delay must not leak onto us.
+        var content =
+            "User-agent: GoogleBot\nCrawl-delay: 9.5\nDisallow: /g\n\n" +
+            "User-agent: *\nCrawl-delay: 0.5\nDisallow: /x";
+        var rules = RobotsRules.Parse(content, Bot);
+        Assert.Equal(1.0, rules.CrawlDelaySeconds);
     }
 
     [Fact]

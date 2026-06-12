@@ -87,9 +87,13 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("  -help, --help            Show this help message and exit.");
     Console.WriteLine();
     Console.WriteLine("Arguments:");
-    Console.WriteLine("  <url>               The starting URL to crawl.");
+    Console.WriteLine("  <url>               The starting URL to crawl. Its exact origin (scheme, host, and");
+    Console.WriteLine("                      port — default port if none is given) is always in scope.");
     Console.WriteLine();
-    Console.WriteLine("Note: Additional allowed domains can be configured via the 'allowed-servers' array in appsettings.json.");
+    Console.WriteLine("Note: Additional allowed hosts can be configured via the 'allowed-servers' array in");
+    Console.WriteLine("appsettings.json. Entries are [scheme://]host[:port]; an omitted scheme or port");
+    Console.WriteLine("matches any. The 'www.' variant of the seed host is NOT implied — list it as its");
+    Console.WriteLine("own entry to crawl both.");
     return;
 }
 
@@ -134,7 +138,8 @@ services.AddHttpClient<CrawlerService>(client =>
     .HandleTransientHttpError()
     .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
 
-// Local embeddings (bge-small-en-v1.5, CPU/ONNX); model bundled at build time.
+// Local embeddings (snowflake-arctic-embed-s, 384-dim, CPU/ONNX); the model is downloaded
+// at build time and bundled next to the binaries — see Directory.Build.props.
 services.AddSingleton<IEmbedder>(_ => new LocalEmbedderAdapter());
 services.AddSingleton(new DatabaseConfig(connectionString));
 services.AddSqliteVectorStore(_ => connectionString);

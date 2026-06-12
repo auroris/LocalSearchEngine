@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using TurnerSoftware.RobotsExclusionTools;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Policies;
 
 /// <summary>
 /// Represents a parsed robots.txt ruleset, resolved using TurnerSoftware.RobotsExclusionTools.
@@ -13,10 +11,17 @@ namespace LocalSearchEngine.Core.Crawling;
 /// </summary>
 public sealed class RobotsRules
 {
+    // Declared before the static AllowAll/DisallowAll properties: their initializers run
+    // Parse, which needs this regex, and static initializers execute in declaration order.
+    private static readonly Regex FractionalCrawlDelay = new(
+        @"^([ \t]*crawl-delay[ \t]*:[ \t]*)(\d*\.\d+)(?![\d.])",
+        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
+
     private readonly List<(bool Allow, int PatternLength, Regex Matcher)> _rules = new();
 
     /// <summary>
-    /// Gets the minimum wait delay between requests in seconds, if specified.
+    /// Gets the minimum wait delay between requests in seconds, if specified. Fractional
+    /// values in the file (e.g. "0.5") are rounded up to the next whole second.
     /// </summary>
     public double? CrawlDelaySeconds { get; }
 
@@ -25,7 +30,7 @@ public sealed class RobotsRules
     /// </summary>
     public IReadOnlyList<string> Sitemaps { get; }
 
-    private RobotsRules(RobotsFile robotsFile, string userAgent, string content)
+    private RobotsRules(RobotsFile robotsFile, string userAgent)
     {
         // Extract Sitemaps
         Sitemaps = robotsFile.SitemapEntries.Select(s => s.Sitemap.ToString()).ToList();
@@ -58,12 +63,6 @@ public sealed class RobotsRules
                 var regex = new Regex(ToRegex(path), RegexOptions.CultureInvariant);
                 _rules.Add((isAllow, path.Length, regex));
             }
-        }
-
-        // Fallback for float crawl delay parsing since RobotsExclusionTools parses Crawl-delay as an integer.
-        if (CrawlDelaySeconds == null && !string.IsNullOrEmpty(content))
-        {
-            CrawlDelaySeconds = ParseCrawlDelayFallback(content, userAgent);
         }
     }
 
@@ -114,8 +113,24 @@ public sealed class RobotsRules
     public static RobotsRules Parse(string content, string userAgent)
     {
         var parser = new RobotsFileParser();
-        var robotsFile = parser.FromString(content, new Uri("http://localhost"));
-        return new RobotsRules(robotsFile, userAgent, content);
+        var robotsFile = parser.FromString(NormalizeFractionalCrawlDelays(content), new Uri("http://localhost"));
+        return new RobotsRules(robotsFile, userAgent);
+    }
+
+    /// <summary>
+    /// Rounds fractional Crawl-delay values (e.g. "0.5") up to whole seconds before parsing,
+    /// because RobotsExclusionTools reads the directive as an integer and would otherwise drop
+    /// them. Rewriting the value in the raw text keeps the library's user-agent group matching
+    /// as the single authority on which group's delay applies.
+    /// </summary>
+    /// <param name="content">The raw robots.txt content.</param>
+    /// <returns>The content with fractional crawl delays rounded up to integers.</returns>
+    private static string NormalizeFractionalCrawlDelays(string content)
+    {
+        if (string.IsNullOrEmpty(content)) return content;
+        return FractionalCrawlDelay.Replace(content, m =>
+            m.Groups[1].Value + Math.Ceiling(double.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture))
+                .ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -137,79 +152,5 @@ public sealed class RobotsRules
                 sb.Append(Regex.Escape(c.ToString()));
         }
         return sb.ToString();
-    }
-
-    private static double? ParseCrawlDelayFallback(string content, string userAgent)
-    {
-        var groups = new List<(List<string> Agents, double? CrawlDelay)>();
-        var currentAgents = new List<string>();
-        double? currentDelay = null;
-        bool lastLineWasUserAgent = false;
-
-        foreach (var rawLine in content.Split('\n'))
-        {
-            var line = rawLine;
-            int hash = line.IndexOf('#');
-            if (hash >= 0) line = line[..hash];
-            line = line.Trim();
-            if (line.Length == 0) continue;
-
-            int colon = line.IndexOf(':');
-            if (colon < 0) continue;
-
-            var field = line[..colon].Trim().ToLowerInvariant();
-            var value = line[(colon + 1)..].Trim();
-
-            if (field == "user-agent")
-            {
-                if (!lastLineWasUserAgent)
-                {
-                    if (currentAgents.Count > 0 && currentDelay.HasValue)
-                    {
-                        groups.Add((new List<string>(currentAgents), currentDelay));
-                    }
-                    currentAgents.Clear();
-                    currentDelay = null;
-                }
-                currentAgents.Add(value);
-                lastLineWasUserAgent = true;
-            }
-            else if (field == "crawl-delay")
-            {
-                if (double.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var delay))
-                {
-                    currentDelay = delay;
-                }
-                lastLineWasUserAgent = false;
-            }
-            else
-            {
-                lastLineWasUserAgent = false;
-            }
-        }
-        if (currentAgents.Count > 0 && currentDelay.HasValue)
-        {
-            groups.Add((currentAgents, currentDelay));
-        }
-
-        // Match user agent
-        double? specificDelay = null;
-        double? wildcardDelay = null;
-        foreach (var group in groups)
-        {
-            foreach (var agent in group.Agents)
-            {
-                if (agent == "*")
-                {
-                    wildcardDelay = group.CrawlDelay;
-                }
-                else if (userAgent.StartsWith(agent, StringComparison.OrdinalIgnoreCase))
-                {
-                    specificDelay = group.CrawlDelay;
-                }
-            }
-        }
-
-        return specificDelay ?? wildcardDelay;
     }
 }

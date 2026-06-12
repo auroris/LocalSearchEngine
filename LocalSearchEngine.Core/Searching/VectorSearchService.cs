@@ -155,11 +155,11 @@ public class VectorSearchService
     {
         int pool = _settings.CandidatePoolSize;
 
-        // Vector search (embed + ANN scan) and keyword search (FTS5) are independent, so kick
-        // the keyword query off first and let it overlap the embedding + vector scan.
-        var keywordTask = GetKeywordHitsAsync(query, pool);
+        // Keyword (FTS5) pass, then the semantic pass. There is nothing to gain from running
+        // them concurrently: Microsoft.Data.Sqlite completes its async methods synchronously,
+        // and the embedding is synchronous CPU work, so plain sequential awaits keep that honest.
+        var keywordHits = await GetKeywordHitsAsync(query, pool);
         var vectorHits = await GetVectorHitsAsync(query, pool);
-        var keywordHits = await keywordTask;
 
         // Titles for every candidate URL feed the title boost and the result list.
         var titles = await LoadTitlesAsync(vectorHits, keywordHits);

@@ -6,6 +6,9 @@ using System.Threading.Channels;
 using Microsoft.Extensions.Logging;
 
 using LocalSearchEngine.Core.Searching;
+using LocalSearchEngine.Core.Crawling.Extraction;
+using LocalSearchEngine.Core.Crawling.Policies;
+using LocalSearchEngine.Core.Crawling.Storage;
 
 namespace LocalSearchEngine.Core.Crawling;
 
@@ -22,6 +25,9 @@ public partial class CrawlerService
 
     /// <summary>Minimum politeness gap between requests to the same host.</summary>
     private const int DefaultRequestDelayMs = 250;
+
+    /// <summary>Upper bound honored for a robots.txt Crawl-delay; larger values are clamped.</summary>
+    private const int MaxCrawlDelaySeconds = 30;
 
     static CrawlerService()
     {
@@ -60,9 +66,9 @@ public partial class CrawlerService
     /// <summary>
     /// Orchestrates the crawl loop starting from a seed URL.
     /// </summary>
-    /// <param name="seedUrl">The starting URL of the crawl.</param>
+    /// <param name="seedUrl">The starting URL of the crawl. Its exact origin (scheme, host, and port) is always in scope.</param>
     /// <param name="maxPages">The maximum number of pages to index.</param>
-    /// <param name="allowedServers">Optional set of allowed hostnames.</param>
+    /// <param name="allowedServers">Optional additional allowed hosts, each of the form <c>[scheme://]host[:port]</c>; an omitted scheme or port matches any.</param>
     /// <param name="maxPagesPerHost">The maximum pages to crawl on any single host.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the crawl operation.</returns>
@@ -76,7 +82,7 @@ public partial class CrawlerService
 
         var ctx = new CrawlContext
         {
-            AllowedHosts = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
+            AllowedHosts = new AllowedHosts(),
             RobotsCache = new Dictionary<string, RobotsRules>(StringComparer.OrdinalIgnoreCase),
             Queue = new Queue<string>(),
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
@@ -84,10 +90,18 @@ public partial class CrawlerService
 
         if (allowedServers != null)
         {
-            foreach (var s in allowedServers) ctx.AllowedHosts.Add(s);
+            foreach (var s in allowedServers)
+            {
+                if (!ctx.AllowedHosts.Add(s))
+                {
+                    _logger.LogWarning("Ignoring allowed-server entry '{Entry}': expected [scheme://]host[:port].", s);
+                }
+            }
         }
-        ctx.AllowedHosts.Add(baseUri.Host);
-        ctx.AllowedHosts.Add("www." + baseUri.Host);
+        // The seed pins its exact origin: an http seed without an explicit port means http on
+        // port 80 only. Note the seed's "www." variant is NOT implied — pass it as an
+        // allowed-server entry to crawl both.
+        ctx.AllowedHosts.AddOrigin(baseUri);
 
         // One read connection for the producer and one write connection for the indexer, both held
         // open for the whole crawl rather than reopened per database call. They run on separate
@@ -100,26 +114,19 @@ public partial class CrawlerService
         ctx.Read = readConnection;
         ctx.Write = writeConnection;
 
-        foreach (var host in ctx.AllowedHosts)
-        {
-            var hostUri = new Uri($"{baseUri.Scheme}://{host}");
-            ctx.RobotsCache[host] = await GetRobotsRulesAsync(hostUri, cancellationToken);
-        }
+        // Robots for the seed's origin are needed right away (the seed is enqueued below). Every
+        // other origin gets its robots fetched lazily on first contact — being listed in the
+        // allowed hosts never by itself causes requests to a server.
+        var seedRobots = await GetOrFetchRobotsAsync(ctx, baseUri, cancellationToken);
 
-        // Resume an interrupted run, then top up from sitemaps and the seed.
-        await RestoreFrontierAsync(ctx, cancellationToken);
-
-        foreach (var host in ctx.AllowedHosts)
-        {
-            var hostUri = new Uri($"{baseUri.Scheme}://{host}");
-            await EnqueueSitemapUrlsAsync(hostUri, ctx, cancellationToken);
-        }
+        // Seed the frontier from the origin's sitemaps; the seed URL itself is enqueued below.
+        await EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, cancellationToken);
 
         var normalizedSeed = UrlNormalizer.Normalize(baseUri);
         ctx.SeedUrl = normalizedSeed;
         if (ctx.Visited.Add(normalizedSeed))
         {
-            if (CrawlPolicy.IsAllowedByRobots(normalizedSeed, ctx.RobotsCache[baseUri.Host]))
+            if (CrawlPolicy.IsAllowedByRobots(normalizedSeed, seedRobots))
             {
                 ctx.Queue.Enqueue(normalizedSeed);
             }
@@ -174,8 +181,6 @@ public partial class CrawlerService
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
-                    // Put the in-flight page back so a resumed run retries it.
-                    ctx.Queue.Enqueue(currentUrl);
                     _logger.LogInformation("Crawl cancelled while fetching {Url}.", currentUrl);
                     break;
                 }
@@ -204,11 +209,9 @@ public partial class CrawlerService
         }
         finally
         {
-            // Stop the indexer, let it drain everything already fetched, then snapshot the
-            // remaining frontier (resumable) and tidy the database.
+            // Stop the indexer, let it drain everything already fetched, then tidy the database.
             channel.Writer.Complete();
             await indexer;
-            await PersistFrontierAsync(ctx, CancellationToken.None);
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
@@ -226,7 +229,15 @@ public partial class CrawlerService
     {
         if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri)) return null;
 
-        var currentRobots = ctx.RobotsCache.TryGetValue(currentUri.Host, out var r) ? r : RobotsRules.AllowAll;
+        // Frontier filters allow optimistically when an origin's robots aren't cached yet, so
+        // the authoritative robots check happens here — after a lazy per-origin robots fetch
+        // and before any politeness wait or page request is spent on a disallowed URL.
+        var currentRobots = await GetOrFetchRobotsAsync(ctx, currentUri, cancellationToken);
+        if (!CrawlPolicy.IsAllowedByRobots(currentUrl, currentRobots))
+        {
+            _logger.LogInformation("Disallowed by robots.txt: {Url}", currentUrl);
+            return null;
+        }
         await DelayForHostAsync(ctx, currentUri.Host, ResolveRequestDelay(currentRobots), cancellationToken);
 
         var state = await CrawlStore.GetCrawlStateAsync(ctx.Read, currentUrl, cancellationToken);
@@ -266,23 +277,18 @@ public partial class CrawlerService
                 redirectSourceUrl = currentUrl;
 
                 // In every out-of-scope/duplicate redirect case below we still record a visit for
-                // the source URL (rather than returning null), so it gets a CrawlState row and a
-                // resumed run doesn't keep re-fetching it from scratch.
-                if (!ctx.AllowedHosts.Contains(finalRequestUri.Host))
+                // the source URL (rather than returning null), so its CrawlState row reflects how
+                // the URL last responded.
+                if (!ctx.AllowedHosts.IsAllowed(finalRequestUri))
                 {
-                    // The seed itself redirecting to a new host (a vanity domain, or a redirect
+                    // The seed itself redirecting to a new origin (a vanity domain, or a redirect
                     // landing on a host we didn't anticipate) means the site really lives there:
-                    // adopt that host into scope and fetch its robots, instead of ending the crawl
-                    // at the front door. Off-host redirects from any *other* page stay rejected.
+                    // adopt that origin into scope instead of ending the crawl at the front door.
+                    // Out-of-scope redirects from any *other* page stay rejected.
                     if (string.Equals(currentUrl, ctx.SeedUrl, StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogInformation("Seed {Seed} redirected to {Host}; adding it to the allowed hosts.", currentUrl, finalRequestUri.Host);
-                        ctx.AllowedHosts.Add(finalRequestUri.Host);
-                        if (!ctx.RobotsCache.ContainsKey(finalRequestUri.Host))
-                        {
-                            var newHostUri = new Uri($"{finalRequestUri.Scheme}://{finalRequestUri.Host}");
-                            ctx.RobotsCache[finalRequestUri.Host] = await GetRobotsRulesAsync(newHostUri, cancellationToken);
-                        }
+                        _logger.LogInformation("Seed {Seed} redirected to {Origin}; adding it to the allowed hosts.", currentUrl, UrlOrigin.Key(finalRequestUri));
+                        ctx.AllowedHosts.AddOrigin(finalRequestUri);
                     }
                     else
                     {
@@ -290,7 +296,7 @@ public partial class CrawlerService
                         return new AliasJob(currentUrl, 302);
                     }
                 }
-                var finalRobots = ctx.RobotsCache.TryGetValue(finalRequestUri.Host, out var fr) ? fr : RobotsRules.AllowAll;
+                var finalRobots = await GetOrFetchRobotsAsync(ctx, finalRequestUri, cancellationToken);
                 if (!CrawlPolicy.IsAllowedByRobots(normalizedFinal, finalRobots))
                 {
                     _logger.LogInformation("Redirect target disallowed by robots.txt: {Url}", normalizedFinal);
@@ -543,8 +549,8 @@ public partial class CrawlerService
     private void EnqueueSingle(CrawlContext ctx, string url)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) return;
-        if (!ctx.AllowedHosts.Contains(uri.Host)) return;
-        var robots = ctx.RobotsCache.TryGetValue(uri.Host, out var r) ? r : RobotsRules.AllowAll;
+        if (!ctx.AllowedHosts.IsAllowed(uri)) return;
+        var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
         if (!CrawlPolicy.IsAllowedByRobots(url, robots)) return;
         if (ctx.Visited.Add(url)) ctx.Queue.Enqueue(url);
     }
@@ -561,9 +567,8 @@ public partial class CrawlerService
         foreach (var link in await CrawlStore.GetStoredOutlinksAsync(ctx.Read, url, cancellationToken))
         {
             if (!Uri.TryCreate(link, UriKind.Absolute, out var uri)) continue;
-            if (!ctx.AllowedHosts.Contains(uri.Host)) continue;
-            if (!CrawlPolicy.IsIndexableExtension(link)) continue;
-            var robots = ctx.RobotsCache.TryGetValue(uri.Host, out var r) ? r : RobotsRules.AllowAll;
+            if (!ctx.AllowedHosts.IsAllowed(uri)) continue;
+            var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(link, robots)) continue;
             if (ctx.Visited.Add(link)) ctx.Queue.Enqueue(link);
         }
@@ -600,50 +605,11 @@ public partial class CrawlerService
         double ms = DefaultRequestDelayMs;
         if (robots.CrawlDelaySeconds is double seconds && seconds > 0)
         {
-            ms = Math.Max(ms, seconds * 1000);
+            // Honor Crawl-delay, but clamp it: a huge value (misconfigured or hostile
+            // robots.txt) must not be able to stall the crawl for minutes per page.
+            ms = Math.Max(ms, Math.Min(seconds, MaxCrawlDelaySeconds) * 1000);
         }
         return TimeSpan.FromMilliseconds(ms);
-    }
-
-    /// <summary>
-    /// Restores the frontier queue and visited set from a saved database snapshot.
-    /// </summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the restore operation.</returns>
-    private async Task RestoreFrontierAsync(CrawlContext ctx, CancellationToken cancellationToken)
-    {
-        var resumed = await CrawlStore.ReadFrontierAsync(ctx.Write, cancellationToken);
-        if (resumed.Count == 0) return;
-
-        foreach (var url in resumed)
-        {
-            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
-            if (!ctx.AllowedHosts.Contains(uri.Host)) continue;
-            var robots = ctx.RobotsCache.TryGetValue(uri.Host, out var r) ? r : RobotsRules.AllowAll;
-            if (!CrawlPolicy.IsAllowedByRobots(url, robots)) continue;
-            if (ctx.Visited.Add(url)) ctx.Queue.Enqueue(url);
-        }
-
-        // We've taken ownership of the snapshot; clear it (a fresh one is written at the end).
-        await CrawlStore.ClearFrontierAsync(ctx.Write, cancellationToken);
-
-        _logger.LogInformation("Resumed {Count} URLs from a previously interrupted crawl.", ctx.Queue.Count);
-    }
-
-    /// <summary>
-    /// Saves the current frontier queue to the database to support resuming later.
-    /// </summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the persistence operation.</returns>
-    private async Task PersistFrontierAsync(CrawlContext ctx, CancellationToken cancellationToken)
-    {
-        await CrawlStore.SaveFrontierAsync(ctx.Write, ctx.Queue, cancellationToken);
-        if (ctx.Queue.Count > 0)
-        {
-            _logger.LogInformation("Saved {Count} pending URLs to resume next run.", ctx.Queue.Count);
-        }
     }
 
     /// <summary>
@@ -651,10 +617,10 @@ public partial class CrawlerService
     /// </summary>
     private sealed class CrawlContext
     {
-        /// <summary>Gets the set of hostnames currently in crawl scope.</summary>
-        public required HashSet<string> AllowedHosts;
+        /// <summary>Gets the scheme/host/port rules currently in crawl scope.</summary>
+        public required AllowedHosts AllowedHosts;
 
-        /// <summary>Gets the cache containing parsed robots.txt rules for visited hosts.</summary>
+        /// <summary>Gets the cache of parsed robots.txt rules, keyed by origin (scheme://host:port).</summary>
         public required Dictionary<string, RobotsRules> RobotsCache;
 
         /// <summary>Gets the queue of pending URLs in the frontier.</summary>

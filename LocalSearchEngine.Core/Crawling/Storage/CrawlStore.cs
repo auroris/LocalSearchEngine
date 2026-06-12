@@ -1,10 +1,10 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Storage;
 
 /// <summary>
-/// Provides database access operations for managing crawl state, sitemaps, and the frontier queue in SQLite.
+/// Provides database access operations for managing crawl state and per-page outlinks in SQLite.
 /// </summary>
 public static class CrawlStore
 {
@@ -52,13 +52,6 @@ public static class CrawlStore
                     PRIMARY KEY (FromUrl, ToUrl)
                 );
 
-                -- A snapshot of the pending queue, written when a run is interrupted so the
-                -- next run can resume instead of starting the whole site over.
-                CREATE TABLE IF NOT EXISTS CrawlFrontier (
-                    Url TEXT PRIMARY KEY,
-                    Seq INTEGER
-                );
-
                 -- porter stemming over unicode61 so 'running' matches 'run', 'guides' matches
                 -- 'guide', etc. The URL isn't stored here: keyword hits join back to
                 -- text_chunks by Id, so a second copy of every URL would just waste space.
@@ -76,16 +69,12 @@ public static class CrawlStore
                   DELETE FROM text_chunks_fts WHERE Id = old.Id;
                   INSERT INTO text_chunks_fts(Id, Text) VALUES (new.Id, new.Text);
                 END;
+
+                -- Index ContentHash so a re-crawl can spot a URL whose byte-identical content is
+                -- already indexed under a different URL and alias it.
+                CREATE INDEX IF NOT EXISTS idx_crawlstate_contenthash ON CrawlState(ContentHash);
             ";
             await command.ExecuteNonQueryAsync();
-        }
-
-        // Index ContentHash so a re-crawl can spot a URL whose byte-identical content is
-        // already indexed under a different URL and alias it.
-        using (var index = connection.CreateCommand())
-        {
-            index.CommandText = "CREATE INDEX IF NOT EXISTS idx_crawlstate_contenthash ON CrawlState(ContentHash);";
-            await index.ExecuteNonQueryAsync();
         }
     }
 
@@ -297,74 +286,6 @@ public static class CrawlStore
             links.Add(reader.GetString(0));
         }
         return links;
-    }
-
-    /// <summary>
-    /// Reads the saved snapshot of the crawl frontier queue.
-    /// </summary>
-    /// <param name="connection">The open database connection.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A list of URLs ordered by their queue sequence.</returns>
-    public static async Task<List<string>> ReadFrontierAsync(SqliteConnection connection, CancellationToken cancellationToken)
-    {
-        var urls = new List<string>();
-        using var select = connection.CreateCommand();
-        select.CommandText = "SELECT Url FROM CrawlFrontier ORDER BY Seq";
-        using var reader = await select.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
-        {
-            urls.Add(reader.GetString(0));
-        }
-        return urls;
-    }
-
-    /// <summary>
-    /// Clears the saved crawl frontier queue snapshot.
-    /// </summary>
-    /// <param name="connection">The open database connection.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task ClearFrontierAsync(SqliteConnection connection, CancellationToken cancellationToken)
-    {
-        using var clear = connection.CreateCommand();
-        clear.CommandText = "DELETE FROM CrawlFrontier";
-        await clear.ExecuteNonQueryAsync(cancellationToken);
-    }
-
-    /// <summary>
-    /// Saves the current crawl frontier queue to the database in a transaction.
-    /// </summary>
-    /// <param name="connection">The open database connection.</param>
-    /// <param name="urls">The collection of URLs to save.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task SaveFrontierAsync(SqliteConnection connection, IEnumerable<string> urls, CancellationToken cancellationToken)
-    {
-        using var transaction = connection.BeginTransaction();
- 
-        using (var clear = connection.CreateCommand())
-        {
-            clear.Transaction = transaction;
-            clear.CommandText = "DELETE FROM CrawlFrontier";
-            await clear.ExecuteNonQueryAsync(cancellationToken);
-        }
- 
-        using (var insert = connection.CreateCommand())
-        {
-            insert.Transaction = transaction;
-            insert.CommandText = "INSERT OR IGNORE INTO CrawlFrontier (Url, Seq) VALUES (@Url, @Seq)";
-            var urlParam = insert.Parameters.Add("@Url", SqliteType.Text);
-            var seqParam = insert.Parameters.Add("@Seq", SqliteType.Integer);
-            int seq = 0;
-            foreach (var url in urls)
-            {
-                urlParam.Value = url;
-                seqParam.Value = seq++;
-                await insert.ExecuteNonQueryAsync(cancellationToken);
-            }
-        }
- 
-        await transaction.CommitAsync(cancellationToken);
     }
 
     /// <summary>

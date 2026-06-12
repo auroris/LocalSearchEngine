@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
-// Local embeddings run on the CPU via ONNX Runtime. The model (bge-small-en-v1.5,
+// Local embeddings run on the CPU via ONNX Runtime. The model (snowflake-arctic-embed-s,
 // 384-dim) is fetched at build time and copied next to the app; see Directory.Build.props.
 builder.Services.AddSingleton<IEmbedder>(_ => new LocalEmbedderAdapter());
 

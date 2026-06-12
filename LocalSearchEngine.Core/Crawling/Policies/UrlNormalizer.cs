@@ -1,4 +1,4 @@
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Policies;
 
 /// <summary>
 /// Canonicalizes URLs so that equivalent links collapse to a single form
