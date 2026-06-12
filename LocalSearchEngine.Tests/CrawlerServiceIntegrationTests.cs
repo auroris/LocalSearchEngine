@@ -32,6 +32,7 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     private readonly VectorSearchService _search;
     private readonly CountingEmbedder _embedder = new();
     private readonly FakeHandler _handler = new();
+    private readonly HttpClient _httpClient;
 
     public CrawlerServiceIntegrationTests()
     {
@@ -45,10 +46,11 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         var store = _provider.GetRequiredService<VectorStore>();
         var settings = Options.Create(new SearchSettings { MaxDistance = 1.0, CandidatePoolSize = 100 });
         _search = new VectorSearchService(_embedder, store, new DatabaseConfig(_connectionString), settings, NullLogger<VectorSearchService>.Instance);
+        _httpClient = new HttpClient(_handler);
     }
 
     private CrawlerService NewCrawler() =>
-        new(new HttpClient(_handler), _search, NullLogger<CrawlerService>.Instance, new DatabaseConfig(_connectionString));
+        new(_httpClient, _search, NullLogger<CrawlerService>.Instance, new DatabaseConfig(_connectionString));
 
     private async Task EnsureSchemaAsync()
     {
@@ -369,6 +371,7 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     public void Dispose()
     {
         _provider.Dispose();
+        _httpClient.Dispose();
         _handler.Dispose();
         SqliteConnection.ClearAllPools();
         TryDelete(_dbPath);

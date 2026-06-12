@@ -302,7 +302,7 @@ public static class TextChunker
 
     private static (StringListWithTokenCount, bool) Split(ReadOnlySpan<char> input, string? inputString, int maxTokens, ReadOnlySpan<char> separators, bool trim, TokenCounter? tokenCounter, int inputTokenCount)
     {
-        if (inputString is null || input.SequenceEqual(inputString.AsSpan())) { throw new Exception("inputString should be null or match input"); }
+        if (inputString is not null && !input.SequenceEqual(inputString.AsSpan())) { throw new Exception("inputString should be null or match input"); }
 
         StringListWithTokenCount result = new(tokenCounter);
         var inputWasSplit = false;

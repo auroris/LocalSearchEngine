@@ -236,17 +236,19 @@ public static class CrawlStore
     public static async Task StoreOutlinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> outlinks, CancellationToken cancellationToken)
     {
         using var transaction = connection.BeginTransaction();
-
+ 
         using (var delete = connection.CreateCommand())
         {
+            delete.Transaction = transaction;
             delete.CommandText = "DELETE FROM CrawlLinks WHERE FromUrl = @From";
             delete.Parameters.AddWithValue("@From", fromUrl);
             await delete.ExecuteNonQueryAsync(cancellationToken);
         }
-
+ 
         if (outlinks.Count > 0)
         {
             using var insert = connection.CreateCommand();
+            insert.Transaction = transaction;
             insert.CommandText = "INSERT OR IGNORE INTO CrawlLinks (FromUrl, ToUrl) VALUES (@From, @To)";
             var fromParam = insert.Parameters.Add("@From", SqliteType.Text);
             var toParam = insert.Parameters.Add("@To", SqliteType.Text);
@@ -257,7 +259,7 @@ public static class CrawlStore
                 await insert.ExecuteNonQueryAsync(cancellationToken);
             }
         }
-
+ 
         await transaction.CommitAsync(cancellationToken);
     }
 
@@ -339,15 +341,17 @@ public static class CrawlStore
     public static async Task SaveFrontierAsync(SqliteConnection connection, IEnumerable<string> urls, CancellationToken cancellationToken)
     {
         using var transaction = connection.BeginTransaction();
-
+ 
         using (var clear = connection.CreateCommand())
         {
+            clear.Transaction = transaction;
             clear.CommandText = "DELETE FROM CrawlFrontier";
             await clear.ExecuteNonQueryAsync(cancellationToken);
         }
-
+ 
         using (var insert = connection.CreateCommand())
         {
+            insert.Transaction = transaction;
             insert.CommandText = "INSERT OR IGNORE INTO CrawlFrontier (Url, Seq) VALUES (@Url, @Seq)";
             var urlParam = insert.Parameters.Add("@Url", SqliteType.Text);
             var seqParam = insert.Parameters.Add("@Seq", SqliteType.Integer);
@@ -359,7 +363,7 @@ public static class CrawlStore
                 await insert.ExecuteNonQueryAsync(cancellationToken);
             }
         }
-
+ 
         await transaction.CommitAsync(cancellationToken);
     }
 
