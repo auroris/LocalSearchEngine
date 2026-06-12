@@ -6,26 +6,39 @@ using Microsoft.Data.Sqlite;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace LocalSearchEngine.Core;
+using LocalSearchEngine.Core.TextProcessing;
 
+namespace LocalSearchEngine.Core.Searching;
+
+/// <summary>
+/// Represents a structured text chunk and its generated vector embedding stored in the index database.
+/// </summary>
 public class TextChunkRecord
 {
+    /// <summary>Gets or sets the unique identifier of the chunk record.</summary>
     [VectorStoreKey]
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
+    /// <summary>Gets or sets the URL of the page containing the chunk.</summary>
     [VectorStoreData]
     public string Url { get; set; } = string.Empty;
 
+    /// <summary>Gets or sets the text content of the chunk.</summary>
     [VectorStoreData]
     public string Text { get; set; } = string.Empty;
 
+    /// <summary>Gets or sets a value indicating whether the chunk represents a heading.</summary>
     [VectorStoreData]
     public bool IsHeading { get; set; } = false;
 
+    /// <summary>Gets or sets the 384-dimensional vector embedding of the chunk text.</summary>
     [VectorStoreVector(384)]
     public ReadOnlyMemory<float> Embedding { get; set; }
 }
 
+/// <summary>
+/// Provides vector search and keyword hybrid query operations over the text chunks index in SQLite.
+/// </summary>
 public class VectorSearchService
 {
     private readonly IEmbedder _embedder;
@@ -34,6 +47,14 @@ public class VectorSearchService
     private readonly SearchSettings _settings;
     private readonly ILogger<VectorSearchService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VectorSearchService"/> class.
+    /// </summary>
+    /// <param name="embedder">The local embedder used to generate text embeddings.</param>
+    /// <param name="vectorStore">The vector database store provider.</param>
+    /// <param name="dbConfig">The configuration containing database connection details.</param>
+    /// <param name="options">The relevance scoring settings options.</param>
+    /// <param name="logger">The logger instance.</param>
     public VectorSearchService(IEmbedder embedder, VectorStore vectorStore, DatabaseConfig dbConfig, IOptions<SearchSettings> options, ILogger<VectorSearchService> logger)
     {
         _embedder = embedder;
@@ -44,9 +65,9 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Creates the vector collection (and its backing tables) if missing and enables
-    /// WAL. Writers (the crawler) call this; the read-only web app does not.
+    /// Ensures that the vector search collection and backing database tables exist.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task EnsureCreatedAsync()
     {
         await _collection.EnsureCollectionExistsAsync();
@@ -57,6 +78,11 @@ public class VectorSearchService
         await command.ExecuteNonQueryAsync();
     }
 
+    /// <summary>
+    /// Deletes all indexed text chunks and their companion vector rows associated with the specified URL.
+    /// </summary>
+    /// <param name="url">The URL whose chunks to delete.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task DeleteUrlChunksAsync(string url)
     {
         try
@@ -90,6 +116,13 @@ public class VectorSearchService
         }
     }
 
+    /// <summary>
+    /// Splits page text into chunks, embeds each, and inserts them into the vector database.
+    /// </summary>
+    /// <param name="url">The source page URL.</param>
+    /// <param name="fullText">The text content to be chunked and indexed.</param>
+    /// <param name="isHeading"><c>true</c> if the text consists of page headings; otherwise, <c>false</c>.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task IndexUrlChunksAsync(string url, string fullText, bool isHeading = false)
     {
         var records = new List<TextChunkRecord>();
@@ -113,17 +146,35 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Hybrid search returning every "close enough" result (vector hits at or above
-    /// the similarity threshold, plus all exact keyword matches) — no count cap.
-    /// Ranking and thresholding live in <see cref="SearchRanker"/>.
+    /// Performs a hybrid search (semantic vector + FTS5 keyword) for the specified query and ranks the results.
     /// </summary>
+    /// <param name="query">The search query text.</param>
+    /// <returns>A <see cref="SearchResponse"/> object containing the ranked results.</returns>
     public async Task<SearchResponse> SearchAsync(string query)
     {
         int pool = _settings.CandidatePoolSize;
 
-        // Semantic candidates: the connector returns nearest-first; Score is cosine distance.
-        // Queries go through EmbedQuery so BGE's retrieval instruction is applied (passages
-        // were indexed raw via Embed).
+        // Vector search (embed + ANN scan) and keyword search (FTS5) are independent, so kick
+        // the keyword query off first and let it overlap the embedding + vector scan.
+        var keywordTask = GetKeywordHitsAsync(query, pool);
+        var vectorHits = await GetVectorHitsAsync(query, pool);
+        var keywordHits = await keywordTask;
+
+        // Titles for every candidate URL feed the title boost and the result list.
+        var titles = await LoadTitlesAsync(vectorHits, keywordHits);
+
+        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings, titles);
+        return new SearchResponse { Items = items, TotalMatches = items.Count };
+    }
+
+    /// <summary>
+    /// Retrieves nearest semantic candidate hits from the vector database.
+    /// </summary>
+    /// <param name="query">The query string.</param>
+    /// <param name="pool">The candidate pool size to retrieve.</param>
+    /// <returns>A list of <see cref="VectorCandidate"/> matches.</returns>
+    private async Task<List<VectorCandidate>> GetVectorHitsAsync(string query, int pool)
+    {
         var vectorHits = new List<VectorCandidate>();
         var queryEmbedding = _embedder.EmbedQuery(query);
         await foreach (var result in _collection.SearchAsync(queryEmbedding, pool))
@@ -134,10 +185,18 @@ public class VectorSearchService
                 result.Record.IsHeading,
                 result.Score ?? double.MaxValue));
         }
+        return vectorHits;
+    }
 
-        // Keyword candidates from the FTS5 index, in two tiers, plus per-URL titles.
+    /// <summary>
+    /// Retrieves keyword candidates matching the query from the full-text search index.
+    /// </summary>
+    /// <param name="query">The query string.</param>
+    /// <param name="pool">The candidate pool limit size.</param>
+    /// <returns>A list of <see cref="KeywordCandidate"/> matches.</returns>
+    private async Task<List<KeywordCandidate>> GetKeywordHitsAsync(string query, int pool)
+    {
         var keywordHits = new List<KeywordCandidate>();
-        var titles = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
         try
         {
             using var connection = new SqliteConnection(_dbConfig.ConnectionString);
@@ -153,22 +212,51 @@ public class VectorSearchService
             {
                 await CollectKeywordHitsAsync(connection, BuildAndMatch(terms), exactPhrase: false, pool, keywordHits);
             }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch keyword matches from SQLite for query {Query}", query);
+        }
+        return keywordHits;
+    }
 
-            // Titles for every candidate URL feed the title boost and the result list.
+    /// <summary>
+    /// Loads titles from database for all candidate URLs gathered in semantic and keyword passes.
+    /// </summary>
+    /// <param name="vectorHits">The collection of vector hits.</param>
+    /// <param name="keywordHits">The collection of keyword hits.</param>
+    /// <returns>A dictionary map of URLs to their titles.</returns>
+    private async Task<Dictionary<string, string?>> LoadTitlesAsync(
+        IReadOnlyCollection<VectorCandidate> vectorHits, IReadOnlyCollection<KeywordCandidate> keywordHits)
+    {
+        var titles = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+        try
+        {
             var urls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var v in vectorHits) urls.Add(v.Url);
             foreach (var k in keywordHits) urls.Add(k.Url);
+            if (urls.Count == 0) return titles;
+
+            using var connection = new SqliteConnection(_dbConfig.ConnectionString);
+            await connection.OpenAsync();
             await LoadTitlesAsync(connection, urls, titles);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to fetch keyword matches/titles from SQLite for query {Query}", query);
+            _logger.LogWarning(ex, "Failed to fetch result titles from SQLite.");
         }
-
-        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings, titles);
-        return new SearchResponse { Items = items, TotalMatches = items.Count };
+        return titles;
     }
 
+    /// <summary>
+    /// Queries the full-text search index with the specified match expression and collects candidates.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="matchExpr">The FTS5 MATCH expression query.</param>
+    /// <param name="exactPhrase"><c>true</c> if this matches the query literally; otherwise, <c>false</c>.</param>
+    /// <param name="limit">The maximum number of rows to retrieve.</param>
+    /// <param name="into">The list to append matches to.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     private static async Task CollectKeywordHitsAsync(
         SqliteConnection connection, string matchExpr, bool exactPhrase, int limit, List<KeywordCandidate> into)
     {
@@ -191,6 +279,13 @@ public class VectorSearchService
         }
     }
 
+    /// <summary>
+    /// Queries the database in batches to resolve titles for the specified candidate URLs.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="urls">The set of URLs to fetch titles for.</param>
+    /// <param name="into">The target dictionary to store the retrieved titles.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     private static async Task LoadTitlesAsync(
         SqliteConnection connection, IReadOnlyCollection<string> urls, Dictionary<string, string?> into)
     {
@@ -222,14 +317,26 @@ public class VectorSearchService
         }
     }
 
-    /// <summary>A single quoted FTS5 phrase: the whole query matched verbatim and in order.</summary>
+    /// <summary>
+    /// Builds a verbatim FTS5 phrase match expression from the query.
+    /// </summary>
+    /// <param name="query">The search query.</param>
+    /// <returns>A formatted match expression.</returns>
     private static string BuildPhraseMatch(string query) => "\"" + query.Replace("\"", "\"\"") + "\"";
 
-    /// <summary>An FTS5 expression requiring every term (each quoted), in any order/position.</summary>
+    /// <summary>
+    /// Builds a multi-term AND FTS5 match expression.
+    /// </summary>
+    /// <param name="terms">The word terms to join with AND.</param>
+    /// <returns>A formatted match expression.</returns>
     private static string BuildAndMatch(IEnumerable<string> terms) =>
-        string.Join(" ", terms.Select(t => "\"" + t.Replace("\"", "\"\"") + "\""));
+        string.Join(" AND ", terms.Select(t => "\"" + t.Replace("\"", "\"\"") + "\""));
 
-    /// <summary>Splits a query into word tokens (letters/digits), discarding punctuation.</summary>
+    /// <summary>
+    /// Splits the query text into word tokens, ignoring punctuation.
+    /// </summary>
+    /// <param name="query">The query string.</param>
+    /// <returns>A list of clean word tokens.</returns>
     private static List<string> ExtractTerms(string query)
     {
         var terms = new List<string>();

@@ -1,4 +1,7 @@
 using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Searching;
+using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -33,7 +36,7 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
         _provider = services.BuildServiceProvider();
 
         var store = _provider.GetRequiredService<VectorStore>();
-        var settings = Options.Create(new SearchSettings { MinSimilarity = 0.0, CandidatePoolSize = 100 });
+        var settings = Options.Create(new SearchSettings { MaxDistance = 1.0, CandidatePoolSize = 100 });
         _service = new VectorSearchService(
             new FakeEmbedder(), store, new DatabaseConfig(_connectionString), settings, NullLogger<VectorSearchService>.Instance);
     }
@@ -115,6 +118,31 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
     {
         try { if (File.Exists(path)) File.Delete(path); }
         catch { /* temp file; best effort */ }
+    }
+
+    [Fact]
+    public void TestReflection()
+    {
+        var type = typeof(SmartComponents.LocalEmbeddings.LocalEmbedder);
+        var sb = new System.Text.StringBuilder();
+        foreach (var ctor in type.GetConstructors())
+        {
+            sb.Append("Constructor: ").Append(ctor.Name).Append("(");
+            foreach (var p in ctor.GetParameters())
+            {
+                sb.Append(p.ParameterType.FullName).Append(" ").Append(p.Name).Append(", ");
+            }
+            sb.AppendLine(")");
+        }
+        foreach (var field in type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static))
+        {
+            sb.AppendLine($"Field: {field.FieldType.FullName} {field.Name}");
+        }
+        foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static))
+        {
+            sb.AppendLine($"Property: {prop.PropertyType.FullName} {prop.Name}");
+        }
+        throw new Exception(sb.ToString());
     }
 
     /// <summary>Deterministic, model-free embedder: identical text yields an identical vector.</summary>

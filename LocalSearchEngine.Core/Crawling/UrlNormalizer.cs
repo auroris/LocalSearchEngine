@@ -1,4 +1,4 @@
-namespace LocalSearchEngine.Core;
+namespace LocalSearchEngine.Core.Crawling;
 
 /// <summary>
 /// Canonicalizes URLs so that equivalent links collapse to a single form
@@ -7,21 +7,20 @@ namespace LocalSearchEngine.Core;
 public static class UrlNormalizer
 {
     /// <summary>
-    /// Analytics/click parameters that never change the content served, so two URLs
-    /// differing only by these are the same page. <c>utm_*</c> is handled by prefix.
+    /// A set of analytics and click tracking query parameters that do not affect the page content.
     /// </summary>
     private static readonly HashSet<string> TrackingParams = new(StringComparer.OrdinalIgnoreCase)
     {
         "gclid", "gclsrc", "dclid", "gbraid", "wbraid", "fbclid", "msclkid", "yclid",
         "mc_cid", "mc_eid", "igshid", "ref_src", "_hsenc", "_hsmi", "vero_id",
-        "oly_enc_id", "oly_anon_id", "_openstat", "yclid", "spm",
+        "oly_enc_id", "oly_anon_id", "_openstat", "spm",
     };
 
     /// <summary>
-    /// Strips the fragment, any trailing slash from the path, and known tracking
-    /// parameters from the query. The remaining query is preserved verbatim and in
-    /// order. The root path ("/") is left intact.
+    /// Canonicalizes the specified absolute URI.
     /// </summary>
+    /// <param name="uri">The absolute <see cref="Uri"/> to normalize.</param>
+    /// <returns>A normalized URL string with tracking parameters and fragments removed, and trailing slashes trimmed.</returns>
     public static string Normalize(Uri uri)
     {
         var builder = new UriBuilder(uri) { Fragment = string.Empty };
@@ -34,9 +33,10 @@ public static class UrlNormalizer
     }
 
     /// <summary>
-    /// Removes tracking parameters from a raw query string (with or without the leading
-    /// '?'), returning the cleaned query without a leading '?' (empty if nothing remains).
+    /// Strips known tracking parameters from a raw query string.
     /// </summary>
+    /// <param name="query">The raw query string, with or without a leading '?'.</param>
+    /// <returns>A query string with tracking parameters removed, without a leading '?'.</returns>
     private static string StripTrackingParams(string query)
     {
         if (string.IsNullOrEmpty(query)) return string.Empty;
@@ -55,13 +55,20 @@ public static class UrlNormalizer
         return string.Join("&", kept);
     }
 
+    /// <summary>
+    /// Determines whether the specified query parameter key is a known tracking parameter.
+    /// </summary>
+    /// <param name="key">The query parameter key to check.</param>
+    /// <returns><c>true</c> if the key matches a tracking parameter or starts with "utm_"; otherwise, <c>false</c>.</returns>
     private static bool IsTrackingParam(string key) =>
         key.StartsWith("utm_", StringComparison.OrdinalIgnoreCase) || TrackingParams.Contains(key);
 
     /// <summary>
-    /// Parses <paramref name="url"/> as an absolute URI and normalizes it.
-    /// Returns false for relative or malformed input.
+    /// Attempts to parse and normalize the specified URL string.
     /// </summary>
+    /// <param name="url">The URL string to parse.</param>
+    /// <param name="normalized">When this method returns, contains the normalized URL string if parsing succeeded; otherwise, an empty string.</param>
+    /// <returns><c>true</c> if the URL is absolute and successfully normalized; otherwise, <c>false</c>.</returns>
     public static bool TryNormalize(string? url, out string normalized)
     {
         if (Uri.TryCreate(url, UriKind.Absolute, out var uri))

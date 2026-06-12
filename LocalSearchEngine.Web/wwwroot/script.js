@@ -3,15 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const resultsContainer = document.getElementById('resultsContainer');
 
+    let inFlight = null;
+
     searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const query = searchInput.value.trim();
         if (!query) return;
 
+        // Cancel any still-running search so a slow earlier query can't land after a newer one.
+        if (inFlight) inFlight.abort();
+        const controller = new AbortController();
+        inFlight = controller;
+
         resultsContainer.innerHTML = '<div class="results-status">Searching local vector database...</div>';
 
         try {
-            const response = await fetch(`/api/search/query?q=${encodeURIComponent(query)}`);
+            const response = await fetch(`/api/search/query?q=${encodeURIComponent(query)}`, { signal: controller.signal });
             if (!response.ok) {
                 let message = 'Search failed';
                 try {
@@ -24,8 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const results = await response.json();
             displayResults(results, query);
         } catch (error) {
+            if (error.name === 'AbortError') return; // superseded by a newer search
             resultsContainer.innerHTML = '';
             resultsContainer.appendChild(buildMessage(error.message, 'error'));
+        } finally {
+            if (inFlight === controller) inFlight = null;
         }
     });
 
@@ -45,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         header.textContent = `Found ${total} relevant ${total === 1 ? 'result' : 'results'}.`;
         resultsContainer.appendChild(header);
 
-        const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+        const stopWords = new Set(["the", "and", "a", "an", "of", "to", "in", "is", "for", "on", "at", "by", "this", "that", "with", "from", "as", "it", "its"]);
+        const terms = query.toLowerCase().split(/\s+/).filter(t => t.length >= 2 && !stopWords.has(t));
+
 
         results.forEach((result, index) => {
             const card = document.createElement('div');

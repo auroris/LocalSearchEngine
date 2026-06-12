@@ -2,9 +2,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Searching;
+using LocalSearchEngine.Core.TextProcessing;
 using Polly;
 using Polly.Extensions.Http;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -12,32 +16,58 @@ var config = new ConfigurationBuilder()
     .Build();
 
 string url = "";
-string dbPath = config["db"] ?? DefaultDbPath();
+string dbPath = !string.IsNullOrWhiteSpace(config["db"]) ? config["db"]! : "search.db";
 int maxPages = config.GetValue<int?>("max-pages") ?? int.MaxValue;
+int maxPagesPerHost = config.GetValue<int?>("max-pages-per-host") ?? int.MaxValue;
 var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
 
 bool showHelp = false;
 
 for (int i = 0; i < args.Length; i++)
 {
-    if (args[i] == "-help" || args[i] == "--help")
+    var arg = args[i];
+    if (arg == "-help" || arg == "--help")
     {
         showHelp = true;
     }
-    else if (args[i] == "--db" && i + 1 < args.Length)
+    else if (arg == "--db")
     {
+        if (i + 1 >= args.Length)
+        {
+            Console.Error.WriteLine("Error: --db requires a path.");
+            return;
+        }
         dbPath = args[++i];
     }
-    else if (args[i] == "--max-pages" && i + 1 < args.Length)
+    else if (arg == "--max-pages")
     {
-        if (int.TryParse(args[++i], out int parsedMax))
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out maxPages) || maxPages <= 0)
         {
-            maxPages = parsedMax;
+            Console.Error.WriteLine("Error: --max-pages requires a positive integer.");
+            return;
         }
+    }
+    else if (arg == "--max-pages-per-host")
+    {
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out maxPagesPerHost) || maxPagesPerHost <= 0)
+        {
+            Console.Error.WriteLine("Error: --max-pages-per-host requires a positive integer.");
+            return;
+        }
+    }
+    else if (arg.StartsWith('-'))
+    {
+        Console.Error.WriteLine($"Error: unknown option '{arg}'. Run with --help for usage.");
+        return;
     }
     else if (string.IsNullOrEmpty(url))
     {
-        url = args[i];
+        url = arg;
+    }
+    else
+    {
+        Console.Error.WriteLine($"Error: unexpected argument '{arg}'. Only one start URL is accepted.");
+        return;
     }
 }
 
@@ -46,12 +76,15 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("Usage: dotnet run -- [options] <url>");
     Console.WriteLine();
     Console.WriteLine("Options:");
-    Console.WriteLine("  --db <path>         Path to the SQLite database. Default is search.db or adjacent web project's DB.");
-    Console.WriteLine("                      (Can also be set via 'db' in appsettings.json)");
-    Console.WriteLine("  --max-pages <n>     Maximum number of pages to index this run (304s, skips, and");
-    Console.WriteLine("                      failures don't count). Default is infinity.");
-    Console.WriteLine("                      (Can also be set via 'max-pages' in appsettings.json)");
-    Console.WriteLine("  -help, --help       Show this help message and exit.");
+    Console.WriteLine("  --db <path>              Path to the SQLite database. Default is 'search.db' in the");
+    Console.WriteLine("                           working directory. (Can also be set via 'db' in appsettings.json.)");
+    Console.WriteLine("  --max-pages <n>          Maximum number of pages to index this run (304s, skips, and");
+    Console.WriteLine("                           failures don't count). Default is infinity.");
+    Console.WriteLine("                           (Can also be set via 'max-pages' in appsettings.json.)");
+    Console.WriteLine("  --max-pages-per-host <n> Stop indexing a host once it has contributed n pages, a guard");
+    Console.WriteLine("                           against crawler traps (calendars, faceted nav). Default infinity.");
+    Console.WriteLine("                           (Can also be set via 'max-pages-per-host' in appsettings.json.)");
+    Console.WriteLine("  -help, --help            Show this help message and exit.");
     Console.WriteLine();
     Console.WriteLine("Arguments:");
     Console.WriteLine("  <url>               The starting URL to crawl.");
@@ -74,7 +107,7 @@ if (!string.IsNullOrEmpty(dbDirectory))
 {
     Directory.CreateDirectory(dbDirectory);
 }
-string connectionString = $"Data Source={fullDbPath};Cache=Shared";
+string connectionString = $"Data Source={fullDbPath}";
 
 var services = new ServiceCollection();
 
@@ -90,6 +123,12 @@ services.AddLogging(configure => configure.AddSimpleConsole(options =>
 services.AddHttpClient<CrawlerService>(client =>
 {
     client.DefaultRequestHeaders.Add("User-Agent", CrawlerService.UserAgent);
+})
+// Advertise and transparently decompress gzip/deflate/brotli, so most pages transfer at a
+// fraction of their raw size instead of uncompressed.
+.ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+{
+    AutomaticDecompression = DecompressionMethods.All,
 })
 .AddPolicyHandler(HttpPolicyExtensions
     .HandleTransientHttpError()
@@ -119,27 +158,14 @@ Console.CancelKeyPress += (_, e) =>
 };
 
 Console.WriteLine($"Starting spider for: {url} with max pages: {(maxPages == int.MaxValue ? "infinity" : maxPages)}");
+if (maxPagesPerHost != int.MaxValue)
+{
+    Console.WriteLine($"Per-host page cap: {maxPagesPerHost}");
+}
 if (allowedServers.Length > 0)
 {
     Console.WriteLine($"Allowed additional servers: {string.Join(", ", allowedServers)}");
 }
 Console.WriteLine($"Database: {fullDbPath}");
-await crawlerService.CrawlAsync(url, maxPages, allowedServers, cts.Token);
+await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, cts.Token);
 Console.WriteLine("Spider completed.");
-
-// By default, write the index into the web app's files so it can serve it without
-// any extra configuration. In the repo/dev layout the web project sits next to this
-// one; when published standalone (no sibling), fall back to the current directory.
-// Override anytime with --db <path>.
-static string DefaultDbPath()
-{
-    for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
-    {
-        var webDir = Path.Combine(dir.FullName, "LocalSearchEngine.Web");
-        if (Directory.Exists(webDir))
-        {
-            return Path.Combine(webDir, "search.db");
-        }
-    }
-    return "search.db";
-}

@@ -2,27 +2,40 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace LocalSearchEngine.Core;
+namespace LocalSearchEngine.Core.Crawling;
 
 /// <summary>
-/// A parsed robots.txt, reduced to the group that applies to a single user agent.
-/// Supports grouped <c>User-agent</c> lines, <c>Allow</c>/<c>Disallow</c> with
-/// <c>*</c> and <c>$</c> wildcards, longest-match precedence, and <c>Crawl-delay</c>.
+/// Represents a parsed robots.txt ruleset, resolved to the group that applies to a single user agent.
+/// Supports grouped user agents, Allow/Disallow directives with wildcards, longest-match precedence, and crawl delays.
 /// </summary>
 public sealed class RobotsRules
 {
+    /// <summary>
+    /// Represents a single parsed robots.txt rule.
+    /// </summary>
+    /// <param name="Allow"><c>true</c> if this is an Allow rule; <c>false</c> if it is a Disallow rule.</param>
+    /// <param name="PatternLength">The length of the original pattern string, used for precedence ranking.</param>
+    /// <param name="Matcher">The compiled regex used to match paths against this rule.</param>
     private readonly record struct Rule(bool Allow, int PatternLength, Regex Matcher);
 
     private readonly List<Rule> _rules;
 
+    /// <summary>
+    /// Gets the minimum wait delay between requests in seconds, if specified.
+    /// </summary>
     public double? CrawlDelaySeconds { get; }
 
     /// <summary>
-    /// Absolute sitemap URLs declared via <c>Sitemap:</c> lines. These are global (not
-    /// tied to a user-agent group), so they are returned regardless of which group applies.
+    /// Gets the list of absolute sitemap URLs declared in robots.txt.
     /// </summary>
     public IReadOnlyList<string> Sitemaps { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RobotsRules"/> class.
+    /// </summary>
+    /// <param name="rules">The list of compiled matching rules.</param>
+    /// <param name="crawlDelaySeconds">The crawl delay in seconds, if any.</param>
+    /// <param name="sitemaps">The global sitemaps listed.</param>
     private RobotsRules(List<Rule> rules, double? crawlDelaySeconds, IReadOnlyList<string> sitemaps)
     {
         _rules = rules;
@@ -30,13 +43,23 @@ public sealed class RobotsRules
         Sitemaps = sitemaps;
     }
 
-    /// <summary>An allow-everything ruleset (no robots.txt, or none applicable).</summary>
+    /// <summary>
+    /// Gets an allow-all ruleset with no restrictions.
+    /// </summary>
     public static RobotsRules AllowAll { get; } = new(new List<Rule>(), null, Array.Empty<string>());
 
     /// <summary>
-    /// Whether the path (plus query) may be fetched. Among all matching rules the
-    /// longest pattern wins; ties go to Allow, per the de-facto Google spec.
+    /// Gets a disallow-all ruleset, blocking all crawl requests.
     /// </summary>
+    public static RobotsRules DisallowAll { get; } = new(
+        new List<Rule> { new Rule(false, 1, new Regex("^/", RegexOptions.CultureInvariant)) },
+        null, Array.Empty<string>());
+
+    /// <summary>
+    /// Determines whether fetching is allowed for the specified path and query.
+    /// </summary>
+    /// <param name="pathAndQuery">The request path and query string.</param>
+    /// <returns><c>true</c> if the path is allowed; otherwise, <c>false</c>.</returns>
     public bool IsAllowed(string pathAndQuery)
     {
         if (string.IsNullOrEmpty(pathAndQuery)) pathAndQuery = "/";
@@ -61,9 +84,11 @@ public sealed class RobotsRules
     }
 
     /// <summary>
-    /// Parses robots.txt content and returns the rules for <paramref name="userAgent"/>.
-    /// A user-agent-specific group takes precedence over the <c>*</c> group.
+    /// Parses the content of a robots.txt file and returns the rules applicable to the specified user agent.
     /// </summary>
+    /// <param name="content">The plain text content of the robots.txt file.</param>
+    /// <param name="userAgent">The user agent string of the crawler.</param>
+    /// <returns>A <see cref="RobotsRules"/> instance containing the matching rules.</returns>
     public static RobotsRules Parse(string content, string userAgent)
     {
         var groups = new List<Group>();
@@ -88,8 +113,6 @@ public sealed class RobotsRules
             switch (field)
             {
                 case "user-agent":
-                    // A user-agent line after a rule line starts a fresh group;
-                    // consecutive user-agent lines share one group.
                     if (current is null || lastLineWasRule)
                     {
                         current = new Group();
@@ -117,13 +140,11 @@ public sealed class RobotsRules
                     break;
 
                 case "sitemap":
-                    // Global directive: independent of user-agent groups and grouping state.
                     if (value.Length > 0) sitemaps.Add(value);
                     break;
             }
         }
 
-        // Prefer a group that names this agent; otherwise fall back to "*".
         Group? specific = null;
         Group? wildcard = null;
         foreach (var group in groups)
@@ -141,7 +162,6 @@ public sealed class RobotsRules
             }
         }
 
-        // Sitemap lines are global, so they are returned even when no group constrains us.
         var chosen = specific ?? wildcard;
         if (chosen is null)
         {
@@ -151,8 +171,6 @@ public sealed class RobotsRules
         var compiled = new List<Rule>();
         foreach (var (allow, path) in chosen.Directives)
         {
-            // An empty Disallow means "allow everything" and an empty Allow is a
-            // no-op; both contribute no constraining rule.
             if (string.IsNullOrEmpty(path)) continue;
             compiled.Add(new Rule(allow, path.Length, new Regex(ToRegex(path), RegexOptions.CultureInvariant)));
         }
@@ -160,6 +178,11 @@ public sealed class RobotsRules
         return new RobotsRules(compiled, chosen.CrawlDelay, sitemaps);
     }
 
+    /// <summary>
+    /// Creates and registers a new parser group.
+    /// </summary>
+    /// <param name="groups">The active list of user agent groups.</param>
+    /// <returns>A new <see cref="Group"/> instance.</returns>
     private static Group NewGroup(List<Group> groups)
     {
         var group = new Group();
@@ -167,7 +190,11 @@ public sealed class RobotsRules
         return group;
     }
 
-    /// <summary>Converts a robots path pattern (with * and trailing $) to an anchored regex.</summary>
+    /// <summary>
+    /// Converts a robots path pattern string into a regular expression.
+    /// </summary>
+    /// <param name="pattern">The pattern string (supporting '*' and '$').</param>
+    /// <returns>A regex pattern string.</returns>
     private static string ToRegex(string pattern)
     {
         var sb = new StringBuilder("^");
@@ -184,10 +211,24 @@ public sealed class RobotsRules
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Represents a parsed group of directives for specific user agents.
+    /// </summary>
     private sealed class Group
     {
+        /// <summary>
+        /// Gets the list of user agents this group applies to.
+        /// </summary>
         public List<string> Agents { get; } = new();
+
+        /// <summary>
+        /// Gets the list of path directives (Allow/Disallow) and their patterns.
+        /// </summary>
         public List<(bool Allow, string Path)> Directives { get; } = new();
+
+        /// <summary>
+        /// Gets or sets the crawl delay specified for this group in seconds.
+        /// </summary>
         public double? CrawlDelay { get; set; }
     }
 }

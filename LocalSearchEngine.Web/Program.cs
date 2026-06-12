@@ -1,4 +1,6 @@
 using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Searching;
+using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.SemanticKernel;
 using Microsoft.Data.Sqlite;
 
@@ -15,12 +17,21 @@ builder.Services.AddSingleton<IEmbedder>(_ => new LocalEmbedderAdapter());
 
 // The web app only issues SELECTs against the index the crawler builds, but it opens
 // the connection ReadWrite (not ReadOnly) on purpose: a WAL reader needs write access
-// to the -shm wal-index to read a database the crawler is actively writing. The index
-// lives alongside the web app's own files (its content root) by default; point the
-// crawler here with its --db argument, or override with ConnectionStrings:SearchDb.
-string defaultDbPath = Path.Combine(builder.Environment.ContentRootPath, "search.db");
+// to the -shm wal-index to read a database the crawler is actively writing.
+//
+// The DB path comes from the "db" setting (default "search.db"), resolved relative to the
+// app's content root so the index sits alongside the app's own files; point the crawler at the
+// same file with its --db option. A full ConnectionStrings:SearchDb still wins when present,
+// for setups that need to tune the connection string (e.g. a different open mode) directly.
+string? configuredDb = builder.Configuration["db"];
+string dbPath = string.IsNullOrWhiteSpace(configuredDb) ? "search.db" : configuredDb;
+if (!Path.IsPathRooted(dbPath))
+{
+    dbPath = Path.Combine(builder.Environment.ContentRootPath, dbPath);
+}
+
 string connectionString = builder.Configuration.GetConnectionString("SearchDb")
-    ?? $"Data Source={defaultDbPath};Mode=ReadWrite";
+    ?? $"Data Source={dbPath};Mode=ReadWrite";
 
 builder.Services.AddSingleton(new DatabaseConfig(connectionString));
 builder.Services.AddSqliteVectorStore(_ => connectionString);

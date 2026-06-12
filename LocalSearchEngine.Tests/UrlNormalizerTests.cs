@@ -1,4 +1,4 @@
-using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Crawling;
 using Xunit;
 
 namespace LocalSearchEngine.Tests;

@@ -1,4 +1,7 @@
 using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Searching;
+using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -40,7 +43,7 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         _provider = services.BuildServiceProvider();
 
         var store = _provider.GetRequiredService<VectorStore>();
-        var settings = Options.Create(new SearchSettings { MinSimilarity = 0.0, CandidatePoolSize = 100 });
+        var settings = Options.Create(new SearchSettings { MaxDistance = 1.0, CandidatePoolSize = 100 });
         _search = new VectorSearchService(_embedder, store, new DatabaseConfig(_connectionString), settings, NullLogger<VectorSearchService>.Instance);
     }
 
@@ -86,6 +89,21 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
 
         Assert.Equal(0, ChunkCount(Page2));
         Assert.True(ChunkCount(Seed) > 0); // the still-good page stays indexed
+
+        // Verify that the metadata columns for the deleted page (Page2) are set to NULL in the database
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT Title, ETag, LastModified, ContentHash FROM CrawlState WHERE Url = @Url";
+            command.Parameters.AddWithValue("@Url", Page2);
+            using var reader = await command.ExecuteReaderAsync();
+            Assert.True(await reader.ReadAsync());
+            Assert.True(reader.IsDBNull(0), "Title should be NULL");
+            Assert.True(reader.IsDBNull(1), "ETag should be NULL");
+            Assert.True(reader.IsDBNull(2), "LastModified should be NULL");
+            Assert.True(reader.IsDBNull(3), "ContentHash should be NULL");
+        }
     }
 
     [Fact]
@@ -182,6 +200,153 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         Assert.True(ChunkCount(Seed) > 0);
     }
 
+    [Fact]
+    public async Task Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
+    {
+        await EnsureSchemaAsync();
+
+        // The server returns real HTML but labels it application/octet-stream. We should sniff the
+        // bytes (leading <!DOCTYPE html) instead of trusting the generic type or the URL extension.
+        _handler.Routes[Seed] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(
+                "<!DOCTYPE html><html><head><title>Sniffed</title></head><body><p>real html body here</p></body></html>",
+                Encoding.UTF8, "application/octet-stream")
+        };
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(ChunkCount(Seed) > 0);
+    }
+
+    [Fact]
+    public async Task Www_variant_of_seed_host_is_in_scope_by_default()
+    {
+        await EnsureSchemaAsync();
+
+        // Seed is the apex host; a link points at the www host. They should share scope.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://www.test.local/page\">www</a>");
+        _handler.Routes["http://www.test.local/page"] = _ => Html("<title>WWW</title><p>on the www host</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        Assert.True(ChunkCount("http://www.test.local/page") > 0);
+    }
+
+    [Fact]
+    public async Task Seed_redirect_to_a_new_host_adopts_that_host()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed redirects to an unrelated host (e.g. a vanity domain -> the real site). The
+        // final host isn't in scope initially, but because the *seed* is what redirected, the
+        // crawler should adopt the destination host and keep crawling there.
+        _handler.Routes[Seed] = _ =>
+        {
+            var resp = Html("<title>Real</title><p>the real site</p> <a href=\"http://real.example/about\">about</a>");
+            resp.RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://real.example/");
+            return resp;
+        };
+        _handler.Routes["http://real.example/about"] = _ => Html("<title>About</title><p>about page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        Assert.True(ChunkCount("http://real.example/") > 0);       // redirected content indexed under the new host
+        Assert.True(ChunkCount("http://real.example/about") > 0);  // and its in-scope links followed
+    }
+
+    [Fact]
+    public async Task Identical_content_on_two_urls_is_indexed_once()
+    {
+        await EnsureSchemaAsync();
+
+        // Two pages whose bytes are identical (e.g. the same article under two paths). Only the
+        // first crawled should be indexed; the second is aliased to it with no chunks of its own.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/a\">a</a> <a href=\"/b\">b</a>");
+        const string duplicate = "<title>Same</title><p>one identical body of text</p>";
+        _handler.Routes["http://test.local/a"] = _ => Html(duplicate);
+        _handler.Routes["http://test.local/b"] = _ => Html(duplicate);
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        long a = ChunkCount("http://test.local/a");
+        long b = ChunkCount("http://test.local/b");
+        Assert.True((a > 0) ^ (b > 0), $"expected exactly one of a/b to be indexed, got a={a}, b={b}");
+    }
+
+    [Fact]
+    public async Task Per_host_cap_stops_indexing_after_n_pages()
+    {
+        await EnsureSchemaAsync();
+
+        // seed -> p2, p3 ; p2 -> p4. With a cap of 2, only the seed and the next page index.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home page</p> <a href=\"/p2\">2</a> <a href=\"/p3\">3</a>");
+        _handler.Routes["http://test.local/p2"] = _ => Html("<title>P2</title><p>two</p> <a href=\"/p4\">4</a>");
+        _handler.Routes["http://test.local/p3"] = _ => Html("<title>P3</title><p>three</p>");
+        _handler.Routes["http://test.local/p4"] = _ => Html("<title>P4</title><p>four</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, maxPagesPerHost: 2);
+
+        Assert.Equal(2, CountIndexedUrls());
+    }
+
+    [Fact]
+    public async Task Redirect_cleans_up_old_index_and_metadata()
+    {
+        await EnsureSchemaAsync();
+
+        // 1. Initial crawl: index http://test.local/page1
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/page1\">page1</a>");
+        _handler.Routes["http://test.local/page1"] = _ => Html("<title>Page 1</title><p>This is the first page</p> <a href=\"/page1-out\">outlink</a>");
+        _handler.Routes["http://test.local/page1-out"] = _ => Html("<title>Outlink</title><p>outlink content</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        // Verify page1 is indexed
+        Assert.True(ChunkCount("http://test.local/page1") > 0);
+        Assert.True(HasOutlinks("http://test.local/page1"));
+
+        // 2. Second crawl: page1 now redirects to page2
+        _handler.Routes["http://test.local/page1"] = _ =>
+        {
+            var resp = Html("<title>Page 2</title><p>This is the second page</p>");
+            resp.RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.local/page2");
+            return resp;
+        };
+        _handler.Routes["http://test.local/page2"] = _ => Html("<title>Page 2</title><p>This is the second page</p>");
+
+        // Run crawl again
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        // Verify page2 is indexed, page1 is cleaned up from the index
+        Assert.True(ChunkCount("http://test.local/page2") > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/page1"));
+
+        // Verify page1 outlinks are deleted
+        Assert.False(HasOutlinks("http://test.local/page1"));
+
+        // Verify page1 crawl state has status code 302 and cleared metadata (Title is null)
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT StatusCode, Title, ContentHash FROM CrawlState WHERE Url = 'http://test.local/page1'";
+        using var reader = await command.ExecuteReaderAsync();
+        Assert.True(await reader.ReadAsync());
+        Assert.Equal(302, reader.GetInt32(0));
+        Assert.True(reader.IsDBNull(1)); // Title should be null
+        Assert.True(reader.IsDBNull(2)); // ContentHash should be null
+    }
+
+    private bool HasOutlinks(string url)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM CrawlLinks WHERE FromUrl = @u";
+        command.Parameters.AddWithValue("@u", url);
+        return (long)(command.ExecuteScalar() ?? 0L) > 0;
+    }
+
     private long ChunkCount(string url)
     {
         using var connection = new SqliteConnection(_connectionString);
@@ -189,6 +354,15 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT COUNT(*) FROM text_chunks WHERE Url = @u";
         command.Parameters.AddWithValue("@u", url);
+        return (long)(command.ExecuteScalar() ?? 0L);
+    }
+
+    private long CountIndexedUrls()
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(DISTINCT Url) FROM text_chunks";
         return (long)(command.ExecuteScalar() ?? 0L);
     }
 

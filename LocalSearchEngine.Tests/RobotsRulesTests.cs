@@ -1,4 +1,4 @@
-using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Crawling;
 using Xunit;
 
 namespace LocalSearchEngine.Tests;
@@ -12,6 +12,13 @@ public class RobotsRulesTests
     {
         var rules = RobotsRules.Parse("", Bot);
         Assert.True(rules.IsAllowed("/anything"));
+    }
+
+    [Fact]
+    public void DisallowAll_blocks_every_path()
+    {
+        Assert.False(RobotsRules.DisallowAll.IsAllowed("/"));
+        Assert.False(RobotsRules.DisallowAll.IsAllowed("/anything/deep?with=query"));
     }
 
     [Fact]

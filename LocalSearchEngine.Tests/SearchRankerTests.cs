@@ -1,4 +1,4 @@
-using LocalSearchEngine.Core;
+using LocalSearchEngine.Core.Searching;
 using Xunit;
 
 namespace LocalSearchEngine.Tests;
@@ -7,7 +7,7 @@ public class SearchRankerTests
 {
     private static SearchSettings Settings() => new()
     {
-        MinSimilarity = 0.5,
+        MaxDistance = 0.5,
         ExactPhraseBoost = 0.5,
         AndTermsBoost = 0.25,
         HeadingBoost = 0.3,
@@ -83,6 +83,17 @@ public class SearchRankerTests
 
         // similarity 0.50 + filename boost 0.40
         Assert.Equal(0.90, results[0].Score, 6);
+    }
+
+    [Fact]
+    public void Filename_match_boosts_multi_word_query_across_slug_separators()
+    {
+        // Query words are separated by spaces; the slug uses '-'. They should still match.
+        var vectors = new[] { new VectorCandidate("https://x/user-guide.html", "body", false, 0.50) }; // 0.50
+
+        var results = SearchRanker.Rank(vectors, NoKeywords, "user guide", Settings());
+
+        Assert.Equal(0.90, results[0].Score, 6); // 0.50 + filename 0.40
     }
 
     [Fact]
