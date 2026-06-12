@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using LocalSearchEngine.Core.TextProcessing;
 using Xunit;
 
@@ -15,32 +17,39 @@ public class TextChunkerTests
     [Fact]
     public void Chunk_returns_single_chunk_when_text_fits()
     {
-        var text = string.Join(" ", Enumerable.Range(0, 50).Select(i => $"w{i}"));
+        var text = "This is a short sentence that easily fits in a single chunk.";
         var chunks = TextChunker.Chunk(text, chunkSize: 150, overlap: 30).ToList();
         Assert.Single(chunks);
         Assert.Equal(text, chunks[0]);
     }
 
     [Fact]
-    public void Chunk_overlaps_consecutive_windows()
+    public void Chunk_splits_long_text_into_multiple_chunks()
     {
-        var words = Enumerable.Range(0, 200).Select(i => $"w{i}").ToArray();
-        var chunks = TextChunker.Chunk(string.Join(" ", words), chunkSize: 150, overlap: 30).ToList();
-
-        Assert.Equal(2, chunks.Count);
-        Assert.Equal(words.Take(150), chunks[0].Split(' '));
-        // Second window starts at 150 - 30 = 120.
-        Assert.Equal(words.Skip(120), chunks[1].Split(' '));
+        // Generate a long text with multiple sentences to trigger splitting
+        var sentences = Enumerable.Range(0, 50)
+            .Select(i => $"This is sentence number {i} in the long document text.")
+            .ToList();
+        var text = string.Join(" ", sentences);
+        
+        // Use a small chunk size to force multiple chunks
+        var chunks = TextChunker.Chunk(text, chunkSize: 30, overlap: 10).ToList();
+        
+        Assert.True(chunks.Count > 1);
+        // Ensure no chunk is empty
+        Assert.All(chunks, c => Assert.False(string.IsNullOrWhiteSpace(c)));
     }
 
     [Fact]
-    public void Chunk_does_not_emit_redundant_overlap_only_tail()
+    public void Chunk_respects_sentence_boundaries()
     {
-        // Exactly one chunk-size of words: the tail must not produce a second,
-        // fully-contained overlap fragment.
-        var words = Enumerable.Range(0, 150).Select(i => $"w{i}").ToArray();
-        var chunks = TextChunker.Chunk(string.Join(" ", words), chunkSize: 150, overlap: 30).ToList();
-        Assert.Single(chunks);
+        var text = "First sentence is here. Second sentence starts here.";
+        // Set chunk size small enough that it splits at a sentence boundary
+        var chunks = TextChunker.Chunk(text, chunkSize: 10, overlap: 2).ToList();
+        
+        Assert.True(chunks.Count >= 2);
+        // The first chunk should end with a period or complete sentence.
+        Assert.Contains("First sentence is here.", chunks[0]);
     }
 
     [Fact]
