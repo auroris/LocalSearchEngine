@@ -19,6 +19,7 @@ string url = "";
 string dbPath = !string.IsNullOrWhiteSpace(config["db"]) ? config["db"]! : "search.db";
 int maxPages = config.GetValue<int?>("max-pages") ?? int.MaxValue;
 int maxPagesPerHost = config.GetValue<int?>("max-pages-per-host") ?? int.MaxValue;
+long maxCrawlSizeBytes = config.GetValue<long?>("max-crawl-size-bytes") ?? 15 * 1024 * 1024;
 var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
 
 bool showHelp = false;
@@ -55,6 +56,14 @@ for (int i = 0; i < args.Length; i++)
             return;
         }
     }
+    else if (arg == "--max-crawl-size-bytes")
+    {
+        if (i + 1 >= args.Length || !long.TryParse(args[++i], out maxCrawlSizeBytes) || maxCrawlSizeBytes <= 0)
+        {
+            Console.Error.WriteLine("Error: --max-crawl-size-bytes requires a positive long integer.");
+            return;
+        }
+    }
     else if (arg.StartsWith('-'))
     {
         Console.Error.WriteLine($"Error: unknown option '{arg}'. Run with --help for usage.");
@@ -84,6 +93,9 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("  --max-pages-per-host <n> Stop indexing a host once it has contributed n pages, a guard");
     Console.WriteLine("                           against crawler traps (calendars, faceted nav). Default infinity.");
     Console.WriteLine("                           (Can also be set via 'max-pages-per-host' in appsettings.json.)");
+    Console.WriteLine("  --max-crawl-size-bytes <n> Stop downloading/indexing a page/file if its size exceeds");
+    Console.WriteLine("                           n bytes. Default is 15728640 (15 MB).");
+    Console.WriteLine("                           (Can also be set via 'max-crawl-size-bytes' in appsettings.json.)");
     Console.WriteLine("  -help, --help            Show this help message and exit.");
     Console.WriteLine();
     Console.WriteLine("Arguments:");
@@ -167,10 +179,11 @@ if (maxPagesPerHost != int.MaxValue)
 {
     Console.WriteLine($"Per-host page cap: {maxPagesPerHost}");
 }
+Console.WriteLine($"Max crawl size per page/file: {maxCrawlSizeBytes} bytes");
 if (allowedServers.Length > 0)
 {
     Console.WriteLine($"Allowed additional servers: {string.Join(", ", allowedServers)}");
 }
 Console.WriteLine($"Database: {fullDbPath}");
-await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, cts.Token);
+await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, cts.Token);
 Console.WriteLine("Spider completed.");

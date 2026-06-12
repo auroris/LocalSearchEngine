@@ -58,4 +58,54 @@ public class CrawlPolicyTests
         }
         return ms.ToArray();
     }
+
+    [Theory]
+    [InlineData("text/html", true)]
+    [InlineData("application/xhtml+xml", true)]
+    [InlineData("application/pdf", true)]
+    [InlineData("application/vnd.openxmlformats-officedocument.wordprocessingml.document", true)]
+    [InlineData("application/octet-stream", true)]
+    [InlineData("text/plain", true)]
+    [InlineData("application/zip", true)]
+    [InlineData("application/x-zip-compressed", true)]
+    [InlineData("image/png", false)]
+    [InlineData("application/json", false)]
+    [InlineData("text/css", false)]
+    [InlineData(null, true)]
+    [InlineData("", true)]
+    [InlineData("text/html; charset=utf-8", true)]
+    public void IsSupportedOrGenericContentType_validates_against_whitelist(string? mediaType, bool expected)
+    {
+        Assert.Equal(expected, CrawlPolicy.IsSupportedOrGenericContentType(mediaType));
+    }
+
+    [Fact]
+    public void IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+    {
+        var pdf = Encoding.ASCII.GetBytes("%PDF-1.7");
+        var zip = new byte[] { 0x50, 0x4B, 0x03, 0x04, 0x00, 0x00 };
+        var html = Encoding.UTF8.GetBytes("  \n<!DOCTYPE html>");
+        var junk = Encoding.UTF8.GetBytes("random junk bytes here");
+
+        // Generic content types require magic byte checks
+        Assert.True(CrawlPolicy.IsSupportedPrefix(pdf, "application/octet-stream"));
+        Assert.True(CrawlPolicy.IsSupportedPrefix(zip, "application/octet-stream"));
+        Assert.True(CrawlPolicy.IsSupportedPrefix(html, "application/octet-stream"));
+        Assert.False(CrawlPolicy.IsSupportedPrefix(junk, "application/octet-stream"));
+
+        // Authoritative content types do not check prefix magic bytes
+        Assert.True(CrawlPolicy.IsSupportedPrefix(junk, "application/pdf"));
+        Assert.True(CrawlPolicy.IsSupportedPrefix(junk, "text/html"));
+    }
+
+    [Theory]
+    [InlineData("http://test.local/doc.docx", true)]
+    [InlineData("http://test.local/archive.zip", false)]
+    [InlineData("http://test.local/sheet.xlsx", false)]
+    [InlineData("http://test.local/download", true)]
+    public void IsSupportedPrefix_filters_zip_files_by_extension(string url, bool expected)
+    {
+        var zipMagic = new byte[] { 0x50, 0x4B, 0x03, 0x04, 0x00, 0x00 };
+        Assert.Equal(expected, CrawlPolicy.IsSupportedPrefix(zipMagic, "application/octet-stream", url));
+    }
 }

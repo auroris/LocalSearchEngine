@@ -70,9 +70,10 @@ public partial class CrawlerService
     /// <param name="maxPages">The maximum number of pages to index.</param>
     /// <param name="allowedServers">Optional additional allowed hosts, each of the form <c>[scheme://]host[:port]</c>; an omitted scheme or port matches any.</param>
     /// <param name="maxPagesPerHost">The maximum pages to crawl on any single host.</param>
+    /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the crawl operation.</returns>
-    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, CancellationToken cancellationToken = default)
+    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, long maxCrawlSizeBytes = 15 * 1024 * 1024, CancellationToken cancellationToken = default)
     {
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
@@ -86,6 +87,7 @@ public partial class CrawlerService
             RobotsCache = new Dictionary<string, RobotsRules>(StringComparer.OrdinalIgnoreCase),
             Queue = new Queue<string>(),
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
+            MaxCrawlSizeBytes = maxCrawlSizeBytes,
         };
 
         if (allowedServers != null)
@@ -325,7 +327,65 @@ public partial class CrawlerService
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
-        var body = await response.Content.ReadAsByteArrayAsync(cancellationToken);
+        // Check Content-Length first
+        long? contentLength = response.Content.Headers.ContentLength;
+        if (contentLength.HasValue && contentLength.Value > ctx.MaxCrawlSizeBytes)
+        {
+            _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", finalUrl, contentLength.Value, ctx.MaxCrawlSizeBytes);
+            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+        }
+
+        // Check Content-Type first
+        var contentType = response.Content.Headers.ContentType?.MediaType;
+        if (!CrawlPolicy.IsSupportedOrGenericContentType(contentType))
+        {
+            _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", finalUrl, contentType);
+            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+        }
+
+        // Read stream incrementally with limit and prefix sniffing
+        byte[] body;
+        using (var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken))
+        using (var bodyStream = new MemoryStream())
+        {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            bool checkedPrefix = false;
+
+            while ((bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+            {
+                if (bodyStream.Length + bytesRead > ctx.MaxCrawlSizeBytes)
+                {
+                    _logger.LogWarning("Skipping {Url}: content size exceeded limit of {Limit} bytes during download.", finalUrl, ctx.MaxCrawlSizeBytes);
+                    return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+                }
+
+                bodyStream.Write(buffer, 0, bytesRead);
+
+                if (!checkedPrefix && bodyStream.Length >= 4096)
+                {
+                    checkedPrefix = true;
+                    var prefix = bodyStream.ToArray();
+                    if (!CrawlPolicy.IsSupportedPrefix(prefix, contentType, finalUrl))
+                    {
+                        _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
+                        return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+                    }
+                }
+            }
+
+            body = bodyStream.ToArray();
+
+            // Final fallback check if stream ended before 4KB and was never checked
+            if (!checkedPrefix)
+            {
+                if (!CrawlPolicy.IsSupportedPrefix(body, contentType, finalUrl))
+                {
+                    _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
+                    return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+                }
+            }
+        }
 
         // Byte-identical to the last successful crawl? Treat exactly like a 304 — re-enqueue
         // stored outlinks, skip the expensive re-embed. The chunk check makes this self-healing:
@@ -370,7 +430,6 @@ public partial class CrawlerService
 
         // How to parse the body is decided by the server-declared Content-Type (falling back to
         // byte sniffing), never the URL's file extension — see CrawlPolicy.ClassifyContent.
-        var contentType = response.Content.Headers.ContentType?.MediaType;
         var kind = CrawlPolicy.ClassifyContent(contentType, body);
 
         if (kind == DocKind.Pdf)
@@ -646,5 +705,8 @@ public partial class CrawlerService
 
         /// <summary>Gets the lookup mapping content hashes to the URLs they were first indexed under.</summary>
         public Dictionary<string, string> IndexedContentHashes = new(StringComparer.Ordinal);
+
+        /// <summary>Gets or sets the maximum size in bytes allowed for a crawled page/file.</summary>
+        public long MaxCrawlSizeBytes;
     }
 }

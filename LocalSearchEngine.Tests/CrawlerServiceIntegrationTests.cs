@@ -494,6 +494,87 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         return (long)(command.ExecuteScalar() ?? 0L);
     }
 
+    [Fact]
+    public async Task Crawl_skips_files_exceeding_max_crawl_size_bytes()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<a href=\"/largefile\">large</a>");
+        _handler.Routes["http://test.local/largefile"] = _ => Html(new string('x', 300));
+
+        // Seed page is ~97 bytes (should succeed), largefile is >300 bytes (should be skipped under 150 byte limit)
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, maxCrawlSizeBytes: 150);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/largefile")); // largefile is skipped
+    }
+
+    [Fact]
+    public async Task Crawl_skips_unsupported_content_types_by_header()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/image.png\">image</a>");
+        _handler.Routes["http://test.local/image.png"] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(new byte[] { 0, 1, 2, 3 })
+            {
+                Headers = { ContentType = new MediaTypeHeaderValue("image/png") }
+            }
+        };
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/image.png"));
+    }
+
+    [Fact]
+    public async Task Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/badfile\">bad file</a>");
+        
+        // Return 10KB of random junk, labeled application/octet-stream (generic, trigger sniff)
+        var junkBytes = new byte[10240];
+        new Random(42).NextBytes(junkBytes);
+        _handler.Routes["http://test.local/badfile"] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(junkBytes)
+            {
+                Headers = { ContentType = new MediaTypeHeaderValue("application/octet-stream") }
+            }
+        };
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/badfile")); // skipped after prefix check fails
+    }
+
+    [Fact]
+    public async Task Crawl_skips_non_docx_zip_files_by_extension()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/data.zip\">ZIP archive</a>");
+        
+        var zipBytes = new byte[] { 0x50, 0x4B, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00 };
+        _handler.Routes["http://test.local/data.zip"] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(zipBytes)
+            {
+                Headers = { ContentType = new MediaTypeHeaderValue("application/octet-stream") }
+            }
+        };
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/data.zip")); // skipped because it's zip magic but extension is not docx
+    }
+
     public void Dispose()
     {
         _provider.Dispose();

@@ -14,10 +14,11 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 - **Robots directives on pages**: `noindex`/`nofollow`/`none` from `<meta name="robots">`, bot-specific meta tags, and the `X-Robots-Tag` header are honored; 404/410 pages are removed from the index; transient errors (5xx) never erase previously indexed content.
 - **Graceful shutdown**: `Ctrl+C` stops fetching and flushes in-flight indexing work before exiting.
 - **Trap protection**: an optional per-host page cap (`--max-pages-per-host`) guards against crawler traps like calendars and faceted navigation.
+- **Streaming fetch with early abort**: responses are read incrementally and abandoned mid-download as soon as the `Content-Type`, a magic-byte sniff of the first 4 KB, or the size cap (15 MB by default, `--max-crawl-size-bytes`, counted after decompression) rules them out for indexing.
 
 ### Document handling
 
-- Content is classified by the server's `Content-Type`, falling back to magic-byte sniffing — never by the URL's file extension. `/page.php` and `/release-1.0` crawl just fine; JSON or images served at pretty URLs are skipped.
+- Content is classified by the server's `Content-Type`, falling back to magic-byte sniffing — never by the URL's file extension. `/page.php` and `/release-1.0` crawl just fine; JSON or images served at pretty URLs are skipped. One deliberate exception: a body that sniffs as a ZIP container but whose URL extension says it isn't `.docx` (`.zip`, `.xlsx`, …) is abandoned mid-download — a `.docx` *is* a ZIP, and the entry listing that tells them apart sits at the end of the archive, so the extension is the only signal available before paying for the whole file.
 - HTML: titles, headings, and visible text are extracted with boilerplate (nav, header, footer, scripts, form controls, etc.) stripped. Pages whose entire body sits inside a `<form>` (Oracle APEX, ASP.NET WebForms) are indexed normally — only the form *controls* are treated as chrome.
 - PDF text extraction (iText) and modern Word `.docx` extraction (NPOI), with embedded document titles indexed like HTML titles.
 
@@ -85,8 +86,9 @@ Allowed hosts are a filter, not a target list. Being allowed means the crawler *
 | `--db <path>` | `search.db` | Path to the SQLite database. |
 | `--max-pages <n>` | unlimited | Pages to index this run (304s, skips, and failures don't count). |
 | `--max-pages-per-host <n>` | unlimited | Stop indexing a host after it contributes n pages. |
+| `--max-crawl-size-bytes <n>` | 15 MB | Skip any page/file larger than n bytes (enforced while downloading, after decompression). |
 
-Each option can also be set in the crawler's `appsettings.json` (`db`, `max-pages`, `max-pages-per-host`), which is also where `allowed-servers` lives.
+Each option can also be set in the crawler's `appsettings.json` (`db`, `max-pages`, `max-pages-per-host`, `max-crawl-size-bytes`), which is also where `allowed-servers` lives.
 
 ### Database location
 

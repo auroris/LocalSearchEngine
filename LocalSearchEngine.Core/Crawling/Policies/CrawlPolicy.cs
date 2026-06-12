@@ -13,6 +13,65 @@ public enum DocKind { Unknown, Html, Pdf, Docx }
 /// </summary>
 public static class CrawlPolicy
 {
+    private static readonly HashSet<string> GenericMimeTypes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "application/octet-stream",
+        "text/plain",
+        "application/zip",
+        "application/x-zip-compressed"
+    };
+
+    /// <summary>
+    /// Determines whether a content type header is directly supported or is a generic type that can be sniffed.
+    /// </summary>
+    /// <param name="mediaType">The media type string from the Content-Type header.</param>
+    /// <returns><c>true</c> if the media type is supported or generic; otherwise, <c>false</c>.</returns>
+    public static bool IsSupportedOrGenericContentType(string? mediaType)
+    {
+        if (string.IsNullOrEmpty(mediaType)) return true;
+
+        int semicolonIdx = mediaType.IndexOf(';');
+        if (semicolonIdx >= 0)
+        {
+            mediaType = mediaType.Substring(0, semicolonIdx);
+        }
+        mediaType = mediaType.Trim();
+
+        if (FromContentType(mediaType) != DocKind.Unknown) return true;
+
+        return GenericMimeTypes.Contains(mediaType);
+    }
+
+    /// <summary>
+    /// Checks if a prefix buffer contains headers or signatures that suggest a supported document kind.
+    /// </summary>
+    /// <param name="prefix">The initial byte chunk from the document stream.</param>
+    /// <param name="contentType">The media type header from the server.</param>
+    /// <param name="url">The URL of the document being fetched.</param>
+    /// <returns><c>true</c> if the prefix structure is supported or generic; otherwise, <c>false</c>.</returns>
+    public static bool IsSupportedPrefix(byte[] prefix, string? contentType, string? url = null)
+    {
+        var declared = FromContentType(contentType);
+        if (declared != DocKind.Unknown) return true;
+
+        if (StartsWith(prefix, PdfMagic)) return true;
+        if (StartsWith(prefix, ZipMagic))
+        {
+            if (!string.IsNullOrEmpty(url) && Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                var ext = Path.GetExtension(uri.AbsolutePath);
+                if (!string.IsNullOrEmpty(ext) && !string.Equals(ext, ".docx", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false; // Looks like a ZIP/container, but extension is explicitly not .docx (e.g. .zip, .xlsx)
+                }
+            }
+            return true; // could be Docx, need full download
+        }
+        if (LooksLikeHtml(prefix)) return true;
+
+        return false;
+    }
+
     /// <summary>
     /// Determines whether the crawl policy allows fetching the specified URL according to robots.txt rules.
     /// </summary>
