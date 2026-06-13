@@ -1,3 +1,4 @@
+using System.Text;
 using System.Xml;
 using Microsoft.Extensions.Logging;
 using LocalSearchEngine.Core.Crawling.Policies;
@@ -26,7 +27,13 @@ public partial class CrawlerService
     {
         var origin = UrlOrigin.Key(uri);
         if (ctx.RobotsCache.TryGetValue(origin, out var cached)) return cached;
-        var rules = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), cancellationToken);
+        var (rules, unavailable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), ctx.MaxCrawlSizeBytes, cancellationToken);
+        if (unavailable)
+        {
+            // Remember the origin so end-of-crawl pruning leaves its URLs alone: they went
+            // unvisited because robots.txt was unavailable, not because the pages are gone.
+            ctx.RobotsUnavailable.Add(origin);
+        }
         ctx.RobotsCache[origin] = rules;
         return rules;
     }
@@ -35,18 +42,26 @@ public partial class CrawlerService
     /// Fetches and parses the robots.txt file for a given origin.
     /// </summary>
     /// <param name="baseUri">The base URI of the origin (scheme, host, and port).</param>
+    /// <param name="maxBytes">The maximum number of body bytes to read.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="RobotsRules"/> instance containing the parsed rules.</returns>
-    private async Task<RobotsRules> GetRobotsRulesAsync(Uri baseUri, CancellationToken cancellationToken)
+    /// <returns>The parsed rules, and whether they are a stand-in for an unavailable (5xx) robots.txt.</returns>
+    private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, long maxBytes, CancellationToken cancellationToken)
     {
         try
         {
             var robotsUrl = new Uri(baseUri, "/robots.txt");
-            using var response = await _httpClient.GetAsync(robotsUrl, cancellationToken);
+            using var response = await _httpClient.GetAsync(robotsUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             if (response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync(cancellationToken);
-                return RobotsRules.Parse(content, UserAgent);
+                // The crawl-wide size limit applies here like everywhere else. Robots directives
+                // are line-based, so an over-limit file is parsed from its truncated prefix
+                // (everything read still applies) rather than discarded outright.
+                var (body, truncated) = await ReadBodyLimitedAsync(response, maxBytes, cancellationToken);
+                if (truncated)
+                {
+                    _logger.LogWarning("robots.txt for {Host} exceeds the {Limit}-byte limit; parsing the truncated prefix.", baseUri.Host, maxBytes);
+                }
+                return (RobotsRules.Parse(Encoding.UTF8.GetString(body), UserAgent), false);
             }
 
             // RFC 9309 §2.3.1.3/§2.3.1.4: a 4xx (e.g. no robots.txt) means "no restrictions",
@@ -55,14 +70,39 @@ public partial class CrawlerService
             if ((int)response.StatusCode >= 500)
             {
                 _logger.LogWarning("robots.txt for {Host} returned {Status}; treating as disallow-all.", baseUri.Host, (int)response.StatusCode);
-                return RobotsRules.DisallowAll;
+                return (RobotsRules.DisallowAll, true);
             }
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to fetch or parse robots.txt");
         }
-        return RobotsRules.AllowAll;
+        return (RobotsRules.AllowAll, false);
+    }
+
+    /// <summary>
+    /// Reads a response body up to the given byte limit. Reading simply stops at the limit
+    /// rather than failing, so callers decide what a truncated body means for them.
+    /// </summary>
+    /// <param name="response">The response whose content stream to read.</param>
+    /// <param name="maxBytes">The maximum number of bytes to read.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The bytes read, and whether the body had more beyond the limit.</returns>
+    private static async Task<(byte[] Body, bool Truncated)> ReadBodyLimitedAsync(HttpResponseMessage response, long maxBytes, CancellationToken cancellationToken)
+    {
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        using var bodyStream = new MemoryStream();
+        var buffer = new byte[8192];
+        while (bodyStream.Length < maxBytes)
+        {
+            int toRead = (int)Math.Min(buffer.Length, maxBytes - bodyStream.Length);
+            int bytesRead = await responseStream.ReadAsync(buffer.AsMemory(0, toRead), cancellationToken);
+            if (bytesRead == 0) return (bodyStream.ToArray(), false);
+            bodyStream.Write(buffer, 0, bytesRead);
+        }
+        // Exactly at the limit: one more read tells us whether the body actually ended here.
+        bool truncated = await responseStream.ReadAsync(buffer.AsMemory(0, 1), cancellationToken) > 0;
+        return (bodyStream.ToArray(), truncated);
     }
 
     /// <summary>
@@ -93,7 +133,7 @@ public partial class CrawlerService
             var sitemapUrl = pending.Dequeue();
             if (!processed.Add(sitemapUrl)) continue;
 
-            var (locations, nestedSitemaps) = await FetchSitemapAsync(sitemapUrl, cancellationToken);
+            var (locations, nestedSitemaps) = await FetchSitemapAsync(sitemapUrl, ctx.MaxCrawlSizeBytes, cancellationToken);
 
             foreach (var nested in nestedSitemaps)
             {
@@ -131,22 +171,37 @@ public partial class CrawlerService
     /// Fetches a sitemap XML and extracts URL locations and nested sitemaps.
     /// </summary>
     /// <param name="sitemapUrl">The URL of the sitemap XML.</param>
+    /// <param name="maxBytes">The maximum number of body bytes to read.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing lists of locations and nested sitemap URLs.</returns>
-    private async Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, CancellationToken cancellationToken)
+    private async Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, long maxBytes, CancellationToken cancellationToken)
     {
         var locations = new List<string>();
         var nested = new List<string>();
         try
         {
-            using var response = await _httpClient.GetAsync(sitemapUrl, cancellationToken);
+            using var response = await _httpClient.GetAsync(sitemapUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             if (!response.IsSuccessStatusCode) return (locations, nested);
+
+            // The crawl-wide size limit applies here like everywhere else, and unlike robots.txt
+            // a truncated sitemap is useless (the XML won't parse), so an oversized one is
+            // skipped entirely — the crawl still proceeds by following links.
+            if (response.Content.Headers.ContentLength is long declaredLength && declaredLength > maxBytes)
+            {
+                _logger.LogWarning("Skipping sitemap {Url}: Content-Length ({Length} bytes) exceeds the {Limit}-byte limit.", sitemapUrl, declaredLength, maxBytes);
+                return (locations, nested);
+            }
 
             // The crawler's HttpClient enables AutomaticDecompression, so transport-level
             // gzip/deflate/brotli (Content-Encoding) is already undone by the time we read the
             // body. We deliberately do NOT special-case ".gz" sitemap files served as raw gzip
             // bodies — uncommon for the sites this crawls, and dropping it keeps the path simple.
-            var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken);
+            var (bytes, truncated) = await ReadBodyLimitedAsync(response, maxBytes, cancellationToken);
+            if (truncated)
+            {
+                _logger.LogWarning("Skipping sitemap {Url}: body exceeds the {Limit}-byte limit.", sitemapUrl, maxBytes);
+                return (locations, nested);
+            }
 
             // Parse with external entities and DTDs disabled so a hostile sitemap can't trigger
             // entity expansion or out-of-band fetches (XXE).

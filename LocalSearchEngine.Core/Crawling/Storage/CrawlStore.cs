@@ -73,6 +73,11 @@ public static class CrawlStore
                 -- Index ContentHash so a re-crawl can spot a URL whose byte-identical content is
                 -- already indexed under a different URL and alias it.
                 CREATE INDEX IF NOT EXISTS idx_crawlstate_contenthash ON CrawlState(ContentHash);
+
+                -- The vector connector creates text_chunks with no index on Url, yet every page
+                -- visit filters on it (chunk deletes, the has-chunks probe, the duplicate-content
+                -- EXISTS) — without this, each of those is a full scan of the largest table.
+                CREATE INDEX IF NOT EXISTS idx_text_chunks_url ON text_chunks(Url);
             ";
             await command.ExecuteNonQueryAsync();
         }
@@ -286,6 +291,44 @@ public static class CrawlStore
             links.Add(reader.GetString(0));
         }
         return links;
+    }
+
+    /// <summary>
+    /// Lists URLs whose last visit predates the given cutoff (or that were never stamped),
+    /// i.e. URLs a crawl that started at the cutoff did not reach.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="cutoffUtc">The crawl start time; rows last crawled before it are returned.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The list of URLs not visited since the cutoff.</returns>
+    public static async Task<List<string>> GetUrlsNotCrawledSinceAsync(SqliteConnection connection, DateTime cutoffUtc, CancellationToken cancellationToken)
+    {
+        var urls = new List<string>();
+        using var command = connection.CreateCommand();
+        // LastCrawled is stored as sortable ISO-8601 text, so the comparison below is sound.
+        command.CommandText = "SELECT Url FROM CrawlState WHERE LastCrawled IS NULL OR LastCrawled < @Cutoff";
+        command.Parameters.AddWithValue("@Cutoff", cutoffUtc);
+        using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            urls.Add(reader.GetString(0));
+        }
+        return urls;
+    }
+
+    /// <summary>
+    /// Deletes the crawl-state row for the specified URL.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="url">The URL whose row to delete.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public static async Task DeleteCrawlStateAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = "DELETE FROM CrawlState WHERE Url = @Url";
+        command.Parameters.AddWithValue("@Url", url);
+        await command.ExecuteNonQueryAsync(cancellationToken);
     }
 
     /// <summary>

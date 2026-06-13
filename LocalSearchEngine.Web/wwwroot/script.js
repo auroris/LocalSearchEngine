@@ -133,4 +133,24 @@ document.addEventListener('DOMContentLoaded', () => {
     function escapeRegex(value) {
         return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
+
+    // Quiet one-line index summary in the footer. Stats are decorative: any failure
+    // (no index yet, endpoint unavailable) just leaves the footer empty.
+    (async function loadStats() {
+        try {
+            const response = await fetch('/api/stats');
+            if (!response.ok) return;
+            const stats = await response.json();
+
+            const parts = [
+                `${Number(stats.indexedPages).toLocaleString()} pages indexed`,
+                `${Number(stats.totalChunks).toLocaleString()} chunks`,
+                `${(stats.dbSizeBytes / (1024 * 1024)).toFixed(1)} MB`,
+            ];
+            if (stats.lastCrawledUtc) {
+                parts.push(`last crawl ${new Date(stats.lastCrawledUtc).toLocaleString()}`);
+            }
+            document.getElementById('statsFooter').textContent = parts.join(' · ');
+        } catch { /* leave the footer empty */ }
+    })();
 });

@@ -24,7 +24,7 @@
             <form id="searchForm">
                 <div class="search-box">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" id="searchInput" placeholder="Ask a question or search for concepts..." required autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="Ask a question or search for concepts... (site:example.com to filter)" required autocomplete="off">
                     <button type="submit" class="primary-btn">Search</button>
                 </div>
             </form>
@@ -33,6 +33,10 @@
         <section class="results-section" id="resultsContainer">
             <!-- Results will be injected here -->
         </section>
+
+        <footer class="stats-footer" id="statsFooter">
+            <!-- Index summary loads here; stays empty if no index exists yet -->
+        </footer>
     </main>
 
     <script src="script.js"></script>

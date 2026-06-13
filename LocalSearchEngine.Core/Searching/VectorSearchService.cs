@@ -148,6 +148,7 @@ public class VectorSearchService
 
     /// <summary>
     /// Performs a hybrid search (semantic vector + FTS5 keyword) for the specified query and ranks the results.
+    /// <c>site:host</c> tokens in the query restrict results to that host and its subdomains.
     /// </summary>
     /// <param name="query">The search query text.</param>
     /// <returns>A <see cref="SearchResponse"/> object containing the ranked results.</returns>
@@ -155,16 +156,34 @@ public class VectorSearchService
     {
         int pool = _settings.CandidatePoolSize;
 
+        // site: filters come out of the query first; the residual text is what gets embedded,
+        // keyword-matched, and boosted. A query that is ONLY site: filters has no text to rank
+        // against, so it returns nothing rather than everything.
+        var parsed = SearchQueryParser.Parse(query);
+        if (parsed.Text.Length == 0)
+        {
+            return new SearchResponse();
+        }
+
         // Keyword (FTS5) pass, then the semantic pass. There is nothing to gain from running
         // them concurrently: Microsoft.Data.Sqlite completes its async methods synchronously,
         // and the embedding is synchronous CPU work, so plain sequential awaits keep that honest.
-        var keywordHits = await GetKeywordHitsAsync(query, pool);
-        var vectorHits = await GetVectorHitsAsync(query, pool);
+        var keywordHits = await GetKeywordHitsAsync(parsed.Text, pool);
+        var vectorHits = await GetVectorHitsAsync(parsed.Text, pool);
+
+        // Site filtering is applied to the retrieved candidates, not pushed into the queries:
+        // off-site candidates simply drop out here. They did occupy candidate-pool slots, so
+        // raise CandidatePoolSize if a heavily multi-site index ever starves filtered searches.
+        if (parsed.SiteFilters.Count > 0)
+        {
+            vectorHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
+            keywordHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
+        }
 
         // Titles for every candidate URL feed the title boost and the result list.
         var titles = await LoadTitlesAsync(vectorHits, keywordHits);
 
-        var items = SearchRanker.Rank(vectorHits, keywordHits, query, _settings, titles);
+        var items = SearchRanker.Rank(vectorHits, keywordHits, parsed.Text, _settings, titles);
         return new SearchResponse { Items = items, TotalMatches = items.Count };
     }
 

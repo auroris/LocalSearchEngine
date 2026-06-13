@@ -96,6 +96,35 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
         Assert.Equal(0, Count("SELECT COUNT(*) FROM text_chunks WHERE Url = 'https://site/beta'"));
     }
 
+    [Fact]
+    public async Task Site_filter_restricts_results_to_the_named_host()
+    {
+        await SeedSchemaAndDataAsync();
+
+        // The same text lives on a second host; an unfiltered search finds both copies,
+        // a site:-filtered one must only return the named host's.
+        await _service.IndexUrlChunksAsync("https://other/alpha-copy", "The Wizard's Grace session recap notes");
+
+        var unfiltered = await _service.SearchAsync("The Wizard's Grace session recap notes");
+        Assert.Contains(unfiltered.Items, i => i.Url == "https://site/alpha");
+        Assert.Contains(unfiltered.Items, i => i.Url == "https://other/alpha-copy");
+
+        var filtered = await _service.SearchAsync("The Wizard's Grace session recap notes site:site");
+        Assert.Contains(filtered.Items, i => i.Url == "https://site/alpha");
+        Assert.All(filtered.Items, i => Assert.StartsWith("https://site/", i.Url));
+    }
+
+    [Fact]
+    public async Task Site_only_query_returns_no_results()
+    {
+        await SeedSchemaAndDataAsync();
+
+        // With the site: token stripped there is no text left to rank against.
+        var response = await _service.SearchAsync("site:site");
+
+        Assert.Empty(response.Items);
+    }
+
     private long Count(string sql)
     {
         using var connection = new SqliteConnection(_connectionString);

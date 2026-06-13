@@ -64,7 +64,9 @@ public partial class CrawlerService
     public Task EnsureCreatedAsync() => CrawlStore.EnsureSchemaAsync(_connectionString);
 
     /// <summary>
-    /// Orchestrates the crawl loop starting from a seed URL.
+    /// Orchestrates the crawl loop starting from a seed URL. A crawl that drains its frontier
+    /// completely (no cancellation and no page cap cutting it short) finishes by pruning index
+    /// entries for in-scope URLs it could no longer reach; see <see cref="PruneStaleUrlsAsync"/>.
     /// </summary>
     /// <param name="seedUrl">The starting URL of the crawl. Its exact origin (scheme, host, and port) is always in scope.</param>
     /// <param name="maxPages">The maximum number of pages to index.</param>
@@ -80,6 +82,10 @@ public partial class CrawlerService
             _logger.LogError("Invalid seed URL: {Url}", seedUrl);
             return;
         }
+
+        // Stamped before anything is visited: after a crawl that drains naturally, any in-scope
+        // row whose LastCrawled predates this moment was unreachable this run and gets pruned.
+        var crawlStartUtc = DateTime.UtcNow;
 
         var ctx = new CrawlContext
         {
@@ -139,6 +145,8 @@ public partial class CrawlerService
         }
 
         int indexedCount = 0;
+        int producedJobs = 0;
+        bool completedNaturally = false;
         // The producer (this loop) fetches and parses pages, owning the queue/visited set and
         // doing only database READS. It hands the resulting work to a single indexer
         // (consumer), which is the sole database writer and the sole caller of the embedder, so
@@ -170,6 +178,9 @@ public partial class CrawlerService
                     && ctx.IndexedPerHost.TryGetValue(currentHostUri.Host, out var hostIndexed)
                     && hostIndexed >= maxPagesPerHost)
                 {
+                    // A skipped URL means "not visited" no longer implies "gone", so this run
+                    // must not prune.
+                    ctx.HostCapSkipped = true;
                     _logger.LogInformation("Per-host cap ({Cap}) reached for {Host}; skipping {Url}", maxPagesPerHost, currentHostUri.Host, currentUrl);
                     continue;
                 }
@@ -196,6 +207,7 @@ public partial class CrawlerService
 
                 if (job is not null)
                 {
+                    producedJobs++;
                     await channel.Writer.WriteAsync(job, CancellationToken.None);
                     if (job is IndexJob)
                     {
@@ -208,12 +220,25 @@ public partial class CrawlerService
                     }
                 }
             }
+
+            // Pruning trusts a crawl only when the frontier drained on its own: not cancelled,
+            // not cut short by the page or per-host caps, and at least one URL actually
+            // contacted (a crawl that produced nothing — say robots.txt failed over to
+            // disallow-all — proves nothing about what still exists).
+            completedNaturally = ctx.Queue.Count == 0
+                && !cancellationToken.IsCancellationRequested
+                && !ctx.HostCapSkipped
+                && producedJobs > 0;
         }
         finally
         {
             // Stop the indexer, let it drain everything already fetched, then tidy the database.
             channel.Writer.Complete();
             await indexer;
+            if (completedNaturally)
+            {
+                await PruneStaleUrlsAsync(ctx, crawlStartUtc);
+            }
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
@@ -601,6 +626,46 @@ public partial class CrawlerService
         : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
     /// <summary>
+    /// Removes index entries for in-scope URLs the completed crawl never reached. Runs only
+    /// after a crawl that drained its frontier naturally, where "not visited this run" reliably
+    /// means "no longer reachable": orphaned pages whose links were removed, and pages a robots
+    /// rule now disallows. Rows on hosts outside this crawl's scope (e.g. another site sharing
+    /// the database) are never touched, and origins whose robots.txt was unavailable (5xx) this
+    /// run are exempt — their URLs went unvisited for reasons that say nothing about staleness.
+    /// </summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="crawlStartUtc">The crawl's start time; rows last visited before it are stale.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    private async Task PruneStaleUrlsAsync(CrawlContext ctx, DateTime crawlStartUtc)
+    {
+        try
+        {
+            var candidates = await CrawlStore.GetUrlsNotCrawledSinceAsync(ctx.Read, crawlStartUtc, CancellationToken.None);
+            int pruned = 0;
+            foreach (var url in candidates)
+            {
+                if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
+                if (!ctx.AllowedHosts.IsAllowed(uri)) continue;
+                if (ctx.RobotsUnavailable.Contains(UrlOrigin.Key(uri))) continue;
+
+                await _vectorSearchService.DeleteUrlChunksAsync(url);
+                await CrawlStore.DeleteOutlinksAsync(ctx.Write, url, CancellationToken.None);
+                await CrawlStore.DeleteCrawlStateAsync(ctx.Write, url, CancellationToken.None);
+                pruned++;
+            }
+            if (pruned > 0)
+            {
+                _logger.LogInformation("Pruned {Count} stale URLs the completed crawl no longer reaches.", pruned);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Pruning is housekeeping; a failure here must not turn a finished crawl into an error.
+            _logger.LogError(ex, "Failed to prune stale URLs.");
+        }
+    }
+
+    /// <summary>
     /// Validates and enqueues a single URL into the frontier queue.
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
@@ -706,7 +771,13 @@ public partial class CrawlerService
         /// <summary>Gets the lookup mapping content hashes to the URLs they were first indexed under.</summary>
         public Dictionary<string, string> IndexedContentHashes = new(StringComparer.Ordinal);
 
-        /// <summary>Gets or sets the maximum size in bytes allowed for a crawled page/file.</summary>
+        /// <summary>Gets or sets the maximum size in bytes allowed for any single download (pages, files, robots.txt, sitemaps).</summary>
         public long MaxCrawlSizeBytes;
+
+        /// <summary>Gets the origins (scheme://host:port) whose robots.txt was unavailable (5xx) this run; their URLs are exempt from pruning.</summary>
+        public HashSet<string> RobotsUnavailable = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Gets or sets a value indicating whether the per-host cap skipped any URL this run, which disables pruning.</summary>
+        public bool HostCapSkipped;
     }
 }

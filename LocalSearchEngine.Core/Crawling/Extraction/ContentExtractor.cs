@@ -55,19 +55,7 @@ public static class ContentExtractor
         AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache,
         string userAgentToken)
     {
-        var doc = new HtmlDocument();
-        using (var stream = new MemoryStream(body))
-        {
-            var encoding = ResolveEncoding(httpCharset);
-            if (encoding != null)
-            {
-                doc.Load(stream, encoding);
-            }
-            else
-            {
-                doc.Load(stream, detectEncodingFromByteOrderMarks: true);
-            }
-        }
+        var doc = LoadHtml(body, httpCharset);
 
         var analysis = new HtmlAnalysis
         {
@@ -107,6 +95,44 @@ public static class ContentExtractor
         }
 
         return analysis;
+    }
+
+    /// <summary>
+    /// Decodes and parses an HTML body. A charset from the HTTP header is authoritative when
+    /// present. Otherwise the document is parsed once (BOM-sniffed, defaulting to UTF-8) and,
+    /// when the page itself declares a different encoding via <c>&lt;meta charset&gt;</c> or
+    /// <c>&lt;meta http-equiv="Content-Type"&gt;</c>, re-parsed with that encoding —
+    /// HtmlAgilityPack records the declaration as <see cref="HtmlDocument.DeclaredEncoding"/>
+    /// but never re-decodes a stream on its own.
+    /// </summary>
+    /// <param name="body">The raw bytes of the HTML page.</param>
+    /// <param name="httpCharset">The charset from the HTTP Content-Type header, if any.</param>
+    /// <returns>The parsed document.</returns>
+    private static HtmlDocument LoadHtml(byte[] body, string? httpCharset)
+    {
+        var doc = new HtmlDocument();
+        var headerEncoding = ResolveEncoding(httpCharset);
+        using (var stream = new MemoryStream(body))
+        {
+            if (headerEncoding != null)
+            {
+                doc.Load(stream, headerEncoding);
+                return doc;
+            }
+            doc.Load(stream, detectEncodingFromByteOrderMarks: true);
+        }
+
+        var declared = doc.DeclaredEncoding;
+        var used = doc.StreamEncoding ?? Encoding.UTF8;
+        // A meta tag claiming UTF-16/32 is wrong by construction (it was just read from
+        // ASCII-compatible bytes); per the HTML5 spec such declarations are ignored.
+        bool selfContradictory = declared is { CodePage: 1200 or 1201 or 12000 or 12001 };
+        if (declared != null && !selfContradictory && declared.CodePage != used.CodePage)
+        {
+            using var reload = new MemoryStream(body);
+            doc.Load(reload, declared);
+        }
+        return doc;
     }
 
     /// <summary>

@@ -454,6 +454,124 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         Assert.True(reader.IsDBNull(2)); // ContentHash should be null
     }
 
+    [Fact]
+    public async Task Stale_pages_are_pruned_after_a_completed_crawl()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/page2\">two</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        Assert.True(ChunkCount(Page2) > 0);
+
+        // The site stops linking to page2 (it isn't 404 — just orphaned). A completed re-crawl
+        // can no longer reach it, so it must drop out of the index and the crawl-state table.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home without the link</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.Equal(0, ChunkCount(Page2));
+        Assert.False(HasCrawlState(Page2));
+        Assert.True(ChunkCount(Seed) > 0); // the reachable page is untouched
+    }
+
+    [Fact]
+    public async Task Capped_crawl_does_not_prune()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v1</p> <a href=\"/page2\">two</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        Assert.True(ChunkCount(Page2) > 0);
+
+        // Changed seed content + maxPages 1: the seed re-indexes, hits the cap, and page2 is
+        // left sitting in the queue. "Not visited" means nothing here, so nothing may be pruned.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v2</p> <a href=\"/page2\">two</a>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 1);
+
+        Assert.True(ChunkCount(Page2) > 0);
+        Assert.True(HasCrawlState(Page2));
+    }
+
+    [Fact]
+    public async Task Pruning_leaves_other_hosts_rows_alone()
+    {
+        await EnsureSchemaAsync();
+
+        // Two sites share the database, each crawled with its own seed (the documented
+        // multi-site workflow).
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/page2\">two</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+        _handler.Routes["http://other.local/"] = _ => Html("<title>Other</title><p>another site entirely</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        await NewCrawler().CrawlAsync("http://other.local/", maxPages: 5);
+        Assert.True(ChunkCount("http://other.local/") > 0);
+        Assert.True(ChunkCount(Page2) > 0); // crawling site B never prunes site A either
+
+        // Re-crawl site A with page2 orphaned: page2 is pruned, site B is out of this
+        // crawl's scope and must survive untouched.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home without the link</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.Equal(0, ChunkCount(Page2));
+        Assert.True(ChunkCount("http://other.local/") > 0);
+        Assert.True(HasCrawlState("http://other.local/"));
+    }
+
+    [Fact]
+    public async Task Robots_5xx_for_an_origin_protects_it_from_pruning()
+    {
+        await EnsureSchemaAsync();
+
+        const string wwwPage = "http://www.test.local/page";
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://www.test.local/page\">www</a>");
+        _handler.Routes[wwwPage] = _ => Html("<title>WWW</title><p>on the www host</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, allowedServers: new[] { "www.test.local" });
+        Assert.True(ChunkCount(wwwPage) > 0);
+
+        // On the re-crawl the www host's robots.txt is down (5xx = disallow-all for now), so its
+        // page goes unvisited — but unavailable robots says nothing about the page being gone,
+        // and pruning must leave that origin alone.
+        _handler.Routes["http://www.test.local/robots.txt"] = _ => new HttpResponseMessage(HttpStatusCode.InternalServerError);
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, allowedServers: new[] { "www.test.local" });
+
+        Assert.True(ChunkCount(wwwPage) > 0);
+        Assert.True(HasCrawlState(wwwPage));
+    }
+
+    [Fact]
+    public async Task Oversized_sitemap_is_skipped_but_crawl_proceeds()
+    {
+        await EnsureSchemaAsync();
+
+        // The sitemap blows the crawl-wide size limit; it must be abandoned (so its entries are
+        // never enqueued) without harming the rest of the crawl.
+        var bloated = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" +
+            "<url><loc>http://test.local/from-sitemap</loc></url>" +
+            $"<!-- {new string('x', 4000)} -->" +
+            "</urlset>";
+        _handler.Routes["http://test.local/sitemap.xml"] = _ => Xml(bloated);
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>small home page</p>");
+        _handler.Routes["http://test.local/from-sitemap"] = _ => Html("<title>Listed</title><p>sitemap-only page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, maxCrawlSizeBytes: 1024);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.Equal(0, ChunkCount("http://test.local/from-sitemap"));
+        Assert.DoesNotContain("http://test.local/from-sitemap", _handler.Requested);
+    }
+
+    private bool HasCrawlState(string url)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM CrawlState WHERE Url = @u";
+        command.Parameters.AddWithValue("@u", url);
+        return (long)(command.ExecuteScalar() ?? 0L) > 0;
+    }
+
     private bool HasOutlinks(string url)
     {
         using var connection = new SqliteConnection(_connectionString);

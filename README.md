@@ -14,18 +14,22 @@ LocalSearchEngine is a fully self-hosted, local search platform built with C# an
 - **Robots directives on pages**: `noindex`/`nofollow`/`none` from `<meta name="robots">`, bot-specific meta tags, and the `X-Robots-Tag` header are honored; 404/410 pages are removed from the index; transient errors (5xx) never erase previously indexed content.
 - **Graceful shutdown**: `Ctrl+C` stops fetching and flushes in-flight indexing work before exiting.
 - **Trap protection**: an optional per-host page cap (`--max-pages-per-host`) guards against crawler traps like calendars and faceted navigation.
-- **Streaming fetch with early abort**: responses are read incrementally and abandoned mid-download as soon as the `Content-Type`, a magic-byte sniff of the first 4 KB, or the size cap (15 MB by default, `--max-crawl-size-bytes`, counted after decompression) rules them out for indexing.
+- **Streaming fetch with early abort**: responses are read incrementally and abandoned mid-download as soon as the `Content-Type`, a magic-byte sniff of the first 4 KB, or the size cap (15 MB by default, `--max-crawl-size-bytes`, counted after decompression) rules them out for indexing. The same size limit is universal: an oversized sitemap is skipped outright, and an oversized robots.txt is parsed from its truncated prefix (directives are line-based, so everything read still applies).
+- **Automatic stale pruning**: a crawl that drains its frontier completely finishes by removing index entries for in-scope URLs it could no longer reach — orphaned pages whose links were removed, and pages a robots rule now disallows. Pruning only trusts a *complete* crawl: it is skipped when the crawl was cancelled or cut short by `--max-pages`/`--max-pages-per-host`, rows on hosts outside the crawl's scope (e.g. another site sharing the database) are never touched, and an origin whose robots.txt was unavailable (5xx) that run is exempt.
 
 ### Document handling
 
 - Content is classified by the server's `Content-Type`, falling back to magic-byte sniffing — never by the URL's file extension. `/page.php` and `/release-1.0` crawl just fine; JSON or images served at pretty URLs are skipped. One deliberate exception: a body that sniffs as a ZIP container but whose URL extension says it isn't `.docx` (`.zip`, `.xlsx`, …) is abandoned mid-download — a `.docx` *is* a ZIP, and the entry listing that tells them apart sits at the end of the archive, so the extension is the only signal available before paying for the whole file.
 - HTML: titles, headings, and visible text are extracted with boilerplate (nav, header, footer, scripts, form controls, etc.) stripped. Pages whose entire body sits inside a `<form>` (Oracle APEX, ASP.NET WebForms) are indexed normally — only the form *controls* are treated as chrome.
+- Character encodings resolve in standards order: a charset in the HTTP header is authoritative; otherwise the BOM, then the page's own `<meta charset>` / `http-equiv` declaration (the document is re-decoded when it declares something different — legacy code pages like windows-1252 included), falling back to UTF-8.
 - PDF text extraction (iText) and modern Word `.docx` extraction (NPOI), with embedded document titles indexed like HTML titles.
 
 ### Search (`LocalSearchEngine.Web`)
 
 - **Hybrid ranking**: semantic (vector cosine similarity) + keyword (SQLite FTS5 with porter stemming) in two tiers — verbatim phrase and all-terms.
 - Returns *every* result at or above a configurable similarity threshold (no fixed result-count cap), with score boosts for exact-phrase, all-terms, heading, title, file-name, and literal-text matches. All weights are tunable under `SearchSettings` in `appsettings.json`.
+- **`site:` filter**: `site:example.com` anywhere in the query restricts results to that host and its subdomains (any port, any scheme); the rest of the query ranks as usual, and multiple `site:` tokens are OR'd together.
+- **Index stats**: `/api/stats` reports indexed pages, chunk count, tracked URLs, database size, and the most recent crawl time; the search page shows the summary in its footer.
 - **Local AI**: the embedding model (`snowflake-arctic-embed-s`, 384-dim, int8 ONNX, ~32 MB) runs on the CPU via ONNX Runtime. It is downloaded once at build time and bundled next to the binaries — see `Directory.Build.props`.
 
 ## Crawl scope
@@ -49,7 +53,7 @@ Allowed hosts are a filter, not a target list. Being allowed means the crawler *
 
 - **`LocalSearchEngine.Core`**: the backbone — crawling (`CrawlerService`, content extraction, robots/URL policy), text chunking, and hybrid search (`VectorSearchService`, `SearchRanker`).
 - **`LocalSearchEngine.Crawler`**: console app that runs the crawl and builds the index.
-- **`LocalSearchEngine.Web`**: ASP.NET Core app serving the search API (`/api/search/query`) and a static frontend.
+- **`LocalSearchEngine.Web`**: ASP.NET Core app serving the search API (`/api/search/query`), the index stats API (`/api/stats`), and a static frontend.
 - **`LocalSearchEngine.Tests`**: xUnit unit and integration tests.
 
 ## Technologies Used
@@ -106,4 +110,4 @@ On the web side, the `db` setting names the file (relative to the content root),
 dotnet test
 ```
 
-Unit tests cover the pure logic — URL normalization, allowed-host rules, robots.txt parsing/matching (including fractional crawl delays), content classification, FTS5 match semantics, text chunking, and search ranking. Integration tests drive the real crawl loop against a fake HTTP server and the real sqlite-vec connector in a temporary database (with a deterministic fake embedder, so no model download), covering 304 handling, redirects, deduplication, per-host caps, form-wrapped pages, non-default ports, and crawl-scope rules.
+Unit tests cover the pure logic — URL normalization, allowed-host rules, robots.txt parsing/matching (including fractional crawl delays), content classification, character-encoding resolution, `site:` query parsing, FTS5 match semantics, text chunking, and search ranking. Integration tests drive the real crawl loop against a fake HTTP server and the real sqlite-vec connector in a temporary database (with a deterministic fake embedder, so no model download), covering 304 handling, redirects, deduplication, per-host caps, form-wrapped pages, non-default ports, crawl-scope rules, stale pruning (and the cases where pruning must hold its fire), and oversized-sitemap skipping.

@@ -354,3 +354,11 @@ mark {
     margin-bottom: 1rem;
     color: var(--text-secondary);
 }
+
+/* Quiet index summary at the bottom of the page */
+.stats-footer {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
