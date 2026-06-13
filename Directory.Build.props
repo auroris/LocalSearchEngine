@@ -15,8 +15,8 @@
   -->
   <PropertyGroup>
     <LocalEmbeddingsModelName>snowflake-arctic-embed-s</LocalEmbeddingsModelName>
-    <LocalEmbeddingsModelUrl>https://huggingface.co/Snowflake/snowflake-arctic-embed-s/resolve/main/onnx/model_quantized.onnx</LocalEmbeddingsModelUrl>
-    <LocalEmbeddingsVocabUrl>https://huggingface.co/Snowflake/snowflake-arctic-embed-s/resolve/main/vocab.txt</LocalEmbeddingsVocabUrl>
+    <LocalEmbeddingsModelPath>$(MSBuildThisFileDirectory)LocalEmbeddingsModel\snowflake-arctic-embed-s\model.onnx</LocalEmbeddingsModelPath>
+    <LocalEmbeddingsVocabPath>$(MSBuildThisFileDirectory)LocalEmbeddingsModel\snowflake-arctic-embed-s\vocab.txt</LocalEmbeddingsVocabPath>
   </PropertyGroup>
 
 </Project>
