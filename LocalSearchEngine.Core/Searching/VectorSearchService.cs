@@ -1,5 +1,4 @@
 using Microsoft.Extensions.VectorData;
-using Microsoft.SemanticKernel;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Data.Sqlite;

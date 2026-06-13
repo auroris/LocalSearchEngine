@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Local embeddings run on the CPU via ONNX Runtime. The model (snowflake-arctic-embed-s,
