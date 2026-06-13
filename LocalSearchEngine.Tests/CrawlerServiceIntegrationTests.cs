@@ -33,7 +33,7 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     private readonly string _connectionString;
     private readonly ServiceProvider _provider;
     private readonly VectorSearchService _search;
-    private readonly CountingEmbedder _embedder = new();
+    private readonly FakeEmbedder _embedder = new();
     private readonly FakeHandler _handler = new();
     private readonly HttpClient _httpClient;
 
@@ -742,48 +742,6 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
 
             response.RequestMessage ??= request; // crawler reads RequestMessage.RequestUri for redirects
             return Task.FromResult(response);
-        }
-    }
-
-    /// <summary>Deterministic embedder that counts how many passages it has embedded.</summary>
-    private sealed class CountingEmbedder : IEmbedder
-    {
-        public int EmbedCount { get; private set; }
-
-        public ReadOnlyMemory<float> EmbedQuery(string text) => Vector(text);
-
-        public ReadOnlyMemory<float> Embed(string text)
-        {
-            EmbedCount++;
-            return Vector(text);
-        }
-
-        private static ReadOnlyMemory<float> Vector(string text)
-        {
-            ulong hash = 1469598103934665603UL;
-            foreach (char ch in text)
-            {
-                hash ^= ch;
-                hash *= 1099511628211UL;
-            }
-
-            var vector = new float[384];
-            ulong state = hash | 1UL;
-            double sumSq = 0;
-            for (int i = 0; i < vector.Length; i++)
-            {
-                state = state * 6364136223846793005UL + 1442695040888963407UL;
-                double value = ((state >> 33) / (double)(1UL << 31)) - 1.0;
-                vector[i] = (float)value;
-                sumSq += value * value;
-            }
-
-            double norm = Math.Sqrt(sumSq);
-            if (norm > 0)
-            {
-                for (int i = 0; i < vector.Length; i++) vector[i] = (float)(vector[i] / norm);
-            }
-            return vector;
         }
     }
 }
