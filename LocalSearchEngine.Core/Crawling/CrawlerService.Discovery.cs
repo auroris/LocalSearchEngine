@@ -132,6 +132,11 @@ public partial class CrawlerService
         {
             var sitemapUrl = pending.Dequeue();
             if (!processed.Add(sitemapUrl)) continue;
+            if (!Uri.TryCreate(sitemapUrl, UriKind.Absolute, out var sitemapUri) || !ctx.AllowedHosts.IsAllowed(sitemapUri))
+            {
+                _logger.LogInformation("Skipping out-of-scope sitemap: {Url}", sitemapUrl);
+                continue;
+            }
 
             var (locations, nestedSitemaps) = await FetchSitemapAsync(sitemapUrl, ctx.MaxCrawlSizeBytes, cancellationToken);
 
@@ -145,9 +150,8 @@ public partial class CrawlerService
                 if (!UrlNormalizer.TryNormalize(loc, out var normalizedUrl)) continue;
                 if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var locUri)) continue;
 
-                // Only entries on the seed's own origin are taken (the sitemap FILE itself may
-                // be hosted elsewhere, e.g. a CDN, when robots.txt declares it). Entries on
-                // other hosts — allowed or not — are ignored: links are the only way in.
+                // Only entries on the seed's own origin are taken. Entries on other hosts —
+                // allowed or not — are ignored: links are the only way in.
                 if (!string.Equals(UrlOrigin.Key(locUri), originKey, StringComparison.OrdinalIgnoreCase)) continue;
 
                 // Same origin as the seed, so the seed's already-fetched robots apply.

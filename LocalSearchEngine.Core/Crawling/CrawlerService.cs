@@ -235,6 +235,11 @@ public partial class CrawlerService
             // Stop the indexer, let it drain everything already fetched, then tidy the database.
             channel.Writer.Complete();
             await indexer;
+            // A robots Disallow is a definite signal, so already-indexed URLs an origin's robots.txt
+            // now bans are dropped after every crawl — capped or cancelled included. Stale-URL
+            // pruning, by contrast, stays gated on a natural completion, where "unreached" can be
+            // trusted to mean "gone".
+            await RemoveRobotsBannedUrlsAsync(ctx);
             if (completedNaturally)
             {
                 await PruneStaleUrlsAsync(ctx, crawlStartUtc);
@@ -255,6 +260,11 @@ public partial class CrawlerService
     private async Task<CrawlJob?> ProduceJobAsync(CrawlContext ctx, string currentUrl, CancellationToken cancellationToken)
     {
         if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri)) return null;
+        if (!ctx.AllowedHosts.IsAllowed(currentUri))
+        {
+            _logger.LogWarning("Out-of-scope URL reached the frontier: {Url}", currentUrl);
+            return null;
+        }
 
         // Frontier filters allow optimistically when an origin's robots aren't cached yet, so
         // the authoritative robots check happens here — after a lazy per-origin robots fetch
@@ -662,6 +672,55 @@ public partial class CrawlerService
         {
             // Pruning is housekeeping; a failure here must not turn a finished crawl into an error.
             _logger.LogError(ex, "Failed to prune stale URLs.");
+        }
+    }
+
+    /// <summary>
+    /// Removes already-indexed URLs that the robots.txt fetched for their origin this crawl now
+    /// disallows. Unlike stale-URL pruning this runs after every crawl — capped or cancelled
+    /// included — because a robots Disallow is a definite signal, not the "we never reached it"
+    /// inference pruning depends on. Only origins actually contacted this run are considered (those
+    /// in the robots cache), and an origin whose robots.txt was unavailable (5xx) is skipped: that
+    /// stands in as disallow-all, and a transient failure must not wipe the origin's index.
+    /// </summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    private async Task RemoveRobotsBannedUrlsAsync(CrawlContext ctx)
+    {
+        try
+        {
+            int removed = 0;
+            foreach (var (origin, rules) in ctx.RobotsCache)
+            {
+                if (ctx.RobotsUnavailable.Contains(origin)) continue;
+                if (!Uri.TryCreate(origin, UriKind.Absolute, out var originUri)) continue;
+
+                // Narrow to the origin's rows in SQL, then confirm each in memory: the prefix is a
+                // coarse filter (it also matches a different port, or a look-alike host such as
+                // example.com.evil.com), so the exact origin key is the authoritative gate.
+                var candidates = await CrawlStore.GetCrawledUrlsWithPrefixAsync(
+                    ctx.Read, originUri.GetLeftPart(UriPartial.Authority), CancellationToken.None);
+                foreach (var url in candidates)
+                {
+                    if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
+                    if (!string.Equals(UrlOrigin.Key(uri), origin, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (CrawlPolicy.IsAllowedByRobots(url, rules)) continue;
+
+                    await _vectorSearchService.DeleteUrlChunksAsync(url);
+                    await CrawlStore.DeleteOutlinksAsync(ctx.Write, url, CancellationToken.None);
+                    await CrawlStore.DeleteCrawlStateAsync(ctx.Write, url, CancellationToken.None);
+                    removed++;
+                }
+            }
+            if (removed > 0)
+            {
+                _logger.LogInformation("Removed {Count} indexed URL(s) now disallowed by robots.txt.", removed);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Housekeeping: a failure here must not turn a finished crawl into an error.
+            _logger.LogError(ex, "Failed to remove robots-disallowed URLs.");
         }
     }
 

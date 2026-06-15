@@ -540,6 +540,65 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
+    {
+        await EnsureSchemaAsync();
+
+        const string Page3 = "http://test.local/page3";
+        // Crawl 1: the seed links to page2 and page3; all three are indexed.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v1</p> <a href=\"/page2\">two</a> <a href=\"/page3\">three</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+        _handler.Routes[Page3] = _ => Html("<title>Three</title><p>third page</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        Assert.True(ChunkCount(Page2) > 0);
+        Assert.True(ChunkCount(Page3) > 0);
+
+        // Crawl 2: robots.txt now bans /page2. The seed's body changes ("v1" -> "v2") so it really
+        // re-indexes, which counts toward the per-host cap of 1 and trips it on page3 — and a
+        // capped crawl deliberately does NOT prune stale URLs. So staleness pruning is off, and the
+        // only thing that can drop the (now unreachable, never re-fetched) page2 is the end-of-crawl
+        // robots-banned removal, which runs regardless of the cap. page3 — allowed, but skipped by
+        // the cap this run — must survive, which it only does because stale pruning never ran.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v2</p> <a href=\"/page2\">two</a> <a href=\"/page3\">three</a>");
+        _handler.Routes["http://test.local/robots.txt"] = _ => Robots("User-agent: *\nDisallow: /page2");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, maxPagesPerHost: 1);
+
+        Assert.Equal(0, ChunkCount(Page2));   // removed because robots.txt now disallows it
+        Assert.False(HasCrawlState(Page2));   // and removed fully, crawl-state row included
+        Assert.True(ChunkCount(Page3) > 0);   // survives — proof stale pruning did not run
+        Assert.True(HasCrawlState(Page3));
+    }
+
+    [Fact]
+    public async Task Robots_removal_leaves_another_origins_index_untouched()
+    {
+        await EnsureSchemaAsync();
+
+        const string Page3 = "http://test.local/page3";
+        const string OtherHome = "http://other.local/";
+        // Two sites share one database (the documented multi-site setup), each crawled from its
+        // own seed.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v1</p> <a href=\"/page2\">two</a> <a href=\"/page3\">three</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+        _handler.Routes[Page3] = _ => Html("<title>Three</title><p>third page</p>");
+        _handler.Routes[OtherHome] = _ => Html("<title>Other</title><p>a different site</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        await NewCrawler().CrawlAsync(OtherHome, maxPages: 5);
+        Assert.True(ChunkCount(OtherHome) > 0);
+
+        // Re-crawl only test.local with robots banning /page2 (stale pruning switched off via the
+        // cap, as above). The robots-banned removal is scoped to origins contacted this run:
+        // other.local isn't touched by the test.local crawl, so its index must be left entirely alone.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home v2</p> <a href=\"/page2\">two</a> <a href=\"/page3\">three</a>");
+        _handler.Routes["http://test.local/robots.txt"] = _ => Robots("User-agent: *\nDisallow: /page2");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, maxPagesPerHost: 1);
+
+        Assert.Equal(0, ChunkCount(Page2));       // the banned page is removed
+        Assert.True(ChunkCount(OtherHome) > 0);   // the other site is untouched
+        Assert.True(HasCrawlState(OtherHome));
+    }
+
+    [Fact]
     public async Task Oversized_sitemap_is_skipped_but_crawl_proceeds()
     {
         await EnsureSchemaAsync();
@@ -713,6 +772,10 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     /// <summary>Returns an XML 200, e.g. for a sitemap.</summary>
     private static HttpResponseMessage Xml(string body) =>
         new(HttpStatusCode.OK) { Content = new StringContent(body, Encoding.UTF8, "application/xml") };
+
+    /// <summary>Returns a text/plain 200, e.g. for robots.txt.</summary>
+    private static HttpResponseMessage Robots(string body) =>
+        new(HttpStatusCode.OK) { Content = new StringContent(body, Encoding.UTF8, "text/plain") };
 
     /// <summary>Returns an HTML 200 with an optional strong ETag.</summary>
     private static HttpResponseMessage Html(string body, string? etag = null)

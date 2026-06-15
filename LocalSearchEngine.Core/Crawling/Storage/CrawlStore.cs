@@ -317,6 +317,40 @@ public static class CrawlStore
     }
 
     /// <summary>
+    /// Lists crawl-state URLs whose string begins with the given prefix (e.g. an origin's
+    /// "scheme://host[:port]"). The prefix is treated literally — LIKE metacharacters in it are
+    /// escaped — and the match is coarse: a prefix like "https://example.com" also matches a
+    /// different port or a look-alike host such as "example.com.evil.com", so callers must still
+    /// confirm the exact origin of each result.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="urlPrefix">The literal URL prefix to match.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The list of crawl-state URLs starting with the prefix.</returns>
+    public static async Task<List<string>> GetCrawledUrlsWithPrefixAsync(SqliteConnection connection, string urlPrefix, CancellationToken cancellationToken)
+    {
+        var urls = new List<string>();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT Url FROM CrawlState WHERE Url LIKE @Pattern ESCAPE '\\'";
+        command.Parameters.AddWithValue("@Pattern", EscapeLike(urlPrefix) + "%");
+        using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            urls.Add(reader.GetString(0));
+        }
+        return urls;
+    }
+
+    /// <summary>
+    /// Escapes LIKE metacharacters (backslash, percent, underscore) so a string matches literally
+    /// under an <c>ESCAPE '\'</c> clause. Backslash is escaped first to avoid double-escaping.
+    /// </summary>
+    /// <param name="value">The literal value to escape.</param>
+    /// <returns>The escaped value, safe to embed in a LIKE pattern.</returns>
+    private static string EscapeLike(string value)
+        => value.Replace("\\", "\\\\").Replace("%", "\\%").Replace("_", "\\_");
+
+    /// <summary>
     /// Deletes the crawl-state row for the specified URL.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
