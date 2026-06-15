@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.Crawling.Extraction;
 using LocalSearchEngine.Core.Crawling.Policies;
+using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Crawling.Storage;
 
 namespace LocalSearchEngine.Core.Crawling;
@@ -73,19 +74,22 @@ public partial class CrawlerService
     /// <param name="allowedServers">Optional additional allowed hosts, each of the form <c>[scheme://]host[:port]</c>; an omitted scheme or port matches any.</param>
     /// <param name="maxPagesPerHost">The maximum pages to crawl on any single host.</param>
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
+    /// <param name="reporter">Receives live progress and phase changes; defaults to a no-op reporter.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A <see cref="Task"/> representing the crawl operation.</returns>
-    public async Task CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, long maxCrawlSizeBytes = 15 * 1024 * 1024, CancellationToken cancellationToken = default)
+    /// <returns>A <see cref="CrawlReport"/> summarizing what the crawl indexed, removed, and discovered.</returns>
+    public async Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, long maxCrawlSizeBytes = 15 * 1024 * 1024, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
     {
+        // Stamped before anything is visited: after a crawl that drains naturally, any in-scope
+        // row whose LastCrawled predates this moment was unreachable this run and gets pruned. It
+        // also anchors the elapsed-time figure the reporter stamps onto each snapshot.
+        var crawlStartUtc = DateTime.UtcNow;
+        reporter ??= NullCrawlReporter.Instance;
+
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
             _logger.LogError("Invalid seed URL: {Url}", seedUrl);
-            return;
+            return EmptyReport(seedUrl, crawlStartUtc);
         }
-
-        // Stamped before anything is visited: after a crawl that drains naturally, any in-scope
-        // row whose LastCrawled predates this moment was unreachable this run and gets pruned.
-        var crawlStartUtc = DateTime.UtcNow;
 
         var ctx = new CrawlContext
         {
@@ -94,6 +98,9 @@ public partial class CrawlerService
             Queue = new Queue<string>(),
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             MaxCrawlSizeBytes = maxCrawlSizeBytes,
+            Reporter = reporter,
+            Stats = new CrawlStats(),
+            StartedUtc = crawlStartUtc,
         };
 
         if (allowedServers != null)
@@ -111,6 +118,8 @@ public partial class CrawlerService
         // allowed-server entry to crawl both.
         ctx.AllowedHosts.AddOrigin(baseUri);
 
+        ReportPhase(ctx, CrawlPhase.Starting);
+
         // One read connection for the producer and one write connection for the indexer, both held
         // open for the whole crawl rather than reopened per database call. They run on separate
         // tasks, so two connections (not one shared) keep SQLite's single-writer rule intact while
@@ -121,6 +130,10 @@ public partial class CrawlerService
         await writeConnection.OpenAsync(cancellationToken);
         ctx.Read = readConnection;
         ctx.Write = writeConnection;
+
+        // The indexed-URL count before this run, so the final report can express "items added" as a
+        // net change rather than re-counting pages that were already in the database.
+        var (indexedUrlsAtStart, _) = await CrawlStore.GetCountsAsync(ctx.Read, cancellationToken);
 
         // Robots for the seed's origin are needed right away (the seed is enqueued below). Every
         // other origin gets its robots fetched lazily on first contact — being listed in the
@@ -162,6 +175,7 @@ public partial class CrawlerService
 
         try
         {
+            ReportPhase(ctx, CrawlPhase.Crawling);
             while (ctx.Queue.Count > 0 && indexedCount < maxPages)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -203,6 +217,7 @@ public partial class CrawlerService
                     // already indexed for this URL — a transient failure must not erase data.
                     _logger.LogError(ex, "Error occurred while crawling {Url}", currentUrl);
                     job = new TouchJob(currentUrl, 500);
+                    ReportPage(ctx, currentUrl, CrawlOutcome.Failed);
                 }
 
                 if (job is not null)
@@ -239,16 +254,73 @@ public partial class CrawlerService
             // now bans are dropped after every crawl — capped or cancelled included. Stale-URL
             // pruning, by contrast, stays gated on a natural completion, where "unreached" can be
             // trusted to mean "gone".
-            await RemoveRobotsBannedUrlsAsync(ctx);
+            ReportPhase(ctx, CrawlPhase.RemovingBanned);
+            ctx.Stats.AddRemovedBanned(await RemoveRobotsBannedUrlsAsync(ctx));
             if (completedNaturally)
             {
-                await PruneStaleUrlsAsync(ctx, crawlStartUtc);
+                ReportPhase(ctx, CrawlPhase.Pruning);
+                ctx.Stats.AddRemovedStale(await PruneStaleUrlsAsync(ctx, crawlStartUtc));
             }
+            ReportPhase(ctx, CrawlPhase.Optimizing);
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
-        _logger.LogInformation("Crawling completed for {SeedUrl} ({Indexed} pages indexed this run).", seedUrl, indexedCount);
+        bool cancelled = cancellationToken.IsCancellationRequested;
+        ReportPhase(ctx, cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed);
+
+        var (indexedUrlsInDb, crawlStateRowsInDb) = await CrawlStore.GetCountsAsync(ctx.Read, CancellationToken.None);
+        long itemsDeleted = ctx.Stats.Gone + ctx.Stats.RemovedBanned + ctx.Stats.RemovedStale;
+        // end = start + added - deleted, so added = end - start + deleted. Clamped at zero against
+        // a concurrent writer skewing the before/after counts.
+        long itemsAdded = Math.Max(0, indexedUrlsInDb - indexedUrlsAtStart + itemsDeleted);
+
+        _logger.LogInformation("Crawling completed for {SeedUrl} ({Indexed} pages indexed this run).", seedUrl, ctx.Stats.Indexed);
+
+        return new CrawlReport(
+            string.IsNullOrEmpty(ctx.SeedUrl) ? seedUrl : ctx.SeedUrl,
+            crawlStartUtc,
+            DateTime.UtcNow,
+            completedNaturally,
+            cancelled,
+            ctx.Stats.Snapshot(ctx.Phase, ctx.Visited.Count, DateTime.UtcNow - crawlStartUtc),
+            indexedUrlsInDb,
+            crawlStateRowsInDb,
+            itemsAdded,
+            itemsDeleted);
     }
+
+    /// <summary>Builds the report returned when a crawl cannot start (e.g. an invalid seed URL).</summary>
+    /// <param name="seedUrl">The seed URL that was rejected.</param>
+    /// <param name="startedUtc">When the crawl was attempted.</param>
+    /// <returns>An all-zero <see cref="CrawlReport"/>.</returns>
+    private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
+        seedUrl, startedUtc, DateTime.UtcNow, false, false,
+        new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0);
+
+    /// <summary>Advances the crawl phase and notifies the reporter with a fresh snapshot.</summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="phase">The phase being entered.</param>
+    private static void ReportPhase(CrawlContext ctx, CrawlPhase phase)
+    {
+        ctx.Phase = phase;
+        ctx.Reporter.PhaseChanged(phase, Snapshot(ctx));
+    }
+
+    /// <summary>Records a page's outcome and notifies the reporter with a fresh snapshot.</summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="url">The URL that was processed.</param>
+    /// <param name="outcome">How the crawler resolved it.</param>
+    private static void ReportPage(CrawlContext ctx, string url, CrawlOutcome outcome)
+    {
+        ctx.Stats.Record(outcome);
+        ctx.Reporter.PageProcessed(url, outcome, Snapshot(ctx));
+    }
+
+    /// <summary>Assembles a snapshot stamped with the current phase, discovered count, and elapsed time.</summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <returns>The current statistics snapshot.</returns>
+    private static CrawlStatsSnapshot Snapshot(CrawlContext ctx) =>
+        ctx.Stats.Snapshot(ctx.Phase, ctx.Visited.Count, DateTime.UtcNow - ctx.StartedUtc);
 
     /// <summary>
     /// Fetches and analyzes a single URL, resolving page redirections, content types, hashes, and outlinks.
@@ -273,6 +345,7 @@ public partial class CrawlerService
         if (!CrawlPolicy.IsAllowedByRobots(currentUrl, currentRobots))
         {
             _logger.LogInformation("Disallowed by robots.txt: {Url}", currentUrl);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Disallowed);
             return null;
         }
         await DelayForHostAsync(ctx, currentUri.Host, ResolveRequestDelay(currentRobots), cancellationToken);
@@ -298,6 +371,7 @@ public partial class CrawlerService
             // can still reach pages only linked from here.
             _logger.LogInformation("Page not modified since last crawl (304): {Url}", currentUrl);
             await EnqueueStoredOutlinksAsync(ctx, currentUrl, cancellationToken);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Unchanged);
             return new TouchJob(currentUrl, statusCode);
         }
 
@@ -330,6 +404,7 @@ public partial class CrawlerService
                     else
                     {
                         _logger.LogInformation("Redirect left the allowed hosts: {From} -> {To}", currentUrl, normalizedFinal);
+                        ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
                         return new AliasJob(currentUrl, 302);
                     }
                 }
@@ -337,11 +412,13 @@ public partial class CrawlerService
                 if (!CrawlPolicy.IsAllowedByRobots(normalizedFinal, finalRobots))
                 {
                     _logger.LogInformation("Redirect target disallowed by robots.txt: {Url}", normalizedFinal);
+                    ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
                     return new AliasJob(currentUrl, 302);
                 }
                 if (!ctx.Visited.Add(normalizedFinal))
                 {
                     _logger.LogInformation("Redirected to already-seen URL: {Url}", normalizedFinal);
+                    ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
                     return new AliasJob(currentUrl, 302);
                 }
                 finalUrl = normalizedFinal;
@@ -352,6 +429,7 @@ public partial class CrawlerService
         {
             // Genuinely gone: drop it from the index.
             _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Gone);
             return new GoneJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -359,6 +437,7 @@ public partial class CrawlerService
         {
             // 5xx / 403 / etc.: keep whatever is already indexed; just record the visit.
             _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}; keeping existing index.", finalUrl, statusCode);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Failed);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -367,6 +446,7 @@ public partial class CrawlerService
         if (contentLength.HasValue && contentLength.Value > ctx.MaxCrawlSizeBytes)
         {
             _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", finalUrl, contentLength.Value, ctx.MaxCrawlSizeBytes);
+            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedSize);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -375,6 +455,7 @@ public partial class CrawlerService
         if (!CrawlPolicy.IsSupportedOrGenericContentType(contentType))
         {
             _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", finalUrl, contentType);
+            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -392,6 +473,7 @@ public partial class CrawlerService
                 if (bodyStream.Length + bytesRead > ctx.MaxCrawlSizeBytes)
                 {
                     _logger.LogWarning("Skipping {Url}: content size exceeded limit of {Limit} bytes during download.", finalUrl, ctx.MaxCrawlSizeBytes);
+                    ReportPage(ctx, currentUrl, CrawlOutcome.SkippedSize);
                     return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                 }
 
@@ -404,6 +486,7 @@ public partial class CrawlerService
                     if (!CrawlPolicy.IsSupportedPrefix(prefix, contentType, finalUrl))
                     {
                         _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
+                        ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
                         return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                     }
                 }
@@ -417,6 +500,7 @@ public partial class CrawlerService
                 if (!CrawlPolicy.IsSupportedPrefix(body, contentType, finalUrl))
                 {
                     _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
+                    ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
                     return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                 }
             }
@@ -436,6 +520,7 @@ public partial class CrawlerService
         {
             _logger.LogInformation("Content unchanged since last crawl (hash match): {Url}", finalUrl);
             await EnqueueStoredOutlinksAsync(ctx, finalUrl, cancellationToken);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Unchanged);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -457,6 +542,7 @@ public partial class CrawlerService
         {
             _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", finalUrl, duplicateOf);
             EnqueueSingle(ctx, duplicateOf);
+            ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -473,6 +559,7 @@ public partial class CrawlerService
             // Surface the embedded document title as both the stored title and a heading chunk,
             // mirroring how an HTML <title> is indexed, so documents aren't bare URLs in results.
             ctx.IndexedContentHashes[newHash] = finalUrl;
+            ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
             return new IndexJob(finalUrl, statusCode, pdfTitle, pdfTitle ?? string.Empty, pdfText,
                 newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
         }
@@ -481,6 +568,7 @@ public partial class CrawlerService
         {
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
             ctx.IndexedContentHashes[newHash] = finalUrl;
+            ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
             return new IndexJob(finalUrl, statusCode, docxTitle, docxTitle ?? string.Empty, docxText,
                 newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
         }
@@ -490,6 +578,7 @@ public partial class CrawlerService
         if (kind != DocKind.Html)
         {
             _logger.LogInformation("Skipping {Url}: unindexable content type '{ContentType}'.", finalUrl, contentType);
+            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -507,11 +596,13 @@ public partial class CrawlerService
             EnqueueSingle(ctx, analysis.CanonicalAlias);
             // No ContentHash stored, so the alias is re-evaluated (and the canonical re-queued)
             // on each crawl.
+            ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
         // Enqueue newly discovered links now (producer-owned frontier); the indexer persists
         // this page's outlink set for future 304/unchanged re-crawls.
+        ctx.Stats.AddLinks(analysis.Outlinks.Count);
         foreach (var link in analysis.Outlinks)
         {
             if (ctx.Visited.Add(link)) ctx.Queue.Enqueue(link);
@@ -521,10 +612,12 @@ public partial class CrawlerService
         {
             // Respect noindex: ensure it isn't in the index, but keep crawl state + outlinks.
             _logger.LogInformation("noindex directive: {Url} — not indexing its content.", finalUrl);
+            ReportPage(ctx, currentUrl, CrawlOutcome.NoIndex);
             return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
         }
 
         ctx.IndexedContentHashes[newHash] = finalUrl;
+        ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
         return new IndexJob(finalUrl, statusCode, analysis.Title, analysis.Headings, analysis.Text,
             newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
     }
@@ -645,13 +738,13 @@ public partial class CrawlerService
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
     /// <param name="crawlStartUtc">The crawl's start time; rows last visited before it are stale.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private async Task PruneStaleUrlsAsync(CrawlContext ctx, DateTime crawlStartUtc)
+    /// <returns>The number of stale URLs pruned.</returns>
+    private async Task<int> PruneStaleUrlsAsync(CrawlContext ctx, DateTime crawlStartUtc)
     {
+        int pruned = 0;
         try
         {
             var candidates = await CrawlStore.GetUrlsNotCrawledSinceAsync(ctx.Read, crawlStartUtc, CancellationToken.None);
-            int pruned = 0;
             foreach (var url in candidates)
             {
                 if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
@@ -673,6 +766,7 @@ public partial class CrawlerService
             // Pruning is housekeeping; a failure here must not turn a finished crawl into an error.
             _logger.LogError(ex, "Failed to prune stale URLs.");
         }
+        return pruned;
     }
 
     /// <summary>
@@ -684,12 +778,12 @@ public partial class CrawlerService
     /// stands in as disallow-all, and a transient failure must not wipe the origin's index.
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private async Task RemoveRobotsBannedUrlsAsync(CrawlContext ctx)
+    /// <returns>The number of indexed URLs removed for being newly robots-disallowed.</returns>
+    private async Task<int> RemoveRobotsBannedUrlsAsync(CrawlContext ctx)
     {
+        int removed = 0;
         try
         {
-            int removed = 0;
             foreach (var (origin, rules) in ctx.RobotsCache)
             {
                 if (ctx.RobotsUnavailable.Contains(origin)) continue;
@@ -722,6 +816,7 @@ public partial class CrawlerService
             // Housekeeping: a failure here must not turn a finished crawl into an error.
             _logger.LogError(ex, "Failed to remove robots-disallowed URLs.");
         }
+        return removed;
     }
 
     /// <summary>
@@ -838,5 +933,17 @@ public partial class CrawlerService
 
         /// <summary>Gets or sets a value indicating whether the per-host cap skipped any URL this run, which disables pruning.</summary>
         public bool HostCapSkipped;
+
+        /// <summary>Gets or sets the reporter that receives live progress and phase changes.</summary>
+        public required ICrawlReporter Reporter;
+
+        /// <summary>Gets the running statistics for this crawl.</summary>
+        public required CrawlStats Stats;
+
+        /// <summary>Gets or sets the moment the crawl started, used to stamp elapsed time onto snapshots.</summary>
+        public required DateTime StartedUtc;
+
+        /// <summary>Gets or sets the crawl's current phase, carried into each reported snapshot.</summary>
+        public CrawlPhase Phase;
     }
 }

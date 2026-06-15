@@ -366,6 +366,32 @@ public static class CrawlStore
     }
 
     /// <summary>
+    /// Counts what is currently stored: distinct indexed URLs (those with text chunks) and total
+    /// crawl-state rows. Used for the end-of-run statistics.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A tuple of the distinct indexed URL count and the crawl-state row count.</returns>
+    public static async Task<(long IndexedUrls, long CrawlStateRows)> GetCountsAsync(SqliteConnection connection, CancellationToken cancellationToken)
+    {
+        long indexedUrls;
+        using (var command = connection.CreateCommand())
+        {
+            command.CommandText = "SELECT COUNT(DISTINCT Url) FROM text_chunks";
+            indexedUrls = Convert.ToInt64(await command.ExecuteScalarAsync(cancellationToken) ?? 0L);
+        }
+
+        long crawlStateRows;
+        using (var command = connection.CreateCommand())
+        {
+            command.CommandText = "SELECT COUNT(*) FROM CrawlState";
+            crawlStateRows = Convert.ToInt64(await command.ExecuteScalarAsync(cancellationToken) ?? 0L);
+        }
+
+        return (indexedUrls, crawlStateRows);
+    }
+
+    /// <summary>
     /// Optimizes the database indexing structure, vacuuming it if significant space is free.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
