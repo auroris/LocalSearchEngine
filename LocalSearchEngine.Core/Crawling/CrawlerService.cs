@@ -92,10 +92,11 @@ public partial class CrawlerService
         // also anchors the elapsed-time figure the reporter stamps onto each snapshot.
         var crawlStartUtc = DateTime.UtcNow;
         reporter ??= NullCrawlReporter.Instance;
+        var observer = new CrawlObserver(_logger, reporter, crawlStartUtc);
 
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
-            _logger.LogError("Invalid seed URL: {Url}", seedUrl);
+            observer.OnSeedInvalid(seedUrl);
             return EmptyReport(seedUrl, crawlStartUtc);
         }
 
@@ -107,8 +108,7 @@ public partial class CrawlerService
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             MaxCrawlSizeBytes = maxCrawlSizeBytes,
             CollectOffsiteLinks = checkExternalLinks,
-            Reporter = reporter,
-            Stats = new CrawlStats(),
+            Observer = observer,
             StartedUtc = crawlStartUtc,
         };
 
@@ -118,7 +118,7 @@ public partial class CrawlerService
             {
                 if (!ctx.AllowedHosts.Add(s))
                 {
-                    _logger.LogWarning("Ignoring allowed-server entry '{Entry}': expected [scheme://]host[:port].", s);
+                    ctx.Observer.OnAllowedServerIgnored(s);
                 }
             }
         }
@@ -127,7 +127,7 @@ public partial class CrawlerService
         // allowed-server entry to crawl both.
         ctx.AllowedHosts.AddOrigin(baseUri);
 
-        ReportPhase(ctx, CrawlPhase.Starting);
+        ctx.Observer.OnPhaseChanged(CrawlPhase.Starting);
 
         // One read connection for the producer and one write connection for the indexer, both held
         // open for the whole crawl rather than reopened per database call. They run on separate
@@ -154,7 +154,7 @@ public partial class CrawlerService
             // The seed's own server didn't answer its very first request (robots.txt). There is
             // nothing to crawl: skip sitemap discovery and don't enqueue the seed. The empty frontier
             // means the run produces no jobs and so prunes nothing.
-            _logger.LogError("Seed host {Host} is unreachable (connection failed on first contact); nothing to crawl.", baseUri.Host);
+            ctx.Observer.OnSeedUnreachable(baseUri.Host);
         }
         else
         {
@@ -171,7 +171,7 @@ public partial class CrawlerService
                 }
                 else
                 {
-                    _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
+                    ctx.Observer.OnSeedDisallowed(normalizedSeed);
                 }
             }
         }
@@ -194,12 +194,12 @@ public partial class CrawlerService
 
         try
         {
-            ReportPhase(ctx, CrawlPhase.Crawling);
+            ctx.Observer.OnPhaseChanged(CrawlPhase.Crawling);
             while (ctx.Queue.Count > 0 && indexedCount < maxPages)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("Crawl cancelled after dispatching {Indexed} pages.", indexedCount);
+                    ctx.Observer.OnCrawlCancelled(indexedCount);
                     break;
                 }
 
@@ -214,7 +214,7 @@ public partial class CrawlerService
                     // A skipped URL means "not visited" no longer implies "gone", so this run
                     // must not prune.
                     ctx.HostCapSkipped = true;
-                    _logger.LogInformation("Per-host cap ({Cap}) reached for {Host}; skipping {Url}", maxPagesPerHost, currentHostUri.Host, currentUrl);
+                    ctx.Observer.OnHostCapReached(maxPagesPerHost, currentHostUri.Host, currentUrl);
                     continue;
                 }
 
@@ -226,7 +226,7 @@ public partial class CrawlerService
                     continue;
                 }
 
-                _logger.LogInformation("Crawling ({Indexed} indexed / {Discovered} discovered): {Url}", indexedCount, ctx.Visited.Count, currentUrl);
+                ctx.Observer.OnPageFetching(indexedCount, ctx.Visited.Count, currentUrl);
 
                 CrawlJob? job;
                 try
@@ -235,16 +235,15 @@ public partial class CrawlerService
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.LogInformation("Crawl cancelled while fetching {Url}.", currentUrl);
+                    ctx.Observer.OnFetchCancelled(currentUrl);
                     break;
                 }
                 catch (Exception ex)
                 {
                     // Fetch/parse failed unexpectedly: note the visit but KEEP any content
                     // already indexed for this URL — a transient failure must not erase data.
-                    _logger.LogError(ex, "Error occurred while crawling {Url}", currentUrl);
+                    ctx.Observer.OnFetchError(ex, currentUrl);
                     job = new TouchJob(currentUrl, 500);
-                    ReportPage(ctx, currentUrl, CrawlOutcome.Failed);
                 }
 
                 if (job is not null)
@@ -281,14 +280,14 @@ public partial class CrawlerService
             // now bans are dropped after every crawl — capped or cancelled included. Stale-URL
             // pruning, by contrast, stays gated on a natural completion, where "unreached" can be
             // trusted to mean "gone".
-            ReportPhase(ctx, CrawlPhase.RemovingBanned);
-            ctx.Stats.AddRemovedBanned(await RemoveRobotsBannedUrlsAsync(ctx));
+            ctx.Observer.OnPhaseChanged(CrawlPhase.RemovingBanned);
+            ctx.Observer.OnBannedUrlsRemoved(await RemoveRobotsBannedUrlsAsync(ctx));
             if (completedNaturally)
             {
-                ReportPhase(ctx, CrawlPhase.Pruning);
-                ctx.Stats.AddRemovedStale(await PruneStaleUrlsAsync(ctx, crawlStartUtc));
+                ctx.Observer.OnPhaseChanged(CrawlPhase.Pruning);
+                ctx.Observer.OnStaleUrlsPruned(await PruneStaleUrlsAsync(ctx, crawlStartUtc));
             }
-            ReportPhase(ctx, CrawlPhase.Optimizing);
+            ctx.Observer.OnPhaseChanged(CrawlPhase.Optimizing);
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
@@ -297,20 +296,20 @@ public partial class CrawlerService
         // entirely on cancellation.
         if (checkExternalLinks && !cancellationToken.IsCancellationRequested && ctx.OffsiteLinks.Count > 0)
         {
-            ReportPhase(ctx, CrawlPhase.CheckingLinks);
+            ctx.Observer.OnPhaseChanged(CrawlPhase.CheckingLinks);
             await VerifyExternalLinksAsync(ctx, cancellationToken);
         }
 
         bool cancelled = cancellationToken.IsCancellationRequested;
-        ReportPhase(ctx, cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed);
+        ctx.Observer.OnPhaseChanged(cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed);
 
         var (indexedUrlsInDb, crawlStateRowsInDb) = await CrawlStore.GetCountsAsync(ctx.Read, CancellationToken.None);
-        long itemsDeleted = ctx.Stats.Gone + ctx.Stats.RemovedBanned + ctx.Stats.RemovedStale;
+        long itemsDeleted = ctx.Observer.Stats.Gone + ctx.Observer.Stats.RemovedBanned + ctx.Observer.Stats.RemovedStale;
         // end = start + added - deleted, so added = end - start + deleted. Clamped at zero against
         // a concurrent writer skewing the before/after counts.
         long itemsAdded = Math.Max(0, indexedUrlsInDb - indexedUrlsAtStart + itemsDeleted);
 
-        _logger.LogInformation("Crawling completed for {SeedUrl} ({Indexed} pages indexed this run).", seedUrl, ctx.Stats.Indexed);
+        ctx.Observer.OnCrawlCompleted(seedUrl);
 
         return new CrawlReport(
             string.IsNullOrEmpty(ctx.SeedUrl) ? seedUrl : ctx.SeedUrl,
@@ -318,12 +317,12 @@ public partial class CrawlerService
             DateTime.UtcNow,
             completedNaturally,
             cancelled,
-            ctx.Stats.Snapshot(ctx.Phase, ctx.Visited.Count, DateTime.UtcNow - crawlStartUtc),
+            ctx.Observer.Stats.Snapshot(cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed, ctx.Visited.Count, DateTime.UtcNow - crawlStartUtc),
             indexedUrlsInDb,
             crawlStateRowsInDb,
             itemsAdded,
             itemsDeleted,
-            ctx.BrokenLinks,
+            ctx.Observer.BrokenLinks.ToList(),
             ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray());
     }
 
@@ -336,30 +335,7 @@ public partial class CrawlerService
         new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,
         Array.Empty<BrokenLink>(), Array.Empty<string>());
 
-    /// <summary>Advances the crawl phase and notifies the reporter with a fresh snapshot.</summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <param name="phase">The phase being entered.</param>
-    private static void ReportPhase(CrawlContext ctx, CrawlPhase phase)
-    {
-        ctx.Phase = phase;
-        ctx.Reporter.PhaseChanged(phase, Snapshot(ctx));
-    }
 
-    /// <summary>Records a page's outcome and notifies the reporter with a fresh snapshot.</summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <param name="url">The URL that was processed.</param>
-    /// <param name="outcome">How the crawler resolved it.</param>
-    private static void ReportPage(CrawlContext ctx, string url, CrawlOutcome outcome)
-    {
-        ctx.Stats.Record(outcome);
-        ctx.Reporter.PageProcessed(url, outcome, Snapshot(ctx));
-    }
-
-    /// <summary>Assembles a snapshot stamped with the current phase, discovered count, and elapsed time.</summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <returns>The current statistics snapshot.</returns>
-    private static CrawlStatsSnapshot Snapshot(CrawlContext ctx) =>
-        ctx.Stats.Snapshot(ctx.Phase, ctx.Visited.Count, DateTime.UtcNow - ctx.StartedUtc);
 
     /// <summary>
     /// Fetches and analyzes a single URL, resolving page redirections, content types, hashes, and outlinks.
@@ -373,7 +349,7 @@ public partial class CrawlerService
         if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri)) return null;
         if (!ctx.AllowedHosts.IsAllowed(currentUri))
         {
-            _logger.LogWarning("Out-of-scope URL reached the frontier: {Url}", currentUrl);
+            ctx.Observer.OnOutScopeUrlReached(currentUrl);
             return null;
         }
 
@@ -392,8 +368,7 @@ public partial class CrawlerService
 
         if (!CrawlPolicy.IsAllowedByRobots(currentUrl, currentRobots))
         {
-            _logger.LogInformation("Disallowed by robots.txt: {Url}", currentUrl);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Disallowed);
+            ctx.Observer.OnPageDisallowed(currentUrl);
             return null;
         }
         await DelayForHostAsync(ctx, currentUri.Host, ResolveRequestDelay(currentRobots), cancellationToken);
@@ -422,9 +397,8 @@ public partial class CrawlerService
         {
             // Unchanged: re-derive the frontier from this page's stored outlinks so the crawl
             // can still reach pages only linked from here.
-            _logger.LogInformation("Page not modified since last crawl (304): {Url}", currentUrl);
+            ctx.Observer.OnPageUnchanged(currentUrl);
             await EnqueueStoredOutlinksAsync(ctx, currentUrl, cancellationToken);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Unchanged);
             return new TouchJob(currentUrl, statusCode);
         }
 
@@ -451,27 +425,24 @@ public partial class CrawlerService
                     // Out-of-scope redirects from any *other* page stay rejected.
                     if (string.Equals(currentUrl, ctx.SeedUrl, StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogInformation("Seed {Seed} redirected to {Origin}; adding it to the allowed hosts.", currentUrl, UrlOrigin.Key(finalRequestUri));
+                        ctx.Observer.OnSeedRedirectedToNewOrigin(currentUrl, UrlOrigin.Key(finalRequestUri));
                         ctx.AllowedHosts.AddOrigin(finalRequestUri);
                     }
                     else
                     {
-                        _logger.LogInformation("Redirect left the allowed hosts: {From} -> {To}", currentUrl, normalizedFinal);
-                        ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
+                        ctx.Observer.OnPageRedirectedOutScope(currentUrl, normalizedFinal);
                         return new AliasJob(currentUrl, 302);
                     }
                 }
                 var finalRobots = await GetOrFetchRobotsAsync(ctx, finalRequestUri, cancellationToken);
                 if (!CrawlPolicy.IsAllowedByRobots(normalizedFinal, finalRobots))
                 {
-                    _logger.LogInformation("Redirect target disallowed by robots.txt: {Url}", normalizedFinal);
-                    ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
+                    ctx.Observer.OnPageRedirectedDisallowed(currentUrl, normalizedFinal);
                     return new AliasJob(currentUrl, 302);
                 }
                 if (!ctx.Visited.Add(normalizedFinal))
                 {
-                    _logger.LogInformation("Redirected to already-seen URL: {Url}", normalizedFinal);
-                    ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
+                    ctx.Observer.OnPageRedirectedAlreadySeen(currentUrl, normalizedFinal);
                     return new AliasJob(currentUrl, 302);
                 }
                 finalUrl = normalizedFinal;
@@ -482,17 +453,14 @@ public partial class CrawlerService
         {
             // Genuinely gone: drop it from the index, and record it as a broken link against the
             // page it was first seen on for the broken-links report.
-            _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
-            RecordBrokenLink(ctx, currentUrl, statusCode);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Gone);
+            ctx.Observer.OnPageGone(currentUrl, finalUrl, statusCode);
             return new GoneJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
         if (!response.IsSuccessStatusCode)
         {
             // 5xx / 403 / etc.: keep whatever is already indexed; just record the visit.
-            _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}; keeping existing index.", finalUrl, statusCode);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Failed);
+            ctx.Observer.OnPageFailed(currentUrl, finalUrl, statusCode);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -500,8 +468,7 @@ public partial class CrawlerService
         long? contentLength = response.Content.Headers.ContentLength;
         if (contentLength.HasValue && contentLength.Value > ctx.MaxCrawlSizeBytes)
         {
-            _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", finalUrl, contentLength.Value, ctx.MaxCrawlSizeBytes);
-            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedSize);
+            ctx.Observer.OnPageSkippedSize(currentUrl, finalUrl, contentLength.Value, ctx.MaxCrawlSizeBytes);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -509,8 +476,7 @@ public partial class CrawlerService
         var contentType = response.Content.Headers.ContentType?.MediaType;
         if (!CrawlPolicy.IsSupportedOrGenericContentType(contentType))
         {
-            _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", finalUrl, contentType);
-            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
+            ctx.Observer.OnPageSkippedType(currentUrl, finalUrl, contentType);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -527,8 +493,7 @@ public partial class CrawlerService
             {
                 if (bodyStream.Length + bytesRead > ctx.MaxCrawlSizeBytes)
                 {
-                    _logger.LogWarning("Skipping {Url}: content size exceeded limit of {Limit} bytes during download.", finalUrl, ctx.MaxCrawlSizeBytes);
-                    ReportPage(ctx, currentUrl, CrawlOutcome.SkippedSize);
+                    ctx.Observer.OnPageSkippedSize(currentUrl, finalUrl, bodyStream.Length + bytesRead, ctx.MaxCrawlSizeBytes);
                     return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                 }
 
@@ -540,8 +505,7 @@ public partial class CrawlerService
                     var prefix = bodyStream.ToArray();
                     if (!CrawlPolicy.IsSupportedPrefix(prefix, contentType, finalUrl))
                     {
-                        _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
-                        ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
+                        ctx.Observer.OnPageSkippedType(currentUrl, finalUrl, contentType);
                         return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                     }
                 }
@@ -554,8 +518,7 @@ public partial class CrawlerService
             {
                 if (!CrawlPolicy.IsSupportedPrefix(body, contentType, finalUrl))
                 {
-                    _logger.LogInformation("Skipping {Url}: content structure (magic-byte sniff) is not supported.", finalUrl);
-                    ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
+                    ctx.Observer.OnPageSkippedType(currentUrl, finalUrl, contentType);
                     return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
                 }
             }
@@ -573,9 +536,8 @@ public partial class CrawlerService
         if (finalState.ContentHash is not null && finalState.ContentHash == newHash
             && await CrawlStore.UrlHasChunksAsync(ctx.Read, finalUrl, cancellationToken))
         {
-            _logger.LogInformation("Content unchanged since last crawl (hash match): {Url}", finalUrl);
+            ctx.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
             await EnqueueStoredOutlinksAsync(ctx, finalUrl, cancellationToken);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Unchanged);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -595,9 +557,8 @@ public partial class CrawlerService
         duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(ctx.Read, newHash, finalUrl, cancellationToken);
         if (duplicateOf != null)
         {
-            _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", finalUrl, duplicateOf);
+            ctx.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
             EnqueueSingle(ctx, duplicateOf, finalUrl);
-            ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -614,7 +575,7 @@ public partial class CrawlerService
             // Surface the embedded document title as both the stored title and a heading chunk,
             // mirroring how an HTML <title> is indexed, so documents aren't bare URLs in results.
             ctx.IndexedContentHashes[newHash] = finalUrl;
-            ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
+            ctx.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
             return new IndexJob(finalUrl, statusCode, pdfTitle, pdfTitle ?? string.Empty, pdfText,
                 newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
         }
@@ -623,7 +584,7 @@ public partial class CrawlerService
         {
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
             ctx.IndexedContentHashes[newHash] = finalUrl;
-            ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
+            ctx.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
             return new IndexJob(finalUrl, statusCode, docxTitle, docxTitle ?? string.Empty, docxText,
                 newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
         }
@@ -632,8 +593,7 @@ public partial class CrawlerService
         // images, etc. served at extensionless or dynamic routes don't get parsed as a web page.
         if (kind != DocKind.Html)
         {
-            _logger.LogInformation("Skipping {Url}: unindexable content type '{ContentType}'.", finalUrl, contentType);
-            ReportPage(ctx, currentUrl, CrawlOutcome.SkippedType);
+            ctx.Observer.OnPageSkippedType(currentUrl, finalUrl, contentType);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -647,17 +607,14 @@ public partial class CrawlerService
         // copy instead and don't index a duplicate here.
         if (analysis.CanonicalAlias != null)
         {
-            _logger.LogInformation("Canonical alias: {Url} -> {Canonical}", finalUrl, analysis.CanonicalAlias);
+            ctx.Observer.OnPageAlias(currentUrl, finalUrl, analysis.CanonicalAlias);
             EnqueueSingle(ctx, analysis.CanonicalAlias, finalUrl);
-            // No ContentHash stored, so the alias is re-evaluated (and the canonical re-queued)
-            // on each crawl.
-            ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
         // Enqueue newly discovered links now (producer-owned frontier); the indexer persists
         // this page's outlink set for future 304/unchanged re-crawls.
-        ctx.Stats.AddLinks(analysis.Outlinks.Count);
+        ctx.Observer.OnOutlinksAdded(analysis.Outlinks.Count);
         foreach (var link in analysis.Outlinks)
         {
             Discover(ctx, link, finalUrl);
@@ -669,20 +626,19 @@ public partial class CrawlerService
         {
             foreach (var external in analysis.OffsiteLinks)
             {
-                ctx.OffsiteLinks.TryAdd(external, finalUrl);
+                if (ctx.OffsiteLinks.TryAdd(external, finalUrl)) ctx.Observer.OnOffsiteLinkDiscovered(external, finalUrl);
             }
         }
 
         if (analysis.NoIndex)
         {
             // Respect noindex: ensure it isn't in the index, but keep crawl state + outlinks.
-            _logger.LogInformation("noindex directive: {Url} — not indexing its content.", finalUrl);
-            ReportPage(ctx, currentUrl, CrawlOutcome.NoIndex);
+            ctx.Observer.OnPageNoIndex(currentUrl, finalUrl);
             return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
         }
 
         ctx.IndexedContentHashes[newHash] = finalUrl;
-        ReportPage(ctx, currentUrl, CrawlOutcome.Indexed);
+        ctx.Observer.OnPageIndexed(currentUrl, finalUrl, analysis.Outlinks.Count);
         return new IndexJob(finalUrl, statusCode, analysis.Title, analysis.Headings, analysis.Text,
             newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
     }
@@ -717,7 +673,7 @@ public partial class CrawlerService
                         }
                         await CrawlStore.RecordCrawlStateAsync(connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
                         await CrawlStore.StoreOutlinksAsync(connection, j.Url, j.Outlinks, CancellationToken.None);
-                        _logger.LogInformation("Indexed {Url} ({Links} outlinks).", j.Url, j.Outlinks.Count);
+
                         break;
 
                     case NoIndexJob j:
@@ -824,15 +780,12 @@ public partial class CrawlerService
                 await CrawlStore.DeleteCrawlStateAsync(ctx.Write, url, CancellationToken.None);
                 pruned++;
             }
-            if (pruned > 0)
-            {
-                _logger.LogInformation("Pruned {Count} stale URLs the completed crawl no longer reaches.", pruned);
-            }
+
         }
         catch (Exception ex)
         {
             // Pruning is housekeeping; a failure here must not turn a finished crawl into an error.
-            _logger.LogError(ex, "Failed to prune stale URLs.");
+            ctx.Observer.OnPruneFailed(ex);
         }
         return pruned;
     }
@@ -877,15 +830,12 @@ public partial class CrawlerService
                     removed++;
                 }
             }
-            if (removed > 0)
-            {
-                _logger.LogInformation("Removed {Count} indexed URL(s) now disallowed by robots.txt.", removed);
-            }
+
         }
         catch (Exception ex)
         {
             // Housekeeping: a failure here must not turn a finished crawl into an error.
-            _logger.LogError(ex, "Failed to remove robots-disallowed URLs.");
+            ctx.Observer.OnRemoveBannedFailed(ex);
         }
         return removed;
     }
@@ -902,19 +852,11 @@ public partial class CrawlerService
     {
         if (!ctx.Visited.Add(url)) return false;
         ctx.Queue.Enqueue(url);
-        if (referrer != null) ctx.FirstReferrer[url] = referrer;
+        if (referrer != null) ctx.Observer.OnUrlDiscovered(url, referrer);
         return true;
     }
 
-    /// <summary>Records an in-scope link that returned 404/410, attributed to the page it was first seen on.</summary>
-    /// <param name="ctx">The active crawl context.</param>
-    /// <param name="targetUrl">The link target that was gone.</param>
-    /// <param name="statusCode">The HTTP status (404 or 410).</param>
-    private static void RecordBrokenLink(CrawlContext ctx, string targetUrl, int statusCode)
-    {
-        string reason = statusCode == 410 ? "410 Gone" : statusCode == 404 ? "404 Not Found" : $"HTTP {statusCode}";
-        ctx.BrokenLinks.Add(new BrokenLink(targetUrl, ctx.FirstReferrer.GetValueOrDefault(targetUrl), External: false, statusCode, reason));
-    }
+
 
     /// <summary>
     /// Validates and enqueues a single URL into the frontier queue.
@@ -1054,8 +996,8 @@ public partial class CrawlerService
                         if (!first) await Task.Delay(ExternalCheckPerHostGap, token);
                         first = false;
 
-                        var (ok, status, reason) = await ProbeExternalLinkAsync(target, token);
-                        if (!ok) broken.Add(new BrokenLink(target, referrer, External: true, status, reason));
+                        var (ok, status, reason) = await ProbeExternalLinkAsync(ctx, target, token);
+                        if (!ok) { broken.Add(new BrokenLink(target, referrer, External: true, status, reason)); ctx.Observer.OnExternalLinkBroken(target, status); }
                     }
                 });
         }
@@ -1064,8 +1006,8 @@ public partial class CrawlerService
             // Cancelled mid-pass: keep whatever was already probed and stop.
         }
 
-        ctx.BrokenLinks.AddRange(broken);
-        _logger.LogInformation("External link check: {Broken} of {Total} off-site link(s) did not resolve.", broken.Count, ctx.OffsiteLinks.Count);
+        ctx.Observer.OnExternalLinksChecked(broken.Count, ctx.OffsiteLinks.Count);
+        ctx.Observer.OnExternalLinksChecked(broken.Count, ctx.OffsiteLinks.Count);
     }
 
     /// <summary>
@@ -1075,7 +1017,7 @@ public partial class CrawlerService
     /// <param name="url">The off-site URL to probe.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>Whether the link resolves, the HTTP status (0 if the request never completed), and a short reason when broken.</returns>
-    private async Task<(bool Ok, int Status, string Reason)> ProbeExternalLinkAsync(string url, CancellationToken cancellationToken)
+    private async Task<(bool Ok, int Status, string Reason)> ProbeExternalLinkAsync(CrawlContext ctx, string url, CancellationToken cancellationToken)
     {
         try
         {
@@ -1099,7 +1041,7 @@ public partial class CrawlerService
             {
                 return (false, 0, "connection failed");
             }
-            _logger.LogDebug(ex, "Inconclusive probe for off-site link {Url}; not reporting it as broken.", url);
+            ctx.Observer.OnExternalLinkProbeFailed(ex, url);
             return (true, 0, string.Empty);
         }
     }
@@ -1169,13 +1111,7 @@ public partial class CrawlerService
         public HostHealthTracker HostHealth = new();
 
         /// <summary>Gets the first page each discovered URL was seen on, so a broken (404/410) link can be reported against where it was linked from.</summary>
-        public Dictionary<string, string> FirstReferrer = new(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>Gets the off-site (out-of-scope) links seen this run, mapped to the first page each was seen on. Populated only when external link checking is enabled.</summary>
         public Dictionary<string, string> OffsiteLinks = new(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>Gets the links found leading nowhere this run: in-scope 404/410s, plus off-site links that failed the optional verification pass.</summary>
-        public List<BrokenLink> BrokenLinks = new();
 
         /// <summary>Gets or sets a value indicating whether off-site links are collected for the optional end-of-crawl verification pass.</summary>
         public bool CollectOffsiteLinks;
@@ -1184,15 +1120,11 @@ public partial class CrawlerService
         public bool HostCapSkipped;
 
         /// <summary>Gets or sets the reporter that receives live progress and phase changes.</summary>
-        public required ICrawlReporter Reporter;
-
-        /// <summary>Gets the running statistics for this crawl.</summary>
-        public required CrawlStats Stats;
+        public required ICrawlObserver Observer;
 
         /// <summary>Gets or sets the moment the crawl started, used to stamp elapsed time onto snapshots.</summary>
         public required DateTime StartedUtc;
 
-        /// <summary>Gets or sets the crawl's current phase, carried into each reported snapshot.</summary>
-        public CrawlPhase Phase;
+
     }
 }

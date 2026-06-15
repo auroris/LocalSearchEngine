@@ -1,0 +1,254 @@
+namespace LocalSearchEngine.Core.Crawling.Reporting;
+
+using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+
+internal sealed class CrawlObserver : ICrawlObserver
+{
+    private readonly ILogger _logger;
+    private readonly ICrawlReporter _reporter;
+    private readonly DateTime _startedUtc;
+    
+    private CrawlPhase _currentPhase;
+    
+    // State previously in CrawlContext
+    private readonly Dictionary<string, string> _firstReferrer = new(StringComparer.OrdinalIgnoreCase);
+    private readonly List<BrokenLink> _brokenLinks = new();
+    
+    public CrawlStats Stats { get; } = new CrawlStats();
+    public IReadOnlyList<BrokenLink> BrokenLinks => _brokenLinks;
+
+    public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc)
+    {
+        _logger = logger;
+        _reporter = reporter;
+        _startedUtc = startedUtc;
+        _currentPhase = CrawlPhase.Starting;
+    }
+
+    private CrawlStatsSnapshot Snapshot(int visitedCount) =>
+        Stats.Snapshot(_currentPhase, visitedCount, DateTime.UtcNow - _startedUtc);
+
+    private void ReportPage(string url, CrawlOutcome outcome)
+    {
+        Stats.Record(outcome);
+        _reporter.PageProcessed(url, outcome, Snapshot(0)); // Discovered count doesn't need to be exact here for the page event
+    }
+    
+    private void RecordBrokenLink(string url, int statusCode)
+    {
+        _firstReferrer.TryGetValue(url, out var sourceUrl);
+        string reason = statusCode == 410 ? "410 Gone" : statusCode == 404 ? "404 Not Found" : $"HTTP {statusCode}";
+        _brokenLinks.Add(new BrokenLink(url, sourceUrl, false, statusCode, reason));
+    }
+
+    public void OnPhaseChanged(CrawlPhase phase)
+    {
+        _currentPhase = phase;
+        _reporter.PhaseChanged(phase, Snapshot(0));
+    }
+
+    public void OnUrlDiscovered(string targetUrl, string sourceUrl)
+    {
+        _firstReferrer.TryAdd(targetUrl, sourceUrl);
+    }
+
+    public void OnOutlinksAdded(int count)
+    {
+        Stats.AddLinks(count);
+    }
+
+    public void OnOffsiteLinkDiscovered(string targetUrl, string sourceUrl)
+    {
+        _firstReferrer.TryAdd(targetUrl, sourceUrl);
+    }
+
+    public void OnSeedInvalid(string seedUrl)
+    {
+        _logger.LogError("Invalid seed URL: {Url}", seedUrl);
+    }
+
+    public void OnSeedUnreachable(string host)
+    {
+        _logger.LogError("Seed host {Host} is unreachable (connection failed on first contact); nothing to crawl.", host);
+    }
+
+    public void OnSeedDisallowed(string url)
+    {
+        _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", url);
+    }
+
+    public void OnCrawlCancelled(int dispatchedCount)
+    {
+        _logger.LogInformation("Crawl cancelled after dispatching {Indexed} pages.", dispatchedCount);
+    }
+
+    public void OnHostCapReached(int cap, string host, string url)
+    {
+        _logger.LogInformation("Per-host cap ({Cap}) reached for {Host}; skipping {Url}", cap, host, url);
+    }
+
+    public void OnPageFetching(int indexedCount, int discoveredCount, string url)
+    {
+        _logger.LogInformation("Crawling ({Indexed} indexed / {Discovered} discovered): {Url}", indexedCount, discoveredCount, url);
+    }
+
+    public void OnFetchCancelled(string url)
+    {
+        _logger.LogInformation("Crawl cancelled while fetching {Url}.", url);
+    }
+
+    public void OnFetchError(Exception ex, string url)
+    {
+        _logger.LogError(ex, "Error occurred while crawling {Url}", url);
+        ReportPage(url, CrawlOutcome.Failed);
+    }
+
+    public void OnCrawlCompleted(string seedUrl)
+    {
+        _logger.LogInformation("Crawling completed for {SeedUrl} ({Indexed} pages indexed this run).", seedUrl, Stats.Indexed);
+    }
+
+    public void OnOutScopeUrlReached(string url)
+    {
+        _logger.LogWarning("Out-of-scope URL reached the frontier: {Url}", url);
+    }
+
+    public void OnSeedRedirectedToNewOrigin(string currentUrl, string newOrigin)
+    {
+        _logger.LogInformation("Seed {Seed} redirected to {Origin}; adding it to the allowed hosts.", currentUrl, newOrigin);
+    }
+
+    public void OnPageRedirectedOutScope(string currentUrl, string newUrl)
+    {
+        _logger.LogInformation("Redirect left the allowed hosts: {From} -> {To}", currentUrl, newUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
+    public void OnPageRedirectedDisallowed(string currentUrl, string newUrl)
+    {
+        _logger.LogInformation("Redirect target disallowed by robots.txt: {Url}", newUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
+    public void OnPageRedirectedAlreadySeen(string currentUrl, string newUrl)
+    {
+        _logger.LogInformation("Redirected to already-seen URL: {Url}", newUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
+    public void OnPageGone(string currentUrl, string finalUrl, int statusCode)
+    {
+        _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
+        RecordBrokenLink(currentUrl, statusCode);
+        ReportPage(currentUrl, CrawlOutcome.Gone);
+    }
+
+    public void OnPageFailed(string currentUrl, string finalUrl, int statusCode)
+    {
+        _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}; keeping existing index.", finalUrl, statusCode);
+        ReportPage(currentUrl, CrawlOutcome.Failed);
+    }
+
+    public void OnPageSkippedSize(string currentUrl, string finalUrl, long contentLength, long limit)
+    {
+        _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", finalUrl, contentLength, limit);
+        ReportPage(currentUrl, CrawlOutcome.SkippedSize);
+    }
+
+    public void OnPageSkippedType(string currentUrl, string finalUrl, string? contentType)
+    {
+        _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", finalUrl, contentType);
+        ReportPage(currentUrl, CrawlOutcome.SkippedType);
+    }
+
+    public void OnPageUnchanged(string currentUrl)
+    {
+        _logger.LogInformation("Page not modified since last crawl (304): {Url}", currentUrl);
+        ReportPage(currentUrl, CrawlOutcome.Unchanged);
+    }
+
+    public void OnPageUnchangedHash(string currentUrl, string finalUrl)
+    {
+        _logger.LogInformation("Content unchanged since last crawl (hash match): {Url}", finalUrl);
+        ReportPage(currentUrl, CrawlOutcome.Unchanged);
+    }
+
+    public void OnPageDuplicateContent(string currentUrl, string finalUrl, string canonicalUrl)
+    {
+        _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", finalUrl, canonicalUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
+    public void OnPageAlias(string currentUrl, string finalUrl, string canonicalUrl)
+    {
+        _logger.LogInformation("Canonical alias: {Url} -> {Canonical}", finalUrl, canonicalUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
+    public void OnPageDisallowed(string currentUrl)
+    {
+        _logger.LogInformation("Disallowed by robots.txt: {Url}", currentUrl);
+        ReportPage(currentUrl, CrawlOutcome.Disallowed);
+    }
+
+    public void OnPageNoIndex(string currentUrl, string finalUrl)
+    {
+        _logger.LogInformation("noindex directive: {Url} — not indexing its content.", finalUrl);
+        ReportPage(currentUrl, CrawlOutcome.NoIndex);
+    }
+
+    public void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
+    {
+        ReportPage(currentUrl, CrawlOutcome.Indexed);
+    }
+
+    public void OnStaleUrlsPruned(int count)
+    {
+        if (count > 0)
+        {
+            _logger.LogInformation("Pruned {Count} stale URLs the completed crawl no longer reaches.", count);
+            Stats.AddRemovedStale(count);
+        }
+    }
+
+    public void OnPruneFailed(Exception ex)
+    {
+        _logger.LogError(ex, "Failed to prune stale URLs.");
+    }
+
+    public void OnBannedUrlsRemoved(int count)
+    {
+        if (count > 0)
+        {
+            _logger.LogInformation("Removed {Count} indexed URL(s) now disallowed by robots.txt.", count);
+            Stats.AddRemovedBanned(count);
+        }
+    }
+
+    public void OnRemoveBannedFailed(Exception ex)
+    {
+        _logger.LogError(ex, "Failed to remove robots-disallowed URLs.");
+    }
+
+    public void OnExternalLinksChecked(int brokenCount, int totalCount)
+    {
+        _logger.LogInformation("External link check: {Broken} of {Total} off-site link(s) did not resolve.", brokenCount, totalCount);
+    }
+
+    public void OnExternalLinkProbeFailed(Exception ex, string url)
+    {
+        _logger.LogDebug(ex, "Inconclusive probe for off-site link {Url}; not reporting it as broken.", url);
+    }
+    
+    public void OnExternalLinkBroken(string url, int statusCode)
+    {
+        RecordBrokenLink(url, statusCode);
+    }
+    
+    public void OnAllowedServerIgnored(string entry)
+    {
+        _logger.LogWarning("Ignoring allowed-server entry '{Entry}': expected [scheme://]host[:port].", entry);
+    }
+}
