@@ -27,7 +27,21 @@ public partial class CrawlerService
     {
         var origin = UrlOrigin.Key(uri);
         if (ctx.RobotsCache.TryGetValue(origin, out var cached)) return cached;
-        var (rules, unavailable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), ctx.MaxCrawlSizeBytes, cancellationToken);
+        var (rules, unavailable, reachable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), ctx.MaxCrawlSizeBytes, cancellationToken);
+
+        // robots.txt is the first request made to any origin, so its outcome is also our first read
+        // on whether the host answers at all. Any response — even a 404 or a 5xx — proves the server
+        // is reachable; a connection-level failure with no earlier success writes the host off for
+        // the rest of the run, after which its URLs are skipped without further requests.
+        if (reachable)
+        {
+            ctx.HostHealth.RecordContacted(uri.Host);
+        }
+        else if (ctx.HostHealth.RecordUnreachable(uri.Host))
+        {
+            _logger.LogWarning("Host {Host} did not respond on first contact; writing it off and skipping its URLs for the rest of this run.", uri.Host);
+        }
+
         if (unavailable)
         {
             // Remember the origin so end-of-crawl pruning leaves its URLs alone: they went
@@ -45,7 +59,7 @@ public partial class CrawlerService
     /// <param name="maxBytes">The maximum number of body bytes to read.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed rules, and whether they are a stand-in for an unavailable (5xx) robots.txt.</returns>
-    private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, long maxBytes, CancellationToken cancellationToken)
+    private async Task<(RobotsRules Rules, bool Unavailable, bool Reachable)> GetRobotsRulesAsync(Uri baseUri, long maxBytes, CancellationToken cancellationToken)
     {
         try
         {
@@ -61,7 +75,7 @@ public partial class CrawlerService
                 {
                     _logger.LogWarning("robots.txt for {Host} exceeds the {Limit}-byte limit; parsing the truncated prefix.", baseUri.Host, maxBytes);
                 }
-                return (RobotsRules.Parse(Encoding.UTF8.GetString(body), UserAgent), false);
+                return (RobotsRules.Parse(Encoding.UTF8.GetString(body), UserAgent), false, true);
             }
 
             // RFC 9309 §2.3.1.3/§2.3.1.4: a 4xx (e.g. no robots.txt) means "no restrictions",
@@ -70,14 +84,21 @@ public partial class CrawlerService
             if ((int)response.StatusCode >= 500)
             {
                 _logger.LogWarning("robots.txt for {Host} returned {Status}; treating as disallow-all.", baseUri.Host, (int)response.StatusCode);
-                return (RobotsRules.DisallowAll, true);
+                return (RobotsRules.DisallowAll, true, true);
             }
+
+            // A 4xx (e.g. no robots.txt): no restrictions — and the server did answer, so it's reachable.
+            return (RobotsRules.AllowAll, false, true);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to fetch or parse robots.txt");
+            // A connection-level failure (DNS/socket/timeout) means the host is unreachable, not that
+            // it merely lacks a robots.txt; surface that so the caller can write the host off. Any
+            // other exception (e.g. a malformed body) still came from a server that answered.
+            bool reachable = !IsUnreachableError(ex, cancellationToken);
+            _logger.LogWarning(ex, "Failed to fetch or parse robots.txt for {Host}.", baseUri.Host);
+            return (RobotsRules.AllowAll, false, reachable);
         }
-        return (RobotsRules.AllowAll, false);
     }
 
     /// <summary>
@@ -157,9 +178,8 @@ public partial class CrawlerService
                 // Same origin as the seed, so the seed's already-fetched robots apply.
                 if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, robots)) continue;
 
-                if (ctx.Visited.Add(normalizedUrl))
+                if (Discover(ctx, normalizedUrl, sitemapUrl))
                 {
-                    ctx.Queue.Enqueue(normalizedUrl);
                     added++;
                 }
             }

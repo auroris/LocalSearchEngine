@@ -15,8 +15,9 @@ internal static class SummaryPanel
     /// <param name="statsJsonPath">Where the JSON stats were written.</param>
     /// <param name="statsTextPath">Where the text stats were written.</param>
     /// <param name="logPath">Where the log file was written.</param>
+    /// <param name="brokenLinksPath">Where the broken-links report was written.</param>
     /// <returns>A renderable panel for <c>AnsiConsole.Write</c>.</returns>
-    public static IRenderable Build(CrawlReport report, string statsJsonPath, string statsTextPath, string logPath)
+    public static IRenderable Build(CrawlReport report, string statsJsonPath, string statsTextPath, string logPath, string brokenLinksPath)
     {
         var s = report.Stats;
         string status = report.Cancelled ? "[bold red]cancelled[/]"
@@ -34,11 +35,14 @@ internal static class SummaryPanel
         grid.AddRow("[grey]Gone / Disallowed / Failed[/]", $"{s.Gone} / {s.Disallowed} / {s.Failed}");
         grid.AddRow("[grey]Removed[/]", $"[red]{report.ItemsDeleted}[/]  ([grey]banned[/] {s.RemovedBanned}, [grey]stale[/] {s.RemovedStale})");
         grid.AddRow("[grey]Links found / unique[/]", $"{s.LinksFound} / {s.Discovered}");
+        string brokenColor = report.BrokenLinks.Count > 0 ? "red" : "grey";
+        grid.AddRow("[grey]Broken links / unreachable hosts[/]", $"[{brokenColor}]{report.BrokenLinks.Count}[/] / {report.UnreachableHosts.Count}");
         grid.AddRow("[grey]Indexed URLs in DB[/]", report.IndexedUrlsInDb.ToString());
         grid.AddRow("[grey]Crawl-state rows[/]", report.CrawlStateRowsInDb.ToString());
         grid.AddEmptyRow();
         grid.AddRow("[grey]Stats[/]", Markup.Escape(statsJsonPath));
         grid.AddRow("[grey]     [/]", Markup.Escape(statsTextPath));
+        grid.AddRow("[grey]Broken[/]", Markup.Escape(brokenLinksPath));
         grid.AddRow("[grey]Log[/]", Markup.Escape(logPath));
 
         return new Panel(grid)

@@ -22,6 +22,9 @@ public enum CrawlPhase
     /// <summary>Optimizing and (when warranted) vacuuming the database.</summary>
     Optimizing,
 
+    /// <summary>Optionally probing off-site links (outside the allowed hosts) to see whether they still resolve.</summary>
+    CheckingLinks,
+
     /// <summary>The crawl drained its frontier and finished on its own.</summary>
     Completed,
 

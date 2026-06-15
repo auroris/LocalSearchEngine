@@ -14,6 +14,8 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <param name="CrawlStateRowsInDb">Crawl-state rows in the database after the crawl.</param>
 /// <param name="ItemsAdded">Net new indexed URLs this run (end total minus start total, plus deletions).</param>
 /// <param name="ItemsDeleted">Index entries removed this run (gone, banned, and stale).</param>
+/// <param name="BrokenLinks">Links the crawl found leading nowhere: in-scope 404/410s, plus off-site links that failed verification when external link checking was enabled.</param>
+/// <param name="UnreachableHosts">Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.</param>
 public sealed record CrawlReport(
     string SeedUrl,
     DateTime StartedUtc,
@@ -24,7 +26,9 @@ public sealed record CrawlReport(
     long IndexedUrlsInDb,
     long CrawlStateRowsInDb,
     long ItemsAdded,
-    long ItemsDeleted)
+    long ItemsDeleted,
+    IReadOnlyList<BrokenLink> BrokenLinks,
+    IReadOnlyList<string> UnreachableHosts)
 {
     /// <summary>Wall-clock duration of the crawl.</summary>
     public TimeSpan Duration => FinishedUtc - StartedUtc;

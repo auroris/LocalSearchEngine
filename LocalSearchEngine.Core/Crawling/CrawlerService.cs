@@ -1,5 +1,7 @@
 using Microsoft.Data.Sqlite;
+using System.Collections.Concurrent;
 using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Channels;
@@ -29,6 +31,12 @@ public partial class CrawlerService
 
     /// <summary>Upper bound honored for a robots.txt Crawl-delay; larger values are clamped.</summary>
     private const int MaxCrawlDelaySeconds = 30;
+
+    /// <summary>Maximum off-site hosts probed concurrently during external link checking.</summary>
+    private const int ExternalCheckConcurrency = 8;
+
+    /// <summary>Politeness gap between consecutive probes to the same off-site host during external link checking.</summary>
+    private static readonly TimeSpan ExternalCheckPerHostGap = TimeSpan.FromMilliseconds(250);
 
     static CrawlerService()
     {
@@ -77,7 +85,7 @@ public partial class CrawlerService
     /// <param name="reporter">Receives live progress and phase changes; defaults to a no-op reporter.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="CrawlReport"/> summarizing what the crawl indexed, removed, and discovered.</returns>
-    public async Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, long maxCrawlSizeBytes = 15 * 1024 * 1024, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
+    public async Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = int.MaxValue, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = int.MaxValue, long maxCrawlSizeBytes = 15 * 1024 * 1024, bool checkExternalLinks = false, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
     {
         // Stamped before anything is visited: after a crawl that drains naturally, any in-scope
         // row whose LastCrawled predates this moment was unreachable this run and gets pruned. It
@@ -98,6 +106,7 @@ public partial class CrawlerService
             Queue = new Queue<string>(),
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             MaxCrawlSizeBytes = maxCrawlSizeBytes,
+            CollectOffsiteLinks = checkExternalLinks,
             Reporter = reporter,
             Stats = new CrawlStats(),
             StartedUtc = crawlStartUtc,
@@ -140,20 +149,30 @@ public partial class CrawlerService
         // allowed hosts never by itself causes requests to a server.
         var seedRobots = await GetOrFetchRobotsAsync(ctx, baseUri, cancellationToken);
 
-        // Seed the frontier from the origin's sitemaps; the seed URL itself is enqueued below.
-        await EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, cancellationToken);
-
-        var normalizedSeed = UrlNormalizer.Normalize(baseUri);
-        ctx.SeedUrl = normalizedSeed;
-        if (ctx.Visited.Add(normalizedSeed))
+        if (ctx.HostHealth.IsUnreachable(baseUri.Host))
         {
-            if (CrawlPolicy.IsAllowedByRobots(normalizedSeed, seedRobots))
+            // The seed's own server didn't answer its very first request (robots.txt). There is
+            // nothing to crawl: skip sitemap discovery and don't enqueue the seed. The empty frontier
+            // means the run produces no jobs and so prunes nothing.
+            _logger.LogError("Seed host {Host} is unreachable (connection failed on first contact); nothing to crawl.", baseUri.Host);
+        }
+        else
+        {
+            // Seed the frontier from the origin's sitemaps; the seed URL itself is enqueued below.
+            await EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, cancellationToken);
+
+            var normalizedSeed = UrlNormalizer.Normalize(baseUri);
+            ctx.SeedUrl = normalizedSeed;
+            if (ctx.Visited.Add(normalizedSeed))
             {
-                ctx.Queue.Enqueue(normalizedSeed);
-            }
-            else
-            {
-                _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
+                if (CrawlPolicy.IsAllowedByRobots(normalizedSeed, seedRobots))
+                {
+                    ctx.Queue.Enqueue(normalizedSeed);
+                }
+                else
+                {
+                    _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", normalizedSeed);
+                }
             }
         }
 
@@ -196,6 +215,14 @@ public partial class CrawlerService
                     // must not prune.
                     ctx.HostCapSkipped = true;
                     _logger.LogInformation("Per-host cap ({Cap}) reached for {Host}; skipping {Url}", maxPagesPerHost, currentHostUri.Host, currentUrl);
+                    continue;
+                }
+
+                // A host written off as unreachable earlier this run: don't spend any more requests
+                // on it. Its URLs are exempt from stale pruning (see PruneStaleUrlsAsync), so skipping
+                // them here never drops their existing index entries.
+                if (currentHostUri is not null && ctx.HostHealth.IsUnreachable(currentHostUri.Host))
+                {
                     continue;
                 }
 
@@ -265,6 +292,15 @@ public partial class CrawlerService
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
+        // Optional, opt-in: verify off-site links (outside the allowed hosts) still resolve. This is a
+        // final reporting pass — a lightweight liveness probe per link, not a crawl — and is skipped
+        // entirely on cancellation.
+        if (checkExternalLinks && !cancellationToken.IsCancellationRequested && ctx.OffsiteLinks.Count > 0)
+        {
+            ReportPhase(ctx, CrawlPhase.CheckingLinks);
+            await VerifyExternalLinksAsync(ctx, cancellationToken);
+        }
+
         bool cancelled = cancellationToken.IsCancellationRequested;
         ReportPhase(ctx, cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed);
 
@@ -286,7 +322,9 @@ public partial class CrawlerService
             indexedUrlsInDb,
             crawlStateRowsInDb,
             itemsAdded,
-            itemsDeleted);
+            itemsDeleted,
+            ctx.BrokenLinks,
+            ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray());
     }
 
     /// <summary>Builds the report returned when a crawl cannot start (e.g. an invalid seed URL).</summary>
@@ -295,7 +333,8 @@ public partial class CrawlerService
     /// <returns>An all-zero <see cref="CrawlReport"/>.</returns>
     private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
         seedUrl, startedUtc, DateTime.UtcNow, false, false,
-        new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0);
+        new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,
+        Array.Empty<BrokenLink>(), Array.Empty<string>());
 
     /// <summary>Advances the crawl phase and notifies the reporter with a fresh snapshot.</summary>
     /// <param name="ctx">The active crawl context.</param>
@@ -342,6 +381,15 @@ public partial class CrawlerService
         // the authoritative robots check happens here — after a lazy per-origin robots fetch
         // and before any politeness wait or page request is spent on a disallowed URL.
         var currentRobots = await GetOrFetchRobotsAsync(ctx, currentUri, cancellationToken);
+
+        // Fetching robots.txt is our first contact with a host. If that connection failed, the host
+        // has just been written off — don't spend a page request on it. Its other URLs are skipped
+        // back in the crawl loop.
+        if (ctx.HostHealth.IsUnreachable(currentUri.Host))
+        {
+            return null;
+        }
+
         if (!CrawlPolicy.IsAllowedByRobots(currentUrl, currentRobots))
         {
             _logger.LogInformation("Disallowed by robots.txt: {Url}", currentUrl);
@@ -363,6 +411,11 @@ public partial class CrawlerService
         }
 
         using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+        // The server answered (any status counts), so it can never be written off as unreachable
+        // this run: a later connection blip falls back to the normal retry/keep-index handling.
+        ctx.HostHealth.RecordContacted(currentUri.Host);
+
         int statusCode = (int)response.StatusCode;
 
         if (response.StatusCode == HttpStatusCode.NotModified)
@@ -427,8 +480,10 @@ public partial class CrawlerService
 
         if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
         {
-            // Genuinely gone: drop it from the index.
+            // Genuinely gone: drop it from the index, and record it as a broken link against the
+            // page it was first seen on for the broken-links report.
             _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
+            RecordBrokenLink(ctx, currentUrl, statusCode);
             ReportPage(ctx, currentUrl, CrawlOutcome.Gone);
             return new GoneJob(finalUrl, statusCode, redirectSourceUrl);
         }
@@ -541,7 +596,7 @@ public partial class CrawlerService
         if (duplicateOf != null)
         {
             _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", finalUrl, duplicateOf);
-            EnqueueSingle(ctx, duplicateOf);
+            EnqueueSingle(ctx, duplicateOf, finalUrl);
             ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
@@ -593,7 +648,7 @@ public partial class CrawlerService
         if (analysis.CanonicalAlias != null)
         {
             _logger.LogInformation("Canonical alias: {Url} -> {Canonical}", finalUrl, analysis.CanonicalAlias);
-            EnqueueSingle(ctx, analysis.CanonicalAlias);
+            EnqueueSingle(ctx, analysis.CanonicalAlias, finalUrl);
             // No ContentHash stored, so the alias is re-evaluated (and the canonical re-queued)
             // on each crawl.
             ReportPage(ctx, currentUrl, CrawlOutcome.Redirected);
@@ -605,7 +660,17 @@ public partial class CrawlerService
         ctx.Stats.AddLinks(analysis.Outlinks.Count);
         foreach (var link in analysis.Outlinks)
         {
-            if (ctx.Visited.Add(link)) ctx.Queue.Enqueue(link);
+            Discover(ctx, link, finalUrl);
+        }
+
+        // Off-site links aren't crawled, but when external link checking is on they're remembered
+        // (first referrer wins) so the end-of-crawl pass can verify they still resolve.
+        if (ctx.CollectOffsiteLinks)
+        {
+            foreach (var external in analysis.OffsiteLinks)
+            {
+                ctx.OffsiteLinks.TryAdd(external, finalUrl);
+            }
         }
 
         if (analysis.NoIndex)
@@ -750,6 +815,9 @@ public partial class CrawlerService
                 if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
                 if (!ctx.AllowedHosts.IsAllowed(uri)) continue;
                 if (ctx.RobotsUnavailable.Contains(UrlOrigin.Key(uri))) continue;
+                // A host written off as unreachable this run went unvisited for a reason unrelated to
+                // staleness — leave its existing index entries alone, exactly like a 5xx robots.txt.
+                if (ctx.HostHealth.IsUnreachable(uri.Host)) continue;
 
                 await _vectorSearchService.DeleteUrlChunksAsync(url);
                 await CrawlStore.DeleteOutlinksAsync(ctx.Write, url, CancellationToken.None);
@@ -788,6 +856,9 @@ public partial class CrawlerService
             {
                 if (ctx.RobotsUnavailable.Contains(origin)) continue;
                 if (!Uri.TryCreate(origin, UriKind.Absolute, out var originUri)) continue;
+                // An unreachable host's cached rules are an AllowAll placeholder, not anything it
+                // actually served; never drop its indexed URLs on the strength of them.
+                if (ctx.HostHealth.IsUnreachable(originUri.Host)) continue;
 
                 // Narrow to the origin's rows in SQL, then confirm each in memory: the prefix is a
                 // coarse filter (it also matches a different port, or a look-alike host such as
@@ -820,17 +891,44 @@ public partial class CrawlerService
     }
 
     /// <summary>
+    /// Adds a freshly discovered URL to the frontier, recording the page it was first seen on so a
+    /// later 404/410 can be attributed to where it was linked from.
+    /// </summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="url">The URL to enqueue.</param>
+    /// <param name="referrer">The page the URL was found on, or <c>null</c> for the seed.</param>
+    /// <returns><c>true</c> if the URL was newly enqueued; <c>false</c> if it had already been seen.</returns>
+    private static bool Discover(CrawlContext ctx, string url, string? referrer)
+    {
+        if (!ctx.Visited.Add(url)) return false;
+        ctx.Queue.Enqueue(url);
+        if (referrer != null) ctx.FirstReferrer[url] = referrer;
+        return true;
+    }
+
+    /// <summary>Records an in-scope link that returned 404/410, attributed to the page it was first seen on.</summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="targetUrl">The link target that was gone.</param>
+    /// <param name="statusCode">The HTTP status (404 or 410).</param>
+    private static void RecordBrokenLink(CrawlContext ctx, string targetUrl, int statusCode)
+    {
+        string reason = statusCode == 410 ? "410 Gone" : statusCode == 404 ? "404 Not Found" : $"HTTP {statusCode}";
+        ctx.BrokenLinks.Add(new BrokenLink(targetUrl, ctx.FirstReferrer.GetValueOrDefault(targetUrl), External: false, statusCode, reason));
+    }
+
+    /// <summary>
     /// Validates and enqueues a single URL into the frontier queue.
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
     /// <param name="url">The URL string to enqueue.</param>
-    private void EnqueueSingle(CrawlContext ctx, string url)
+    /// <param name="referrer">The page the URL was found on.</param>
+    private void EnqueueSingle(CrawlContext ctx, string url, string referrer)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) return;
         if (!ctx.AllowedHosts.IsAllowed(uri)) return;
         var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
         if (!CrawlPolicy.IsAllowedByRobots(url, robots)) return;
-        if (ctx.Visited.Add(url)) ctx.Queue.Enqueue(url);
+        Discover(ctx, url, referrer);
     }
 
     /// <summary>
@@ -848,7 +946,7 @@ public partial class CrawlerService
             if (!ctx.AllowedHosts.IsAllowed(uri)) continue;
             var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(link, robots)) continue;
-            if (ctx.Visited.Add(link)) ctx.Queue.Enqueue(link);
+            Discover(ctx, link, url);
         }
     }
 
@@ -891,6 +989,142 @@ public partial class CrawlerService
     }
 
     /// <summary>
+    /// Classifies an exception thrown while fetching a URL as a connection-level failure — a DNS
+    /// resolution failure, a refused/reset/unreachable socket, a TLS handshake failure, or a request
+    /// timeout — meaning we are unlikely ever to hear back from the server, as opposed to an error
+    /// the server actually answered with. Cancellation requested by the crawl itself never counts.
+    /// </summary>
+    /// <param name="ex">The exception to classify.</param>
+    /// <param name="cancellationToken">The crawl's cancellation token, to tell our own shutdown apart from a server timeout.</param>
+    /// <returns><c>true</c> if the failure indicates an unreachable server; otherwise, <c>false</c>.</returns>
+    private static bool IsUnreachableError(Exception ex, CancellationToken cancellationToken)
+    {
+        // Our own shutdown, not the server's silence: a request aborted because the crawl is being
+        // cancelled says nothing about whether the host is reachable.
+        if (cancellationToken.IsCancellationRequested) return false;
+
+        for (Exception? e = ex; e is not null; e = e.InnerException)
+        {
+            switch (e)
+            {
+                case HttpRequestException { HttpRequestError: HttpRequestError.NameResolutionError
+                                                           or HttpRequestError.ConnectionError
+                                                           or HttpRequestError.SecureConnectionError }:
+                case SocketException:
+                case TimeoutException:
+                // HttpClient's own request timeout surfaces as a TaskCanceledException, and we ruled
+                // out our own cancellation above — so the server accepted the socket but never replied.
+                case TaskCanceledException:
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Verifies the off-site links collected this run still resolve. Off-site hosts sit outside the
+    /// allowed set and so were never crawled; here we only confirm there is something on the other
+    /// end — a single HEAD (falling back to GET) per link, following redirects, with no parsing,
+    /// indexing, politeness-from-robots, or retry rigamarole. A 404/410 or a connection-level failure
+    /// is recorded as a broken link; anything else (a 401/403/5xx included) is taken as "it goes
+    /// somewhere". Different hosts are probed concurrently, each host serially and politely.
+    /// </summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="Task"/> representing the verification pass.</returns>
+    private async Task VerifyExternalLinksAsync(CrawlContext ctx, CancellationToken cancellationToken)
+    {
+        var byHost = ctx.OffsiteLinks
+            .Select(kv => (Target: kv.Key, Referrer: kv.Value, Uri: Uri.TryCreate(kv.Key, UriKind.Absolute, out var u) ? u : null))
+            .Where(x => x.Uri is not null)
+            .GroupBy(x => x.Uri!.Host)
+            .ToList();
+
+        var broken = new ConcurrentBag<BrokenLink>();
+        try
+        {
+            await Parallel.ForEachAsync(
+                byHost,
+                new ParallelOptions { MaxDegreeOfParallelism = ExternalCheckConcurrency, CancellationToken = cancellationToken },
+                async (group, token) =>
+                {
+                    bool first = true;
+                    foreach (var (target, referrer, _) in group)
+                    {
+                        if (!first) await Task.Delay(ExternalCheckPerHostGap, token);
+                        first = false;
+
+                        var (ok, status, reason) = await ProbeExternalLinkAsync(target, token);
+                        if (!ok) broken.Add(new BrokenLink(target, referrer, External: true, status, reason));
+                    }
+                });
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancelled mid-pass: keep whatever was already probed and stop.
+        }
+
+        ctx.BrokenLinks.AddRange(broken);
+        _logger.LogInformation("External link check: {Broken} of {Total} off-site link(s) did not resolve.", broken.Count, ctx.OffsiteLinks.Count);
+    }
+
+    /// <summary>
+    /// Probes a single off-site URL to see whether it resolves, trying HEAD first and falling back to
+    /// a header-only GET if the server rejects HEAD.
+    /// </summary>
+    /// <param name="url">The off-site URL to probe.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>Whether the link resolves, the HTTP status (0 if the request never completed), and a short reason when broken.</returns>
+    private async Task<(bool Ok, int Status, string Reason)> ProbeExternalLinkAsync(string url, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var response = await SendProbeAsync(url, cancellationToken);
+            int status = (int)response.StatusCode;
+            if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
+            {
+                return (false, status, response.StatusCode == HttpStatusCode.Gone ? "410 Gone" : "404 Not Found");
+            }
+            return (true, status, string.Empty);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // A connection-level failure means the link is dead; any other error is inconclusive, so
+            // give the link the benefit of the doubt rather than cry wolf over a transient hiccup.
+            if (IsUnreachableError(ex, cancellationToken))
+            {
+                return (false, 0, "connection failed");
+            }
+            _logger.LogDebug(ex, "Inconclusive probe for off-site link {Url}; not reporting it as broken.", url);
+            return (true, 0, string.Empty);
+        }
+    }
+
+    /// <summary>
+    /// Sends a liveness probe: a HEAD request, retried as a header-only GET when the server answers
+    /// 405 Method Not Allowed or 501 Not Implemented (servers that don't support HEAD).
+    /// </summary>
+    /// <param name="url">The URL to probe.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The probe response; the caller owns and disposes it.</returns>
+    private async Task<HttpResponseMessage> SendProbeAsync(string url, CancellationToken cancellationToken)
+    {
+        var head = new HttpRequestMessage(HttpMethod.Head, url);
+        var response = await _httpClient.SendAsync(head, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        if (response.StatusCode is HttpStatusCode.MethodNotAllowed or HttpStatusCode.NotImplemented)
+        {
+            response.Dispose();
+            var get = new HttpRequestMessage(HttpMethod.Get, url);
+            response = await _httpClient.SendAsync(get, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        }
+        return response;
+    }
+
+    /// <summary>
     /// Holds the state and tracking information for an active crawl execution.
     /// </summary>
     private sealed class CrawlContext
@@ -930,6 +1164,21 @@ public partial class CrawlerService
 
         /// <summary>Gets the origins (scheme://host:port) whose robots.txt was unavailable (5xx) this run; their URLs are exempt from pruning.</summary>
         public HashSet<string> RobotsUnavailable = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Gets the per-host reachability tracker: which servers have answered this run and which have been written off as unreachable.</summary>
+        public HostHealthTracker HostHealth = new();
+
+        /// <summary>Gets the first page each discovered URL was seen on, so a broken (404/410) link can be reported against where it was linked from.</summary>
+        public Dictionary<string, string> FirstReferrer = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Gets the off-site (out-of-scope) links seen this run, mapped to the first page each was seen on. Populated only when external link checking is enabled.</summary>
+        public Dictionary<string, string> OffsiteLinks = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Gets the links found leading nowhere this run: in-scope 404/410s, plus off-site links that failed the optional verification pass.</summary>
+        public List<BrokenLink> BrokenLinks = new();
+
+        /// <summary>Gets or sets a value indicating whether off-site links are collected for the optional end-of-crawl verification pass.</summary>
+        public bool CollectOffsiteLinks;
 
         /// <summary>Gets or sets a value indicating whether the per-host cap skipped any URL this run, which disables pruning.</summary>
         public bool HostCapSkipped;

@@ -27,6 +27,8 @@ long maxCrawlSizeBytes = config.GetValue<long?>("max-crawl-size-bytes") ?? 15 * 
 var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
 string logFile = !string.IsNullOrWhiteSpace(config["log-file"]) ? config["log-file"]! : "crawl.log";
 string statsFile = !string.IsNullOrWhiteSpace(config["stats-file"]) ? config["stats-file"]! : "crawl-stats";
+string brokenLinksFile = !string.IsNullOrWhiteSpace(config["broken-links-file"]) ? config["broken-links-file"]! : "broken-links";
+bool checkExternalLinks = config.GetValue<bool?>("check-external-links") ?? false;
 bool noLive = config.GetValue<bool?>("no-live") ?? false;
 
 bool showHelp = false;
@@ -89,6 +91,19 @@ for (int i = 0; i < args.Length; i++)
         }
         statsFile = args[++i];
     }
+    else if (arg == "--broken-links-file")
+    {
+        if (i + 1 >= args.Length)
+        {
+            Console.Error.WriteLine("Error: --broken-links-file requires a path (the .txt extension is added automatically).");
+            return;
+        }
+        brokenLinksFile = args[++i];
+    }
+    else if (arg == "--check-external-links")
+    {
+        checkExternalLinks = true;
+    }
     else if (arg == "--no-live")
     {
         noLive = true;
@@ -130,6 +145,12 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("                           go here, not to the console. (Or 'log-file' in appsettings.json.)");
     Console.WriteLine("  --stats-file <path>      Base path for the end-of-run stats files; '.json' and '.txt'");
     Console.WriteLine("                           are appended. Default is 'crawl-stats'. (Or 'stats-file'.)");
+    Console.WriteLine("  --broken-links-file <path>  Base path for the broken-links report ('.txt' is appended).");
+    Console.WriteLine("                           Default is 'broken-links'. Lists in-scope 404/410 links and the");
+    Console.WriteLine("                           page each was found on, plus unreachable hosts. (Or 'broken-links-file'.)");
+    Console.WriteLine("  --check-external-links   After the crawl, probe off-site links (hosts outside the allowed");
+    Console.WriteLine("                           set) to confirm they still resolve; dead ones are added to the");
+    Console.WriteLine("                           broken-links report. Off by default. (Or 'check-external-links'.)");
     Console.WriteLine("  --no-live                Force plain progress lines instead of the live display. Not");
     Console.WriteLine("                           usually needed: the live display turns itself off automatically");
     Console.WriteLine("                           when output is redirected or there is no interactive console");
@@ -166,6 +187,7 @@ string connectionString = $"Data Source={fullDbPath}";
 string logPath = Path.GetFullPath(logFile);
 string statsJsonPath = Path.GetFullPath(statsFile + ".json");
 string statsTextPath = Path.GetFullPath(statsFile + ".txt");
+string brokenLinksPath = Path.GetFullPath(brokenLinksFile + ".txt");
 
 // Channel 2: log messages go to a file (not the console — the live display owns that). Quiet the
 // per-request HttpClient chatter so the crawler's own messages stay readable.
@@ -232,6 +254,7 @@ try
     AnsiConsole.Write(new Rule("[bold]LocalSearchEngine crawler[/]").LeftJustified());
     AnsiConsole.MarkupLineInterpolated($"[grey]Seed[/]      {url}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
+    AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
     if (maxPages != int.MaxValue)
     {
         AnsiConsole.MarkupLineInterpolated($"[grey]Max pages[/] {maxPages}");
@@ -262,20 +285,21 @@ try
             .StartAsync(async live =>
             {
                 var reporter = new SpectreCrawlReporter(live);
-                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, reporter, cts.Token);
+                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
             });
         report = captured!;
     }
     else
     {
         var reporter = new PlainCrawlReporter(AnsiConsole.Console);
-        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, reporter, cts.Token);
+        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
     }
 
     // Channel 3: write the end-of-run stats to disk (JSON + text), then print a summary.
     await CrawlStatsWriter.WriteAsync(report, statsJsonPath, statsTextPath, CancellationToken.None);
+    await BrokenLinksWriter.WriteAsync(report, brokenLinksPath, checkExternalLinks, CancellationToken.None);
     AnsiConsole.WriteLine();
-    AnsiConsole.Write(SummaryPanel.Build(report, statsJsonPath, statsTextPath, logPath));
+    AnsiConsole.Write(SummaryPanel.Build(report, statsJsonPath, statsTextPath, logPath, brokenLinksPath));
 }
 finally
 {

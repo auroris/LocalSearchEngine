@@ -35,8 +35,10 @@ public static class ContentExtractor
         public bool NoFollow;
         /// <summary>Gets or sets the canonical URL alias specified by the page, if any.</summary>
         public string? CanonicalAlias;
-        /// <summary>Gets or sets the list of absolute outlinks discovered on the page.</summary>
+        /// <summary>Gets or sets the list of absolute in-scope outlinks discovered on the page.</summary>
         public List<string> Outlinks = new();
+        /// <summary>Gets or sets the absolute off-site (out-of-scope) http(s) links on the page, kept for optional link verification.</summary>
+        public List<string> OffsiteLinks = new();
     }
 
     /// <summary>
@@ -91,7 +93,7 @@ public static class ContentExtractor
 
         if (!analysis.NoFollow)
         {
-            analysis.Outlinks = ExtractInScopeLinks(doc, currentUrl, allowedHosts, robotsCache);
+            ExtractLinks(doc, currentUrl, allowedHosts, robotsCache, analysis);
         }
 
         return analysis;
@@ -136,18 +138,21 @@ public static class ContentExtractor
     }
 
     /// <summary>
-    /// Extracts all crawlable in-scope links from an HTML document.
+    /// Extracts the document's links into <see cref="HtmlAnalysis.Outlinks"/> (in-scope, crawlable)
+    /// and <see cref="HtmlAnalysis.OffsiteLinks"/> (out-of-scope http(s) targets, kept only so an
+    /// optional end-of-crawl pass can verify they still resolve — they are never crawled).
     /// </summary>
-    private static List<string> ExtractInScopeLinks(
+    private static void ExtractLinks(
         HtmlDocument doc, string currentUrl,
-        AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache)
+        AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache,
+        HtmlAnalysis analysis)
     {
-        var result = new List<string>();
         var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
-        if (linkNodes is null) return result;
+        if (linkNodes is null) return;
 
         var baseForLinks = new Uri(currentUrl);
-        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var seenInScope = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var seenOffsite = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var link in linkNodes)
         {
@@ -157,19 +162,26 @@ public static class ContentExtractor
             var href = link.GetAttributeValue("href", "");
             if (string.IsNullOrWhiteSpace(href)) continue;
             if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
-            if (!allowedHosts.IsAllowed(absoluteUri)) continue;
+
+            // Only http(s) targets are crawlable or checkable; mailto:, tel:, javascript:, etc. are not links to a page.
+            if (absoluteUri.Scheme != Uri.UriSchemeHttp && absoluteUri.Scheme != Uri.UriSchemeHttps) continue;
 
             // No extension filtering here: whether a fetched body is indexable is decided by
             // its Content-Type (or sniffed bytes), never by how its URL looks.
             var normalizedUrl = UrlNormalizer.Normalize(absoluteUri);
 
+            if (!allowedHosts.IsAllowed(absoluteUri))
+            {
+                // Off-site: not crawled. Recorded (deduplicated) so the optional link-check pass can probe it.
+                if (seenOffsite.Add(normalizedUrl)) analysis.OffsiteLinks.Add(normalizedUrl);
+                continue;
+            }
+
             var linkRobots = robotsCache.TryGetValue(UrlOrigin.Key(absoluteUri), out var lr) ? lr : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, linkRobots)) continue;
 
-            if (seen.Add(normalizedUrl)) result.Add(normalizedUrl);
+            if (seenInScope.Add(normalizedUrl)) analysis.Outlinks.Add(normalizedUrl);
         }
-
-        return result;
     }
 
     /// <summary>

@@ -90,6 +90,7 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         CrawlPhase.RemovingBanned => "[darkorange]Removing banned[/]",
         CrawlPhase.Pruning => "[yellow]Pruning[/]",
         CrawlPhase.Optimizing => "[blue]Optimizing[/]",
+        CrawlPhase.CheckingLinks => "[aqua]Checking links[/]",
         CrawlPhase.Completed => "[bold green]Completed[/]",
         CrawlPhase.Cancelled => "[bold red]Cancelled[/]",
         _ => phase.ToString(),

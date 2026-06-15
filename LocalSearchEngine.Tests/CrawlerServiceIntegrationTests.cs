@@ -540,6 +540,119 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Unreachable_host_is_written_off_after_one_failed_contact()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links to three pages on a second, allowed host whose server never answers:
+        // every connection to it fails (here, a simulated DNS lookup failure).
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p>" +
+            " <a href=\"http://dead.local/a\">a</a> <a href=\"http://dead.local/b\">b</a> <a href=\"http://dead.local/c\">c</a>");
+        _handler.Routes["http://dead.local/robots.txt"] = _ =>
+            throw new HttpRequestException(HttpRequestError.NameResolutionError, "simulated DNS failure");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "dead.local" });
+
+        Assert.True(ChunkCount(Seed) > 0); // the reachable seed still indexes fine
+
+        // We touched the dead host exactly once — its robots.txt — then stopped: none of its pages
+        // were ever fetched, and nothing on it was indexed.
+        Assert.Contains("http://dead.local/robots.txt", _handler.Requested);
+        Assert.Equal(1, _handler.Requested.Count(u => u.Contains("dead.local")));
+        Assert.Equal(0, ChunkCount("http://dead.local/a"));
+    }
+
+    [Fact]
+    public async Task Unreachable_host_keeps_its_existing_index()
+    {
+        await EnsureSchemaAsync();
+
+        const string deadPage = "http://dead.local/a";
+        // First crawl: the second host answers, so its page is indexed.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://dead.local/a\">a</a>");
+        _handler.Routes[deadPage] = _ => Html("<title>A</title><p>page on the other host</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "dead.local" });
+        Assert.True(ChunkCount(deadPage) > 0);
+
+        // Second crawl: that host's server is now unreachable (its very first request fails). A
+        // completed crawl would normally prune a page it can no longer reach, but an unreachable
+        // host is exempt — its existing index must survive, just as a transient 5xx is never destructive.
+        _handler.Routes["http://dead.local/robots.txt"] = _ =>
+            throw new HttpRequestException(HttpRequestError.ConnectionError, "connection refused");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "dead.local" });
+
+        Assert.True(ChunkCount(deadPage) > 0); // preserved, not pruned
+        Assert.True(HasCrawlState(deadPage));
+        Assert.True(ChunkCount(Seed) > 0);
+    }
+
+    [Fact]
+    public async Task Unreachable_host_is_listed_in_the_report()
+    {
+        await EnsureSchemaAsync();
+
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://dead.local/a\">a</a>");
+        _handler.Routes["http://dead.local/robots.txt"] = _ =>
+            throw new HttpRequestException(HttpRequestError.NameResolutionError, "simulated DNS failure");
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50, allowedServers: new[] { "dead.local" });
+
+        Assert.Contains("dead.local", report.UnreachableHosts);
+    }
+
+    [Fact]
+    public async Task Onsite_404_is_recorded_as_a_broken_link_with_its_referrer()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links to a page on its own host that 404s (the target route is left unmapped).
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/missing\">dead</a>");
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        var broken = Assert.Single(report.BrokenLinks);
+        Assert.Equal("http://test.local/missing", broken.Url);
+        Assert.Equal(Seed, broken.FoundOn);
+        Assert.False(broken.External);
+        Assert.Equal(404, broken.StatusCode);
+    }
+
+    [Fact]
+    public async Task External_link_check_disabled_leaves_offsite_links_untouched()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links off-site to a page that would 404. With checking off (the default), off-site
+        // links are neither probed nor reported.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://external.example/dead\">dead</a>");
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        Assert.Empty(report.BrokenLinks);
+        Assert.DoesNotContain(_handler.Requested, u => u.Contains("external.example"));
+    }
+
+    [Fact]
+    public async Task External_link_check_reports_dead_offsite_links()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links off-site to one dead page (404, unmapped) and one live page (200).
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p>" +
+            " <a href=\"http://external.example/dead\">dead</a> <a href=\"http://external.example/ok\">ok</a>");
+        _handler.Routes["http://external.example/ok"] = _ => Html("<title>OK</title><p>still here</p>");
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50, checkExternalLinks: true);
+
+        var broken = Assert.Single(report.BrokenLinks);
+        Assert.Equal("http://external.example/dead", broken.Url);
+        Assert.Equal(Seed, broken.FoundOn);
+        Assert.True(broken.External);
+        Assert.Equal(404, broken.StatusCode);
+        Assert.Contains(_handler.Requested, u => u.Contains("external.example/ok")); // the live link was probed too
+    }
+
+    [Fact]
     public async Task Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
     {
         await EnsureSchemaAsync();
