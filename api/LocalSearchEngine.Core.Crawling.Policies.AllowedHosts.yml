@@ -1,0 +1,462 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  id: AllowedHosts
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  children:
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  langs:
+  - csharp
+  - vb
+  name: AllowedHosts
+  nameWithType: AllowedHosts
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AllowedHosts
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    The set of hosts a crawl may touch. Each rule is a hostname with an optional scheme and
+
+    port restriction; a component that is not specified matches anything. This is purely a
+
+    filter — listing a host here never causes it to be contacted. Robots.txt and pages are
+
+    only fetched for origins the crawl actually reaches.
+  example: []
+  syntax:
+    content: public sealed class AllowedHosts
+    content.vb: Public NotInheritable Class AllowedHosts
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
+  id: Add(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: Add(string?)
+  nameWithType: AllowedHosts.Add(string?)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Add
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    Parses and adds a configured entry of the form <code>[scheme://]host[:port]</code>.
+
+    An omitted scheme matches any scheme; an omitted port matches any port. The
+
+    "www." variant of a host is NOT implied — list it as its own entry to crawl both.
+  example: []
+  syntax:
+    content: public bool Add(string? entry)
+    parameters:
+    - id: entry
+      type: System.String
+      description: The entry to parse, e.g. "example.com", "https://example.com", or "example.com:8080".
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the entry was understood and added; otherwise, <code>false</code>.
+    content.vb: Public Function Add(entry As String) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add*
+  nameWithType.vb: AllowedHosts.Add(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(String)
+  name.vb: Add(String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
+  id: AddOrigin(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: AddOrigin(Uri)
+  nameWithType: AllowedHosts.AddOrigin(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AddOrigin
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 77
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    Adds the exact origin (scheme, host, and resolved port) of an absolute URI. Used for
+
+    the seed URL: a seed without an explicit port allows only the scheme's default port.
+  example: []
+  syntax:
+    content: public void AddOrigin(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+      description: The absolute URI whose origin to allow.
+    content.vb: Public Sub AddOrigin(uri As Uri)
+  overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin*
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  id: IsAllowed(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: IsAllowed(Uri)
+  nameWithType: AllowedHosts.IsAllowed(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsAllowed
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 84
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Determines whether the specified URI falls within the allowed set.
+  example: []
+  syntax:
+    content: public bool IsAllowed(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+      description: The absolute URI to test.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if any rule matches the URI's scheme, host, and port; otherwise, <code>false</code>.
+    content.vb: Public Function IsAllowed(uri As Uri) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_Add_System_String_
+  name: Add
+  nameWithType: AllowedHosts.Add
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_AddOrigin_System_Uri_
+  name: AddOrigin
+  nameWithType: AllowedHosts.AddOrigin
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_IsAllowed_System_Uri_
+  name: IsAllowed
+  nameWithType: AllowedHosts.IsAllowed
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed

@@ -1,0 +1,184 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  id: DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  children:
+  - LocalSearchEngine.Core.Crawling.Policies.DocKind.Docx
+  - LocalSearchEngine.Core.Crawling.Policies.DocKind.Html
+  - LocalSearchEngine.Core.Crawling.Policies.DocKind.Pdf
+  - LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  langs:
+  - csharp
+  - vb
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DocKind
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Specifies the kinds of documents that can be processed and indexed.
+  example: []
+  syntax:
+    content: public enum DocKind
+    content.vb: Public Enum DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  id: Unknown
+  parent: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: DocKind.Unknown
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unknown
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: Unknown = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind.Html
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.DocKind.Html
+  id: Html
+  parent: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  langs:
+  - csharp
+  - vb
+  name: Html
+  nameWithType: DocKind.Html
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind.Html
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Html
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: Html = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind.Pdf
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.DocKind.Pdf
+  id: Pdf
+  parent: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  langs:
+  - csharp
+  - vb
+  name: Pdf
+  nameWithType: DocKind.Pdf
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind.Pdf
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Pdf
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: Pdf = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind.Docx
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.DocKind.Docx
+  id: Docx
+  parent: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  langs:
+  - csharp
+  - vb
+  name: Docx
+  nameWithType: DocKind.Docx
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind.Docx
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Docx
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: Docx = 3
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+references:
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind

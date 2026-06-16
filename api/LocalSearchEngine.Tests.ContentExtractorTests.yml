@@ -1,0 +1,520 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.ContentExtractorTests
+  commentId: T:LocalSearchEngine.Tests.ContentExtractorTests
+  id: ContentExtractorTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  - LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+  - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+  - LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+  - LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  langs:
+  - csharp
+  - vb
+  name: ContentExtractorTests
+  nameWithType: ContentExtractorTests
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContentExtractorTests
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 12
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: >-
+    Verifies ContentExtractor's encoding resolution: the HTTP header's charset rules when
+
+    present, a meta-declared encoding is honored when the header is silent (the page is
+
+    re-decoded rather than mojibake'd through a UTF-8 assumption), and bare UTF-8 still works.
+  example: []
+  syntax:
+    content: public class ContentExtractorTests
+    content.vb: Public Class ContentExtractorTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+  id: Meta_charset_is_honored_when_http_header_is_silent
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Meta_charset_is_honored_when_http_header_is_silent()
+  nameWithType: ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Meta_charset_is_honored_when_http_header_is_silent
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Meta_charset_is_honored_when_http_header_is_silent()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Meta_charset_is_honored_when_http_header_is_silent()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+  id: Meta_http_equiv_content_type_charset_is_honored
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Meta_http_equiv_content_type_charset_is_honored()
+  nameWithType: ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Meta_http_equiv_content_type_charset_is_honored
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Meta_http_equiv_content_type_charset_is_honored()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Meta_http_equiv_content_type_charset_is_honored()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  id: Http_header_charset_wins_over_meta_declaration
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Http_header_charset_wins_over_meta_declaration()
+  nameWithType: ContentExtractorTests.Http_header_charset_wins_over_meta_declaration()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Http_header_charset_wins_over_meta_declaration
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 58
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Http_header_charset_wins_over_meta_declaration()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Http_header_charset_wins_over_meta_declaration()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  id: Utf8_body_with_no_declarations_decodes_correctly
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Utf8_body_with_no_declarations_decodes_correctly()
+  nameWithType: ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Utf8_body_with_no_declarations_decodes_correctly
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 73
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Utf8_body_with_no_declarations_decodes_correctly()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Utf8_body_with_no_declarations_decodes_correctly()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+  id: Matching_meta_charset_does_not_break_utf8_pages
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Matching_meta_charset_does_not_break_utf8_pages()
+  nameWithType: ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Matching_meta_charset_does_not_break_utf8_pages
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 85
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Matching_meta_charset_does_not_break_utf8_pages()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Matching_meta_charset_does_not_break_utf8_pages()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Meta_charset_is_honored_when_http_header_is_silent
+  name: Meta_charset_is_honored_when_http_header_is_silent
+  nameWithType: ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Meta_http_equiv_content_type_charset_is_honored
+  name: Meta_http_equiv_content_type_charset_is_honored
+  nameWithType: ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Http_header_charset_wins_over_meta_declaration
+  name: Http_header_charset_wins_over_meta_declaration
+  nameWithType: ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Utf8_body_with_no_declarations_decodes_correctly
+  name: Utf8_body_with_no_declarations_decodes_correctly
+  nameWithType: ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Matching_meta_charset_does_not_break_utf8_pages
+  name: Matching_meta_charset_does_not_break_utf8_pages
+  nameWithType: ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages

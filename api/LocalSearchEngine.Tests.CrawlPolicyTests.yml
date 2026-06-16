@@ -1,0 +1,743 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests
+  commentId: T:LocalSearchEngine.Tests.CrawlPolicyTests
+  id: CrawlPolicyTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  - LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  - LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
+  - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(System.String,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: CrawlPolicyTests
+  nameWithType: CrawlPolicyTests
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlPolicyTests
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public class CrawlPolicyTests
+    content.vb: Public Class CrawlPolicyTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  id: ClassifyContent_prefers_the_declared_content_type(System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: ClassifyContent_prefers_the_declared_content_type(string, DocKind)
+  nameWithType: CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(string, DocKind)
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(string, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ClassifyContent_prefers_the_declared_content_type
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "application/pdf", DocKind.Pdf })]
+
+      [InlineData(new object[] { "text/html", DocKind.Html })]
+
+      [InlineData(new object[] { "application/xhtml+xml", DocKind.Html })]
+
+      [InlineData(new object[] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", DocKind.Docx })]
+
+      [InlineData(new object[] { "TEXT/HTML", DocKind.Html })]
+
+      [InlineData(new object[] { "application/json", DocKind.Unknown })]
+
+      public void ClassifyContent_prefers_the_declared_content_type(string contentType, DocKind expected)
+    parameters:
+    - id: contentType
+      type: System.String
+    - id: expected
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "application/pdf", DocKind.Pdf })>
+
+      <InlineData(New Object() { "text/html", DocKind.Html })>
+
+      <InlineData(New Object() { "application/xhtml+xml", DocKind.Html })>
+
+      <InlineData(New Object() { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", DocKind.Docx })>
+
+      <InlineData(New Object() { "TEXT/HTML", DocKind.Html })>
+
+      <InlineData(New Object() { "application/json", DocKind.Unknown })>
+
+      Public Sub ClassifyContent_prefers_the_declared_content_type(contentType As String, expected As DocKind)
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(String, DocKind)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type(String, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name.vb: ClassifyContent_prefers_the_declared_content_type(String, DocKind)
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  id: ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: ClassifyContent_sniffs_when_content_type_is_missing_or_generic()
+  nameWithType: CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic()
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void ClassifyContent_sniffs_when_content_type_is_missing_or_generic()
+    content.vb: >-
+      <Fact>
+
+      Public Sub ClassifyContent_sniffs_when_content_type_is_missing_or_generic()
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  id: ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part()
+  nameWithType: CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part()
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part()
+    content.vb: >-
+      <Fact>
+
+      Public Sub ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part()
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
+  id: IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: IsSupportedOrGenericContentType_validates_against_whitelist(string?, bool)
+  nameWithType: CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(string?, bool)
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(string?, bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsSupportedOrGenericContentType_validates_against_whitelist
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 61
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "text/html", true })]
+
+      [InlineData(new object[] { "application/xhtml+xml", true })]
+
+      [InlineData(new object[] { "application/pdf", true })]
+
+      [InlineData(new object[] { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", true })]
+
+      [InlineData(new object[] { "application/octet-stream", true })]
+
+      [InlineData(new object[] { "text/plain", true })]
+
+      [InlineData(new object[] { "application/zip", true })]
+
+      [InlineData(new object[] { "application/x-zip-compressed", true })]
+
+      [InlineData(new object[] { "image/png", false })]
+
+      [InlineData(new object[] { "application/json", false })]
+
+      [InlineData(new object[] { "text/css", false })]
+
+      [InlineData(new object[] { null, true })]
+
+      [InlineData(new object[] { "", true })]
+
+      [InlineData(new object[] { "text/html; charset=utf-8", true })]
+
+      public void IsSupportedOrGenericContentType_validates_against_whitelist(string? mediaType, bool expected)
+    parameters:
+    - id: mediaType
+      type: System.String
+    - id: expected
+      type: System.Boolean
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "text/html", True })>
+
+      <InlineData(New Object() { "application/xhtml+xml", True })>
+
+      <InlineData(New Object() { "application/pdf", True })>
+
+      <InlineData(New Object() { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", True })>
+
+      <InlineData(New Object() { "application/octet-stream", True })>
+
+      <InlineData(New Object() { "text/plain", True })>
+
+      <InlineData(New Object() { "application/zip", True })>
+
+      <InlineData(New Object() { "application/x-zip-compressed", True })>
+
+      <InlineData(New Object() { "image/png", False })>
+
+      <InlineData(New Object() { "application/json", False })>
+
+      <InlineData(New Object() { "text/css", False })>
+
+      <InlineData(New Object() { Nothing, True })>
+
+      <InlineData(New Object() { "", True })>
+
+      <InlineData(New Object() { "text/html; charset=utf-8", True })>
+
+      Public Sub IsSupportedOrGenericContentType_validates_against_whitelist(mediaType As String, expected As Boolean)
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(String, Boolean)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(String, Boolean)
+  name.vb: IsSupportedOrGenericContentType_validates_against_whitelist(String, Boolean)
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  id: IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+  nameWithType: CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsSupportedPrefix_detects_magic_bytes_or_html_markup
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 81
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+    content.vb: >-
+      <Fact>
+
+      Public Sub IsSupportedPrefix_detects_magic_bytes_or_html_markup()
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(System.String,System.Boolean)
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(System.String,System.Boolean)
+  id: IsSupportedPrefix_filters_zip_files_by_extension(System.String,System.Boolean)
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: IsSupportedPrefix_filters_zip_files_by_extension(string, bool)
+  nameWithType: CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(string, bool)
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(string, bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsSupportedPrefix_filters_zip_files_by_extension
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 100
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "http://test.local/doc.docx", true })]
+
+      [InlineData(new object[] { "http://test.local/archive.zip", false })]
+
+      [InlineData(new object[] { "http://test.local/sheet.xlsx", false })]
+
+      [InlineData(new object[] { "http://test.local/download", true })]
+
+      public void IsSupportedPrefix_filters_zip_files_by_extension(string url, bool expected)
+    parameters:
+    - id: url
+      type: System.String
+    - id: expected
+      type: System.Boolean
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "http://test.local/doc.docx", True })>
+
+      <InlineData(New Object() { "http://test.local/archive.zip", False })>
+
+      <InlineData(New Object() { "http://test.local/sheet.xlsx", False })>
+
+      <InlineData(New Object() { "http://test.local/download", True })>
+
+      Public Sub IsSupportedPrefix_filters_zip_files_by_extension(url As String, expected As Boolean)
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(String, Boolean)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(String, Boolean)
+  name.vb: IsSupportedPrefix_filters_zip_files_by_extension(String, Boolean)
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_ClassifyContent_prefers_the_declared_content_type_System_String_LocalSearchEngine_Core_Crawling_Policies_DocKind_
+  name: ClassifyContent_prefers_the_declared_content_type
+  nameWithType: CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_prefers_the_declared_content_type
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  name: ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  nameWithType: CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_when_content_type_is_missing_or_generic
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  name: ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  nameWithType: CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_IsSupportedOrGenericContentType_validates_against_whitelist_System_String_System_Boolean_
+  name: IsSupportedOrGenericContentType_validates_against_whitelist
+  nameWithType: CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  name: IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  nameWithType: CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_IsSupportedPrefix_filters_zip_files_by_extension_System_String_System_Boolean_
+  name: IsSupportedPrefix_filters_zip_files_by_extension
+  nameWithType: CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension

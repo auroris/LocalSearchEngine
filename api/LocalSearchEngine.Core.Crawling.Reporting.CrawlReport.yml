@@ -1,0 +1,1165 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  id: CrawlReport
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+  langs:
+  - csharp
+  - vb
+  name: CrawlReport
+  nameWithType: CrawlReport
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlReport
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    The end-of-run summary returned by <code>CrawlerService.CrawlAsync</code>: the final statistics plus
+
+    database totals, ready to be written to a stats file or printed as a summary.
+  example: []
+  syntax:
+    content: 'public sealed record CrawlReport : IEquatable<CrawlReport>'
+    content.vb: Public NotInheritable Class CrawlReport Implements IEquatable(Of CrawlReport)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
+  id: '#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})'
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: CrawlReport(string, DateTime, DateTime, bool, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>)
+  nameWithType: CrawlReport.CrawlReport(string, DateTime, DateTime, bool, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlReport(string, System.DateTime, System.DateTime, bool, bool, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, long, long, long, long, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<string>)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    The end-of-run summary returned by <code>CrawlerService.CrawlAsync</code>: the final statistics plus
+
+    database totals, ready to be written to a stats file or printed as a summary.
+  example: []
+  syntax:
+    content: public CrawlReport(string SeedUrl, DateTime StartedUtc, DateTime FinishedUtc, bool CompletedNaturally, bool Cancelled, CrawlStatsSnapshot Stats, long IndexedUrlsInDb, long CrawlStateRowsInDb, long ItemsAdded, long ItemsDeleted, IReadOnlyList<BrokenLink> BrokenLinks, IReadOnlyList<BrokenLink> RedirectedLinks, IReadOnlyList<string> UnreachableHosts)
+    parameters:
+    - id: SeedUrl
+      type: System.String
+      description: The URL the crawl started from.
+    - id: StartedUtc
+      type: System.DateTime
+      description: When the crawl began.
+    - id: FinishedUtc
+      type: System.DateTime
+      description: When the crawl finished.
+    - id: CompletedNaturally
+      type: System.Boolean
+      description: Whether the crawl drained its frontier (vs. capped or cancelled).
+    - id: Cancelled
+      type: System.Boolean
+      description: Whether cancellation was requested before the crawl finished.
+    - id: Stats
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+      description: The final running tallies.
+    - id: IndexedUrlsInDb
+      type: System.Int64
+      description: Distinct indexed URLs in the database after the crawl.
+    - id: CrawlStateRowsInDb
+      type: System.Int64
+      description: Crawl-state rows in the database after the crawl.
+    - id: ItemsAdded
+      type: System.Int64
+      description: Net new indexed URLs this run (end total minus start total, plus deletions).
+    - id: ItemsDeleted
+      type: System.Int64
+      description: Index entries removed this run (gone, banned, and stale).
+    - id: BrokenLinks
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+      description: 'Links the crawl found leading nowhere this run: a destination that returned an error (4xx/5xx) or could not be reached. Off-site links are included only when external link checking was enabled.'
+    - id: RedirectedLinks
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+      description: 'Links whose destination redirected this run: they still resolve, but the source page should be updated to point at the new location. Off-site links are included only when external link checking was enabled.'
+    - id: UnreachableHosts
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+      description: Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.
+    content.vb: Public Sub New(SeedUrl As String, StartedUtc As Date, FinishedUtc As Date, CompletedNaturally As Boolean, Cancelled As Boolean, Stats As CrawlStatsSnapshot, IndexedUrlsInDb As Long, CrawlStateRowsInDb As Long, ItemsAdded As Long, ItemsDeleted As Long, BrokenLinks As IReadOnlyList(Of BrokenLink), RedirectedLinks As IReadOnlyList(Of BrokenLink), UnreachableHosts As IReadOnlyList(Of String))
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor*
+  nameWithType.vb: CrawlReport.New(String, Date, Date, Boolean, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String))
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.New(String, Date, Date, Boolean, Boolean, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, Long, Long, Long, Long, System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of String))
+  name.vb: New(String, Date, Date, Boolean, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String))
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+  id: SeedUrl
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: SeedUrl
+  nameWithType: CrawlReport.SeedUrl
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SeedUrl
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The URL the crawl started from.
+  example: []
+  syntax:
+    content: public string SeedUrl { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SeedUrl As String
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+  id: StartedUtc
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: StartedUtc
+  nameWithType: CrawlReport.StartedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StartedUtc
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: When the crawl began.
+  example: []
+  syntax:
+    content: public DateTime StartedUtc { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property StartedUtc As Date
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+  id: FinishedUtc
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: FinishedUtc
+  nameWithType: CrawlReport.FinishedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FinishedUtc
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: When the crawl finished.
+  example: []
+  syntax:
+    content: public DateTime FinishedUtc { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property FinishedUtc As Date
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+  id: CompletedNaturally
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: CompletedNaturally
+  nameWithType: CrawlReport.CompletedNaturally
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CompletedNaturally
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Whether the crawl drained its frontier (vs. capped or cancelled).
+  example: []
+  syntax:
+    content: public bool CompletedNaturally { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CompletedNaturally As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+  id: Cancelled
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: Cancelled
+  nameWithType: CrawlReport.Cancelled
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Cancelled
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Whether cancellation was requested before the crawl finished.
+  example: []
+  syntax:
+    content: public bool Cancelled { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Cancelled As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+  id: Stats
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: Stats
+  nameWithType: CrawlReport.Stats
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Stats
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The final running tallies.
+  example: []
+  syntax:
+    content: public CrawlStatsSnapshot Stats { get; init; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    content.vb: Public Property Stats As CrawlStatsSnapshot
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+  id: IndexedUrlsInDb
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: IndexedUrlsInDb
+  nameWithType: CrawlReport.IndexedUrlsInDb
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IndexedUrlsInDb
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Distinct indexed URLs in the database after the crawl.
+  example: []
+  syntax:
+    content: public long IndexedUrlsInDb { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property IndexedUrlsInDb As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+  id: CrawlStateRowsInDb
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: CrawlStateRowsInDb
+  nameWithType: CrawlReport.CrawlStateRowsInDb
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlStateRowsInDb
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Crawl-state rows in the database after the crawl.
+  example: []
+  syntax:
+    content: public long CrawlStateRowsInDb { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property CrawlStateRowsInDb As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+  id: ItemsAdded
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: ItemsAdded
+  nameWithType: CrawlReport.ItemsAdded
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ItemsAdded
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Net new indexed URLs this run (end total minus start total, plus deletions).
+  example: []
+  syntax:
+    content: public long ItemsAdded { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property ItemsAdded As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+  id: ItemsDeleted
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: ItemsDeleted
+  nameWithType: CrawlReport.ItemsDeleted
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ItemsDeleted
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Index entries removed this run (gone, banned, and stale).
+  example: []
+  syntax:
+    content: public long ItemsDeleted { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property ItemsDeleted As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+  id: BrokenLinks
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: BrokenLinks
+  nameWithType: CrawlReport.BrokenLinks
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: BrokenLinks
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Links the crawl found leading nowhere this run: a destination that returned an error (4xx/5xx) or could not be reached. Off-site links are included only when external link checking was enabled.'
+  example: []
+  syntax:
+    content: public IReadOnlyList<BrokenLink> BrokenLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+    content.vb: Public Property BrokenLinks As IReadOnlyList(Of BrokenLink)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+  id: RedirectedLinks
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: RedirectedLinks
+  nameWithType: CrawlReport.RedirectedLinks
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RedirectedLinks
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Links whose destination redirected this run: they still resolve, but the source page should be updated to point at the new location. Off-site links are included only when external link checking was enabled.'
+  example: []
+  syntax:
+    content: public IReadOnlyList<BrokenLink> RedirectedLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+    content.vb: Public Property RedirectedLinks As IReadOnlyList(Of BrokenLink)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+  id: UnreachableHosts
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: UnreachableHosts
+  nameWithType: CrawlReport.UnreachableHosts
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: UnreachableHosts
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.
+  example: []
+  syntax:
+    content: public IReadOnlyList<string> UnreachableHosts { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    content.vb: Public Property UnreachableHosts As IReadOnlyList(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  id: Duration
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: CrawlReport.Duration
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Duration
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Wall-clock duration of the crawl.
+  example: []
+  syntax:
+    content: public TimeSpan Duration { get; }
+    parameters: []
+    return:
+      type: System.TimeSpan
+    content.vb: Public ReadOnly Property Duration As TimeSpan
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<CrawlReport>
+  nameWithType: IEquatable<CrawlReport>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Reporting.CrawlReport>
+  nameWithType.vb: IEquatable(Of CrawlReport)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Reporting.CrawlReport)
+  name.vb: IEquatable(Of CrawlReport)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+    name: CrawlReport
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+    name: CrawlReport
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport__ctor_System_String_System_DateTime_System_DateTime_System_Boolean_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_System_Int64_System_Int64_System_Int64_System_Int64_System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_System_String__
+  name: CrawlReport
+  nameWithType: CrawlReport.CrawlReport
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlReport
+  nameWithType.vb: CrawlReport.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  name: CrawlStatsSnapshot
+  nameWithType: CrawlStatsSnapshot
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+  commentId: T:System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<BrokenLink>
+  nameWithType: IReadOnlyList<BrokenLink>
+  fullName: System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>
+  nameWithType.vb: IReadOnlyList(Of BrokenLink)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink)
+  name.vb: IReadOnlyList(Of BrokenLink)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+    name: BrokenLink
+    href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+    name: BrokenLink
+    href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<string>
+  nameWithType: IReadOnlyList<string>
+  fullName: System.Collections.Generic.IReadOnlyList<string>
+  nameWithType.vb: IReadOnlyList(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of String)
+  name.vb: IReadOnlyList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_SeedUrl
+  name: SeedUrl
+  nameWithType: CrawlReport.SeedUrl
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_StartedUtc
+  name: StartedUtc
+  nameWithType: CrawlReport.StartedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.StartedUtc
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_FinishedUtc
+  name: FinishedUtc
+  nameWithType: CrawlReport.FinishedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_CompletedNaturally
+  name: CompletedNaturally
+  nameWithType: CrawlReport.CompletedNaturally
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Cancelled
+  name: Cancelled
+  nameWithType: CrawlReport.Cancelled
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Stats
+  name: Stats
+  nameWithType: CrawlReport.Stats
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_IndexedUrlsInDb
+  name: IndexedUrlsInDb
+  nameWithType: CrawlReport.IndexedUrlsInDb
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_CrawlStateRowsInDb
+  name: CrawlStateRowsInDb
+  nameWithType: CrawlReport.CrawlStateRowsInDb
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_ItemsAdded
+  name: ItemsAdded
+  nameWithType: CrawlReport.ItemsAdded
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_ItemsDeleted
+  name: ItemsDeleted
+  nameWithType: CrawlReport.ItemsDeleted
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsDeleted
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_BrokenLinks
+  name: BrokenLinks
+  nameWithType: CrawlReport.BrokenLinks
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_RedirectedLinks
+  name: RedirectedLinks
+  nameWithType: CrawlReport.RedirectedLinks
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.RedirectedLinks
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_UnreachableHosts
+  name: UnreachableHosts
+  nameWithType: CrawlReport.UnreachableHosts
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Duration
+  name: Duration
+  nameWithType: CrawlReport.Duration
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan

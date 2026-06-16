@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Storage
+  commentId: N:LocalSearchEngine.Core.Crawling.Storage
+  id: LocalSearchEngine.Core.Crawling.Storage
+  children:
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Storage
+  nameWithType: LocalSearchEngine.Core.Crawling.Storage
+  fullName: LocalSearchEngine.Core.Crawling.Storage
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  commentId: T:LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html
+  name: CrawlStore
+  nameWithType: CrawlStore
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore

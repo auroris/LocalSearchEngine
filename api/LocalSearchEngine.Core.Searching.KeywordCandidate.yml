@@ -1,0 +1,576 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+  commentId: T:LocalSearchEngine.Core.Searching.KeywordCandidate
+  id: KeywordCandidate
+  parent: LocalSearchEngine.Core.Searching
+  children:
+  - LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  - LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase
+  - LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+  - LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+  - LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+  langs:
+  - csharp
+  - vb
+  name: KeywordCandidate
+  nameWithType: KeywordCandidate
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate
+  type: Struct
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: KeywordCandidate
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Represents a keyword (full-text search) match candidate.
+  example: []
+  syntax:
+    content: 'public readonly record struct KeywordCandidate : IEquatable<KeywordCandidate>'
+    content.vb: Public Structure KeywordCandidate Implements IEquatable(Of KeywordCandidate)
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Searching.KeywordCandidate}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  commentId: M:LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor(System.String,System.String,System.Boolean,System.Boolean)
+  id: '#ctor(System.String,System.String,System.Boolean,System.Boolean)'
+  parent: LocalSearchEngine.Core.Searching.KeywordCandidate
+  langs:
+  - csharp
+  - vb
+  name: KeywordCandidate(string, string, bool, bool)
+  nameWithType: KeywordCandidate.KeywordCandidate(string, string, bool, bool)
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.KeywordCandidate(string, string, bool, bool)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Represents a keyword (full-text search) match candidate.
+  example: []
+  syntax:
+    content: public KeywordCandidate(string Url, string Text, bool IsHeading, bool ExactPhrase = true)
+    parameters:
+    - id: Url
+      type: System.String
+      description: The URL of the page containing the match.
+    - id: Text
+      type: System.String
+      description: The text content of the matching chunk.
+    - id: IsHeading
+      type: System.Boolean
+      description: A value indicating whether the match came from a heading.
+    - id: ExactPhrase
+      type: System.Boolean
+      description: A value indicating whether the match is an exact phrase match.
+    content.vb: Public Sub New(Url As String, Text As String, IsHeading As Boolean, ExactPhrase As Boolean = True)
+  overload: LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor*
+  nameWithType.vb: KeywordCandidate.New(String, String, Boolean, Boolean)
+  fullName.vb: LocalSearchEngine.Core.Searching.KeywordCandidate.New(String, String, Boolean, Boolean)
+  name.vb: New(String, String, Boolean, Boolean)
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+  commentId: P:LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+  id: Url
+  parent: LocalSearchEngine.Core.Searching.KeywordCandidate
+  langs:
+  - csharp
+  - vb
+  name: Url
+  nameWithType: KeywordCandidate.Url
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Url
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The URL of the page containing the match.
+  example: []
+  syntax:
+    content: public string Url { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Url As String
+  overload: LocalSearchEngine.Core.Searching.KeywordCandidate.Url*
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+  commentId: P:LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+  id: Text
+  parent: LocalSearchEngine.Core.Searching.KeywordCandidate
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: KeywordCandidate.Text
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Text
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The text content of the matching chunk.
+  example: []
+  syntax:
+    content: public string Text { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: LocalSearchEngine.Core.Searching.KeywordCandidate.Text*
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+  commentId: P:LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+  id: IsHeading
+  parent: LocalSearchEngine.Core.Searching.KeywordCandidate
+  langs:
+  - csharp
+  - vb
+  name: IsHeading
+  nameWithType: KeywordCandidate.IsHeading
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsHeading
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: A value indicating whether the match came from a heading.
+  example: []
+  syntax:
+    content: public bool IsHeading { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsHeading As Boolean
+  overload: LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading*
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase
+  commentId: P:LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase
+  id: ExactPhrase
+  parent: LocalSearchEngine.Core.Searching.KeywordCandidate
+  langs:
+  - csharp
+  - vb
+  name: ExactPhrase
+  nameWithType: KeywordCandidate.ExactPhrase
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExactPhrase
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: A value indicating whether the match is an exact phrase match.
+  example: []
+  syntax:
+    content: public bool ExactPhrase { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ExactPhrase As Boolean
+  overload: LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase*
+references:
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: System.IEquatable{LocalSearchEngine.Core.Searching.KeywordCandidate}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Searching.KeywordCandidate}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<KeywordCandidate>
+  nameWithType: IEquatable<KeywordCandidate>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Searching.KeywordCandidate>
+  nameWithType.vb: IEquatable(Of KeywordCandidate)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Searching.KeywordCandidate)
+  name.vb: IEquatable(Of KeywordCandidate)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+    name: KeywordCandidate
+    href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+    name: KeywordCandidate
+    href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Searching.KeywordCandidate.#ctor
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html#LocalSearchEngine_Core_Searching_KeywordCandidate__ctor_System_String_System_String_System_Boolean_System_Boolean_
+  name: KeywordCandidate
+  nameWithType: KeywordCandidate.KeywordCandidate
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.KeywordCandidate
+  nameWithType.vb: KeywordCandidate.New
+  fullName.vb: LocalSearchEngine.Core.Searching.KeywordCandidate.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.Url*
+  commentId: Overload:LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html#LocalSearchEngine_Core_Searching_KeywordCandidate_Url
+  name: Url
+  nameWithType: KeywordCandidate.Url
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.Url
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.Text*
+  commentId: Overload:LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html#LocalSearchEngine_Core_Searching_KeywordCandidate_Text
+  name: Text
+  nameWithType: KeywordCandidate.Text
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.Text
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading*
+  commentId: Overload:LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html#LocalSearchEngine_Core_Searching_KeywordCandidate_IsHeading
+  name: IsHeading
+  nameWithType: KeywordCandidate.IsHeading
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.IsHeading
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase*
+  commentId: Overload:LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html#LocalSearchEngine_Core_Searching_KeywordCandidate_ExactPhrase
+  name: ExactPhrase
+  nameWithType: KeywordCandidate.ExactPhrase
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate.ExactPhrase

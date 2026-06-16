@@ -1,0 +1,857 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.SearchRankerTests
+  commentId: T:LocalSearchEngine.Tests.SearchRankerTests
+  id: SearchRankerTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+  - LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+  - LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  - LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  - LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
+  - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+  - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
+  - LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+  - LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
+  - LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
+  - LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  - LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
+  langs:
+  - csharp
+  - vb
+  name: SearchRankerTests
+  nameWithType: SearchRankerTests
+  fullName: LocalSearchEngine.Tests.SearchRankerTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SearchRankerTests
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 5
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public class SearchRankerTests
+    content.vb: Public Class SearchRankerTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
+  id: Excludes_results_below_similarity_threshold
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Excludes_results_below_similarity_threshold()
+  nameWithType: SearchRankerTests.Excludes_results_below_similarity_threshold()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Excludes_results_below_similarity_threshold
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Excludes_results_below_similarity_threshold()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Excludes_results_below_similarity_threshold()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
+  id: Orders_by_descending_score
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Orders_by_descending_score()
+  nameWithType: SearchRankerTests.Orders_by_descending_score()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Orders_by_descending_score
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Orders_by_descending_score()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Orders_by_descending_score()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  id: Returns_all_qualifying_results_with_no_count_cap
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Returns_all_qualifying_results_with_no_count_cap()
+  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Returns_all_qualifying_results_with_no_count_cap
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 52
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Returns_all_qualifying_results_with_no_count_cap()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Returns_all_qualifying_results_with_no_count_cap()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  id: Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Exact_keyword_match_is_always_included_even_with_no_vector_hit()
+  nameWithType: SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Exact_keyword_match_is_always_included_even_with_no_vector_hit
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 64
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Exact_keyword_match_is_always_included_even_with_no_vector_hit()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Exact_keyword_match_is_always_included_even_with_no_vector_hit()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
+  id: Filename_match_boosts_score
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Filename_match_boosts_score()
+  nameWithType: SearchRankerTests.Filename_match_boosts_score()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Filename_match_boosts_score
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 76
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Filename_match_boosts_score()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Filename_match_boosts_score()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+  id: Filename_match_boosts_multi_word_query_across_slug_separators
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Filename_match_boosts_multi_word_query_across_slug_separators()
+  nameWithType: SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Filename_match_boosts_multi_word_query_across_slug_separators
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 87
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Filename_match_boosts_multi_word_query_across_slug_separators()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Filename_match_boosts_multi_word_query_across_slug_separators()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+  id: Heading_match_boosts_score
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Heading_match_boosts_score()
+  nameWithType: SearchRankerTests.Heading_match_boosts_score()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Heading_match_boosts_score
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 98
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Heading_match_boosts_score()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Heading_match_boosts_score()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
+  id: Query_appearing_in_text_boosts_score
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Query_appearing_in_text_boosts_score()
+  nameWithType: SearchRankerTests.Query_appearing_in_text_boosts_score()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Query_appearing_in_text_boosts_score
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 108
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Query_appearing_in_text_boosts_score()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Query_appearing_in_text_boosts_score()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  id: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+  nameWithType: SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 118
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+  id: Combines_vector_and_keyword_signals_for_the_same_url
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Combines_vector_and_keyword_signals_for_the_same_url()
+  nameWithType: SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Combines_vector_and_keyword_signals_for_the_same_url
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 134
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Combines_vector_and_keyword_signals_for_the_same_url()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Combines_vector_and_keyword_signals_for_the_same_url()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+  id: And_terms_match_boosts_less_than_an_exact_phrase
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: And_terms_match_boosts_less_than_an_exact_phrase()
+  nameWithType: SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: And_terms_match_boosts_less_than_an_exact_phrase
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 147
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void And_terms_match_boosts_less_than_an_exact_phrase()
+    content.vb: >-
+      <Fact>
+
+      Public Sub And_terms_match_boosts_less_than_an_exact_phrase()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  id: Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+  nameWithType: SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 158
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
+  id: Title_containing_query_boosts_and_is_returned
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Title_containing_query_boosts_and_is_returned()
+  nameWithType: SearchRankerTests.Title_containing_query_boosts_and_is_returned()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Title_containing_query_boosts_and_is_returned
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 174
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Title_containing_query_boosts_and_is_returned()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Title_containing_query_boosts_and_is_returned()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Excludes_results_below_similarity_threshold
+  name: Excludes_results_below_similarity_threshold
+  nameWithType: SearchRankerTests.Excludes_results_below_similarity_threshold
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Orders_by_descending_score
+  name: Orders_by_descending_score
+  nameWithType: SearchRankerTests.Orders_by_descending_score
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Returns_all_qualifying_results_with_no_count_cap
+  name: Returns_all_qualifying_results_with_no_count_cap
+  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  name: Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  nameWithType: SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_keyword_match_is_always_included_even_with_no_vector_hit
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Filename_match_boosts_score
+  name: Filename_match_boosts_score
+  nameWithType: SearchRankerTests.Filename_match_boosts_score
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Filename_match_boosts_multi_word_query_across_slug_separators
+  name: Filename_match_boosts_multi_word_query_across_slug_separators
+  nameWithType: SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Heading_match_boosts_score
+  name: Heading_match_boosts_score
+  nameWithType: SearchRankerTests.Heading_match_boosts_score
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Query_appearing_in_text_boosts_score
+  name: Query_appearing_in_text_boosts_score
+  nameWithType: SearchRankerTests.Query_appearing_in_text_boosts_score
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  name: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  nameWithType: SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Combines_vector_and_keyword_signals_for_the_same_url
+  name: Combines_vector_and_keyword_signals_for_the_same_url
+  nameWithType: SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
+- uid: LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_And_terms_match_boosts_less_than_an_exact_phrase
+  name: And_terms_match_boosts_less_than_an_exact_phrase
+  nameWithType: SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.And_terms_match_boosts_less_than_an_exact_phrase
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  name: Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  nameWithType: SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_wins_when_both_phrase_and_and_terms_hit_same_url
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Title_containing_query_boosts_and_is_returned
+  name: Title_containing_query_boosts_and_is_returned
+  nameWithType: SearchRankerTests.Title_containing_query_boosts_and_is_returned
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned

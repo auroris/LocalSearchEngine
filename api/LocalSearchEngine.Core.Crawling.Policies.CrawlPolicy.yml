@@ -1,0 +1,567 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  id: CrawlPolicy
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  children:
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(System.Byte[],System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: CrawlPolicy
+  nameWithType: CrawlPolicy
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlPolicy
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Provides policy decisions for crawling and content classification that are independent of network state.
+  example: []
+  syntax:
+    content: public static class CrawlPolicy
+    content.vb: Public Module CrawlPolicy
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
+  id: IsSupportedOrGenericContentType(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: IsSupportedOrGenericContentType(string?)
+  nameWithType: CrawlPolicy.IsSupportedOrGenericContentType(string?)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsSupportedOrGenericContentType
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Determines whether a content type header is directly supported or is a generic type that can be sniffed.
+  example: []
+  syntax:
+    content: public static bool IsSupportedOrGenericContentType(string? mediaType)
+    parameters:
+    - id: mediaType
+      type: System.String
+      description: The media type string from the Content-Type header.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the media type is supported or generic; otherwise, <code>false</code>.
+    content.vb: Public Shared Function IsSupportedOrGenericContentType(mediaType As String) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType*
+  nameWithType.vb: CrawlPolicy.IsSupportedOrGenericContentType(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(String)
+  name.vb: IsSupportedOrGenericContentType(String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(System.Byte[],System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(System.Byte[],System.String,System.String)
+  id: IsSupportedPrefix(System.Byte[],System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: IsSupportedPrefix(byte[], string?, string?)
+  nameWithType: CrawlPolicy.IsSupportedPrefix(byte[], string?, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(byte[], string?, string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsSupportedPrefix
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 51
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Checks if a prefix buffer contains headers or signatures that suggest a supported document kind.
+  example: []
+  syntax:
+    content: public static bool IsSupportedPrefix(byte[] prefix, string? contentType, string? url = null)
+    parameters:
+    - id: prefix
+      type: System.Byte[]
+      description: The initial byte chunk from the document stream.
+    - id: contentType
+      type: System.String
+      description: The media type header from the server.
+    - id: url
+      type: System.String
+      description: The URL of the document being fetched.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the prefix structure is supported or generic; otherwise, <code>false</code>.
+    content.vb: Public Shared Function IsSupportedPrefix(prefix As Byte(), contentType As String, url As String = Nothing) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix*
+  nameWithType.vb: CrawlPolicy.IsSupportedPrefix(Byte(), String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(Byte(), String, String)
+  name.vb: IsSupportedPrefix(Byte(), String, String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  id: IsAllowedByRobots(System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: IsAllowedByRobots(string, RobotsRules)
+  nameWithType: CrawlPolicy.IsAllowedByRobots(string, RobotsRules)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(string, LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsAllowedByRobots
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 80
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Determines whether the crawl policy allows fetching the specified URL according to robots.txt rules.
+  example: []
+  syntax:
+    content: public static bool IsAllowedByRobots(string url, RobotsRules robots)
+    parameters:
+    - id: url
+      type: System.String
+      description: The URL string to evaluate.
+    - id: robots
+      type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+      description: The robots.txt rules applicable to the host.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the path is allowed by robots.txt or fails to parse; otherwise, <code>false</code>.
+    content.vb: Public Shared Function IsAllowedByRobots(url As String, robots As RobotsRules) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots*
+  nameWithType.vb: CrawlPolicy.IsAllowedByRobots(String, RobotsRules)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  name.vb: IsAllowedByRobots(String, RobotsRules)
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  id: ClassifyContent(System.String,System.Byte[])
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: ClassifyContent(string?, byte[])
+  nameWithType: CrawlPolicy.ClassifyContent(string?, byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(string?, byte[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ClassifyContent
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 91
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Classifies the document format of a fetched content body based on its Content-Type header or sniffed bytes.
+  example: []
+  syntax:
+    content: public static DocKind ClassifyContent(string? contentType, byte[] body)
+    parameters:
+    - id: contentType
+      type: System.String
+      description: The media type header returned by the server.
+    - id: body
+      type: System.Byte[]
+      description: The raw byte array of the content body.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind" data-throw-if-not-resolved="false"></xref> indicating how the body should be parsed.
+    content.vb: Public Shared Function ClassifyContent(contentType As String, body As Byte()) As DocKind
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent*
+  nameWithType.vb: CrawlPolicy.ClassifyContent(String, Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(String, Byte())
+  name.vb: ClassifyContent(String, Byte())
+references:
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_IsSupportedOrGenericContentType_System_String_
+  name: IsSupportedOrGenericContentType
+  nameWithType: CrawlPolicy.IsSupportedOrGenericContentType
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_IsSupportedPrefix_System_Byte___System_String_System_String_
+  name: IsSupportedPrefix
+  nameWithType: CrawlPolicy.IsSupportedPrefix
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_IsAllowedByRobots_System_String_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_
+  name: IsAllowedByRobots
+  nameWithType: CrawlPolicy.IsAllowedByRobots
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_ClassifyContent_System_String_System_Byte___
+  name: ClassifyContent
+  nameWithType: CrawlPolicy.ClassifyContent
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent

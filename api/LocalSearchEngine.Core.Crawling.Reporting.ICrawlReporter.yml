@@ -1,0 +1,207 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  id: ICrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  langs:
+  - csharp
+  - vb
+  name: ICrawlReporter
+  nameWithType: ICrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  type: Interface
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ICrawlReporter
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    Receives crawl progress so a host (CLI, web, tests) can present it however it likes. The crawler
+
+    invokes these as work happens; for a single crawl every call arrives on the crawler's own
+
+    producer thread, so implementations need not be thread-safe — but they must be cheap and must
+
+    never throw, as the crawl does not guard against a misbehaving reporter.
+  example: []
+  syntax:
+    content: public interface ICrawlReporter
+    content.vb: Public Interface ICrawlReporter
+  derivedClasses:
+  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PhaseChanged
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The crawl moved into a new high-level <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats)
+    parameters:
+    - id: phase
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+      description: The phase just entered.
+    - id: stats
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+      description: The running tally at this moment.
+    content.vb: Sub PhaseChanged(phase As CrawlPhase, stats As CrawlStatsSnapshot)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  id: PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageProcessed
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A dequeued URL was resolved to an outcome.
+  example: []
+  syntax:
+    content: void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats)
+    parameters:
+    - id: url
+      type: System.String
+      description: The URL that was processed.
+    - id: outcome
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+      description: How the crawler resolved it.
+    - id: stats
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+      description: The running tally, including this page.
+    content.vb: Sub PageProcessed(url As String, outcome As CrawlOutcome, stats As CrawlStatsSnapshot)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed*
+  nameWithType.vb: ICrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  name: CrawlPhase
+  nameWithType: CrawlPhase
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PhaseChanged
+  nameWithType: ICrawlReporter.PhaseChanged
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  name: CrawlStatsSnapshot
+  nameWithType: CrawlStatsSnapshot
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PageProcessed
+  nameWithType: ICrawlReporter.PageProcessed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  name: CrawlOutcome
+  nameWithType: CrawlOutcome
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

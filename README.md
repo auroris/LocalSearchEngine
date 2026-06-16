@@ -70,15 +70,19 @@ Allowed hosts are a filter, not a target list. Being allowed means the crawler *
 
 1. Ensure you have the .NET SDK installed.
 2. Clone the repository and navigate to the project root.
-3. Build the solution. This restores NuGet packages and, on the first build, downloads the local embedding model and bundles it next to the binaries:
+3. Restore NuGet dependencies (*equivalent to `npm install`*):
+   ```bash
+   dotnet restore
+   ```
+4. Build the solution. On the first build, this also downloads the local embedding model and bundles it next to the binaries:
    ```bash
    dotnet build
    ```
-4. Run the crawler against a seed URL:
+5. Run the crawler against a seed URL (*equivalent to `npm run <script>`*):
    ```bash
    dotnet run --project LocalSearchEngine.Crawler -- https://example.com
    ```
-5. Launch the web interface and search your index:
+6. Launch the web interface and search your index:
    ```bash
    dotnet run --project LocalSearchEngine.Web
    ```
@@ -111,3 +115,21 @@ dotnet test
 ```
 
 Unit tests cover the pure logic — URL normalization, allowed-host rules, robots.txt parsing/matching (including fractional crawl delays), content classification, character-encoding resolution, `site:` query parsing, FTS5 match semantics, text chunking, and search ranking. Integration tests drive the real crawl loop against a fake HTTP server and the real sqlite-vec connector in a temporary database (with a deterministic fake embedder, so no model download), covering 304 handling, redirects, deduplication, per-host caps, form-wrapped pages, non-default ports, crawl-scope rules, stale pruning (and the cases where pruning must hold its fire), and oversized-sitemap skipping.
+
+## Generating Documentation
+
+The project uses XML documentation comments within the source code. You can generate HTML documentation using the pre-configured local **DocFX** tool.
+
+1. Restore the local tools (*equivalent to `npm install` for CLI tools*):
+   ```bash
+   dotnet tool restore
+   ```
+2. Build and host the documentation server locally:
+   ```bash
+   dotnet tool run docfx docfx.json --serve
+   ```
+   Or explicitly target the file path:
+   ```bash
+   dotnet tool run docfx C:\Users\steph\source\repos\LocalSearchEngine\docfx.json --serve
+   ```
+3. Open `http://localhost:8080` in your browser to view the generated documentation site.

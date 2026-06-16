@@ -1,0 +1,197 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  id: LinkStatus
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Error
+  - LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Ok
+  - LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Redirect
+  - LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown
+  langs:
+  - csharp
+  - vb
+  name: LinkStatus
+  nameWithType: LinkStatus
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkStatus
+    path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    The verified state of a link in the link index: whether its destination resolved cleanly,
+
+    redirected, or could not be reached. Stored as the integer value in <code>LinkIndex.Status</code>,
+
+    so the numeric values are part of the on-disk schema and must not be reordered.
+  example: []
+  syntax:
+    content: public enum LinkStatus
+    content.vb: Public Enum LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown
+  id: Unknown
+  parent: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: LinkStatus.Unknown
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unknown
+    path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Not yet checked this run.
+  example: []
+  syntax:
+    content: Unknown = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Ok
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Ok
+  id: Ok
+  parent: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  langs:
+  - csharp
+  - vb
+  name: Ok
+  nameWithType: LinkStatus.Ok
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Ok
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Ok
+    path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The destination resolved successfully (a 2xx, or a 304 Not Modified).
+  example: []
+  syntax:
+    content: Ok = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Redirect
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Redirect
+  id: Redirect
+  parent: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  langs:
+  - csharp
+  - vb
+  name: Redirect
+  nameWithType: LinkStatus.Redirect
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Redirect
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Redirect
+    path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'The destination redirected: the link still works, but the source should be updated.'
+  example: []
+  syntax:
+    content: Redirect = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Error
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Error
+  id: Error
+  parent: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: LinkStatus.Error
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Error
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Error
+    path: LocalSearchEngine.Core/Crawling/Reporting/LinkStatus.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The destination could not be reached (a 4xx/5xx or a connection-level failure).
+  example: []
+  syntax:
+    content: Error = 3
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.html
+  name: LinkStatus
+  nameWithType: LinkStatus
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus

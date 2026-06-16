@@ -404,3 +404,4 @@ FodyWeavers.xsd
 # SQLite search index (built by the crawler) and its WAL sidecar files
 *.db-wal
 *.db-shm
+/_site

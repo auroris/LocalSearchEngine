@@ -1,0 +1,986 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.RobotsRulesTests
+  commentId: T:LocalSearchEngine.Tests.RobotsRulesTests
+  id: RobotsRulesTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  - LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
+  - LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+  - LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
+  - LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end
+  - LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
+  - LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything
+  - LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+  - LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+  - LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group
+  - LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally
+  - LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group
+  - LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+  - LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+  - LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+  - LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+  langs:
+  - csharp
+  - vb
+  name: RobotsRulesTests
+  nameWithType: RobotsRulesTests
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RobotsRulesTests
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 6
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public class RobotsRulesTests
+    content.vb: Public Class RobotsRulesTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
+  id: Empty_content_allows_everything
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Empty_content_allows_everything()
+  nameWithType: RobotsRulesTests.Empty_content_allows_everything()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Empty_content_allows_everything
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Empty_content_allows_everything()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Empty_content_allows_everything()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
+  id: DisallowAll_blocks_every_path
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: DisallowAll_blocks_every_path()
+  nameWithType: RobotsRulesTests.DisallowAll_blocks_every_path()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DisallowAll_blocks_every_path
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 17
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void DisallowAll_blocks_every_path()
+    content.vb: >-
+      <Fact>
+
+      Public Sub DisallowAll_blocks_every_path()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+  id: Wildcard_disallow_blocks_matching_paths
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Wildcard_disallow_blocks_matching_paths()
+  nameWithType: RobotsRulesTests.Wildcard_disallow_blocks_matching_paths()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Wildcard_disallow_blocks_matching_paths
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Wildcard_disallow_blocks_matching_paths()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Wildcard_disallow_blocks_matching_paths()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything
+  id: Empty_disallow_allows_everything
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Empty_disallow_allows_everything()
+  nameWithType: RobotsRulesTests.Empty_disallow_allows_everything()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Empty_disallow_allows_everything
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Empty_disallow_allows_everything()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Empty_disallow_allows_everything()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  id: Allow_overrides_disallow_by_longest_match
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Allow_overrides_disallow_by_longest_match()
+  nameWithType: RobotsRulesTests.Allow_overrides_disallow_by_longest_match()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Allow_overrides_disallow_by_longest_match
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 40
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Allow_overrides_disallow_by_longest_match()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Allow_overrides_disallow_by_longest_match()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+  id: Specific_agent_group_takes_precedence_over_wildcard
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Specific_agent_group_takes_precedence_over_wildcard()
+  nameWithType: RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Specific_agent_group_takes_precedence_over_wildcard
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 49
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Specific_agent_group_takes_precedence_over_wildcard()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Specific_agent_group_takes_precedence_over_wildcard()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group
+  id: Multiple_user_agents_share_one_group
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Multiple_user_agents_share_one_group()
+  nameWithType: RobotsRulesTests.Multiple_user_agents_share_one_group()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Multiple_user_agents_share_one_group
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 60
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Multiple_user_agents_share_one_group()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Multiple_user_agents_share_one_group()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+  id: Wildcard_star_in_pattern_matches_any_segment
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Wildcard_star_in_pattern_matches_any_segment()
+  nameWithType: RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Wildcard_star_in_pattern_matches_any_segment
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 69
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Wildcard_star_in_pattern_matches_any_segment()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Wildcard_star_in_pattern_matches_any_segment()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end
+  id: Dollar_anchors_pattern_end
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Dollar_anchors_pattern_end()
+  nameWithType: RobotsRulesTests.Dollar_anchors_pattern_end()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dollar_anchors_pattern_end
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 77
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Dollar_anchors_pattern_end()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Dollar_anchors_pattern_end()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+  id: Crawl_delay_is_parsed_for_the_chosen_group
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_delay_is_parsed_for_the_chosen_group()
+  nameWithType: RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_delay_is_parsed_for_the_chosen_group
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 85
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Crawl_delay_is_parsed_for_the_chosen_group()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Crawl_delay_is_parsed_for_the_chosen_group()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+  id: Fractional_crawl_delay_rounds_up_to_whole_seconds
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Fractional_crawl_delay_rounds_up_to_whole_seconds()
+  nameWithType: RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Fractional_crawl_delay_rounds_up_to_whole_seconds
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 92
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Fractional_crawl_delay_rounds_up_to_whole_seconds()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Fractional_crawl_delay_rounds_up_to_whole_seconds()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+  id: Fractional_crawl_delay_applies_only_to_the_matching_group
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Fractional_crawl_delay_applies_only_to_the_matching_group()
+  nameWithType: RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Fractional_crawl_delay_applies_only_to_the_matching_group
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 101
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Fractional_crawl_delay_applies_only_to_the_matching_group()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Fractional_crawl_delay_applies_only_to_the_matching_group()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
+  id: Comments_and_blank_lines_are_ignored
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Comments_and_blank_lines_are_ignored()
+  nameWithType: RobotsRulesTests.Comments_and_blank_lines_are_ignored()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Comments_and_blank_lines_are_ignored
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 113
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Comments_and_blank_lines_are_ignored()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Comments_and_blank_lines_are_ignored()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+  id: Unrelated_specific_group_does_not_apply_to_us
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Unrelated_specific_group_does_not_apply_to_us()
+  nameWithType: RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unrelated_specific_group_does_not_apply_to_us
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 122
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Unrelated_specific_group_does_not_apply_to_us()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Unrelated_specific_group_does_not_apply_to_us()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally
+  id: Sitemap_directives_are_collected_globally
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Sitemap_directives_are_collected_globally()
+  nameWithType: RobotsRulesTests.Sitemap_directives_are_collected_globally()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Sitemap_directives_are_collected_globally
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 131
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Sitemap_directives_are_collected_globally()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Sitemap_directives_are_collected_globally()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group
+  commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group
+  id: Sitemap_is_returned_even_with_no_applicable_group
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Sitemap_is_returned_even_with_no_applicable_group()
+  nameWithType: RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group()
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Sitemap_is_returned_even_with_no_applicable_group
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 146
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Sitemap_is_returned_even_with_no_applicable_group()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Sitemap_is_returned_even_with_no_applicable_group()
+  overload: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Empty_content_allows_everything
+  name: Empty_content_allows_everything
+  nameWithType: RobotsRulesTests.Empty_content_allows_everything
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_DisallowAll_blocks_every_path
+  name: DisallowAll_blocks_every_path
+  nameWithType: RobotsRulesTests.DisallowAll_blocks_every_path
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Wildcard_disallow_blocks_matching_paths
+  name: Wildcard_disallow_blocks_matching_paths
+  nameWithType: RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_disallow_blocks_matching_paths
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Empty_disallow_allows_everything
+  name: Empty_disallow_allows_everything
+  nameWithType: RobotsRulesTests.Empty_disallow_allows_everything
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Empty_disallow_allows_everything
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Allow_overrides_disallow_by_longest_match
+  name: Allow_overrides_disallow_by_longest_match
+  nameWithType: RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Specific_agent_group_takes_precedence_over_wildcard
+  name: Specific_agent_group_takes_precedence_over_wildcard
+  nameWithType: RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Specific_agent_group_takes_precedence_over_wildcard
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Multiple_user_agents_share_one_group
+  name: Multiple_user_agents_share_one_group
+  nameWithType: RobotsRulesTests.Multiple_user_agents_share_one_group
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Multiple_user_agents_share_one_group
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Wildcard_star_in_pattern_matches_any_segment
+  name: Wildcard_star_in_pattern_matches_any_segment
+  nameWithType: RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Wildcard_star_in_pattern_matches_any_segment
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Dollar_anchors_pattern_end
+  name: Dollar_anchors_pattern_end
+  nameWithType: RobotsRulesTests.Dollar_anchors_pattern_end
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Dollar_anchors_pattern_end
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Crawl_delay_is_parsed_for_the_chosen_group
+  name: Crawl_delay_is_parsed_for_the_chosen_group
+  nameWithType: RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Fractional_crawl_delay_rounds_up_to_whole_seconds
+  name: Fractional_crawl_delay_rounds_up_to_whole_seconds
+  nameWithType: RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_rounds_up_to_whole_seconds
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Fractional_crawl_delay_applies_only_to_the_matching_group
+  name: Fractional_crawl_delay_applies_only_to_the_matching_group
+  nameWithType: RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Fractional_crawl_delay_applies_only_to_the_matching_group
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Comments_and_blank_lines_are_ignored
+  name: Comments_and_blank_lines_are_ignored
+  nameWithType: RobotsRulesTests.Comments_and_blank_lines_are_ignored
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Unrelated_specific_group_does_not_apply_to_us
+  name: Unrelated_specific_group_does_not_apply_to_us
+  nameWithType: RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Unrelated_specific_group_does_not_apply_to_us
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Sitemap_directives_are_collected_globally
+  name: Sitemap_directives_are_collected_globally
+  nameWithType: RobotsRulesTests.Sitemap_directives_are_collected_globally
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_directives_are_collected_globally
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group*
+  commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group
+  href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Sitemap_is_returned_even_with_no_applicable_group
+  name: Sitemap_is_returned_even_with_no_applicable_group
+  nameWithType: RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Sitemap_is_returned_even_with_no_applicable_group

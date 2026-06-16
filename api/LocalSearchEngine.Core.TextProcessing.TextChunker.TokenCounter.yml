@@ -1,0 +1,97 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  id: TextChunker.TokenCounter
+  parent: LocalSearchEngine.Core.TextProcessing
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: TextChunker.TokenCounter
+  nameWithType: TextChunker.TokenCounter
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  type: Delegate
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TokenCounter
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 112
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Delegate for counting tokens in a string.
+  example: []
+  syntax:
+    content: public delegate int TextChunker.TokenCounter(string input)
+    parameters:
+    - id: input
+      type: System.String
+      description: The input string to count tokens in.
+    return:
+      type: System.Int32
+      description: The number of tokens in the input string.
+    content.vb: Public Delegate Function TextChunker.TokenCounter(input As String) As Integer
+references:
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

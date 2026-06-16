@@ -1,0 +1,648 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.AllowedHostsTests
+  commentId: T:LocalSearchEngine.Tests.AllowedHostsTests
+  id: AllowedHostsTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+  - LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port
+  - LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected(System.String)
+  - LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive
+  - LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
+  - LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
+  - LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  langs:
+  - csharp
+  - vb
+  name: AllowedHostsTests
+  nameWithType: AllowedHostsTests
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AllowedHostsTests
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 6
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public class AllowedHostsTests
+    content.vb: Public Class AllowedHostsTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+  id: Bare_host_matches_any_scheme_and_port
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Bare_host_matches_any_scheme_and_port()
+  nameWithType: AllowedHostsTests.Bare_host_matches_any_scheme_and_port()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Bare_host_matches_any_scheme_and_port
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Bare_host_matches_any_scheme_and_port()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Bare_host_matches_any_scheme_and_port()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
+  id: Scheme_restricts_when_specified
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Scheme_restricts_when_specified()
+  nameWithType: AllowedHostsTests.Scheme_restricts_when_specified()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Scheme_restricts_when_specified
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Scheme_restricts_when_specified()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Scheme_restricts_when_specified()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
+  id: Port_restricts_when_specified
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Port_restricts_when_specified()
+  nameWithType: AllowedHostsTests.Port_restricts_when_specified()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Port_restricts_when_specified
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Port_restricts_when_specified()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Port_restricts_when_specified()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port
+  id: Full_entry_restricts_scheme_and_port
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Full_entry_restricts_scheme_and_port()
+  nameWithType: AllowedHostsTests.Full_entry_restricts_scheme_and_port()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Full_entry_restricts_scheme_and_port
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Full_entry_restricts_scheme_and_port()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Full_entry_restricts_scheme_and_port()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  id: Seed_origin_pins_the_schemes_default_port
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Seed_origin_pins_the_schemes_default_port()
+  nameWithType: AllowedHostsTests.Seed_origin_pins_the_schemes_default_port()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Seed_origin_pins_the_schemes_default_port
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 56
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Seed_origin_pins_the_schemes_default_port()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Seed_origin_pins_the_schemes_default_port()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive
+  id: Matching_is_case_insensitive
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Matching_is_case_insensitive()
+  nameWithType: AllowedHostsTests.Matching_is_case_insensitive()
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Matching_is_case_insensitive
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 68
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Matching_is_case_insensitive()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Matching_is_case_insensitive()
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected(System.String)
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected(System.String)
+  id: Invalid_entries_are_rejected(System.String)
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: Invalid_entries_are_rejected(string)
+  nameWithType: AllowedHostsTests.Invalid_entries_are_rejected(string)
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Invalid_entries_are_rejected
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 76
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "" })]
+
+      [InlineData(new object[] { "   " })]
+
+      [InlineData(new object[] { "https://example.com/path" })]
+
+      [InlineData(new object[] { "example.com:notaport" })]
+
+      [InlineData(new object[] { "example.com:0" })]
+
+      [InlineData(new object[] { "example.com:70000" })]
+
+      [InlineData(new object[] { "://example.com" })]
+
+      [InlineData(new object[] { "[::1" })]
+
+      public void Invalid_entries_are_rejected(string entry)
+    parameters:
+    - id: entry
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "" })>
+
+      <InlineData(New Object() { "   " })>
+
+      <InlineData(New Object() { "https://example.com/path" })>
+
+      <InlineData(New Object() { "example.com:notaport" })>
+
+      <InlineData(New Object() { "example.com:0" })>
+
+      <InlineData(New Object() { "example.com:70000" })>
+
+      <InlineData(New Object() { "://example.com" })>
+
+      <InlineData(New Object() { "[::1" })>
+
+      Public Sub Invalid_entries_are_rejected(entry As String)
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: AllowedHostsTests.Invalid_entries_are_rejected(String)
+  fullName.vb: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected(String)
+  name.vb: Invalid_entries_are_rejected(String)
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Bare_host_matches_any_scheme_and_port
+  name: Bare_host_matches_any_scheme_and_port
+  nameWithType: AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Scheme_restricts_when_specified
+  name: Scheme_restricts_when_specified
+  nameWithType: AllowedHostsTests.Scheme_restricts_when_specified
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Port_restricts_when_specified
+  name: Port_restricts_when_specified
+  nameWithType: AllowedHostsTests.Port_restricts_when_specified
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Full_entry_restricts_scheme_and_port
+  name: Full_entry_restricts_scheme_and_port
+  nameWithType: AllowedHostsTests.Full_entry_restricts_scheme_and_port
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Full_entry_restricts_scheme_and_port
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Seed_origin_pins_the_schemes_default_port
+  name: Seed_origin_pins_the_schemes_default_port
+  nameWithType: AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Matching_is_case_insensitive
+  name: Matching_is_case_insensitive
+  nameWithType: AllowedHostsTests.Matching_is_case_insensitive
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Matching_is_case_insensitive
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Invalid_entries_are_rejected_System_String_
+  name: Invalid_entries_are_rejected
+  nameWithType: AllowedHostsTests.Invalid_entries_are_rejected
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

@@ -1,0 +1,342 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  id: CrawlOutcome
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Disallowed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Indexed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.NoIndex
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedSize
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedType
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Unchanged
+  langs:
+  - csharp
+  - vb
+  name: CrawlOutcome
+  nameWithType: CrawlOutcome
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlOutcome
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    How the crawler resolved a single URL it dequeued. Each value is a decision the producer makes
+
+    while fetching and classifying a page, and is the unit the run statistics and the live view are
+
+    aggregated from.
+  example: []
+  syntax:
+    content: public enum CrawlOutcome
+    content.vb: Public Enum CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Indexed
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Indexed
+  id: Indexed
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Indexed
+  nameWithType: CrawlOutcome.Indexed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Indexed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Indexed
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Content was (re-)indexed.
+  example: []
+  syntax:
+    content: Indexed = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Unchanged
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Unchanged
+  id: Unchanged
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Unchanged
+  nameWithType: CrawlOutcome.Unchanged
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Unchanged
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unchanged
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Unchanged since the last crawl (HTTP 304 or an identical content hash).
+  example: []
+  syntax:
+    content: Unchanged = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.NoIndex
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.NoIndex
+  id: NoIndex
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: NoIndex
+  nameWithType: CrawlOutcome.NoIndex
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.NoIndex
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndex
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Fetched but not indexed by choice: a noindex directive.'
+  example: []
+  syntax:
+    content: NoIndex = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedType
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedType
+  id: SkippedType
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: SkippedType
+  nameWithType: CrawlOutcome.SkippedType
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedType
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SkippedType
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Fetched but skipped: unsupported content type, or a body that failed sniffing.'
+  example: []
+  syntax:
+    content: SkippedType = 3
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedSize
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedSize
+  id: SkippedSize
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: SkippedSize
+  nameWithType: CrawlOutcome.SkippedSize
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedSize
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SkippedSize
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Skipped before or during download: larger than the size limit.'
+  example: []
+  syntax:
+    content: SkippedSize = 4
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
+  id: Redirected
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Redirected
+  nameWithType: CrawlOutcome.Redirected
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Redirected
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Resolved to another URL: a redirect, a canonical alias, or duplicate content.'
+  example: []
+  syntax:
+    content: Redirected = 5
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
+  id: Gone
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Gone
+  nameWithType: CrawlOutcome.Gone
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Gone
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Gone (HTTP 404/410): removed from the index.'
+  example: []
+  syntax:
+    content: Gone = 6
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Disallowed
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Disallowed
+  id: Disallowed
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Disallowed
+  nameWithType: CrawlOutcome.Disallowed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Disallowed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Disallowed
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Not fetched: disallowed by robots.txt.'
+  example: []
+  syntax:
+    content: Disallowed = 7
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
+  id: Failed
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: Failed
+  nameWithType: CrawlOutcome.Failed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Failed
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A request error or non-success status; whatever was already indexed is kept.
+  example: []
+  syntax:
+    content: Failed = 8
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  name: CrawlOutcome
+  nameWithType: CrawlOutcome
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome

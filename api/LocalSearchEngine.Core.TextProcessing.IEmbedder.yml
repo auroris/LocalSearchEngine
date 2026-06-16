@@ -1,0 +1,235 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
+  id: IEmbedder
+  parent: LocalSearchEngine.Core.TextProcessing
+  children:
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IEmbedder
+  nameWithType: IEmbedder
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  type: Interface
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IEmbedder
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Defines a contract for generating vector embeddings from text inputs.
+  example: []
+  syntax:
+    content: public interface IEmbedder
+    content.vb: Public Interface IEmbedder
+  derivedClasses:
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  - LocalSearchEngine.Tests.FakeEmbedder
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  id: Embed(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  langs:
+  - csharp
+  - vb
+  name: Embed(string)
+  nameWithType: IEmbedder.Embed(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Embed
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Generates a vector embedding for a passage or document text block.
+  example: []
+  syntax:
+    content: ReadOnlyMemory<float> Embed(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The text block to embed.
+    return:
+      type: System.ReadOnlyMemory{System.Single}
+      description: A read-only memory block containing the embedding vector components.
+    content.vb: Function Embed(text As String) As ReadOnlyMemory(Of Single)
+  overload: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed*
+  nameWithType.vb: IEmbedder.Embed(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(String)
+  name.vb: Embed(String)
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  id: EmbedQuery(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  langs:
+  - csharp
+  - vb
+  name: EmbedQuery(string)
+  nameWithType: IEmbedder.EmbedQuery(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedQuery
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Generates a vector embedding for a search query.
+  example: []
+  syntax:
+    content: ReadOnlyMemory<float> EmbedQuery(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The query text to embed.
+    return:
+      type: System.ReadOnlyMemory{System.Single}
+      description: A read-only memory block containing the embedding vector components.
+    content.vb: Function EmbedQuery(text As String) As ReadOnlyMemory(Of Single)
+  overload: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery*
+  nameWithType.vb: IEmbedder.EmbedQuery(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(String)
+  name.vb: EmbedQuery(String)
+references:
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
+  name: Embed
+  nameWithType: IEmbedder.Embed
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.ReadOnlyMemory{System.Single}
+  commentId: T:System.ReadOnlyMemory{System.Single}
+  parent: System
+  definition: System.ReadOnlyMemory`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<float>
+  nameWithType: ReadOnlyMemory<float>
+  fullName: System.ReadOnlyMemory<float>
+  nameWithType.vb: ReadOnlyMemory(Of Single)
+  fullName.vb: System.ReadOnlyMemory(Of Single)
+  name.vb: ReadOnlyMemory(Of Single)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ReadOnlyMemory`1
+  commentId: T:System.ReadOnlyMemory`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<T>
+  nameWithType: ReadOnlyMemory<T>
+  fullName: System.ReadOnlyMemory<T>
+  nameWithType.vb: ReadOnlyMemory(Of T)
+  fullName.vb: System.ReadOnlyMemory(Of T)
+  name.vb: ReadOnlyMemory(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  name: EmbedQuery
+  nameWithType: IEmbedder.EmbedQuery
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery

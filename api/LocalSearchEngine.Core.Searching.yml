@@ -1,0 +1,119 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  id: LocalSearchEngine.Core.Searching
+  children:
+  - LocalSearchEngine.Core.Searching.KeywordCandidate
+  - LocalSearchEngine.Core.Searching.ParsedQuery
+  - LocalSearchEngine.Core.Searching.SearchQueryParser
+  - LocalSearchEngine.Core.Searching.SearchRanker
+  - LocalSearchEngine.Core.Searching.SearchResponse
+  - LocalSearchEngine.Core.Searching.SearchResultItem
+  - LocalSearchEngine.Core.Searching.SearchSettings
+  - LocalSearchEngine.Core.Searching.TextChunkRecord
+  - LocalSearchEngine.Core.Searching.VectorCandidate
+  - LocalSearchEngine.Core.Searching.VectorSearchService
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Searching.ParsedQuery
+  commentId: T:LocalSearchEngine.Core.Searching.ParsedQuery
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.ParsedQuery.html
+  name: ParsedQuery
+  nameWithType: ParsedQuery
+  fullName: LocalSearchEngine.Core.Searching.ParsedQuery
+- uid: LocalSearchEngine.Core.Searching.SearchQueryParser
+  commentId: T:LocalSearchEngine.Core.Searching.SearchQueryParser
+  href: LocalSearchEngine.Core.Searching.SearchQueryParser.html
+  name: SearchQueryParser
+  nameWithType: SearchQueryParser
+  fullName: LocalSearchEngine.Core.Searching.SearchQueryParser
+- uid: LocalSearchEngine.Core.Searching.VectorCandidate
+  commentId: T:LocalSearchEngine.Core.Searching.VectorCandidate
+  href: LocalSearchEngine.Core.Searching.VectorCandidate.html
+  name: VectorCandidate
+  nameWithType: VectorCandidate
+  fullName: LocalSearchEngine.Core.Searching.VectorCandidate
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+  commentId: T:LocalSearchEngine.Core.Searching.KeywordCandidate
+  href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
+  name: KeywordCandidate
+  nameWithType: KeywordCandidate
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate
+- uid: LocalSearchEngine.Core.Searching.SearchRanker
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker
+  nameWithType: SearchRanker
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker
+- uid: LocalSearchEngine.Core.Searching.SearchResultItem
+  commentId: T:LocalSearchEngine.Core.Searching.SearchResultItem
+  href: LocalSearchEngine.Core.Searching.SearchResultItem.html
+  name: SearchResultItem
+  nameWithType: SearchResultItem
+  fullName: LocalSearchEngine.Core.Searching.SearchResultItem
+- uid: LocalSearchEngine.Core.Searching.SearchResponse
+  commentId: T:LocalSearchEngine.Core.Searching.SearchResponse
+  href: LocalSearchEngine.Core.Searching.SearchResponse.html
+  name: SearchResponse
+  nameWithType: SearchResponse
+  fullName: LocalSearchEngine.Core.Searching.SearchResponse
+- uid: LocalSearchEngine.Core.Searching.SearchSettings
+  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html
+  name: SearchSettings
+  nameWithType: SearchSettings
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings
+- uid: LocalSearchEngine.Core.Searching.TextChunkRecord
+  commentId: T:LocalSearchEngine.Core.Searching.TextChunkRecord
+  href: LocalSearchEngine.Core.Searching.TextChunkRecord.html
+  name: TextChunkRecord
+  nameWithType: TextChunkRecord
+  fullName: LocalSearchEngine.Core.Searching.TextChunkRecord
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html

@@ -1,0 +1,797 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker
+  id: TextChunker
+  parent: LocalSearchEngine.Core.TextProcessing
+  children:
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(System.String,System.Int32,System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  langs:
+  - csharp
+  - vb
+  name: TextChunker
+  nameWithType: TextChunker
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TextChunker
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: >-
+    Splits document text into overlapping chunks, attempting to leave semantic meaning intact.
+
+    Supports plain text and markdown formatting splitting options.
+  example: []
+  syntax:
+    content: public static class TextChunker
+    content.vb: Public Module TextChunker
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(System.String,System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(System.String,System.Int32,System.Int32)
+  id: Chunk(System.String,System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: Chunk(string, int, int)
+  nameWithType: TextChunker.Chunk(string, int, int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(string, int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Chunk
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits the given text into overlapping chunks of a specified maximum word/token count.
+  example: []
+  syntax:
+    content: public static IEnumerable<string> Chunk(string text, int chunkSize = 150, int overlap = 30)
+    parameters:
+    - id: text
+      type: System.String
+      description: The raw text string to split.
+    - id: chunkSize
+      type: System.Int32
+      description: The maximum approximate word count per chunk.
+    - id: overlap
+      type: System.Int32
+      description: The approximate word count to overlap between consecutive chunks.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: An enumerable of chunk strings.
+    content.vb: Public Shared Function Chunk(text As String, chunkSize As Integer = 150, overlap As Integer = 30) As IEnumerable(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">chunkSize</code> is less than or equal to 0, or <code class="paramref">overlap</code> is negative or not less than <code class="paramref">chunkSize</code>.
+  nameWithType.vb: TextChunker.Chunk(String, Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(String, Integer, Integer)
+  name.vb: Chunk(String, Integer, Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: SplitPlainTextLines(string, int, TokenCounter?)
+  nameWithType: TextChunker.SplitPlainTextLines(string, int, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(string, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SplitPlainTextLines
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 125
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits plain text into lines, trimming the results.
+  example: []
+  syntax:
+    content: public static List<string> SplitPlainTextLines(string text, int maxTokensPerLine, TextChunker.TokenCounter? tokenCounter = null)
+    parameters:
+    - id: text
+      type: System.String
+      description: The raw text to split.
+    - id: maxTokensPerLine
+      type: System.Int32
+      description: The maximum number of tokens allowed per line.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of split lines.
+    content.vb: Public Shared Function SplitPlainTextLines(text As String, maxTokensPerLine As Integer, tokenCounter As TextChunker.TokenCounter = Nothing) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines*
+  nameWithType.vb: TextChunker.SplitPlainTextLines(String, Integer, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(String, Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: SplitPlainTextLines(String, Integer, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: SplitMarkDownLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: SplitMarkDownLines(string, int, TokenCounter?)
+  nameWithType: TextChunker.SplitMarkDownLines(string, int, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(string, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SplitMarkDownLines
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 135
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits markdown text into lines, trimming the results.
+  example: []
+  syntax:
+    content: public static List<string> SplitMarkDownLines(string text, int maxTokensPerLine, TextChunker.TokenCounter? tokenCounter = null)
+    parameters:
+    - id: text
+      type: System.String
+      description: The raw markdown text to split.
+    - id: maxTokensPerLine
+      type: System.Int32
+      description: The maximum number of tokens allowed per line.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of split lines.
+    content.vb: Public Shared Function SplitMarkDownLines(text As String, maxTokensPerLine As Integer, tokenCounter As TextChunker.TokenCounter = Nothing) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines*
+  nameWithType.vb: TextChunker.SplitMarkDownLines(String, Integer, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(String, Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: SplitMarkDownLines(String, Integer, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: SplitPlainTextParagraphs(IEnumerable<string>, int, int, string?, TokenCounter?)
+  nameWithType: TextChunker.SplitPlainTextParagraphs(IEnumerable<string>, int, int, string?, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable<string>, int, int, string?, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SplitPlainTextParagraphs
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 147
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits plain text lines into paragraphs based on maximum token constraints.
+  example: []
+  syntax:
+    content: public static List<string> SplitPlainTextParagraphs(IEnumerable<string> lines, int maxTokensPerParagraph, int overlapTokens = 0, string? chunkHeader = null, TextChunker.TokenCounter? tokenCounter = null)
+    parameters:
+    - id: lines
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The collection of text lines.
+    - id: maxTokensPerParagraph
+      type: System.Int32
+      description: The maximum number of tokens allowed per paragraph.
+    - id: overlapTokens
+      type: System.Int32
+      description: The number of tokens to overlap between paragraphs.
+    - id: chunkHeader
+      type: System.String
+      description: Optional text prepended to each chunk.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of paragraphs.
+    content.vb: Public Shared Function SplitPlainTextParagraphs(lines As IEnumerable(Of String), maxTokensPerParagraph As Integer, overlapTokens As Integer = 0, chunkHeader As String = Nothing, tokenCounter As TextChunker.TokenCounter = Nothing) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs*
+  nameWithType.vb: TextChunker.SplitPlainTextParagraphs(IEnumerable(Of String), Integer, Integer, String, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable(Of String), Integer, Integer, String, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: SplitPlainTextParagraphs(IEnumerable(Of String), Integer, Integer, String, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: SplitMarkdownParagraphs(IEnumerable<string>, int, int, string?, TokenCounter?)
+  nameWithType: TextChunker.SplitMarkdownParagraphs(IEnumerable<string>, int, int, string?, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable<string>, int, int, string?, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SplitMarkdownParagraphs
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 172
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits markdown lines into paragraphs based on maximum token constraints.
+  example: []
+  syntax:
+    content: public static List<string> SplitMarkdownParagraphs(IEnumerable<string> lines, int maxTokensPerParagraph, int overlapTokens = 0, string? chunkHeader = null, TextChunker.TokenCounter? tokenCounter = null)
+    parameters:
+    - id: lines
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The collection of markdown lines.
+    - id: maxTokensPerParagraph
+      type: System.Int32
+      description: The maximum number of tokens allowed per paragraph.
+    - id: overlapTokens
+      type: System.Int32
+      description: The number of tokens to overlap between paragraphs.
+    - id: chunkHeader
+      type: System.String
+      description: Optional text prepended to each chunk.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of paragraphs.
+    content.vb: Public Shared Function SplitMarkdownParagraphs(lines As IEnumerable(Of String), maxTokensPerParagraph As Integer, overlapTokens As Integer = 0, chunkHeader As String = Nothing, tokenCounter As TextChunker.TokenCounter = Nothing) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs*
+  nameWithType.vb: TextChunker.SplitMarkdownParagraphs(IEnumerable(Of String), Integer, Integer, String, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable(Of String), Integer, Integer, String, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: SplitMarkdownParagraphs(IEnumerable(Of String), Integer, Integer, String, TokenCounter)
+references:
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_Chunk_System_String_System_Int32_System_Int32_
+  name: Chunk
+  nameWithType: TextChunker.Chunk
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_SplitPlainTextLines_System_String_System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: SplitPlainTextLines
+  nameWithType: TextChunker.SplitPlainTextLines
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.TokenCounter
+  nameWithType: TextChunker.TokenCounter
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_SplitMarkDownLines_System_String_System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: SplitMarkDownLines
+  nameWithType: TextChunker.SplitMarkDownLines
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_SplitPlainTextParagraphs_System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int32_System_String_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: SplitPlainTextParagraphs
+  nameWithType: TextChunker.SplitPlainTextParagraphs
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_SplitMarkdownParagraphs_System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int32_System_String_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: SplitMarkdownParagraphs
+  nameWithType: TextChunker.SplitMarkdownParagraphs
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs

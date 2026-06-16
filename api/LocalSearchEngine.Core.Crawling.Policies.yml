@@ -1,0 +1,106 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  id: LocalSearchEngine.Core.Crawling.Policies
+  children:
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  - LocalSearchEngine.Core.Crawling.Policies.DocKind
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  - LocalSearchEngine.Core.Crawling.Policies.UrlOrigin
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  name: AllowedHosts
+  nameWithType: AllowedHosts
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html
+  name: CrawlPolicy
+  nameWithType: CrawlPolicy
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html
+  name: HostHealthTracker
+  nameWithType: HostHealthTracker
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  href: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.html
+  name: UrlNormalizer
+  nameWithType: UrlNormalizer
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlOrigin
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.UrlOrigin
+  href: LocalSearchEngine.Core.Crawling.Policies.UrlOrigin.html
+  name: UrlOrigin
+  nameWithType: UrlOrigin
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlOrigin
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

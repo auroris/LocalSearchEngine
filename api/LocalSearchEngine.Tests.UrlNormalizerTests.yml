@@ -1,0 +1,580 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests
+  commentId: T:LocalSearchEngine.Tests.UrlNormalizerTests
+  id: UrlNormalizerTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(System.String,System.String)
+  - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
+  - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(System.String,System.String)
+  - LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+  - LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls
+  langs:
+  - csharp
+  - vb
+  name: UrlNormalizerTests
+  nameWithType: UrlNormalizerTests
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: UrlNormalizerTests
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 6
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public class UrlNormalizerTests
+    content.vb: Public Class UrlNormalizerTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(System.String,System.String)
+  id: Normalize_canonicalizes(System.String,System.String)
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: Normalize_canonicalizes(string, string)
+  nameWithType: UrlNormalizerTests.Normalize_canonicalizes(string, string)
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Normalize_canonicalizes
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "https://example.com/page#section", "https://example.com/page" })]
+
+      [InlineData(new object[] { "https://example.com/page/", "https://example.com/page" })]
+
+      [InlineData(new object[] { "https://example.com/", "https://example.com/" })]
+
+      [InlineData(new object[] { "https://example.com", "https://example.com/" })]
+
+      [InlineData(new object[] { "https://example.com/a/b/?q=1", "https://example.com/a/b?q=1" })]
+
+      public void Normalize_canonicalizes(string input, string expected)
+    parameters:
+    - id: input
+      type: System.String
+    - id: expected
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "https://example.com/page#section", "https://example.com/page" })>
+
+      <InlineData(New Object() { "https://example.com/page/", "https://example.com/page" })>
+
+      <InlineData(New Object() { "https://example.com/", "https://example.com/" })>
+
+      <InlineData(New Object() { "https://example.com", "https://example.com/" })>
+
+      <InlineData(New Object() { "https://example.com/a/b/?q=1", "https://example.com/a/b?q=1" })>
+
+      Public Sub Normalize_canonicalizes(input As String, expected As String)
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: UrlNormalizerTests.Normalize_canonicalizes(String, String)
+  fullName.vb: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(String, String)
+  name.vb: Normalize_canonicalizes(String, String)
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
+  id: Normalize_preserves_query_string
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: Normalize_preserves_query_string()
+  nameWithType: UrlNormalizerTests.Normalize_preserves_query_string()
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Normalize_preserves_query_string
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Normalize_preserves_query_string()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Normalize_preserves_query_string()
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(System.String,System.String)
+  id: Normalize_strips_tracking_parameters(System.String,System.String)
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: Normalize_strips_tracking_parameters(string, string)
+  nameWithType: UrlNormalizerTests.Normalize_strips_tracking_parameters(string, string)
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Normalize_strips_tracking_parameters
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "https://example.com/p?utm_source=news&utm_medium=email", "https://example.com/p" })]
+
+      [InlineData(new object[] { "https://example.com/p?q=1&utm_campaign=spring&p=2", "https://example.com/p?q=1&p=2" })]
+
+      [InlineData(new object[] { "https://example.com/p?gclid=abc123", "https://example.com/p" })]
+
+      [InlineData(new object[] { "https://example.com/p?id=7&fbclid=xyz", "https://example.com/p?id=7" })]
+
+      [InlineData(new object[] { "https://example.com/p?ref=home", "https://example.com/p?ref=home" })]
+
+      public void Normalize_strips_tracking_parameters(string input, string expected)
+    parameters:
+    - id: input
+      type: System.String
+    - id: expected
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "https://example.com/p?utm_source=news&utm_medium=email", "https://example.com/p" })>
+
+      <InlineData(New Object() { "https://example.com/p?q=1&utm_campaign=spring&p=2", "https://example.com/p?q=1&p=2" })>
+
+      <InlineData(New Object() { "https://example.com/p?gclid=abc123", "https://example.com/p" })>
+
+      <InlineData(New Object() { "https://example.com/p?id=7&fbclid=xyz", "https://example.com/p?id=7" })>
+
+      <InlineData(New Object() { "https://example.com/p?ref=home", "https://example.com/p?ref=home" })>
+
+      Public Sub Normalize_strips_tracking_parameters(input As String, expected As String)
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: UrlNormalizerTests.Normalize_strips_tracking_parameters(String, String)
+  fullName.vb: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(String, String)
+  name.vb: Normalize_strips_tracking_parameters(String, String)
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls
+  id: TryNormalize_rejects_relative_urls
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: TryNormalize_rejects_relative_urls()
+  nameWithType: UrlNormalizerTests.TryNormalize_rejects_relative_urls()
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryNormalize_rejects_relative_urls
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void TryNormalize_rejects_relative_urls()
+    content.vb: >-
+      <Fact>
+
+      Public Sub TryNormalize_rejects_relative_urls()
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+  id: TryNormalize_accepts_absolute_urls
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: TryNormalize_accepts_absolute_urls()
+  nameWithType: UrlNormalizerTests.TryNormalize_accepts_absolute_urls()
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryNormalize_accepts_absolute_urls
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void TryNormalize_accepts_absolute_urls()
+    content.vb: >-
+      <Fact>
+
+      Public Sub TryNormalize_accepts_absolute_urls()
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_Normalize_canonicalizes_System_String_System_String_
+  name: Normalize_canonicalizes
+  nameWithType: UrlNormalizerTests.Normalize_canonicalizes
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_Normalize_preserves_query_string
+  name: Normalize_preserves_query_string
+  nameWithType: UrlNormalizerTests.Normalize_preserves_query_string
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_Normalize_strips_tracking_parameters_System_String_System_String_
+  name: Normalize_strips_tracking_parameters
+  nameWithType: UrlNormalizerTests.Normalize_strips_tracking_parameters
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_TryNormalize_rejects_relative_urls
+  name: TryNormalize_rejects_relative_urls
+  nameWithType: UrlNormalizerTests.TryNormalize_rejects_relative_urls
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_rejects_relative_urls
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_TryNormalize_accepts_absolute_urls
+  name: TryNormalize_accepts_absolute_urls
+  nameWithType: UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls

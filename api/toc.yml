@@ -1,0 +1,193 @@
+### YamlMime:TableOfContent
+items:
+- uid: LocalSearchEngine.Controllers
+  name: LocalSearchEngine.Controllers
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Controllers.SearchController
+    name: SearchController
+    type: Class
+  - uid: LocalSearchEngine.Controllers.StatsController
+    name: StatsController
+    type: Class
+- uid: LocalSearchEngine.Core
+  name: LocalSearchEngine.Core
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.DatabaseConfig
+    name: DatabaseConfig
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling
+  name: LocalSearchEngine.Core.Crawling
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    name: ContentExtractor.HtmlAnalysis
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  name: LocalSearchEngine.Core.Crawling.Policies
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+    name: CrawlPolicy
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+    name: HostHealthTracker
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+    name: UrlNormalizer
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.UrlOrigin
+    name: UrlOrigin
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+    name: BrokenLink
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+    name: CrawlOutcome
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+    name: CrawlReport
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+    name: CrawlStats
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    type: Struct
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+    name: ICrawlObserver
+    type: Interface
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+    name: ICrawlReporter
+    type: Interface
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+    name: LinkStatus
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+    name: NullCrawlReporter
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling.Storage
+  name: LocalSearchEngine.Core.Crawling.Storage
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+    name: CrawlStore
+    type: Class
+- uid: LocalSearchEngine.Core.Searching
+  name: LocalSearchEngine.Core.Searching
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+    name: KeywordCandidate
+    type: Struct
+  - uid: LocalSearchEngine.Core.Searching.ParsedQuery
+    name: ParsedQuery
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchQueryParser
+    name: SearchQueryParser
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchResponse
+    name: SearchResponse
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchResultItem
+    name: SearchResultItem
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchSettings
+    name: SearchSettings
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.TextChunkRecord
+    name: TextChunkRecord
+    type: Class
+  - uid: LocalSearchEngine.Core.Searching.VectorCandidate
+    name: VectorCandidate
+    type: Struct
+  - uid: LocalSearchEngine.Core.Searching.VectorSearchService
+    name: VectorSearchService
+    type: Class
+- uid: LocalSearchEngine.Core.TextProcessing
+  name: LocalSearchEngine.Core.TextProcessing
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
+    name: IEmbedder
+    type: Interface
+  - uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+    name: LocalEmbedderAdapter
+    type: Class
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    type: Class
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TextChunker.TokenCounter
+    type: Delegate
+- uid: LocalSearchEngine.Tests
+  name: LocalSearchEngine.Tests
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Tests.AllowedHostsTests
+    name: AllowedHostsTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.ContentExtractorTests
+    name: ContentExtractorTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlPolicyTests
+    name: CrawlPolicyTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.FakeEmbedder
+    name: FakeEmbedder
+    type: Class
+  - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+    name: Fts5MatchSemanticsTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.RobotsRulesTests
+    name: RobotsRulesTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.SearchQueryParserTests
+    name: SearchQueryParserTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.SearchRankerTests
+    name: SearchRankerTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.TextChunkerTests
+    name: TextChunkerTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.UrlNormalizerTests
+    name: UrlNormalizerTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+    name: VectorSearchServiceIntegrationTests
+    type: Class
+memberLayout: SamePage

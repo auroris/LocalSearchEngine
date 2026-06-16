@@ -1,0 +1,762 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  id: LocalEmbedderAdapter
+  parent: LocalSearchEngine.Core.TextProcessing
+  children:
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor(SmartComponents.LocalEmbeddings.LocalEmbedder)
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed(System.String)
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(System.String)
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.ModelName
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  langs:
+  - csharp
+  - vb
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LocalEmbedderAdapter
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Adapts a local embedding model to the <xref href="LocalSearchEngine.Core.TextProcessing.IEmbedder" data-throw-if-not-resolved="false"></xref> interface.
+  example: []
+  syntax:
+    content: 'public sealed class LocalEmbedderAdapter : IEmbedder, IDisposable'
+    content.vb: Public NotInheritable Class LocalEmbedderAdapter Implements IEmbedder, IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.ModelName
+  commentId: F:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.ModelName
+  id: ModelName
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: ModelName
+  nameWithType: LocalEmbedderAdapter.ModelName
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.ModelName
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ModelName
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: The name of the local embedding model files.
+  example: []
+  syntax:
+    content: public const string ModelName = "snowflake-arctic-embed-s"
+    return:
+      type: System.String
+    content.vb: Public Const ModelName As String = "snowflake-arctic-embed-s"
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  commentId: F:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  id: QueryInstruction
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: QueryInstruction
+  nameWithType: LocalEmbedderAdapter.QueryInstruction
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: QueryInstruction
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: The retrieval instruction prefix prepended to search queries.
+  example: []
+  syntax:
+    content: 'public const string QueryInstruction = "query: "'
+    return:
+      type: System.String
+    content.vb: 'Public Const QueryInstruction As String = "query: "'
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
+  commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
+  id: '#ctor'
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: LocalEmbedderAdapter()
+  nameWithType: LocalEmbedderAdapter.LocalEmbedderAdapter()
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.LocalEmbedderAdapter()
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 44
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter" data-throw-if-not-resolved="false"></xref> class using the default model name.
+  example: []
+  syntax:
+    content: public LocalEmbedderAdapter()
+    content.vb: Public Sub New()
+  overload: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor*
+  nameWithType.vb: LocalEmbedderAdapter.New()
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.New()
+  name.vb: New()
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor(SmartComponents.LocalEmbeddings.LocalEmbedder)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor(SmartComponents.LocalEmbeddings.LocalEmbedder)
+  id: '#ctor(SmartComponents.LocalEmbeddings.LocalEmbedder)'
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: LocalEmbedderAdapter(LocalEmbedder)
+  nameWithType: LocalEmbedderAdapter.LocalEmbedderAdapter(LocalEmbedder)
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.LocalEmbedderAdapter(SmartComponents.LocalEmbeddings.LocalEmbedder)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 50
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter" data-throw-if-not-resolved="false"></xref> class wrapping a custom <xref href="SmartComponents.LocalEmbeddings.LocalEmbedder" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public LocalEmbedderAdapter(LocalEmbedder inner)
+    parameters:
+    - id: inner
+      type: SmartComponents.LocalEmbeddings.LocalEmbedder
+      description: The underlying local embedder engine.
+    content.vb: Public Sub New(inner As LocalEmbedder)
+  overload: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor*
+  nameWithType.vb: LocalEmbedderAdapter.New(LocalEmbedder)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.New(SmartComponents.LocalEmbeddings.LocalEmbedder)
+  name.vb: New(LocalEmbedder)
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed(System.String)
+  id: Embed(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: Embed(string)
+  nameWithType: LocalEmbedderAdapter.Embed(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Embed
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 57
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Generates a vector embedding for the given passage.
+  example: []
+  syntax:
+    content: public ReadOnlyMemory<float> Embed(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The text block to embed.
+    return:
+      type: System.ReadOnlyMemory{System.Single}
+      description: A read-only memory block containing the embedding vector.
+    content.vb: Public Function Embed(text As String) As ReadOnlyMemory(Of Single)
+  overload: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed*
+  implements:
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  nameWithType.vb: LocalEmbedderAdapter.Embed(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed(String)
+  name.vb: Embed(String)
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(System.String)
+  id: EmbedQuery(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: EmbedQuery(string)
+  nameWithType: LocalEmbedderAdapter.EmbedQuery(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedQuery
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 64
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Generates a vector embedding for the given query, prepending the query instruction.
+  example: []
+  syntax:
+    content: public ReadOnlyMemory<float> EmbedQuery(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The query text to embed.
+    return:
+      type: System.ReadOnlyMemory{System.Single}
+      description: A read-only memory block containing the embedding vector.
+    content.vb: Public Function EmbedQuery(text As String) As ReadOnlyMemory(Of Single)
+  overload: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery*
+  implements:
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  nameWithType.vb: LocalEmbedderAdapter.EmbedQuery(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(String)
+  name.vb: EmbedQuery(String)
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose
+  commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose
+  id: Dispose
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: LocalEmbedderAdapter.Dispose()
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dispose
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 69
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Disposes the resources used by the local embedder adapter.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html
+  name: IEmbedder
+  nameWithType: IEmbedder
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter__ctor
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter.LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.LocalEmbedderAdapter
+  nameWithType.vb: LocalEmbedderAdapter.New
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.New
+  name.vb: New
+- uid: SmartComponents.LocalEmbeddings.LocalEmbedder
+  commentId: T:SmartComponents.LocalEmbeddings.LocalEmbedder
+  parent: SmartComponents.LocalEmbeddings
+  isExternal: true
+  name: LocalEmbedder
+  nameWithType: LocalEmbedder
+  fullName: SmartComponents.LocalEmbeddings.LocalEmbedder
+- uid: SmartComponents.LocalEmbeddings
+  commentId: N:SmartComponents.LocalEmbeddings
+  isExternal: true
+  name: SmartComponents.LocalEmbeddings
+  nameWithType: SmartComponents.LocalEmbeddings
+  fullName: SmartComponents.LocalEmbeddings
+  spec.csharp:
+  - uid: SmartComponents
+    name: SmartComponents
+    isExternal: true
+  - name: .
+  - uid: SmartComponents.LocalEmbeddings
+    name: LocalEmbeddings
+    isExternal: true
+  spec.vb:
+  - uid: SmartComponents
+    name: SmartComponents
+    isExternal: true
+  - name: .
+  - uid: SmartComponents.LocalEmbeddings
+    name: LocalEmbeddings
+    isExternal: true
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter_Embed_System_String_
+  name: Embed
+  nameWithType: LocalEmbedderAdapter.Embed
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  isExternal: true
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
+  name: Embed(string)
+  nameWithType: IEmbedder.Embed(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(string)
+  nameWithType.vb: IEmbedder.Embed(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(String)
+  name.vb: Embed(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+    name: Embed
+    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
+    name: Embed
+    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.ReadOnlyMemory{System.Single}
+  commentId: T:System.ReadOnlyMemory{System.Single}
+  parent: System
+  definition: System.ReadOnlyMemory`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<float>
+  nameWithType: ReadOnlyMemory<float>
+  fullName: System.ReadOnlyMemory<float>
+  nameWithType.vb: ReadOnlyMemory(Of Single)
+  fullName.vb: System.ReadOnlyMemory(Of Single)
+  name.vb: ReadOnlyMemory(Of Single)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.ReadOnlyMemory`1
+  commentId: T:System.ReadOnlyMemory`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<T>
+  nameWithType: ReadOnlyMemory<T>
+  fullName: System.ReadOnlyMemory<T>
+  nameWithType.vb: ReadOnlyMemory(Of T)
+  fullName.vb: System.ReadOnlyMemory(Of T)
+  name.vb: ReadOnlyMemory(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter_EmbedQuery_System_String_
+  name: EmbedQuery
+  nameWithType: LocalEmbedderAdapter.EmbedQuery
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  isExternal: true
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  name: EmbedQuery(string)
+  nameWithType: IEmbedder.EmbedQuery(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(string)
+  nameWithType.vb: IEmbedder.EmbedQuery(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(String)
+  name.vb: EmbedQuery(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+    name: EmbedQuery
+    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
+    name: EmbedQuery
+    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter_Dispose
+  name: Dispose
+  nameWithType: LocalEmbedderAdapter.Dispose
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

@@ -1,0 +1,92 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  id: LocalSearchEngine.Core.TextProcessing
+  children:
+  - LocalSearchEngine.Core.TextProcessing.IEmbedder
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  - LocalSearchEngine.Core.TextProcessing.TextChunker
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html
+  name: IEmbedder
+  nameWithType: IEmbedder
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker
+  nameWithType: TextChunker
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.TokenCounter
+  nameWithType: TextChunker.TokenCounter
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html

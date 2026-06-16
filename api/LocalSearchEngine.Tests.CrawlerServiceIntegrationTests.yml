@@ -1,0 +1,2235 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  id: CrawlerServiceIntegrationTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  langs:
+  - csharp
+  - vb
+  name: CrawlerServiceIntegrationTests
+  nameWithType: CrawlerServiceIntegrationTests
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlerServiceIntegrationTests
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: >-
+    Drives the crawl loop end to end against a fake HTTP server and a real sqlite-vec
+
+    database, verifying the behaviours unit tests can't reach: that transient failures
+
+    don't erase the index, that "gone" pages are removed, that 304/unchanged pages still
+
+    keep the frontier growing, and that non-HTML and out-of-scope redirects aren't indexed.
+  example: []
+  syntax:
+    content: 'public sealed class CrawlerServiceIntegrationTests : IDisposable'
+    content.vb: Public NotInheritable Class CrawlerServiceIntegrationTests Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
+  id: '#ctor'
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: CrawlerServiceIntegrationTests()
+  nameWithType: CrawlerServiceIntegrationTests.CrawlerServiceIntegrationTests()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CrawlerServiceIntegrationTests()
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 40
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public CrawlerServiceIntegrationTests()
+    content.vb: Public Sub New()
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor*
+  nameWithType.vb: CrawlerServiceIntegrationTests.New()
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.New()
+  name.vb: New()
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  id: Transient_5xx_on_recrawl_keeps_existing_index
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Transient_5xx_on_recrawl_keeps_existing_index()
+  nameWithType: CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Transient_5xx_on_recrawl_keeps_existing_index
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 64
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Transient_5xx_on_recrawl_keeps_existing_index()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Transient_5xx_on_recrawl_keeps_existing_index() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+  id: NotFound_removes_page_from_index
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: NotFound_removes_page_from_index()
+  nameWithType: CrawlerServiceIntegrationTests.NotFound_removes_page_from_index()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NotFound_removes_page_from_index
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 81
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NotFound_removes_page_from_index()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NotFound_removes_page_from_index() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+  id: NotModified_304_still_reaches_pages_linked_only_from_it
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: NotModified_304_still_reaches_pages_linked_only_from_it()
+  nameWithType: CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NotModified_304_still_reaches_pages_linked_only_from_it
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 114
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NotModified_304_still_reaches_pages_linked_only_from_it()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NotModified_304_still_reaches_pages_linked_only_from_it() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+  id: Unchanged_content_skips_reembedding
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Unchanged_content_skips_reembedding()
+  nameWithType: CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unchanged_content_skips_reembedding
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 135
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unchanged_content_skips_reembedding()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unchanged_content_skips_reembedding() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+  id: Non_html_content_is_not_indexed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Non_html_content_is_not_indexed()
+  nameWithType: CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Non_html_content_is_not_indexed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 152
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Non_html_content_is_not_indexed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Non_html_content_is_not_indexed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+  id: Crawls_a_link_graph_and_indexes_every_reachable_page
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Crawls_a_link_graph_and_indexes_every_reachable_page()
+  nameWithType: CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawls_a_link_graph_and_indexes_every_reachable_page
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 167
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Crawls_a_link_graph_and_indexes_every_reachable_page()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Crawls_a_link_graph_and_indexes_every_reachable_page() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  id: Redirect_to_external_host_is_not_indexed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Redirect_to_external_host_is_not_indexed()
+  nameWithType: CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Redirect_to_external_host_is_not_indexed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 186
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Redirect_to_external_host_is_not_indexed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Redirect_to_external_host_is_not_indexed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+  id: Page_body_wrapped_in_a_form_is_still_indexed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Page_body_wrapped_in_a_form_is_still_indexed()
+  nameWithType: CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Page_body_wrapped_in_a_form_is_still_indexed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 208
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Page_body_wrapped_in_a_form_is_still_indexed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Page_body_wrapped_in_a_form_is_still_indexed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  id: Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type()
+  nameWithType: CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 232
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  id: Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
+  nameWithType: CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 249
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Html_mislabeled_as_octet_stream_is_sniffed_and_indexed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Html_mislabeled_as_octet_stream_is_sniffed_and_indexed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  id: Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Www_variant_of_seed_host_is_out_of_scope_unless_allowed()
+  nameWithType: CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 268
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Www_variant_of_seed_host_is_out_of_scope_unless_allowed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Www_variant_of_seed_host_is_out_of_scope_unless_allowed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  id: Allowed_servers_bring_additional_hosts_into_scope
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Allowed_servers_bring_additional_hosts_into_scope()
+  nameWithType: CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Allowed_servers_bring_additional_hosts_into_scope
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 283
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Allowed_servers_bring_additional_hosts_into_scope()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Allowed_servers_bring_additional_hosts_into_scope() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  id: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
+  nameWithType: CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 296
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+  id: Sitemap_entries_are_limited_to_the_seed_origin
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Sitemap_entries_are_limited_to_the_seed_origin()
+  nameWithType: CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Sitemap_entries_are_limited_to_the_seed_origin
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 310
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Sitemap_entries_are_limited_to_the_seed_origin()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Sitemap_entries_are_limited_to_the_seed_origin() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+  id: Robots_and_sitemap_requests_use_the_seeds_port
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Robots_and_sitemap_requests_use_the_seeds_port()
+  nameWithType: CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Robots_and_sitemap_requests_use_the_seeds_port
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 335
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Robots_and_sitemap_requests_use_the_seeds_port()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Robots_and_sitemap_requests_use_the_seeds_port() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+  id: Seed_redirect_to_a_new_host_adopts_that_host
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Seed_redirect_to_a_new_host_adopts_that_host()
+  nameWithType: CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Seed_redirect_to_a_new_host_adopts_that_host
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 353
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Seed_redirect_to_a_new_host_adopts_that_host()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Seed_redirect_to_a_new_host_adopts_that_host() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+  id: Identical_content_on_two_urls_is_indexed_once
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Identical_content_on_two_urls_is_indexed_once()
+  nameWithType: CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Identical_content_on_two_urls_is_indexed_once
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 375
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Identical_content_on_two_urls_is_indexed_once()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Identical_content_on_two_urls_is_indexed_once() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+  id: Per_host_cap_stops_indexing_after_n_pages
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Per_host_cap_stops_indexing_after_n_pages()
+  nameWithType: CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Per_host_cap_stops_indexing_after_n_pages
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 394
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Per_host_cap_stops_indexing_after_n_pages()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Per_host_cap_stops_indexing_after_n_pages() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+  id: Redirect_cleans_up_old_index_and_metadata
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Redirect_cleans_up_old_index_and_metadata()
+  nameWithType: CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Redirect_cleans_up_old_index_and_metadata
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 410
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Redirect_cleans_up_old_index_and_metadata()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Redirect_cleans_up_old_index_and_metadata() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+  id: Stale_pages_are_pruned_after_a_completed_crawl
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Stale_pages_are_pruned_after_a_completed_crawl()
+  nameWithType: CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Stale_pages_are_pruned_after_a_completed_crawl
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 457
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Stale_pages_are_pruned_after_a_completed_crawl()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Stale_pages_are_pruned_after_a_completed_crawl() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  id: Capped_crawl_does_not_prune
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Capped_crawl_does_not_prune()
+  nameWithType: CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Capped_crawl_does_not_prune
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 477
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Capped_crawl_does_not_prune()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Capped_crawl_does_not_prune() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+  id: Pruning_leaves_other_hosts_rows_alone
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Pruning_leaves_other_hosts_rows_alone()
+  nameWithType: CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Pruning_leaves_other_hosts_rows_alone
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 496
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Pruning_leaves_other_hosts_rows_alone()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Pruning_leaves_other_hosts_rows_alone() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+  id: Robots_5xx_for_an_origin_protects_it_from_pruning
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Robots_5xx_for_an_origin_protects_it_from_pruning()
+  nameWithType: CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Robots_5xx_for_an_origin_protects_it_from_pruning
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 521
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Robots_5xx_for_an_origin_protects_it_from_pruning()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Robots_5xx_for_an_origin_protects_it_from_pruning() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+  id: Unreachable_host_is_written_off_after_one_failed_contact
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Unreachable_host_is_written_off_after_one_failed_contact()
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unreachable_host_is_written_off_after_one_failed_contact
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 542
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unreachable_host_is_written_off_after_one_failed_contact()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unreachable_host_is_written_off_after_one_failed_contact() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+  id: Unreachable_host_keeps_its_existing_index
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Unreachable_host_keeps_its_existing_index()
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unreachable_host_keeps_its_existing_index
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 565
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unreachable_host_keeps_its_existing_index()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unreachable_host_keeps_its_existing_index() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+  id: Unreachable_host_is_listed_in_the_report
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Unreachable_host_is_listed_in_the_report()
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unreachable_host_is_listed_in_the_report
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 589
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unreachable_host_is_listed_in_the_report()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unreachable_host_is_listed_in_the_report() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  id: Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Onsite_404_is_recorded_as_a_broken_link_with_its_referrer()
+  nameWithType: CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 603
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Onsite_404_is_recorded_as_a_broken_link_with_its_referrer()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Onsite_404_is_recorded_as_a_broken_link_with_its_referrer() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+  id: External_link_check_disabled_leaves_offsite_links_untouched
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: External_link_check_disabled_leaves_offsite_links_untouched()
+  nameWithType: CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: External_link_check_disabled_leaves_offsite_links_untouched
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 620
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task External_link_check_disabled_leaves_offsite_links_untouched()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function External_link_check_disabled_leaves_offsite_links_untouched() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+  id: External_link_check_reports_dead_offsite_links
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: External_link_check_reports_dead_offsite_links()
+  nameWithType: CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: External_link_check_reports_dead_offsite_links
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 635
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task External_link_check_reports_dead_offsite_links()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function External_link_check_reports_dead_offsite_links() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  id: Links_are_recorded_in_the_link_index_with_their_status
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Links_are_recorded_in_the_link_index_with_their_status()
+  nameWithType: CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Links_are_recorded_in_the_link_index_with_their_status
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 655
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Links_are_recorded_in_the_link_index_with_their_status()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Links_are_recorded_in_the_link_index_with_their_status() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  id: Inscope_redirect_is_reported_as_a_redirected_link
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Inscope_redirect_is_reported_as_a_redirected_link()
+  nameWithType: CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Inscope_redirect_is_reported_as_a_redirected_link
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 679
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Inscope_redirect_is_reported_as_a_redirected_link()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Inscope_redirect_is_reported_as_a_redirected_link() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  id: External_redirect_is_reported_as_redirected_not_broken
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: External_redirect_is_reported_as_redirected_not_broken()
+  nameWithType: CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: External_redirect_is_reported_as_redirected_not_broken
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 704
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task External_redirect_is_reported_as_redirected_not_broken()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function External_redirect_is_reported_as_redirected_not_broken() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+  id: Unchanged_page_external_links_are_reverified_each_run
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Unchanged_page_external_links_are_reverified_each_run()
+  nameWithType: CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unchanged_page_external_links_are_reverified_each_run
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 726
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unchanged_page_external_links_are_reverified_each_run()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unchanged_page_external_links_are_reverified_each_run() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  id: Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
+  nameWithType: CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 755
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  id: Robots_removal_leaves_another_origins_index_untouched
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Robots_removal_leaves_another_origins_index_untouched()
+  nameWithType: CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Robots_removal_leaves_another_origins_index_untouched
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 785
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Robots_removal_leaves_another_origins_index_untouched()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Robots_removal_leaves_another_origins_index_untouched() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  id: Oversized_sitemap_is_skipped_but_crawl_proceeds
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Oversized_sitemap_is_skipped_but_crawl_proceeds()
+  nameWithType: CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Oversized_sitemap_is_skipped_but_crawl_proceeds
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 814
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Oversized_sitemap_is_skipped_but_crawl_proceeds()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Oversized_sitemap_is_skipped_but_crawl_proceeds() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+  id: Crawl_skips_files_exceeding_max_crawl_size_bytes
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_skips_files_exceeding_max_crawl_size_bytes()
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_skips_files_exceeding_max_crawl_size_bytes
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 900
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Crawl_skips_files_exceeding_max_crawl_size_bytes()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Crawl_skips_files_exceeding_max_crawl_size_bytes() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+  id: Crawl_skips_unsupported_content_types_by_header
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_skips_unsupported_content_types_by_header()
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_skips_unsupported_content_types_by_header
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 915
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Crawl_skips_unsupported_content_types_by_header()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Crawl_skips_unsupported_content_types_by_header() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  id: Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match()
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 935
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+  id: Crawl_skips_non_docx_zip_files_by_extension
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_skips_non_docx_zip_files_by_extension()
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_skips_non_docx_zip_files_by_extension
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 959
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Crawl_skips_non_docx_zip_files_by_extension()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Crawl_skips_non_docx_zip_files_by_extension() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
+  id: Dispose
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: CrawlerServiceIntegrationTests.Dispose()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dispose
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 981
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests__ctor
+  name: CrawlerServiceIntegrationTests
+  nameWithType: CrawlerServiceIntegrationTests.CrawlerServiceIntegrationTests
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CrawlerServiceIntegrationTests
+  nameWithType.vb: CrawlerServiceIntegrationTests.New
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.New
+  name.vb: New
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Transient_5xx_on_recrawl_keeps_existing_index
+  name: Transient_5xx_on_recrawl_keeps_existing_index
+  nameWithType: CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NotFound_removes_page_from_index
+  name: NotFound_removes_page_from_index
+  nameWithType: CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NotModified_304_still_reaches_pages_linked_only_from_it
+  name: NotModified_304_still_reaches_pages_linked_only_from_it
+  nameWithType: CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Unchanged_content_skips_reembedding
+  name: Unchanged_content_skips_reembedding
+  nameWithType: CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Non_html_content_is_not_indexed
+  name: Non_html_content_is_not_indexed
+  nameWithType: CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawls_a_link_graph_and_indexes_every_reachable_page
+  name: Crawls_a_link_graph_and_indexes_every_reachable_page
+  nameWithType: CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Redirect_to_external_host_is_not_indexed
+  name: Redirect_to_external_host_is_not_indexed
+  nameWithType: CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Page_body_wrapped_in_a_form_is_still_indexed
+  name: Page_body_wrapped_in_a_form_is_still_indexed
+  nameWithType: CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  name: Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  nameWithType: CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  name: Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  nameWithType: CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  name: Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  nameWithType: CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Allowed_servers_bring_additional_hosts_into_scope
+  name: Allowed_servers_bring_additional_hosts_into_scope
+  nameWithType: CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  name: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  nameWithType: CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Sitemap_entries_are_limited_to_the_seed_origin
+  name: Sitemap_entries_are_limited_to_the_seed_origin
+  nameWithType: CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Robots_and_sitemap_requests_use_the_seeds_port
+  name: Robots_and_sitemap_requests_use_the_seeds_port
+  nameWithType: CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Seed_redirect_to_a_new_host_adopts_that_host
+  name: Seed_redirect_to_a_new_host_adopts_that_host
+  nameWithType: CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Identical_content_on_two_urls_is_indexed_once
+  name: Identical_content_on_two_urls_is_indexed_once
+  nameWithType: CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Per_host_cap_stops_indexing_after_n_pages
+  name: Per_host_cap_stops_indexing_after_n_pages
+  nameWithType: CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Redirect_cleans_up_old_index_and_metadata
+  name: Redirect_cleans_up_old_index_and_metadata
+  nameWithType: CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Stale_pages_are_pruned_after_a_completed_crawl
+  name: Stale_pages_are_pruned_after_a_completed_crawl
+  nameWithType: CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Capped_crawl_does_not_prune
+  name: Capped_crawl_does_not_prune
+  nameWithType: CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Pruning_leaves_other_hosts_rows_alone
+  name: Pruning_leaves_other_hosts_rows_alone
+  nameWithType: CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Robots_5xx_for_an_origin_protects_it_from_pruning
+  name: Robots_5xx_for_an_origin_protects_it_from_pruning
+  nameWithType: CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Unreachable_host_is_written_off_after_one_failed_contact
+  name: Unreachable_host_is_written_off_after_one_failed_contact
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Unreachable_host_keeps_its_existing_index
+  name: Unreachable_host_keeps_its_existing_index
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Unreachable_host_is_listed_in_the_report
+  name: Unreachable_host_is_listed_in_the_report
+  nameWithType: CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  name: Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  nameWithType: CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_External_link_check_disabled_leaves_offsite_links_untouched
+  name: External_link_check_disabled_leaves_offsite_links_untouched
+  nameWithType: CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_External_link_check_reports_dead_offsite_links
+  name: External_link_check_reports_dead_offsite_links
+  nameWithType: CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Links_are_recorded_in_the_link_index_with_their_status
+  name: Links_are_recorded_in_the_link_index_with_their_status
+  nameWithType: CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Inscope_redirect_is_reported_as_a_redirected_link
+  name: Inscope_redirect_is_reported_as_a_redirected_link
+  nameWithType: CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_External_redirect_is_reported_as_redirected_not_broken
+  name: External_redirect_is_reported_as_redirected_not_broken
+  nameWithType: CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Unchanged_page_external_links_are_reverified_each_run
+  name: Unchanged_page_external_links_are_reverified_each_run
+  nameWithType: CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  name: Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  nameWithType: CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Robots_removal_leaves_another_origins_index_untouched
+  name: Robots_removal_leaves_another_origins_index_untouched
+  nameWithType: CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Oversized_sitemap_is_skipped_but_crawl_proceeds
+  name: Oversized_sitemap_is_skipped_but_crawl_proceeds
+  nameWithType: CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawl_skips_files_exceeding_max_crawl_size_bytes
+  name: Crawl_skips_files_exceeding_max_crawl_size_bytes
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawl_skips_unsupported_content_types_by_header
+  name: Crawl_skips_unsupported_content_types_by_header
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_unsupported_content_types_by_header
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  name: Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawl_skips_non_docx_zip_files_by_extension
+  name: Crawl_skips_non_docx_zip_files_by_extension
+  nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Dispose
+  name: Dispose
+  nameWithType: CrawlerServiceIntegrationTests.Dispose
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  id: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  - LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
+  name: BrokenLink
+  nameWithType: BrokenLink
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  name: CrawlOutcome
+  nameWithType: CrawlOutcome
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  name: CrawlPhase
+  nameWithType: CrawlPhase
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
+  name: CrawlReport
+  nameWithType: CrawlReport
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html
+  name: CrawlStats
+  nameWithType: CrawlStats
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  name: CrawlStatsSnapshot
+  nameWithType: CrawlStatsSnapshot
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html
+  name: ICrawlObserver
+  nameWithType: ICrawlObserver
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html
+  name: ICrawlReporter
+  nameWithType: ICrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.html
+  name: LinkStatus
+  nameWithType: LinkStatus
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html
+  name: NullCrawlReporter
+  nameWithType: NullCrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html

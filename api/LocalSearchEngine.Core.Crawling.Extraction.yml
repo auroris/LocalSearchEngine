@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  commentId: N:LocalSearchEngine.Core.Crawling.Extraction
+  id: LocalSearchEngine.Core.Crawling.Extraction
+  children:
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  nameWithType: LocalSearchEngine.Core.Crawling.Extraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor
+  nameWithType: ContentExtractor
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor.HtmlAnalysis
+  nameWithType: ContentExtractor.HtmlAnalysis
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    name: HtmlAnalysis
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    name: HtmlAnalysis
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  commentId: N:LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  nameWithType: LocalSearchEngine.Core.Crawling.Extraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html

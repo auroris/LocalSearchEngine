@@ -1,0 +1,313 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  id: CrawlPhase
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.CheckingLinks
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Completed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Crawling
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Optimizing
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Pruning
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.RemovingBanned
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Starting
+  langs:
+  - csharp
+  - vb
+  name: CrawlPhase
+  nameWithType: CrawlPhase
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlPhase
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    The high-level stage a crawl is in. Surfaced so a host can label what the crawler is doing —
+
+    especially the end-of-crawl database work that happens after the last page is fetched, which
+
+    would otherwise look like a frozen display.
+  example: []
+  syntax:
+    content: public enum CrawlPhase
+    content.vb: Public Enum CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Starting
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Starting
+  id: Starting
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Starting
+  nameWithType: CrawlPhase.Starting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Starting
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Starting
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Opening the database and fetching the seed's robots.txt and sitemaps.
+  example: []
+  syntax:
+    content: Starting = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Crawling
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Crawling
+  id: Crawling
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Crawling
+  nameWithType: CrawlPhase.Crawling
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Crawling
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawling
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Draining the frontier: fetching, classifying, and indexing pages.'
+  example: []
+  syntax:
+    content: Crawling = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.RemovingBanned
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.RemovingBanned
+  id: RemovingBanned
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: RemovingBanned
+  nameWithType: CrawlPhase.RemovingBanned
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.RemovingBanned
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RemovingBanned
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Removing already-indexed URLs an origin's robots.txt now disallows.
+  example: []
+  syntax:
+    content: RemovingBanned = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Pruning
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Pruning
+  id: Pruning
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Pruning
+  nameWithType: CrawlPhase.Pruning
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Pruning
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Pruning
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Pruning indexed URLs a completed crawl no longer reaches.
+  example: []
+  syntax:
+    content: Pruning = 3
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Optimizing
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Optimizing
+  id: Optimizing
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Optimizing
+  nameWithType: CrawlPhase.Optimizing
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Optimizing
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Optimizing
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Optimizing and (when warranted) vacuuming the database.
+  example: []
+  syntax:
+    content: Optimizing = 4
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.CheckingLinks
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.CheckingLinks
+  id: CheckingLinks
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: CheckingLinks
+  nameWithType: CrawlPhase.CheckingLinks
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.CheckingLinks
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CheckingLinks
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Optionally probing off-site links (outside the allowed hosts) to see whether they still resolve.
+  example: []
+  syntax:
+    content: CheckingLinks = 5
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Completed
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Completed
+  id: Completed
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Completed
+  nameWithType: CrawlPhase.Completed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Completed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Completed
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The crawl drained its frontier and finished on its own.
+  example: []
+  syntax:
+    content: Completed = 6
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
+  id: Cancelled
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  langs:
+  - csharp
+  - vb
+  name: Cancelled
+  nameWithType: CrawlPhase.Cancelled
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Cancelled
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The crawl stopped early because cancellation was requested.
+  example: []
+  syntax:
+    content: Cancelled = 7
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  name: CrawlPhase
+  nameWithType: CrawlPhase
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
