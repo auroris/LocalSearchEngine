@@ -219,23 +219,39 @@ public static class ContentExtractor
 
         if (!string.IsNullOrEmpty(xRobotsTag))
         {
-            Apply(StripXRobotsAgent(xRobotsTag, userAgentToken));
+            var standardDirectives = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "noindex", "nofollow", "none", "all", "index", "follow", "noarchive", "nosnippet",
+                "unavailable_after", "max-snippet", "max-image-preview", "max-video-preview", "notranslate"
+            };
+
+            string? activeUserAgent = null;
+
+            foreach (var part in xRobotsTag.Split(','))
+            {
+                var trimmedPart = part.Trim();
+                int colon = trimmedPart.IndexOf(':');
+
+                string directiveValue = trimmedPart;
+
+                if (colon >= 0)
+                {
+                    var prefix = trimmedPart[..colon].Trim().ToLowerInvariant();
+                    if (!standardDirectives.Contains(prefix))
+                    {
+                        activeUserAgent = prefix;
+                        directiveValue = trimmedPart[(colon + 1)..].Trim();
+                    }
+                }
+
+                if (activeUserAgent == null || string.Equals(activeUserAgent, userAgentToken, StringComparison.OrdinalIgnoreCase))
+                {
+                    Apply(directiveValue);
+                }
+            }
         }
 
         return (noIndex, noFollow);
-    }
-
-    /// <summary>
-    /// Strips any user agent prefix from an X-Robots-Tag HTTP header value, verifying if the rule applies to this bot.
-    /// </summary>
-    private static string StripXRobotsAgent(string value, string userAgentToken)
-    {
-        int colon = value.IndexOf(':');
-        if (colon < 0) return value;
-
-        var prefix = value[..colon].Trim().ToLowerInvariant();
-        if (prefix is "noindex" or "nofollow" or "none" or "all" or "index" or "follow") return value;
-        return prefix == userAgentToken ? value[(colon + 1)..] : string.Empty;
     }
 
     /// <summary>

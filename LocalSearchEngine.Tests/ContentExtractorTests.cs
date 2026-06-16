@@ -96,4 +96,24 @@ public class ContentExtractorTests
         Assert.Equal("Über", analysis.Title);
         Assert.Contains("Größe", analysis.Text);
     }
+
+    [Theory]
+    [InlineData("noindex, unavailable_after: 1 Jan 2030 00:00:00 GMT", true, false)]
+    [InlineData("noindex, max-image-preview: large", true, false)]
+    [InlineData("googlebot: noindex, nofollow", true, true)]
+    [InlineData("otherbot: noindex, nofollow", false, false)]
+    public void XRobotsTag_directives_are_parsed_correctly(string headerValue, bool expectedNoIndex, bool expectedNoFollow)
+    {
+        var html = "<html><head><title>Test</title></head><body><p>Hello</p></body></html>";
+        var body = Encoding.UTF8.GetBytes(html);
+        var hosts = new AllowedHosts();
+        hosts.Add("test.local");
+
+        var analysis = ContentExtractor.AnalyzeHtml(
+            body, null, xRobotsTag: headerValue, "http://test.local/page",
+            hosts, new Dictionary<string, RobotsRules>(), "googlebot");
+
+        Assert.Equal(expectedNoIndex, analysis.NoIndex);
+        Assert.Equal(expectedNoFollow, analysis.NoFollow);
+    }
 }

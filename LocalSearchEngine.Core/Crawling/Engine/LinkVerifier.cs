@@ -194,6 +194,7 @@ internal sealed class LinkVerifier
 
         if (response.StatusCode == HttpStatusCode.MethodNotAllowed || (int)response.StatusCode == 400)
         {
+            response.Dispose();
             var getRequest = new HttpRequestMessage(HttpMethod.Get, url);
             return await _httpClient.SendAsync(getRequest, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         }

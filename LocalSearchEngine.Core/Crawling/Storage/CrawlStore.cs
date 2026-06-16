@@ -34,7 +34,7 @@ public static class CrawlStore
             command.CommandText = @"
                 PRAGMA journal_mode=WAL;
 
-                CREATE TABLE CrawlState (
+                CREATE TABLE IF NOT EXISTS CrawlState (
                     Url TEXT PRIMARY KEY,
                     LastCrawled DATETIME,
                     StatusCode INTEGER,
@@ -49,7 +49,7 @@ public static class CrawlStore
                 -- last set. In-scope rows (External=0) drive frontier re-derivation on 304/unchanged
                 -- pages — we never re-parse their HTML then — while off-site rows let the end-of-crawl
                 -- pass verify links even on pages whose content didn't change this run.
-                CREATE TABLE LinkIndex (
+                CREATE TABLE IF NOT EXISTS LinkIndex (
                     FromUrl TEXT NOT NULL,
                     ToUrl TEXT NOT NULL,
                     External INTEGER NOT NULL DEFAULT 0,
@@ -61,42 +61,42 @@ public static class CrawlStore
 
                 -- After visiting a page, the status of every link pointing at it is set in one
                 -- statement (WHERE ToUrl = ...), so ToUrl needs its own index.
-                CREATE INDEX idx_linkindex_tourl ON LinkIndex(ToUrl);
+                CREATE INDEX IF NOT EXISTS idx_linkindex_tourl ON LinkIndex(ToUrl);
 
                 -- The end-of-crawl verify and report scans filter on Status and LastUpdated.
-                CREATE INDEX idx_linkindex_status ON LinkIndex(Status, LastUpdated);
+                CREATE INDEX IF NOT EXISTS idx_linkindex_status ON LinkIndex(Status, LastUpdated);
 
                 -- Verify links that haven't been updated this crawl run.
-                CREATE INDEX idx_linkindex_lastupdated ON LinkIndex(LastUpdated);
+                CREATE INDEX IF NOT EXISTS idx_linkindex_lastupdated ON LinkIndex(LastUpdated);
 
                 -- porter stemming over unicode61 so 'running' matches 'run', 'guides' matches
                 -- 'guide', etc. The URL isn't stored here: keyword hits join back to
                 -- text_chunks by Id, so a second copy of every URL would just waste space.
-                CREATE VIRTUAL TABLE text_chunks_fts USING fts5(Id UNINDEXED, Text, tokenize='porter unicode61');
+                CREATE VIRTUAL TABLE IF NOT EXISTS text_chunks_fts USING fts5(Id UNINDEXED, Text, tokenize='porter unicode61');
 
-                CREATE TRIGGER text_chunks_ai AFTER INSERT ON text_chunks BEGIN
+                CREATE TRIGGER IF NOT EXISTS text_chunks_ai AFTER INSERT ON text_chunks BEGIN
                   INSERT INTO text_chunks_fts(Id, Text) VALUES (new.Id, new.Text);
                 END;
 
-                CREATE TRIGGER text_chunks_ad AFTER DELETE ON text_chunks BEGIN
+                CREATE TRIGGER IF NOT EXISTS text_chunks_ad AFTER DELETE ON text_chunks BEGIN
                   DELETE FROM text_chunks_fts WHERE Id = old.Id;
                 END;
 
-                CREATE TRIGGER text_chunks_au AFTER UPDATE ON text_chunks BEGIN
+                CREATE TRIGGER IF NOT EXISTS text_chunks_au AFTER UPDATE ON text_chunks BEGIN
                   DELETE FROM text_chunks_fts WHERE Id = old.Id;
                   INSERT INTO text_chunks_fts(Id, Text) VALUES (new.Id, new.Text);
                 END;
 
                 -- Create a covering index on ContentHash + Url
-                CREATE INDEX idx_crawlstate_contenthash_url ON CrawlState(ContentHash, Url);
+                CREATE INDEX IF NOT EXISTS idx_crawlstate_contenthash_url ON CrawlState(ContentHash, Url);
 
                 -- Index LastCrawled to optimize locating abandoned pages and fetching max crawl timestamps
-                CREATE INDEX idx_crawlstate_lastcrawled ON CrawlState(LastCrawled);
+                CREATE INDEX IF NOT EXISTS idx_crawlstate_lastcrawled ON CrawlState(LastCrawled);
 
                 -- The vector connector creates text_chunks with no index on Url, yet every page
                 -- visit filters on it (chunk deletes, the has-chunks probe, the duplicate-content
                 -- EXISTS) — without this, each of those is a full scan of the largest table.
-                CREATE INDEX idx_text_chunks_url ON text_chunks(Url);
+                CREATE INDEX IF NOT EXISTS idx_text_chunks_url ON text_chunks(Url);
             ";
             await command.ExecuteNonQueryAsync();
         }
