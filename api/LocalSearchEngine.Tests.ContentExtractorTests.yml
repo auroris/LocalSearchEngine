@@ -5,6 +5,7 @@ items:
   id: ContentExtractorTests
   parent: LocalSearchEngine.Tests
   children:
+  - LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
   - LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
   - LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
@@ -48,6 +49,42 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
+  id: Analyze(System.Byte[],System.String)
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Analyze(byte[], string?)
+  nameWithType: ContentExtractorTests.Analyze(byte[], string?)
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Analyze(byte[], string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Analyze
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static ContentExtractor.HtmlAnalysis Analyze(byte[] body, string? httpCharset)
+    parameters:
+    - id: body
+      type: System.Byte[]
+    - id: httpCharset
+      type: System.String
+    return:
+      type: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    content.vb: Private Shared Function Analyze(body As Byte(), httpCharset As String) As ContentExtractor.HtmlAnalysis
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Analyze*
+  nameWithType.vb: ContentExtractorTests.Analyze(Byte(), String)
+  fullName.vb: LocalSearchEngine.Tests.ContentExtractorTests.Analyze(Byte(), String)
+  name.vb: Analyze(Byte(), String)
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   id: Meta_charset_is_honored_when_http_header_is_silent
@@ -488,6 +525,107 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Analyze*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Analyze
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Analyze_System_Byte___System_String_
+  name: Analyze
+  nameWithType: ContentExtractorTests.Analyze
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Analyze
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor.HtmlAnalysis
+  nameWithType: ContentExtractor.HtmlAnalysis
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    name: HtmlAnalysis
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    name: HtmlAnalysis
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  commentId: N:LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  nameWithType: LocalSearchEngine.Core.Crawling.Extraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent*
   commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Meta_charset_is_honored_when_http_header_is_silent

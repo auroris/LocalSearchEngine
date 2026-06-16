@@ -5,6 +5,7 @@ items:
   id: LocalSearchEngine.Core.Crawling.Reporting
   children:
   - LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
@@ -26,10 +27,17 @@ items:
 references:
 - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  parent: LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
   name: BrokenLink
   nameWithType: BrokenLink
   fullName: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html
+  name: CrawlObserver
+  nameWithType: CrawlObserver
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -46,6 +54,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  parent: LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
   name: CrawlReport
   nameWithType: CrawlReport
@@ -66,6 +75,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  parent: LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html
   name: ICrawlObserver
   nameWithType: ICrawlObserver

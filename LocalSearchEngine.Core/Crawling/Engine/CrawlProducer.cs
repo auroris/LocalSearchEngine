@@ -120,7 +120,14 @@ internal sealed class CrawlProducer
             if (job is not null)
             {
                 producedJobs++;
-                await _writer.WriteAsync(job, CancellationToken.None);
+                try
+                {
+                    await _writer.WriteAsync(job, cancellationToken);
+                }
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 if (job is IndexJob)
                 {
                     indexedCount++;
@@ -154,6 +161,8 @@ internal sealed class CrawlProducer
                 if (_context.RobotsUnavailable.Contains(UrlOrigin.Key(uri))) continue;
                 if (_context.HostHealth.IsUnreachable(uri.Host)) continue;
 
+                // NOTE: Writes directly to _context.Write are safe here because this post-crawl cleanup phase
+                // runs after the main crawl consumer task has fully completed.
                 await _vectorSearchService.DeleteUrlChunksAsync(url);
                 await CrawlStore.DeleteLinksAsync(_context.Write, url, CancellationToken.None);
                 await CrawlStore.DeleteCrawlStateAsync(_context.Write, url, CancellationToken.None);
@@ -422,11 +431,7 @@ internal sealed class CrawlProducer
     /// <param name="cancellationToken">The cancellation token.</param>
     private async Task DelayForHostAsync(string host, TimeSpan minGap, CancellationToken cancellationToken)
     {
-        DateTime lastFetch;
-        lock (_context.LastFetchUtc)
-        {
-            _context.LastFetchUtc.TryGetValue(host, out lastFetch);
-        }
+        _context.LastFetchUtc.TryGetValue(host, out var lastFetch);
 
         var now = DateTime.UtcNow;
         var elapsed = now - lastFetch;
@@ -436,10 +441,7 @@ internal sealed class CrawlProducer
             await Task.Delay(delay, cancellationToken);
         }
 
-        lock (_context.LastFetchUtc)
-        {
-            _context.LastFetchUtc[host] = DateTime.UtcNow;
-        }
+        _context.LastFetchUtc[host] = DateTime.UtcNow;
     }
 
     /// <summary>

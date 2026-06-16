@@ -1,0 +1,875 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  id: PageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor(System.Net.Http.HttpClient)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64,System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}},System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader._httpClient
+  langs:
+  - csharp
+  - vb
+  name: PageDownloader
+  nameWithType: PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageDownloader
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 61
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Downloads pages and documents from the web, validating size limits, media types, and signature prefixes.
+  example: []
+  syntax:
+    content: internal sealed class PageDownloader
+    content.vb: Friend NotInheritable Class PageDownloader
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader._httpClient
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.PageDownloader._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: PageDownloader._httpClient
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 64
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The HTTP client instance used to execute requests.
+  example: []
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor(System.Net.Http.HttpClient)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor(System.Net.Http.HttpClient)
+  id: '#ctor(System.Net.Http.HttpClient)'
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  langs:
+  - csharp
+  - vb
+  name: PageDownloader(HttpClient)
+  nameWithType: PageDownloader.PageDownloader(HttpClient)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PageDownloader(System.Net.Http.HttpClient)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 70
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.Crawling.Engine.PageDownloader" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public PageDownloader(HttpClient httpClient)
+    parameters:
+    - id: httpClient
+      type: System.Net.Http.HttpClient
+      description: The HTTP client to send requests.
+    content.vb: Public Sub New(httpClient As HttpClient)
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor*
+  nameWithType.vb: PageDownloader.New(HttpClient)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.New(System.Net.Http.HttpClient)
+  name.vb: New(HttpClient)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64,System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}},System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64,System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}},System.Threading.CancellationToken)
+  id: DownloadAsync(System.String,System.String,System.String,System.Int64,System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}},System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  langs:
+  - csharp
+  - vb
+  name: DownloadAsync(string, string?, string?, long, Func<Uri, Task<bool>>, CancellationToken)
+  nameWithType: PageDownloader.DownloadAsync(string, string?, string?, long, Func<Uri, Task<bool>>, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(string, string?, string?, long, System.Func<System.Uri, System.Threading.Tasks.Task<bool>>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DownloadAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 85
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Executes a request, validating redirects, content sizes, and mime-types.
+  example: []
+  syntax:
+    content: public Task<DownloadResult> DownloadAsync(string url, string? etag, string? lastModified, long maxBytes, Func<Uri, Task<bool>> redirectValidator, CancellationToken cancellationToken)
+    parameters:
+    - id: url
+      type: System.String
+      description: The target page URL to download.
+    - id: etag
+      type: System.String
+      description: The cached ETag, if any, for conditional request validation.
+    - id: lastModified
+      type: System.String
+      description: The cached Last-Modified string, if any, for conditional request validation.
+    - id: maxBytes
+      type: System.Int64
+      description: The maximum allowed download size in bytes.
+    - id: redirectValidator
+      type: System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}}
+      description: The delegate to check if followed redirects are allowed.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadResult" data-throw-if-not-resolved="false"></xref> object summarizing the download status and metadata.
+    content.vb: Public Function DownloadAsync(url As String, etag As String, lastModified As String, maxBytes As Long, redirectValidator As Func(Of Uri, Task(Of Boolean)), cancellationToken As CancellationToken) As Task(Of DownloadResult)
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync*
+  nameWithType.vb: PageDownloader.DownloadAsync(String, String, String, Long, Func(Of Uri, Task(Of Boolean)), CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(String, String, String, Long, System.Func(Of System.Uri, System.Threading.Tasks.Task(Of Boolean)), System.Threading.CancellationToken)
+  name.vb: DownloadAsync(String, String, String, Long, Func(Of Uri, Task(Of Boolean)), CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  id: ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  langs:
+  - csharp
+  - vb
+  name: ReadBodyAndValidatePrefixAsync(HttpResponseMessage, long, string?, string, CancellationToken)
+  nameWithType: PageDownloader.ReadBodyAndValidatePrefixAsync(HttpResponseMessage, long, string?, string, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage, long, string?, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReadBodyAndValidatePrefixAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 246
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Reads the response stream up to the max byte limit, performing MIME type signature prefix verification on the first 4096 bytes.
+  example: []
+  syntax:
+    content: private static Task<(byte[]? Body, bool Truncated)> ReadBodyAndValidatePrefixAsync(HttpResponseMessage response, long maxBytes, string? contentType, string finalUrl, CancellationToken cancellationToken)
+    parameters:
+    - id: response
+      type: System.Net.Http.HttpResponseMessage
+      description: The HTTP response message containing the stream.
+    - id: maxBytes
+      type: System.Int64
+      description: The maximum allowed bytes to read.
+    - id: contentType
+      type: System.String
+      description: The MIME type content header value.
+    - id: finalUrl
+      type: System.String
+      description: The final request URL.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{System.Byte[],System.Boolean}}
+      description: A tuple containing the downloaded body bytes (or <code>null</code> if validation fails) and a boolean indicating if reading was truncated due to exceeding the size limit.
+    content.vb: Private Shared Function ReadBodyAndValidatePrefixAsync(response As HttpResponseMessage, maxBytes As Long, contentType As String, finalUrl As String, cancellationToken As CancellationToken) As Task(Of (Body As Byte(), Truncated As Boolean))
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync*
+  nameWithType.vb: PageDownloader.ReadBodyAndValidatePrefixAsync(HttpResponseMessage, Long, String, String, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage, Long, String, String, System.Threading.CancellationToken)
+  name.vb: ReadBodyAndValidatePrefixAsync(HttpResponseMessage, Long, String, String, CancellationToken)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader
+  nameWithType: PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader__ctor_System_Net_Http_HttpClient_
+  name: PageDownloader
+  nameWithType: PageDownloader.PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PageDownloader
+  nameWithType.vb: PageDownloader.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_DownloadAsync_System_String_System_String_System_String_System_Int64_System_Func_System_Uri_System_Threading_Tasks_Task_System_Boolean___System_Threading_CancellationToken_
+  name: DownloadAsync
+  nameWithType: PageDownloader.DownloadAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}}
+  commentId: T:System.Func{System.Uri,System.Threading.Tasks.Task{System.Boolean}}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<Uri, Task<bool>>
+  nameWithType: Func<Uri, Task<bool>>
+  fullName: System.Func<System.Uri, System.Threading.Tasks.Task<bool>>
+  nameWithType.vb: Func(Of Uri, Task(Of Boolean))
+  fullName.vb: System.Func(Of System.Uri, System.Threading.Tasks.Task(Of Boolean))
+  name.vb: Func(Of Uri, Task(Of Boolean))
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
+  commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DownloadResult>
+  nameWithType: Task<DownloadResult>
+  fullName: System.Threading.Tasks.Task<LocalSearchEngine.Core.Crawling.Engine.DownloadResult>
+  nameWithType.vb: Task(Of DownloadResult)
+  fullName.vb: System.Threading.Tasks.Task(Of LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  name.vb: Task(Of DownloadResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+    name: DownloadResult
+    href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+    name: DownloadResult
+    href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_ReadBodyAndValidatePrefixAsync_System_Net_Http_HttpResponseMessage_System_Int64_System_String_System_String_System_Threading_CancellationToken_
+  name: ReadBodyAndValidatePrefixAsync
+  nameWithType: PageDownloader.ReadBodyAndValidatePrefixAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync
+- uid: System.Net.Http.HttpResponseMessage
+  commentId: T:System.Net.Http.HttpResponseMessage
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  name: HttpResponseMessage
+  nameWithType: HttpResponseMessage
+  fullName: System.Net.Http.HttpResponseMessage
+- uid: System.Threading.Tasks.Task{System.ValueTuple{System.Byte[],System.Boolean}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.Byte[],System.Boolean}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(byte[] Body, bool Truncated)>
+  nameWithType: Task<(byte[] Body, bool Truncated)>
+  fullName: System.Threading.Tasks.Task<(byte[] Body, bool Truncated)>
+  nameWithType.vb: Task(Of (Body As Byte(), Truncated As Boolean))
+  fullName.vb: System.Threading.Tasks.Task(Of (Body As Byte(), Truncated As Boolean))
+  name.vb: Task(Of (Body As Byte(), Truncated As Boolean))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: " "
+  - uid: System.ValueTuple{System.Byte[],System.Boolean}.Body
+    name: Body
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.byte[],system.boolean-.body
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Byte[],System.Boolean}.Truncated
+    name: Truncated
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.byte[],system.boolean-.truncated
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Byte[],System.Boolean}.Body
+    name: Body
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.byte[],system.boolean-.body
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Byte[],System.Boolean}.Truncated
+    name: Truncated
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.byte[],system.boolean-.truncated
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )

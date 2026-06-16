@@ -6,6 +6,8 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
   - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.Normalize(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TrackingParams
   - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TryNormalize(System.String,System.String@)
   langs:
   - csharp
@@ -43,6 +45,35 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TrackingParams
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TrackingParams
+  id: TrackingParams
+  parent: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  langs:
+  - csharp
+  - vb
+  name: TrackingParams
+  nameWithType: UrlNormalizer.TrackingParams
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TrackingParams
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/UrlNormalizer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TrackingParams
+    path: LocalSearchEngine.Core/Crawling/Policies/UrlNormalizer.cs
+    startLine: 11
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: A set of analytics and click tracking query parameters that do not affect the page content.
+  example: []
+  syntax:
+    content: private static readonly HashSet<string> TrackingParams
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Private Shared ReadOnly TrackingParams As HashSet(Of String)
 - uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.Normalize(System.Uri)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.Normalize(System.Uri)
   id: Normalize(System.Uri)
@@ -78,6 +109,44 @@ items:
       description: A normalized URL string with tracking parameters and fragments removed, and trailing slashes trimmed.
     content.vb: Public Shared Function Normalize(uri As Uri) As String
   overload: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.Normalize*
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams(System.String)
+  id: StripTrackingParams(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  langs:
+  - csharp
+  - vb
+  name: StripTrackingParams(string)
+  nameWithType: UrlNormalizer.StripTrackingParams(string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/UrlNormalizer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StripTrackingParams
+    path: LocalSearchEngine.Core/Crawling/Policies/UrlNormalizer.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Strips known tracking parameters from a raw query string.
+  example: []
+  syntax:
+    content: private static string StripTrackingParams(string query)
+    parameters:
+    - id: query
+      type: System.String
+      description: The raw query string, with or without a leading '?'.
+    return:
+      type: System.String
+      description: A query string with tracking parameters removed, without a leading '?'.
+    content.vb: Private Shared Function StripTrackingParams(query As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams*
+  nameWithType.vb: UrlNormalizer.StripTrackingParams(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams(String)
+  name.vb: StripTrackingParams(String)
 - uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TryNormalize(System.String,System.String@)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TryNormalize(System.String,System.String@)
   id: TryNormalize(System.String,System.String@)
@@ -395,6 +464,106 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Collections.Generic.HashSet{System.String}
+  commentId: T:System.Collections.Generic.HashSet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.HashSet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<string>
+  nameWithType: HashSet<string>
+  fullName: System.Collections.Generic.HashSet<string>
+  nameWithType.vb: HashSet(Of String)
+  fullName.vb: System.Collections.Generic.HashSet(Of String)
+  name.vb: HashSet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.HashSet`1
+  commentId: T:System.Collections.Generic.HashSet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<T>
+  nameWithType: HashSet<T>
+  fullName: System.Collections.Generic.HashSet<T>
+  nameWithType.vb: HashSet(Of T)
+  fullName.vb: System.Collections.Generic.HashSet(Of T)
+  name.vb: HashSet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: System.Uri
   commentId: T:System.Uri
   parent: System
@@ -420,6 +589,12 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams
+  href: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.html#LocalSearchEngine_Core_Crawling_Policies_UrlNormalizer_StripTrackingParams_System_String_
+  name: StripTrackingParams
+  nameWithType: UrlNormalizer.StripTrackingParams
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.StripTrackingParams
 - uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TryNormalize*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.TryNormalize
   href: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.html#LocalSearchEngine_Core_Crawling_Policies_UrlNormalizer_TryNormalize_System_String_System_String__

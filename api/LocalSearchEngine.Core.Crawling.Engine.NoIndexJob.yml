@@ -1,0 +1,839 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  id: NoIndexJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.String)
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+  langs:
+  - csharp
+  - vb
+  name: NoIndexJob
+  nameWithType: NoIndexJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndexJob
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 44
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Represents a job classification where indexing is skipped but crawl state and outlinks are stored.
+  example: []
+  syntax:
+    content: 'internal sealed record NoIndexJob : CrawlJob, IEquatable<CrawlJob>, IEquatable<NoIndexJob>'
+    content.vb: Friend NotInheritable Class NoIndexJob Inherits CrawlJob Implements IEquatable(Of CrawlJob), IEquatable(Of NoIndexJob)
+  inheritance:
+  - System.Object
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.NoIndexJob}
+  inheritedMembers:
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.String)
+  id: '#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.String)'
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: NoIndexJob(string, int, string?, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, string?)
+  nameWithType: NoIndexJob.NoIndexJob(string, int, string?, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.NoIndexJob(string, int, string?, string?, string?, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, string?)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 44
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Represents a job classification where indexing is skipped but crawl state and outlinks are stored.
+  example: []
+  syntax:
+    content: public NoIndexJob(string Url, int StatusCode, string? Title, string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks, string? RedirectSourceUrl = null)
+    parameters:
+    - id: Url
+      type: System.String
+      description: The target page URL.
+    - id: StatusCode
+      type: System.Int32
+      description: The response HTTP status code.
+    - id: Title
+      type: System.String
+      description: The document/page title.
+    - id: ETag
+      type: System.String
+      description: The HTTP response ETag.
+    - id: LastModified
+      type: System.String
+      description: The HTTP response Last-Modified header value.
+    - id: ContentHash
+      type: System.String
+      description: The SHA256 content hash.
+    - id: Outlinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: List of extracted in-scope outlinks.
+    - id: OffsiteLinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: List of extracted out-of-scope/offsite links.
+    - id: RedirectSourceUrl
+      type: System.String
+      description: The source URL if reached via a redirect.
+    content.vb: Public Sub New(Url As String, StatusCode As Integer, Title As String, ETag As String, LastModified As String, ContentHash As String, Outlinks As IReadOnlyCollection(Of String), OffsiteLinks As IReadOnlyCollection(Of String), RedirectSourceUrl As String = Nothing)
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor*
+  nameWithType.vb: NoIndexJob.New(String, Integer, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.New(String, Integer, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), String)
+  name.vb: New(String, Integer, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), String)
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+  id: Title
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: Title
+  nameWithType: NoIndexJob.Title
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Title
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The document/page title.
+  example: []
+  syntax:
+    content: public string? Title { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Title As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title*
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+  id: ETag
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: ETag
+  nameWithType: NoIndexJob.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ETag
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The HTTP response ETag.
+  example: []
+  syntax:
+    content: public string? ETag { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ETag As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag*
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+  id: LastModified
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: LastModified
+  nameWithType: NoIndexJob.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LastModified
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The HTTP response Last-Modified header value.
+  example: []
+  syntax:
+    content: public string? LastModified { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastModified As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified*
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+  id: ContentHash
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: ContentHash
+  nameWithType: NoIndexJob.ContentHash
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContentHash
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The SHA256 content hash.
+  example: []
+  syntax:
+    content: public string ContentHash { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContentHash As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash*
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+  id: Outlinks
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: Outlinks
+  nameWithType: NoIndexJob.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Outlinks
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: List of extracted in-scope outlinks.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<string> Outlinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: Public Property Outlinks As IReadOnlyCollection(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks*
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks
+  id: OffsiteLinks
+  parent: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  langs:
+  - csharp
+  - vb
+  name: OffsiteLinks
+  nameWithType: NoIndexJob.OffsiteLinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OffsiteLinks
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: List of extracted out-of-scope/offsite links.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<string> OffsiteLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: Public Property OffsiteLinks As IReadOnlyCollection(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<CrawlJob>
+  nameWithType: IEquatable<CrawlJob>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>
+  nameWithType.vb: IEquatable(Of CrawlJob)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  name.vb: IEquatable(Of CrawlJob)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: )
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.NoIndexJob}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.NoIndexJob}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<NoIndexJob>
+  nameWithType: IEquatable<NoIndexJob>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Engine.NoIndexJob>
+  nameWithType.vb: IEquatable(Of NoIndexJob)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Engine.NoIndexJob)
+  name.vb: IEquatable(Of NoIndexJob)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+    name: NoIndexJob
+    href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+    name: NoIndexJob
+    href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_Url
+  name: Url
+  nameWithType: CrawlJob.Url
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_StatusCode
+  name: StatusCode
+  nameWithType: CrawlJob.StatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_RedirectSourceUrl
+  name: RedirectSourceUrl
+  nameWithType: CrawlJob.RedirectSourceUrl
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.#ctor
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob__ctor_System_String_System_Int32_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__System_String_
+  name: NoIndexJob
+  nameWithType: NoIndexJob.NoIndexJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.NoIndexJob
+  nameWithType.vb: NoIndexJob.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IReadOnlyCollection{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<string>
+  nameWithType: IReadOnlyCollection<string>
+  fullName: System.Collections.Generic.IReadOnlyCollection<string>
+  nameWithType.vb: IReadOnlyCollection(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of String)
+  name.vb: IReadOnlyCollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_Title
+  name: Title
+  nameWithType: NoIndexJob.Title
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Title
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_ETag
+  name: ETag
+  nameWithType: NoIndexJob.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ETag
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_LastModified
+  name: LastModified
+  nameWithType: NoIndexJob.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.LastModified
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_ContentHash
+  name: ContentHash
+  nameWithType: NoIndexJob.ContentHash
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.ContentHash
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_Outlinks
+  name: Outlinks
+  nameWithType: NoIndexJob.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.Outlinks
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html#LocalSearchEngine_Core_Crawling_Engine_NoIndexJob_OffsiteLinks
+  name: OffsiteLinks
+  nameWithType: NoIndexJob.OffsiteLinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.OffsiteLinks

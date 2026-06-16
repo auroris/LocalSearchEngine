@@ -83,6 +83,8 @@ internal sealed class RobotsService
                     if (!string.Equals(UrlOrigin.Key(uri), origin, StringComparison.OrdinalIgnoreCase)) continue;
                     if (CrawlPolicy.IsAllowedByRobots(url, rules)) continue;
 
+                    // NOTE: Writes directly to context.Write are safe here because this post-crawl cleanup phase
+                    // runs after the main crawl consumer task has fully completed.
                     await _vectorSearchService.DeleteUrlChunksAsync(url);
                     await CrawlStore.DeleteLinksAsync(context.Write, url, CancellationToken.None);
                     await CrawlStore.DeleteCrawlStateAsync(context.Write, url, CancellationToken.None);

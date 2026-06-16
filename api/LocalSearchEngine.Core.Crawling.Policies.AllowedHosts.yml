@@ -8,6 +8,8 @@ items:
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(System.String,System.Nullable{System.Int32}@)
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
   langs:
   - csharp
   - vb
@@ -47,6 +49,33 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
+  id: _rules
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: _rules
+  nameWithType: AllowedHosts._rules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _rules
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly List<AllowedHosts.HostRule> _rules
+    return:
+      type: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
+    content.vb: Private ReadOnly _rules As List(Of AllowedHosts.HostRule)
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   id: Add(System.String)
@@ -160,6 +189,47 @@ items:
       description: <code>true</code> if any rule matches the URI's scheme, host, and port; otherwise, <code>false</code>.
     content.vb: Public Function IsAllowed(uri As Uri) As Boolean
   overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed*
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(System.String,System.Nullable{System.Int32}@)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(System.String,System.Nullable{System.Int32}@)
+  id: TryParsePort(System.String,System.Nullable{System.Int32}@)
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: TryParsePort(string, out int?)
+  nameWithType: AllowedHosts.TryParsePort(string, out int?)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(string, out int?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryParsePort
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 102
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Parses a port suffix, accepting only plain digits in the valid port range.
+  example: []
+  syntax:
+    content: private static bool TryParsePort(string value, out int? port)
+    parameters:
+    - id: value
+      type: System.String
+      description: The text after the ':' separator.
+    - id: port
+      type: System.Nullable{System.Int32}
+      description: The parsed port number, or <code>null</code> on failure.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the port parsed; otherwise, <code>false</code>.
+    content.vb: Private Shared Function TryParsePort(value As String, port As Integer?) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort*
+  nameWithType.vb: AllowedHosts.TryParsePort(String, Integer?)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(String, Integer?)
+  name.vb: TryParsePort(String, Integer?)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
@@ -412,6 +482,112 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
+  commentId: T:System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<AllowedHosts.HostRule>
+  nameWithType: List<AllowedHosts.HostRule>
+  fullName: System.Collections.Generic.List<LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule>
+  nameWithType.vb: List(Of AllowedHosts.HostRule)
+  fullName.vb: System.Collections.Generic.List(Of LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
+  name.vb: List(Of AllowedHosts.HostRule)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add
   href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_Add_System_String_
@@ -460,3 +636,60 @@ references:
   name: IsAllowed
   nameWithType: AllowedHosts.IsAllowed
   fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_TryParsePort_System_String_System_Nullable_System_Int32___
+  name: TryParsePort
+  nameWithType: AllowedHosts.TryParsePort
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

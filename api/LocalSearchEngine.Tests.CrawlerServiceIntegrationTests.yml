@@ -8,7 +8,10 @@ items:
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Capped_crawl_does_not_prune
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
@@ -16,37 +19,56 @@ items:
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawls_a_link_graph_and_indexes_every_reachable_page
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dotted_and_dynamic_paths_are_crawled_and_classified_by_content_type
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_disabled_leaves_offsite_links_untouched
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_link_check_reports_dead_offsite_links
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.External_redirect_is_reported_as_redirected_not_broken
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining(System.String,System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html(System.String,System.String)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html_mislabeled_as_octet_stream_is_sniffed_and_indexed
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Identical_content_on_two_urls_is_indexed_once
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Inscope_redirect_is_reported_as_a_redirected_link
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(System.String,System.String)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page2
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page_body_wrapped_in_a_form_is_still_indexed
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Per_host_cap_stops_indexing_after_n_pages
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Pruning_leaves_other_hosts_rows_alone
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_cleans_up_old_index_and_metadata
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Redirect_to_external_host_is_not_indexed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots(System.String)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_5xx_for_an_origin_protects_it_from_pruning
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_and_sitemap_requests_use_the_seeds_port
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots_removal_leaves_another_origins_index_untouched
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed_redirect_to_a_new_host_adopts_that_host
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Sitemap_entries_are_limited_to_the_seed_origin
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Stale_pages_are_pruned_after_a_completed_crawl
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete(System.String)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_content_skips_reembedding
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unchanged_page_external_links_are_reverified_each_run
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_listed_in_the_report
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_is_written_off_after_one_failed_contact
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Unreachable_host_keeps_its_existing_index
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Www_variant_of_seed_host_is_out_of_scope_unless_allowed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._connectionString
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._dbPath
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._embedder
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._handler
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._httpClient
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._provider
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._search
   langs:
   - csharp
   - vb
@@ -88,6 +110,249 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed
+  id: Seed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Seed
+  nameWithType: CrawlerServiceIntegrationTests.Seed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Seed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Seed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private const string Seed = "http://test.local/"
+    return:
+      type: System.String
+    content.vb: Private Const Seed As String = "http://test.local/"
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page2
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page2
+  id: Page2
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Page2
+  nameWithType: CrawlerServiceIntegrationTests.Page2
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Page2
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Page2
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private const string Page2 = "http://test.local/page2"
+    return:
+      type: System.String
+    content.vb: Private Const Page2 As String = "http://test.local/page2"
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._dbPath
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._dbPath
+  id: _dbPath
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _dbPath
+  nameWithType: CrawlerServiceIntegrationTests._dbPath
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._dbPath
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _dbPath
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _dbPath
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _dbPath As String
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._connectionString
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._connectionString
+  id: _connectionString
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _connectionString
+  nameWithType: CrawlerServiceIntegrationTests._connectionString
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._connectionString
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connectionString
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _connectionString
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _connectionString As String
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._provider
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._provider
+  id: _provider
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _provider
+  nameWithType: CrawlerServiceIntegrationTests._provider
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._provider
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _provider
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly ServiceProvider _provider
+    return:
+      type: Microsoft.Extensions.DependencyInjection.ServiceProvider
+    content.vb: Private ReadOnly _provider As ServiceProvider
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._search
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._search
+  id: _search
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _search
+  nameWithType: CrawlerServiceIntegrationTests._search
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._search
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _search
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly VectorSearchService _search
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _search As VectorSearchService
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._embedder
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._embedder
+  id: _embedder
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _embedder
+  nameWithType: CrawlerServiceIntegrationTests._embedder
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._embedder
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embedder
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly FakeEmbedder _embedder
+    return:
+      type: LocalSearchEngine.Tests.FakeEmbedder
+    content.vb: Private ReadOnly _embedder As FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._handler
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._handler
+  id: _handler
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _handler
+  nameWithType: CrawlerServiceIntegrationTests._handler
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._handler
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _handler
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly CrawlerServiceIntegrationTests.FakeHandler _handler
+    return:
+      type: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    content.vb: Private ReadOnly _handler As CrawlerServiceIntegrationTests.FakeHandler
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._httpClient
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: CrawlerServiceIntegrationTests._httpClient
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
   id: '#ctor'
@@ -117,6 +382,62 @@ items:
   nameWithType.vb: CrawlerServiceIntegrationTests.New()
   fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.New()
   name.vb: New()
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
+  id: NewCrawler
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: NewCrawler()
+  nameWithType: CrawlerServiceIntegrationTests.NewCrawler()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NewCrawler
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 55
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private CrawlerService NewCrawler()
+    return:
+      type: LocalSearchEngine.Core.Crawling.CrawlerService
+    content.vb: Private Function NewCrawler() As CrawlerService
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler*
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync
+  id: EnsureSchemaAsync
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: EnsureSchemaAsync()
+  nameWithType: CrawlerServiceIntegrationTests.EnsureSchemaAsync()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnsureSchemaAsync
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 58
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task EnsureSchemaAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Function EnsureSchemaAsync() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync*
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
   id: Transient_5xx_on_recrawl_keeps_existing_index
@@ -1485,6 +1806,210 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState(System.String)
+  id: HasCrawlState(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: HasCrawlState(string)
+  nameWithType: CrawlerServiceIntegrationTests.HasCrawlState(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HasCrawlState
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 837
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private bool HasCrawlState(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Private Function HasCrawlState(url As String) As Boolean
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState*
+  nameWithType.vb: CrawlerServiceIntegrationTests.HasCrawlState(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState(String)
+  name.vb: HasCrawlState(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks(System.String)
+  id: HasOutlinks(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: HasOutlinks(string)
+  nameWithType: CrawlerServiceIntegrationTests.HasOutlinks(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HasOutlinks
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 847
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private bool HasOutlinks(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Private Function HasOutlinks(url As String) As Boolean
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks*
+  nameWithType.vb: CrawlerServiceIntegrationTests.HasOutlinks(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks(String)
+  name.vb: HasOutlinks(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(System.String,System.String)
+  id: LinkRow(System.String,System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: LinkRow(string, string)
+  nameWithType: CrawlerServiceIntegrationTests.LinkRow(string, string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkRow
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 858
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Returns the link index row for a (from, to) edge, or null if no such link is recorded.
+  example: []
+  syntax:
+    content: private (int Status, int StatusCode, bool External)? LinkRow(string fromUrl, string toUrl)
+    parameters:
+    - id: fromUrl
+      type: System.String
+    - id: toUrl
+      type: System.String
+    return:
+      type: System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Boolean}}
+    content.vb: Private Function LinkRow(fromUrl As String, toUrl As String) As (Status As Integer, StatusCode As Integer, External As Boolean)?
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow*
+  nameWithType.vb: CrawlerServiceIntegrationTests.LinkRow(String, String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(String, String)
+  name.vb: LinkRow(String, String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount(System.String)
+  id: ChunkCount(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: ChunkCount(string)
+  nameWithType: CrawlerServiceIntegrationTests.ChunkCount(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ChunkCount
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 870
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private long ChunkCount(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Int64
+    content.vb: Private Function ChunkCount(url As String) As Long
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount*
+  nameWithType.vb: CrawlerServiceIntegrationTests.ChunkCount(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount(String)
+  name.vb: ChunkCount(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining(System.String,System.String)
+  id: HasChunkContaining(System.String,System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: HasChunkContaining(string, string)
+  nameWithType: CrawlerServiceIntegrationTests.HasChunkContaining(string, string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HasChunkContaining
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 880
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private bool HasChunkContaining(string url, string fragment)
+    parameters:
+    - id: url
+      type: System.String
+    - id: fragment
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Private Function HasChunkContaining(url As String, fragment As String) As Boolean
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining*
+  nameWithType.vb: CrawlerServiceIntegrationTests.HasChunkContaining(String, String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining(String, String)
+  name.vb: HasChunkContaining(String, String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls
+  id: CountIndexedUrls
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: CountIndexedUrls()
+  nameWithType: CrawlerServiceIntegrationTests.CountIndexedUrls()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CountIndexedUrls
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 891
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private long CountIndexedUrls()
+    return:
+      type: System.Int64
+    content.vb: Private Function CountIndexedUrls() As Long
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls*
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
   id: Crawl_skips_files_exceeding_max_crawl_size_bytes
@@ -1637,6 +2162,44 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  id: Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Cancellation_midcrawl_returns_cancelled_report_without_throwing()
+  nameWithType: CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Cancellation_midcrawl_returns_cancelled_report_without_throwing
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 981
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Cancellation_midcrawl_returns_cancelled_report_without_throwing()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Cancellation_midcrawl_returns_cancelled_report_without_throwing() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
   id: Dispose
@@ -1655,7 +2218,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 981
+    startLine: 1003
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1667,6 +2230,148 @@ items:
   overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose*
   implements:
   - System.IDisposable.Dispose
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete(System.String)
+  id: TryDelete(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: TryDelete(string)
+  nameWithType: CrawlerServiceIntegrationTests.TryDelete(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryDelete
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1014
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static void TryDelete(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Private Shared Sub TryDelete(path As String)
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete*
+  nameWithType.vb: CrawlerServiceIntegrationTests.TryDelete(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete(String)
+  name.vb: TryDelete(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml(System.String)
+  id: Xml(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Xml(string)
+  nameWithType: CrawlerServiceIntegrationTests.Xml(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Xml
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1021
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Returns an XML 200, e.g. for a sitemap.
+  example: []
+  syntax:
+    content: private static HttpResponseMessage Xml(string body)
+    parameters:
+    - id: body
+      type: System.String
+    return:
+      type: System.Net.Http.HttpResponseMessage
+    content.vb: Private Shared Function Xml(body As String) As HttpResponseMessage
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml*
+  nameWithType.vb: CrawlerServiceIntegrationTests.Xml(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml(String)
+  name.vb: Xml(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots(System.String)
+  id: Robots(System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Robots(string)
+  nameWithType: CrawlerServiceIntegrationTests.Robots(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Robots
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1025
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Returns a text/plain 200, e.g. for robots.txt.
+  example: []
+  syntax:
+    content: private static HttpResponseMessage Robots(string body)
+    parameters:
+    - id: body
+      type: System.String
+    return:
+      type: System.Net.Http.HttpResponseMessage
+    content.vb: Private Shared Function Robots(body As String) As HttpResponseMessage
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots*
+  nameWithType.vb: CrawlerServiceIntegrationTests.Robots(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots(String)
+  name.vb: Robots(String)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html(System.String,System.String)
+  id: Html(System.String,System.String)
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Html(string, string?)
+  nameWithType: CrawlerServiceIntegrationTests.Html(string, string?)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html(string, string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Html
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1029
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Returns an HTML 200 with an optional strong ETag.
+  example: []
+  syntax:
+    content: private static HttpResponseMessage Html(string body, string? etag = null)
+    parameters:
+    - id: body
+      type: System.String
+    - id: etag
+      type: System.String
+    return:
+      type: System.Net.Http.HttpResponseMessage
+    content.vb: Private Shared Function Html(body As String, etag As String = Nothing) As HttpResponseMessage
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html*
+  nameWithType.vb: CrawlerServiceIntegrationTests.Html(String, String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html(String, String)
+  name.vb: Html(String, String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -1911,6 +2616,174 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Microsoft.Extensions.DependencyInjection.ServiceProvider
+  commentId: T:Microsoft.Extensions.DependencyInjection.ServiceProvider
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovider
+  name: ServiceProvider
+  nameWithType: ServiceProvider
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceProvider
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: LocalSearchEngine.Tests.FakeEmbedder
+  commentId: T:LocalSearchEngine.Tests.FakeEmbedder
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.FakeEmbedder.html
+  name: FakeEmbedder
+  nameWithType: FakeEmbedder
+  fullName: LocalSearchEngine.Tests.FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  name: CrawlerServiceIntegrationTests.FakeHandler
+  nameWithType: CrawlerServiceIntegrationTests.FakeHandler
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    name: FakeHandler
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    name: FakeHandler
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler.html
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.#ctor
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests__ctor
@@ -1920,12 +2793,55 @@ references:
   nameWithType.vb: CrawlerServiceIntegrationTests.New
   fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.New
   name.vb: New
-- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index*
-  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
-  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Transient_5xx_on_recrawl_keeps_existing_index
-  name: Transient_5xx_on_recrawl_keeps_existing_index
-  nameWithType: CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
-  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NewCrawler
+  name: NewCrawler
+  nameWithType: CrawlerServiceIntegrationTests.NewCrawler
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  name: CrawlerService
+  nameWithType: CrawlerService
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService
+- uid: LocalSearchEngine.Core.Crawling
+  commentId: N:LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling
+  nameWithType: LocalSearchEngine.Core.Crawling
+  fullName: LocalSearchEngine.Core.Crawling
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_EnsureSchemaAsync
+  name: EnsureSchemaAsync
+  nameWithType: CrawlerServiceIntegrationTests.EnsureSchemaAsync
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.EnsureSchemaAsync
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -1971,6 +2887,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Transient_5xx_on_recrawl_keeps_existing_index
+  name: Transient_5xx_on_recrawl_keeps_existing_index
+  nameWithType: CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Transient_5xx_on_recrawl_keeps_existing_index
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NotFound_removes_page_from_index
@@ -2181,6 +3103,173 @@ references:
   name: Oversized_sitemap_is_skipped_but_crawl_proceeds
   nameWithType: CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
   fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Oversized_sitemap_is_skipped_but_crawl_proceeds
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_HasCrawlState_System_String_
+  name: HasCrawlState
+  nameWithType: CrawlerServiceIntegrationTests.HasCrawlState
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasCrawlState
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_HasOutlinks_System_String_
+  name: HasOutlinks
+  nameWithType: CrawlerServiceIntegrationTests.HasOutlinks
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasOutlinks
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_LinkRow_System_String_System_String_
+  name: LinkRow
+  nameWithType: CrawlerServiceIntegrationTests.LinkRow
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow
+- uid: System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Boolean}}
+  commentId: T:System.Nullable{System.ValueTuple{System.Int32,System.Int32,System.Boolean}}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int Status, int StatusCode, bool External)?
+  nameWithType: (int Status, int StatusCode, bool External)?
+  fullName: (int Status, int StatusCode, bool External)?
+  nameWithType.vb: (Status As Integer, StatusCode As Integer, External As Boolean)?
+  fullName.vb: (Status As Integer, StatusCode As Integer, External As Boolean)?
+  name.vb: (Status As Integer, StatusCode As Integer, External As Boolean)?
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.Status
+    name: Status
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.status
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.StatusCode
+    name: StatusCode
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.statuscode
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.External
+    name: External
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.external
+  - name: )
+  - name: '?'
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.Status
+    name: Status
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.status
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.StatusCode
+    name: StatusCode
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.statuscode
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Boolean}.External
+    name: External
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.boolean-.external
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_ChunkCount_System_String_
+  name: ChunkCount
+  nameWithType: CrawlerServiceIntegrationTests.ChunkCount
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.ChunkCount
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_HasChunkContaining_System_String_System_String_
+  name: HasChunkContaining
+  nameWithType: CrawlerServiceIntegrationTests.HasChunkContaining
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.HasChunkContaining
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_CountIndexedUrls
+  name: CountIndexedUrls
+  nameWithType: CrawlerServiceIntegrationTests.CountIndexedUrls
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CountIndexedUrls
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_files_exceeding_max_crawl_size_bytes
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Crawl_skips_files_exceeding_max_crawl_size_bytes
@@ -2205,6 +3294,12 @@ references:
   name: Crawl_skips_non_docx_zip_files_by_extension
   nameWithType: CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
   fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Crawl_skips_non_docx_zip_files_by_extension
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  name: Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  nameWithType: CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Cancellation_midcrawl_returns_cancelled_report_without_throwing
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Dispose
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Dispose
@@ -2233,3 +3328,35 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_TryDelete_System_String_
+  name: TryDelete
+  nameWithType: CrawlerServiceIntegrationTests.TryDelete
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.TryDelete
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Xml_System_String_
+  name: Xml
+  nameWithType: CrawlerServiceIntegrationTests.Xml
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Xml
+- uid: System.Net.Http.HttpResponseMessage
+  commentId: T:System.Net.Http.HttpResponseMessage
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  name: HttpResponseMessage
+  nameWithType: HttpResponseMessage
+  fullName: System.Net.Http.HttpResponseMessage
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Robots_System_String_
+  name: Robots
+  nameWithType: CrawlerServiceIntegrationTests.Robots
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Robots
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Html_System_String_System_String_
+  name: Html
+  nameWithType: CrawlerServiceIntegrationTests.Html
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Html

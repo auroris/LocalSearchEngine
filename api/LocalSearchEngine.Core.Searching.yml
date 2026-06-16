@@ -8,6 +8,7 @@ items:
   - LocalSearchEngine.Core.Searching.ParsedQuery
   - LocalSearchEngine.Core.Searching.SearchQueryParser
   - LocalSearchEngine.Core.Searching.SearchRanker
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
   - LocalSearchEngine.Core.Searching.SearchResponse
   - LocalSearchEngine.Core.Searching.SearchResultItem
   - LocalSearchEngine.Core.Searching.SearchSettings
@@ -55,6 +56,29 @@ references:
   name: SearchRanker
   nameWithType: SearchRanker
   fullName: LocalSearchEngine.Core.Searching.SearchRanker
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker.Aggregate
+  nameWithType: SearchRanker.Aggregate
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    name: Aggregate
+    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    name: Aggregate
+    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
 - uid: LocalSearchEngine.Core.Searching.SearchResultItem
   commentId: T:LocalSearchEngine.Core.Searching.SearchResultItem
   href: LocalSearchEngine.Core.Searching.SearchResultItem.html

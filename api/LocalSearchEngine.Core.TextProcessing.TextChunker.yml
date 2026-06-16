@@ -5,11 +5,22 @@ items:
   id: TextChunker
   parent: LocalSearchEngine.Core.TextProcessing
   children:
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph(System.Collections.Generic.IEnumerable{System.String},System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   - LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(System.String,System.Int32,System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount(System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount(System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines(System.String,System.Int32,System.Boolean,System.String[],LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs(System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.Split(System.ReadOnlySpan{System.Char},System.String,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Int32)
   - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkDownLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   - LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.s_markdownSplitOptions
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.s_plaintextSplitOptions
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.s_spaceChar
   langs:
   - csharp
   - vb
@@ -94,6 +105,87 @@ items:
   nameWithType.vb: TextChunker.Chunk(String, Integer, Integer)
   fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.Chunk(String, Integer, Integer)
   name.vb: Chunk(String, Integer, Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.s_spaceChar
+  commentId: F:LocalSearchEngine.Core.TextProcessing.TextChunker.s_spaceChar
+  id: s_spaceChar
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: s_spaceChar
+  nameWithType: TextChunker.s_spaceChar
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.s_spaceChar
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: s_spaceChar
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 114
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  syntax:
+    content: private static readonly char[] s_spaceChar
+    return:
+      type: System.Char[]
+    content.vb: Private Shared ReadOnly s_spaceChar As Char()
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.s_plaintextSplitOptions
+  commentId: F:LocalSearchEngine.Core.TextProcessing.TextChunker.s_plaintextSplitOptions
+  id: s_plaintextSplitOptions
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: s_plaintextSplitOptions
+  nameWithType: TextChunker.s_plaintextSplitOptions
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.s_plaintextSplitOptions
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: s_plaintextSplitOptions
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 115
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  syntax:
+    content: private static readonly string?[] s_plaintextSplitOptions
+    return:
+      type: System.String[]
+    content.vb: Private Shared ReadOnly s_plaintextSplitOptions As String()
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.s_markdownSplitOptions
+  commentId: F:LocalSearchEngine.Core.TextProcessing.TextChunker.s_markdownSplitOptions
+  id: s_markdownSplitOptions
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: s_markdownSplitOptions
+  nameWithType: TextChunker.s_markdownSplitOptions
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.s_markdownSplitOptions
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: s_markdownSplitOptions
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 116
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  syntax:
+    content: private static readonly string?[] s_markdownSplitOptions
+    return:
+      type: System.String[]
+    content.vb: Private Shared ReadOnly s_markdownSplitOptions As String()
 - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   id: SplitPlainTextLines(System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
@@ -282,6 +374,403 @@ items:
   nameWithType.vb: TextChunker.SplitMarkdownParagraphs(IEnumerable(Of String), Integer, Integer, String, TextChunker.TokenCounter)
   fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs(System.Collections.Generic.IEnumerable(Of String), Integer, Integer, String, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
   name.vb: SplitMarkdownParagraphs(IEnumerable(Of String), Integer, Integer, String, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: InternalSplitTextParagraphs(IEnumerable<string>, int, int, string?, Func<string, int, TokenCounter?, List<string>>, TokenCounter?)
+  nameWithType: TextChunker.InternalSplitTextParagraphs(IEnumerable<string>, int, int, string?, Func<string, int, TextChunker.TokenCounter?, List<string>>, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable<string>, int, int, string?, System.Func<string, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?, System.Collections.Generic.List<string>>, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InternalSplitTextParagraphs
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 186
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Internal helper that splits lines into paragraphs using paragraph token size constraints.
+  example: []
+  syntax:
+    content: private static List<string> InternalSplitTextParagraphs(IEnumerable<string> lines, int maxTokensPerParagraph, int overlapTokens, string? chunkHeader, Func<string, int, TextChunker.TokenCounter?, List<string>> longLinesSplitter, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: lines
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The collection of text lines.
+    - id: maxTokensPerParagraph
+      type: System.Int32
+      description: The maximum number of tokens allowed per paragraph.
+    - id: overlapTokens
+      type: System.Int32
+      description: The number of tokens to overlap between paragraphs.
+    - id: chunkHeader
+      type: System.String
+      description: Optional text prepended to each chunk.
+    - id: longLinesSplitter
+      type: System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}}
+      description: A function delegate used to split lines that exceed the token limit.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of paragraph strings.
+    content.vb: Private Shared Function InternalSplitTextParagraphs(lines As IEnumerable(Of String), maxTokensPerParagraph As Integer, overlapTokens As Integer, chunkHeader As String, longLinesSplitter As Func(Of String, Integer, TextChunker.TokenCounter, List(Of String)), tokenCounter As TextChunker.TokenCounter) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">maxTokensPerParagraph</code> is non-positive or less than or equal to <code class="paramref">overlapTokens</code>.
+  nameWithType.vb: TextChunker.InternalSplitTextParagraphs(IEnumerable(Of String), Integer, Integer, String, Func(Of String, Integer, TextChunker.TokenCounter, List(Of String)), TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs(System.Collections.Generic.IEnumerable(Of String), Integer, Integer, String, System.Func(Of String, Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter, System.Collections.Generic.List(Of String)), LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: InternalSplitTextParagraphs(IEnumerable(Of String), Integer, Integer, String, Func(Of String, Integer, TokenCounter, List(Of String)), TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph(System.Collections.Generic.IEnumerable{System.String},System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph(System.Collections.Generic.IEnumerable{System.String},System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: BuildParagraph(System.Collections.Generic.IEnumerable{System.String},System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: BuildParagraph(IEnumerable<string>, int, TokenCounter?)
+  nameWithType: TextChunker.BuildParagraph(IEnumerable<string>, int, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph(System.Collections.Generic.IEnumerable<string>, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: BuildParagraph
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 223
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Combines split lines into paragraph blocks within token constraints.
+  example: []
+  syntax:
+    content: private static List<string> BuildParagraph(IEnumerable<string> truncatedLines, int maxTokensPerParagraph, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: truncatedLines
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The collection of pre-split or truncated lines.
+    - id: maxTokensPerParagraph
+      type: System.Int32
+      description: The maximum number of tokens allowed per paragraph.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of built paragraph strings.
+    content.vb: Private Shared Function BuildParagraph(truncatedLines As IEnumerable(Of String), maxTokensPerParagraph As Integer, tokenCounter As TextChunker.TokenCounter) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph*
+  nameWithType.vb: TextChunker.BuildParagraph(IEnumerable(Of String), Integer, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph(System.Collections.Generic.IEnumerable(Of String), Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: BuildParagraph(IEnumerable(Of String), Integer, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs(System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs(System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: ProcessParagraphs(System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.String,System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}},LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: ProcessParagraphs(List<string>, int, int, string?, Func<string, int, TokenCounter?, List<string>>, TokenCounter?)
+  nameWithType: TextChunker.ProcessParagraphs(List<string>, int, int, string?, Func<string, int, TextChunker.TokenCounter?, List<string>>, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs(System.Collections.Generic.List<string>, int, int, string?, System.Func<string, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?, System.Collections.Generic.List<string>>, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProcessParagraphs
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 273
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Distributes paragraphs evenly and appends headers and overlapping text.
+  example: []
+  syntax:
+    content: private static List<string> ProcessParagraphs(List<string> paragraphs, int adjustedMaxTokensPerParagraph, int overlapTokens, string? chunkHeader, Func<string, int, TextChunker.TokenCounter?, List<string>> longLinesSplitter, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: paragraphs
+      type: System.Collections.Generic.List{System.String}
+      description: The list of paragraphs to process.
+    - id: adjustedMaxTokensPerParagraph
+      type: System.Int32
+      description: The adjusted maximum tokens per paragraph.
+    - id: overlapTokens
+      type: System.Int32
+      description: The number of tokens to overlap between paragraphs.
+    - id: chunkHeader
+      type: System.String
+      description: Optional chunk header text.
+    - id: longLinesSplitter
+      type: System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}}
+      description: A function delegate used to split lines that exceed the token limit.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A processed list of paragraph strings.
+    content.vb: Private Shared Function ProcessParagraphs(paragraphs As List(Of String), adjustedMaxTokensPerParagraph As Integer, overlapTokens As Integer, chunkHeader As String, longLinesSplitter As Func(Of String, Integer, TextChunker.TokenCounter, List(Of String)), tokenCounter As TextChunker.TokenCounter) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs*
+  nameWithType.vb: TextChunker.ProcessParagraphs(List(Of String), Integer, Integer, String, Func(Of String, Integer, TextChunker.TokenCounter, List(Of String)), TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs(System.Collections.Generic.List(Of String), Integer, Integer, String, System.Func(Of String, Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter, System.Collections.Generic.List(Of String)), LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: ProcessParagraphs(List(Of String), Integer, Integer, String, Func(Of String, Integer, TokenCounter, List(Of String)), TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines(System.String,System.Int32,System.Boolean,System.String[],LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines(System.String,System.Int32,System.Boolean,System.String[],LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: InternalSplitLines(System.String,System.Int32,System.Boolean,System.String[],LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: InternalSplitLines(string, int, bool, string?[], TokenCounter?)
+  nameWithType: TextChunker.InternalSplitLines(string, int, bool, string?[], TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines(string, int, bool, string?[], LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InternalSplitLines
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 346
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Recursively splits text content into lines that conform to the token limit.
+  example: []
+  syntax:
+    content: private static List<string> InternalSplitLines(string text, int maxTokensPerLine, bool trim, string?[] splitOptions, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: text
+      type: System.String
+      description: The raw text to split.
+    - id: maxTokensPerLine
+      type: System.Int32
+      description: The maximum tokens allowed per line.
+    - id: trim
+      type: System.Boolean
+      description: <code>true</code> to trim whitespace; otherwise, <code>false</code>.
+    - id: splitOptions
+      type: System.String[]
+      description: The order of punctuation/separators to try splitting on.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of split line strings.
+    content.vb: Private Shared Function InternalSplitLines(text As String, maxTokensPerLine As Integer, trim As Boolean, splitOptions As String(), tokenCounter As TextChunker.TokenCounter) As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines*
+  nameWithType.vb: TextChunker.InternalSplitLines(String, Integer, Boolean, String(), TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines(String, Integer, Boolean, String(), LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: InternalSplitLines(String, Integer, Boolean, String(), TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: Split(StringListWithTokenCount, int, ReadOnlySpan<char>, bool, TokenCounter?)
+  nameWithType: TextChunker.Split(TextChunker.StringListWithTokenCount, int, ReadOnlySpan<char>, bool, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount, int, System.ReadOnlySpan<char>, bool, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Split
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 375
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Iterates through the list of input strings and splits any that exceed token limits.
+  example: []
+  syntax:
+    content: private static (TextChunker.StringListWithTokenCount, bool) Split(TextChunker.StringListWithTokenCount input, int maxTokens, ReadOnlySpan<char> separators, bool trim, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: input
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+      description: The collection of input strings with token counts.
+    - id: maxTokens
+      type: System.Int32
+      description: The maximum tokens allowed per item.
+    - id: separators
+      type: System.ReadOnlySpan{System.Char}
+      description: The separator characters to split on.
+    - id: trim
+      type: System.Boolean
+      description: <code>true</code> to trim whitespace; otherwise, <code>false</code>.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.ValueTuple{LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Boolean}
+      description: A tuple containing the split string list and a boolean indicating if any splits were made.
+    content.vb: Private Shared Function Split(input As TextChunker.StringListWithTokenCount, maxTokens As Integer, separators As ReadOnlySpan(Of Char), trim As Boolean, tokenCounter As TextChunker.TokenCounter) As (TextChunker.StringListWithTokenCount, Boolean)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.Split*
+  nameWithType.vb: TextChunker.Split(TextChunker.StringListWithTokenCount, Integer, ReadOnlySpan(Of Char), Boolean, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount, Integer, System.ReadOnlySpan(Of Char), Boolean, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: Split(StringListWithTokenCount, Integer, ReadOnlySpan(Of Char), Boolean, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(System.ReadOnlySpan{System.Char},System.String,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.Split(System.ReadOnlySpan{System.Char},System.String,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Int32)
+  id: Split(System.ReadOnlySpan{System.Char},System.String,System.Int32,System.ReadOnlySpan{System.Char},System.Boolean,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: Split(ReadOnlySpan<char>, string?, int, ReadOnlySpan<char>, bool, TokenCounter?, int)
+  nameWithType: TextChunker.Split(ReadOnlySpan<char>, string?, int, ReadOnlySpan<char>, bool, TextChunker.TokenCounter?, int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(System.ReadOnlySpan<char>, string?, int, System.ReadOnlySpan<char>, bool, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Split
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 401
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Splits a single span/string that exceeds the token count limit on separator characters.
+  example: []
+  syntax:
+    content: private static (TextChunker.StringListWithTokenCount, bool) Split(ReadOnlySpan<char> input, string? inputString, int maxTokens, ReadOnlySpan<char> separators, bool trim, TextChunker.TokenCounter? tokenCounter, int inputTokenCount)
+    parameters:
+    - id: input
+      type: System.ReadOnlySpan{System.Char}
+      description: The span representing the text to split.
+    - id: inputString
+      type: System.String
+      description: The original input string (if materialized).
+    - id: maxTokens
+      type: System.Int32
+      description: The maximum tokens allowed per item.
+    - id: separators
+      type: System.ReadOnlySpan{System.Char}
+      description: The separator characters to split on.
+    - id: trim
+      type: System.Boolean
+      description: <code>true</code> to trim whitespace; otherwise, <code>false</code>.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    - id: inputTokenCount
+      type: System.Int32
+      description: The current token count of the input.
+    return:
+      type: System.ValueTuple{LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Boolean}
+      description: A tuple containing the split string list and a boolean indicating if a split was made.
+    content.vb: Private Shared Function Split(input As ReadOnlySpan(Of Char), inputString As String, maxTokens As Integer, separators As ReadOnlySpan(Of Char), trim As Boolean, tokenCounter As TextChunker.TokenCounter, inputTokenCount As Integer) As (TextChunker.StringListWithTokenCount, Boolean)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.Split*
+  exceptions:
+  - type: System.Exception
+    commentId: T:System.Exception
+    description: Thrown if the input string does not match the span.
+  nameWithType.vb: TextChunker.Split(ReadOnlySpan(Of Char), String, Integer, ReadOnlySpan(Of Char), Boolean, TextChunker.TokenCounter, Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.Split(System.ReadOnlySpan(Of Char), String, Integer, System.ReadOnlySpan(Of Char), Boolean, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter, Integer)
+  name.vb: Split(ReadOnlySpan(Of Char), String, Integer, ReadOnlySpan(Of Char), Boolean, TokenCounter, Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount(System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount(System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: GetTokenCount(System.String,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: GetTokenCount(string, TokenCounter?)
+  nameWithType: TextChunker.GetTokenCount(string, TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount(string, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetTokenCount
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 481
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Gets the token count for the specified input string.
+  example: []
+  syntax:
+    content: private static int GetTokenCount(string input, TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: input
+      type: System.String
+      description: The input string.
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: Optional delegate for counting tokens.
+    return:
+      type: System.Int32
+      description: The calculated number of tokens.
+    content.vb: Private Shared Function GetTokenCount(input As String, tokenCounter As TextChunker.TokenCounter) As Integer
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount*
+  nameWithType.vb: TextChunker.GetTokenCount(String, TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount(String, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: GetTokenCount(String, TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount(System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount(System.Int32)
+  id: GetDefaultTokenCount(System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultTokenCount(int)
+  nameWithType: TextChunker.GetDefaultTokenCount(int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount(int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetDefaultTokenCount
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 489
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Default token count calculation using character length division heuristic (characters divided by 4).
+  example: []
+  syntax:
+    content: private static int GetDefaultTokenCount(int length)
+    parameters:
+    - id: length
+      type: System.Int32
+      description: The character length.
+    return:
+      type: System.Int32
+      description: The approximate token count.
+    content.vb: Private Shared Function GetDefaultTokenCount(length As Integer) As Integer
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if <code class="paramref">length</code> is negative.
+  nameWithType.vb: TextChunker.GetDefaultTokenCount(Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount(Integer)
+  name.vb: GetDefaultTokenCount(Integer)
 references:
 - uid: LocalSearchEngine.Core.TextProcessing
   commentId: N:LocalSearchEngine.Core.TextProcessing
@@ -685,6 +1174,52 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Char[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.char
+  name: char[]
+  nameWithType: char[]
+  fullName: char[]
+  nameWithType.vb: Char()
+  fullName.vb: Char()
+  name.vb: Char()
+  spec.csharp:
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: (
+  - name: )
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
 - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines*
   commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.SplitPlainTextLines
   href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_SplitPlainTextLines_System_String_System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
@@ -795,3 +1330,356 @@ references:
   name: SplitMarkdownParagraphs
   nameWithType: TextChunker.SplitMarkdownParagraphs
   fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.SplitMarkdownParagraphs
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_InternalSplitTextParagraphs_System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int32_System_String_System_Func_System_String_System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_System_Collections_Generic_List_System_String___LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: InternalSplitTextParagraphs
+  nameWithType: TextChunker.InternalSplitTextParagraphs
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitTextParagraphs
+- uid: System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}}
+  commentId: T:System.Func{System.String,System.Int32,LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter,System.Collections.Generic.List{System.String}}
+  parent: System
+  definition: System.Func`4
+  href: https://learn.microsoft.com/dotnet/api/system.func-4
+  name: Func<string, int, TextChunker.TokenCounter, List<string>>
+  nameWithType: Func<string, int, TextChunker.TokenCounter, List<string>>
+  fullName: System.Func<string, int, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter, System.Collections.Generic.List<string>>
+  nameWithType.vb: Func(Of String, Integer, TextChunker.TokenCounter, List(Of String))
+  fullName.vb: System.Func(Of String, Integer, LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter, System.Collections.Generic.List(Of String))
+  name.vb: Func(Of String, Integer, TextChunker.TokenCounter, List(Of String))
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System.Func`4
+  commentId: T:System.Func`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-4
+  name: Func<T1, T2, T3, TResult>
+  nameWithType: Func<T1, T2, T3, TResult>
+  fullName: System.Func<T1, T2, T3, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, TResult)
+  name.vb: Func(Of T1, T2, T3, TResult)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_BuildParagraph_System_Collections_Generic_IEnumerable_System_String__System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: BuildParagraph
+  nameWithType: TextChunker.BuildParagraph
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.BuildParagraph
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_ProcessParagraphs_System_Collections_Generic_List_System_String__System_Int32_System_Int32_System_String_System_Func_System_String_System_Int32_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_System_Collections_Generic_List_System_String___LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: ProcessParagraphs
+  nameWithType: TextChunker.ProcessParagraphs
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.ProcessParagraphs
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_InternalSplitLines_System_String_System_Int32_System_Boolean_System_String___LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: InternalSplitLines
+  nameWithType: TextChunker.InternalSplitLines
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.InternalSplitLines
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.Split*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.Split
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_Split_LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_System_Int32_System_ReadOnlySpan_System_Char__System_Boolean_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: Split
+  nameWithType: TextChunker.Split
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.Split
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.StringListWithTokenCount
+  nameWithType: TextChunker.StringListWithTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+- uid: System.ReadOnlySpan{System.Char}
+  commentId: T:System.ReadOnlySpan{System.Char}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<char>
+  nameWithType: ReadOnlySpan<char>
+  fullName: System.ReadOnlySpan<char>
+  nameWithType.vb: ReadOnlySpan(Of Char)
+  fullName.vb: System.ReadOnlySpan(Of Char)
+  name.vb: ReadOnlySpan(Of Char)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: )
+- uid: System.ValueTuple{LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Boolean}
+  commentId: T:System.ValueTuple{LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount,System.Boolean}
+  parent: System
+  definition: System.ValueTuple`2
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: (TextChunker.StringListWithTokenCount, bool)
+  nameWithType: (TextChunker.StringListWithTokenCount, bool)
+  fullName: (LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount, bool)
+  nameWithType.vb: (TextChunker.StringListWithTokenCount, Boolean)
+  fullName.vb: (LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount, Boolean)
+  name.vb: (TextChunker.StringListWithTokenCount, Boolean)
+  spec.csharp:
+  - name: (
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_GetTokenCount_System_String_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: GetTokenCount
+  nameWithType: TextChunker.GetTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.GetTokenCount
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html#LocalSearchEngine_Core_TextProcessing_TextChunker_GetDefaultTokenCount_System_Int32_
+  name: GetDefaultTokenCount
+  nameWithType: TextChunker.GetDefaultTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.GetDefaultTokenCount

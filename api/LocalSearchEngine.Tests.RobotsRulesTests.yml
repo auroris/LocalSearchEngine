@@ -6,6 +6,7 @@ items:
   parent: LocalSearchEngine.Tests
   children:
   - LocalSearchEngine.Tests.RobotsRulesTests.Allow_overrides_disallow_by_longest_match
+  - LocalSearchEngine.Tests.RobotsRulesTests.Bot
   - LocalSearchEngine.Tests.RobotsRulesTests.Comments_and_blank_lines_are_ignored
   - LocalSearchEngine.Tests.RobotsRulesTests.Crawl_delay_is_parsed_for_the_chosen_group
   - LocalSearchEngine.Tests.RobotsRulesTests.DisallowAll_blocks_every_path
@@ -52,6 +53,33 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.RobotsRulesTests.Bot
+  commentId: F:LocalSearchEngine.Tests.RobotsRulesTests.Bot
+  id: Bot
+  parent: LocalSearchEngine.Tests.RobotsRulesTests
+  langs:
+  - csharp
+  - vb
+  name: Bot
+  nameWithType: RobotsRulesTests.Bot
+  fullName: LocalSearchEngine.Tests.RobotsRulesTests.Bot
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Bot
+    path: LocalSearchEngine.Tests/RobotsRulesTests.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private const string Bot = "LocalSearchEngine-Bot/1.0"
+    return:
+      type: System.String
+    content.vb: Private Const Bot As String = "LocalSearchEngine-Bot/1.0"
 - uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
   commentId: M:LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
   id: Empty_content_allows_everything
@@ -888,6 +916,17 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything*
   commentId: Overload:LocalSearchEngine.Tests.RobotsRulesTests.Empty_content_allows_everything
   href: LocalSearchEngine.Tests.RobotsRulesTests.html#LocalSearchEngine_Tests_RobotsRulesTests_Empty_content_allows_everything

@@ -138,6 +138,18 @@ public partial class CrawlerService
         var consumer = new CrawlConsumer(ctx.Write, channel.Reader, _vectorSearchService, _logger);
         var consumerTask = consumer.ConsumeAsync();
 
+        using var consumerCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        _ = consumerTask.ContinueWith(t =>
+        {
+            try
+            {
+                consumerCts.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }, TaskContinuationOptions.ExecuteSynchronously);
+
         var robotsService = new RobotsService(_httpClient, _vectorSearchService, _logger);
         var sitemapService = new SitemapService(_httpClient, _logger);
         var pageDownloader = new PageDownloader(_httpClient);
@@ -172,7 +184,9 @@ public partial class CrawlerService
                 }
             }
 
-            (producedJobs, indexedCount) = await producer.ProduceAsync(maxPages, maxPagesPerHost, cancellationToken);
+            // ProduceAsync returns gracefully on cancellation (user or consumer-fault). A consumer
+            // fault surfaces below at 'await consumerTask' once the channel is completed.
+            (producedJobs, indexedCount) = await producer.ProduceAsync(maxPages, maxPagesPerHost, consumerCts.Token);
 
             completedNaturally = ctx.Queue.Count == 0
                 && !cancellationToken.IsCancellationRequested
@@ -185,6 +199,7 @@ public partial class CrawlerService
             channel.Writer.Complete();
             await consumerTask;
 
+            // NOTE: The main crawl consumer task has finished, so the orchestrator now drives post-crawl cleanup writes.
             ctx.Observer.OnPhaseChanged(CrawlPhase.RemovingBanned);
             ctx.Observer.OnBannedUrlsRemoved(await robotsService.RemoveRobotsBannedUrlsAsync(ctx));
             if (completedNaturally)

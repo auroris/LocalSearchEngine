@@ -8,6 +8,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
@@ -17,6 +18,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
@@ -742,6 +744,47 @@ items:
   nameWithType.vb: CrawlStore.GetCrawledUrlsWithPrefixAsync(SqliteConnection, String, CancellationToken)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
   name.vb: GetCrawledUrlsWithPrefixAsync(SqliteConnection, String, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
+  id: EscapeLike(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: EscapeLike(string)
+  nameWithType: CrawlStore.EscapeLike(string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EscapeLike
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 452
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Escapes LIKE metacharacters (backslash, percent, underscore) so a string matches literally
+
+    under an <code>ESCAPE '\'</code> clause. Backslash is escaped first to avoid double-escaping.
+  example: []
+  syntax:
+    content: private static string EscapeLike(string value)
+    parameters:
+    - id: value
+      type: System.String
+      description: The literal value to escape.
+    return:
+      type: System.String
+      description: The escaped value, safe to embed in a LIKE pattern.
+    content.vb: Private Shared Function EscapeLike(value As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike*
+  nameWithType.vb: CrawlStore.EscapeLike(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(String)
+  name.vb: EscapeLike(String)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
   id: DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
@@ -865,6 +908,47 @@ items:
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
     content.vb: Public Shared Function OptimizeDatabaseAsync(connection As SqliteConnection, logger As ILogger) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync*
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: ReadPragmaLongAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.ReadPragmaLongAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReadPragmaLongAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 534
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: Reads a database pragma query that returns an integer/long value.
+  example: []
+  syntax:
+    content: private static Task<long> ReadPragmaLongAsync(SqliteConnection connection, string pragma)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The open database connection.
+    - id: pragma
+      type: System.String
+      description: The pragma query statement.
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: The long value returned by the pragma, or 0 if it failed or returned null.
+    content.vb: Private Shared Function ReadPragmaLongAsync(connection As SqliteConnection, pragma As String) As Task(Of Long)
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync*
+  nameWithType.vb: CrawlStore.ReadPragmaLongAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: ReadPragmaLongAsync(SqliteConnection, String)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Storage
   commentId: N:LocalSearchEngine.Core.Crawling.Storage
@@ -2050,6 +2134,12 @@ references:
   name: GetCrawledUrlsWithPrefixAsync
   nameWithType: CrawlStore.GetCrawledUrlsWithPrefixAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_EscapeLike_System_String_
+  name: EscapeLike
+  nameWithType: CrawlStore.EscapeLike
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync
   href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
@@ -2184,3 +2274,44 @@ references:
     name: Logging
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_ReadPragmaLongAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: ReadPragmaLongAsync
+  nameWithType: CrawlStore.ReadPragmaLongAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )

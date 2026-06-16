@@ -7,8 +7,13 @@ items:
   children:
   - LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
   - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync
   - LocalSearchEngine.Core.Crawling.CrawlerService.UserAgent
+  - LocalSearchEngine.Core.Crawling.CrawlerService._connectionString
+  - LocalSearchEngine.Core.Crawling.CrawlerService._httpClient
+  - LocalSearchEngine.Core.Crawling.CrawlerService._logger
+  - LocalSearchEngine.Core.Crawling.CrawlerService._vectorSearchService
   langs:
   - csharp
   - vb
@@ -74,6 +79,120 @@ items:
     return:
       type: System.String
     content.vb: Public Const UserAgent As String = "LocalSearchEngine-Bot/1.0"
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService._httpClient
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: CrawlerService._httpClient
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService._vectorSearchService
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService._vectorSearchService
+  id: _vectorSearchService
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: _vectorSearchService
+  nameWithType: CrawlerService._vectorSearchService
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService._vectorSearchService
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _vectorSearchService
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: The vector search service for storing and indexing embeddings.
+  example: []
+  syntax:
+    content: private readonly VectorSearchService _vectorSearchService
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _vectorSearchService As VectorSearchService
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService._logger
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService._logger
+  id: _logger
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: CrawlerService._logger
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: The logger instance for this service.
+  example: []
+  syntax:
+    content: private readonly ILogger<CrawlerService> _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService}
+    content.vb: Private ReadOnly _logger As ILogger(Of CrawlerService)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService._connectionString
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService._connectionString
+  id: _connectionString
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: _connectionString
+  nameWithType: CrawlerService._connectionString
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService._connectionString
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connectionString
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 40
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: The SQLite connection string.
+  example: []
+  syntax:
+    content: private readonly string _connectionString
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _connectionString As String
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
   id: '#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)'
@@ -208,6 +327,47 @@ items:
   nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
   fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.Threading.CancellationToken)
   name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
+  id: EmptyReport(System.String,System.DateTime)
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: EmptyReport(string, DateTime)
+  nameWithType: CrawlerService.EmptyReport(string, DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(string, System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmptyReport
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 257
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: Creates an empty crawl report in the event of an early failure or invalid input.
+  example: []
+  syntax:
+    content: private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc)
+    parameters:
+    - id: seedUrl
+      type: System.String
+      description: The seed URL that failed validation or was unreachable.
+    - id: startedUtc
+      type: System.DateTime
+      description: The time the crawl was initiated.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+      description: An empty <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Private Shared Function EmptyReport(seedUrl As String, startedUtc As Date) As CrawlReport
+  overload: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport*
+  nameWithType.vb: CrawlerService.EmptyReport(String, Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(String, Date)
+  name.vb: EmptyReport(String, Date)
 references:
 - uid: LocalSearchEngine.Core.Crawling
   commentId: N:LocalSearchEngine.Core.Crawling
@@ -487,21 +647,6 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: LocalSearchEngine.Core.Crawling.CrawlerService
-  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService
-  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
-  name: CrawlerService
-  nameWithType: CrawlerService
-  fullName: LocalSearchEngine.Core.Crawling.CrawlerService
-- uid: LocalSearchEngine.Core.Crawling.CrawlerService.#ctor*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.#ctor
-  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService__ctor_System_Net_Http_HttpClient_LocalSearchEngine_Core_Searching_VectorSearchService_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Core_Crawling_CrawlerService__LocalSearchEngine_Core_DatabaseConfig_
-  name: CrawlerService
-  nameWithType: CrawlerService.CrawlerService
-  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlerService
-  nameWithType.vb: CrawlerService.New
-  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.New
-  name.vb: New
 - uid: System.Net.Http.HttpClient
   commentId: T:System.Net.Http.HttpClient
   parent: System.Net.Http
@@ -510,53 +655,6 @@ references:
   name: HttpClient
   nameWithType: HttpClient
   fullName: System.Net.Http.HttpClient
-- uid: LocalSearchEngine.Core.Searching.VectorSearchService
-  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
-  parent: LocalSearchEngine.Core.Searching
-  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
-  name: VectorSearchService
-  nameWithType: VectorSearchService
-  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
-- uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService}
-  commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService}
-  parent: Microsoft.Extensions.Logging
-  definition: Microsoft.Extensions.Logging.ILogger`1
-  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
-  name: ILogger<CrawlerService>
-  nameWithType: ILogger<CrawlerService>
-  fullName: Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Core.Crawling.CrawlerService>
-  nameWithType.vb: ILogger(Of CrawlerService)
-  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Core.Crawling.CrawlerService)
-  name.vb: ILogger(Of CrawlerService)
-  spec.csharp:
-  - uid: Microsoft.Extensions.Logging.ILogger`1
-    name: ILogger
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
-  - name: <
-  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
-    name: CrawlerService
-    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
-  - name: '>'
-  spec.vb:
-  - uid: Microsoft.Extensions.Logging.ILogger`1
-    name: ILogger
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
-    name: CrawlerService
-    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
-  - name: )
-- uid: LocalSearchEngine.Core.DatabaseConfig
-  commentId: T:LocalSearchEngine.Core.DatabaseConfig
-  parent: LocalSearchEngine.Core
-  href: LocalSearchEngine.Core.DatabaseConfig.html
-  name: DatabaseConfig
-  nameWithType: DatabaseConfig
-  fullName: LocalSearchEngine.Core.DatabaseConfig
 - uid: System.Net.Http
   commentId: N:System.Net.Http
   isExternal: true
@@ -594,6 +692,13 @@ references:
     name: Http
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -624,6 +729,39 @@ references:
   - uid: LocalSearchEngine.Core.Searching
     name: Searching
     href: LocalSearchEngine.Core.Searching.html
+- uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<CrawlerService>
+  nameWithType: ILogger<CrawlerService>
+  fullName: Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Core.Crawling.CrawlerService>
+  nameWithType.vb: ILogger(Of CrawlerService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Core.Crawling.CrawlerService)
+  name.vb: ILogger(Of CrawlerService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: )
 - uid: Microsoft.Extensions.Logging.ILogger`1
   commentId: T:Microsoft.Extensions.Logging.ILogger`1
   isExternal: true
@@ -689,6 +827,29 @@ references:
     name: Logging
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  name: CrawlerService
+  nameWithType: CrawlerService
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.#ctor
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService__ctor_System_Net_Http_HttpClient_LocalSearchEngine_Core_Searching_VectorSearchService_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Core_Crawling_CrawlerService__LocalSearchEngine_Core_DatabaseConfig_
+  name: CrawlerService
+  nameWithType: CrawlerService.CrawlerService
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlerService
+  nameWithType.vb: CrawlerService.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.DatabaseConfig
+  commentId: T:LocalSearchEngine.Core.DatabaseConfig
+  parent: LocalSearchEngine.Core
+  href: LocalSearchEngine.Core.DatabaseConfig.html
+  name: DatabaseConfig
+  nameWithType: DatabaseConfig
+  fullName: LocalSearchEngine.Core.DatabaseConfig
 - uid: LocalSearchEngine.Core
   commentId: N:LocalSearchEngine.Core
   href: LocalSearchEngine.html
@@ -764,6 +925,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  parent: LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
   name: CrawlReport
   nameWithType: CrawlReport
@@ -890,6 +1052,44 @@ references:
     name: CrawlReport
     href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
 - uid: System.Collections.Generic.IEnumerable`1
   commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true
@@ -955,44 +1155,6 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-- uid: LocalSearchEngine.Core.Crawling.Reporting
-  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Crawling.Reporting
-  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
-  fullName: LocalSearchEngine.Core.Crawling.Reporting
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
 - uid: System.Threading
   commentId: N:System.Threading
   isExternal: true
@@ -1048,3 +1210,20 @@ references:
   - name: " "
   - name: TResult
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_EmptyReport_System_String_System_DateTime_
+  name: EmptyReport
+  nameWithType: CrawlerService.EmptyReport
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date

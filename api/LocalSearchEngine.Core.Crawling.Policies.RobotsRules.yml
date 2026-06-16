@@ -5,12 +5,17 @@ items:
   id: RobotsRules
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor(TurnerSoftware.RobotsExclusionTools.RobotsFile,System.String)
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.AllowAll
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.CrawlDelaySeconds
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.DisallowAll
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.FractionalCrawlDelay
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.IsAllowed(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.Parse(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.Sitemaps
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.RobotsRules._rules
   langs:
   - csharp
   - vb
@@ -46,6 +51,60 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.FractionalCrawlDelay
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.FractionalCrawlDelay
+  id: FractionalCrawlDelay
+  parent: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  langs:
+  - csharp
+  - vb
+  name: FractionalCrawlDelay
+  nameWithType: RobotsRules.FractionalCrawlDelay
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.FractionalCrawlDelay
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FractionalCrawlDelay
+    path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private static readonly Regex FractionalCrawlDelay
+    return:
+      type: System.Text.RegularExpressions.Regex
+    content.vb: Private Shared ReadOnly FractionalCrawlDelay As Regex
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules._rules
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.RobotsRules._rules
+  id: _rules
+  parent: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  langs:
+  - csharp
+  - vb
+  name: _rules
+  nameWithType: RobotsRules._rules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules._rules
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _rules
+    path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly List<(bool Allow, int PatternLength, Regex Matcher)> _rules
+    return:
+      type: System.Collections.Generic.List{System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}}
+    content.vb: Private ReadOnly _rules As List(Of (Allow As Boolean, PatternLength As Integer, Matcher As Regex))
 - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.CrawlDelaySeconds
   commentId: P:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.CrawlDelaySeconds
   id: CrawlDelaySeconds
@@ -111,6 +170,40 @@ items:
       type: System.Collections.Generic.IReadOnlyList{System.String}
     content.vb: Public ReadOnly Property Sitemaps As IReadOnlyList(Of String)
   overload: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.Sitemaps*
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor(TurnerSoftware.RobotsExclusionTools.RobotsFile,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor(TurnerSoftware.RobotsExclusionTools.RobotsFile,System.String)
+  id: '#ctor(TurnerSoftware.RobotsExclusionTools.RobotsFile,System.String)'
+  parent: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  langs:
+  - csharp
+  - vb
+  name: RobotsRules(RobotsFile, string)
+  nameWithType: RobotsRules.RobotsRules(RobotsFile, string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.RobotsRules(TurnerSoftware.RobotsExclusionTools.RobotsFile, string)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private RobotsRules(RobotsFile robotsFile, string userAgent)
+    parameters:
+    - id: robotsFile
+      type: TurnerSoftware.RobotsExclusionTools.RobotsFile
+    - id: userAgent
+      type: System.String
+    content.vb: Private Sub New(robotsFile As RobotsFile, userAgent As String)
+  overload: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor*
+  nameWithType.vb: RobotsRules.New(RobotsFile, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.New(TurnerSoftware.RobotsExclusionTools.RobotsFile, String)
+  name.vb: New(RobotsFile, String)
 - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.AllowAll
   commentId: P:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.AllowAll
   id: AllowAll
@@ -252,6 +345,89 @@ items:
   nameWithType.vb: RobotsRules.Parse(String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.Parse(String, String)
   name.vb: Parse(String, String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays(System.String)
+  id: NormalizeFractionalCrawlDelays(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  langs:
+  - csharp
+  - vb
+  name: NormalizeFractionalCrawlDelays(string)
+  nameWithType: RobotsRules.NormalizeFractionalCrawlDelays(string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NormalizeFractionalCrawlDelays
+    path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+    startLine: 127
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    Rounds fractional Crawl-delay values (e.g. "0.5") up to whole seconds before parsing,
+
+    because RobotsExclusionTools reads the directive as an integer and would otherwise drop
+
+    them. Rewriting the value in the raw text keeps the library's user-agent group matching
+
+    as the single authority on which group's delay applies.
+  example: []
+  syntax:
+    content: private static string NormalizeFractionalCrawlDelays(string content)
+    parameters:
+    - id: content
+      type: System.String
+      description: The raw robots.txt content.
+    return:
+      type: System.String
+      description: The content with fractional crawl delays rounded up to integers.
+    content.vb: Private Shared Function NormalizeFractionalCrawlDelays(content As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays*
+  nameWithType.vb: RobotsRules.NormalizeFractionalCrawlDelays(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays(String)
+  name.vb: NormalizeFractionalCrawlDelays(String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex(System.String)
+  id: ToRegex(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  langs:
+  - csharp
+  - vb
+  name: ToRegex(string)
+  nameWithType: RobotsRules.ToRegex(string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ToRegex
+    path: LocalSearchEngine.Core/Crawling/Policies/RobotsRules.cs
+    startLine: 140
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Converts a robots path pattern string into a regular expression.
+  example: []
+  syntax:
+    content: private static string ToRegex(string pattern)
+    parameters:
+    - id: pattern
+      type: System.String
+      description: The pattern string (supporting '*' and '$').
+    return:
+      type: System.String
+      description: A regex pattern string.
+    content.vb: Private Shared Function ToRegex(pattern As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex*
+  nameWithType.vb: RobotsRules.ToRegex(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex(String)
+  name.vb: ToRegex(String)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
@@ -504,6 +680,209 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Text.RegularExpressions.Regex
+  commentId: T:System.Text.RegularExpressions.Regex
+  parent: System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex
+  name: Regex
+  nameWithType: Regex
+  fullName: System.Text.RegularExpressions.Regex
+- uid: System.Text.RegularExpressions
+  commentId: N:System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.RegularExpressions
+  nameWithType: System.Text.RegularExpressions
+  fullName: System.Text.RegularExpressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
+- uid: System.Collections.Generic.List{System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}}
+  commentId: T:System.Collections.Generic.List{System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<(bool Allow, int PatternLength, Regex Matcher)>
+  nameWithType: List<(bool Allow, int PatternLength, Regex Matcher)>
+  fullName: System.Collections.Generic.List<(bool Allow, int PatternLength, System.Text.RegularExpressions.Regex Matcher)>
+  nameWithType.vb: List(Of (Allow As Boolean, PatternLength As Integer, Matcher As Regex))
+  fullName.vb: System.Collections.Generic.List(Of (Allow As Boolean, PatternLength As Integer, Matcher As System.Text.RegularExpressions.Regex))
+  name.vb: List(Of (Allow As Boolean, PatternLength As Integer, Matcher As Regex))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.Allow
+    name: Allow
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.allow
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.PatternLength
+    name: PatternLength
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.patternlength
+  - name: ','
+  - name: " "
+  - uid: System.Text.RegularExpressions.Regex
+    name: Regex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.Matcher
+    name: Matcher
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.matcher
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.Allow
+    name: Allow
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.allow
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.PatternLength
+    name: PatternLength
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.patternlength
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Int32,System.Text.RegularExpressions.Regex}.Matcher
+    name: Matcher
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.int32,system.text.regularexpressions.regex-.matcher
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Text.RegularExpressions.Regex
+    name: Regex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.CrawlDelaySeconds*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.CrawlDelaySeconds
   href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html#LocalSearchEngine_Core_Crawling_Policies_RobotsRules_CrawlDelaySeconds
@@ -630,43 +1009,55 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.#ctor
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html#LocalSearchEngine_Core_Crawling_Policies_RobotsRules__ctor_TurnerSoftware_RobotsExclusionTools_RobotsFile_System_String_
+  name: RobotsRules
+  nameWithType: RobotsRules.RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.RobotsRules
+  nameWithType.vb: RobotsRules.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.New
+  name.vb: New
+- uid: TurnerSoftware.RobotsExclusionTools.RobotsFile
+  commentId: T:TurnerSoftware.RobotsExclusionTools.RobotsFile
+  parent: TurnerSoftware.RobotsExclusionTools
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
+  name: RobotsFile
+  nameWithType: RobotsFile
+  fullName: TurnerSoftware.RobotsExclusionTools.RobotsFile
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: TurnerSoftware.RobotsExclusionTools
+  commentId: N:TurnerSoftware.RobotsExclusionTools
+  isExternal: true
+  name: TurnerSoftware.RobotsExclusionTools
+  nameWithType: TurnerSoftware.RobotsExclusionTools
+  fullName: TurnerSoftware.RobotsExclusionTools
   spec.csharp:
-  - uid: System
-    name: System
+  - uid: TurnerSoftware
+    name: TurnerSoftware
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: System.Collections
-    name: Collections
+  - uid: TurnerSoftware.RobotsExclusionTools
+    name: RobotsExclusionTools
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
   spec.vb:
-  - uid: System
-    name: System
+  - uid: TurnerSoftware
+    name: TurnerSoftware
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: System.Collections
-    name: Collections
+  - uid: TurnerSoftware.RobotsExclusionTools
+    name: RobotsExclusionTools
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.AllowAll*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.AllowAll
   href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html#LocalSearchEngine_Core_Crawling_Policies_RobotsRules_AllowAll
@@ -692,17 +1083,6 @@ references:
   name: IsAllowed
   nameWithType: RobotsRules.IsAllowed
   fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.IsAllowed
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -720,3 +1100,15 @@ references:
   name: Parse
   nameWithType: RobotsRules.Parse
   fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.Parse
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html#LocalSearchEngine_Core_Crawling_Policies_RobotsRules_NormalizeFractionalCrawlDelays_System_String_
+  name: NormalizeFractionalCrawlDelays
+  nameWithType: RobotsRules.NormalizeFractionalCrawlDelays
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.NormalizeFractionalCrawlDelays
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html#LocalSearchEngine_Core_Crawling_Policies_RobotsRules_ToRegex_System_String_
+  name: ToRegex
+  nameWithType: RobotsRules.ToRegex
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.ToRegex

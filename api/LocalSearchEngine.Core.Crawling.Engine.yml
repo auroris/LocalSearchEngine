@@ -1,0 +1,172 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  id: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  - LocalSearchEngine.Core.Crawling.Engine.GoneJob
+  - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+  - LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
+  - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  - LocalSearchEngine.Core.Crawling.Engine.RobotsService
+  - LocalSearchEngine.Core.Crawling.Engine.SitemapService
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer.html
+  name: CrawlConsumer
+  nameWithType: CrawlConsumer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html
+  name: CrawlContext
+  nameWithType: CrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html
+  name: IndexJob
+  nameWithType: IndexJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+  href: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob.html
+  name: NoIndexJob
+  nameWithType: NoIndexJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.GoneJob
+  href: LocalSearchEngine.Core.Crawling.Engine.GoneJob.html
+  name: GoneJob
+  nameWithType: GoneJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.GoneJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html
+  name: AliasJob
+  nameWithType: AliasJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html
+  name: TouchJob
+  nameWithType: TouchJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html
+  name: CrawlProducer
+  nameWithType: CrawlProducer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html
+  name: HttpContentReader
+  nameWithType: HttpContentReader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
+  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html
+  name: LinkVerifier
+  nameWithType: LinkVerifier
+  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.html
+  name: DownloadStatus
+  nameWithType: DownloadStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader
+  nameWithType: PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.RobotsService
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html
+  name: RobotsService
+  nameWithType: RobotsService
+  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.SitemapService
+  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html
+  name: SitemapService
+  nameWithType: SitemapService
+  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html

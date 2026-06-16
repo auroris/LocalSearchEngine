@@ -5,6 +5,8 @@ items:
   id: Fts5MatchSemanticsTests
   parent: LocalSearchEngine.Tests
   children:
+  - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
   langs:
   - csharp
@@ -80,6 +82,76 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: Exec(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+  langs:
+  - csharp
+  - vb
+  name: Exec(SqliteConnection, string)
+  nameWithType: Fts5MatchSemanticsTests.Exec(SqliteConnection, string)
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Exec
+    path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static void Exec(SqliteConnection c, string sql)
+    parameters:
+    - id: c
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: sql
+      type: System.String
+    content.vb: Private Shared Sub Exec(c As SqliteConnection, sql As String)
+  overload: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec*
+  nameWithType.vb: Fts5MatchSemanticsTests.Exec(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: Exec(SqliteConnection, String)
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: Match(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+  langs:
+  - csharp
+  - vb
+  name: Match(SqliteConnection, string)
+  nameWithType: Fts5MatchSemanticsTests.Match(SqliteConnection, string)
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Match
+    path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static long Match(SqliteConnection c, string expr)
+    parameters:
+    - id: c
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: expr
+      type: System.String
+    return:
+      type: System.Int64
+    content.vb: Private Shared Function Match(c As SqliteConnection, expr As String) As Long
+  overload: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match*
+  nameWithType.vb: Fts5MatchSemanticsTests.Match(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: Match(SqliteConnection, String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -346,3 +418,82 @@ references:
   name: Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
   nameWithType: Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
   fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec*
+  commentId: Overload:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec
+  href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html#LocalSearchEngine_Tests_Fts5MatchSemanticsTests_Exec_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: Exec
+  nameWithType: Fts5MatchSemanticsTests.Exec
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match*
+  commentId: Overload:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match
+  href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html#LocalSearchEngine_Tests_Fts5MatchSemanticsTests_Match_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: Match
+  nameWithType: Fts5MatchSemanticsTests.Match
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

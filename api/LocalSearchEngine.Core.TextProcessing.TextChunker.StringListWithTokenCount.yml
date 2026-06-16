@@ -1,0 +1,966 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  id: TextChunker.StringListWithTokenCount
+  parent: LocalSearchEngine.Core.TextProcessing
+  children:
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String,System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange(System.Int32,System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt(System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt(System.Int32)
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount._tokenCounter
+  langs:
+  - csharp
+  - vb
+  name: TextChunker.StringListWithTokenCount
+  nameWithType: TextChunker.StringListWithTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StringListWithTokenCount
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Represents a list of strings along with their token counts, optimized to minimize tokenizer calls.
+  remarks: Initializes a new instance of the <xref href="LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: private sealed class TextChunker.StringListWithTokenCount
+    content.vb: Private NotInheritable Class TextChunker.StringListWithTokenCount
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  id: '#ctor(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)'
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: StringListWithTokenCount(TokenCounter?)
+  nameWithType: TextChunker.StringListWithTokenCount.StringListWithTokenCount(TextChunker.TokenCounter?)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.StringListWithTokenCount(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter?)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Represents a list of strings along with their token counts, optimized to minimize tokenizer calls.
+  remarks: Initializes a new instance of the <xref href="LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public StringListWithTokenCount(TextChunker.TokenCounter? tokenCounter)
+    parameters:
+    - id: tokenCounter
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+      description: The token counter delegate, or null to use character length heuristics.
+    content.vb: Public Sub New(tokenCounter As TextChunker.TokenCounter)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.New(TextChunker.TokenCounter)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.New(LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter)
+  name.vb: New(TokenCounter)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount._tokenCounter
+  commentId: F:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount._tokenCounter
+  id: _tokenCounter
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: _tokenCounter
+  nameWithType: TextChunker.StringListWithTokenCount._tokenCounter
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount._tokenCounter
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _tokenCounter
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 48
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  syntax:
+    content: private readonly TextChunker.TokenCounter? _tokenCounter
+    return:
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    content.vb: Private ReadOnly _tokenCounter As TextChunker.TokenCounter
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String)
+  id: Add(System.String)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: Add(string)
+  nameWithType: TextChunker.StringListWithTokenCount.Add(string)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Add
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 54
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Adds a string value and calculates its token count.
+  example: []
+  syntax:
+    content: public void Add(string value)
+    parameters:
+    - id: value
+      type: System.String
+      description: The string value to add.
+    content.vb: Public Sub Add(value As String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.Add(String)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(String)
+  name.vb: Add(String)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(System.String,System.Int32)
+  id: Add(System.String,System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: Add(string, int)
+  nameWithType: TextChunker.StringListWithTokenCount.Add(string, int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(string, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Add
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 61
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Adds a string value with a pre-calculated token count.
+  example: []
+  syntax:
+    content: public void Add(string value, int tokenCount)
+    parameters:
+    - id: value
+      type: System.String
+      description: The string value to add.
+    - id: tokenCount
+      type: System.Int32
+      description: The number of tokens in the string.
+    content.vb: Public Sub Add(value As String, tokenCount As Integer)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.Add(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add(String, Integer)
+  name.vb: Add(String, Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount)
+  id: AddRange(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: AddRange(StringListWithTokenCount)
+  nameWithType: TextChunker.StringListWithTokenCount.AddRange(TextChunker.StringListWithTokenCount)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange(LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AddRange
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 67
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Adds all values from another string list with token counts.
+  example: []
+  syntax:
+    content: public void AddRange(TextChunker.StringListWithTokenCount range)
+    parameters:
+    - id: range
+      type: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+      description: The list of values to add.
+    content.vb: Public Sub AddRange(range As TextChunker.StringListWithTokenCount)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange*
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange(System.Int32,System.Int32)
+  id: RemoveRange(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: RemoveRange(int, int)
+  nameWithType: TextChunker.StringListWithTokenCount.RemoveRange(int, int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange(int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RemoveRange
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 74
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Removes a range of elements from the list.
+  example: []
+  syntax:
+    content: public void RemoveRange(int index, int count)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The zero-based starting index of the range to remove.
+    - id: count
+      type: System.Int32
+      description: The number of elements to remove.
+    content.vb: Public Sub RemoveRange(index As Integer, count As Integer)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.RemoveRange(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange(Integer, Integer)
+  name.vb: RemoveRange(Integer, Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+  commentId: P:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+  id: Count
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: TextChunker.StringListWithTokenCount.Count
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Count
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 79
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Gets the number of elements contained in the list.
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count*
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList
+  id: ToStringList
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: ToStringList()
+  nameWithType: TextChunker.StringListWithTokenCount.ToStringList()
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ToStringList
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 85
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Converts the list elements to a standard list of strings.
+  example: []
+  syntax:
+    content: public List<string> ToStringList()
+    return:
+      type: System.Collections.Generic.List{System.String}
+      description: A list of strings.
+    content.vb: Public Function ToStringList() As List(Of String)
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList*
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+  commentId: P:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+  id: Values
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: Values
+  nameWithType: TextChunker.StringListWithTokenCount.Values
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Values
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 90
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Gets the internal list containing the string values and token counts.
+  example: []
+  syntax:
+    content: private List<(string Value, int TokenCount)> Values { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.ValueTuple{System.String,System.Int32}}
+    content.vb: Private ReadOnly Property Values As List(Of (Value As String, TokenCount As Integer))
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values*
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt(System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt(System.Int32)
+  id: ValueAt(System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: ValueAt(int)
+  nameWithType: TextChunker.StringListWithTokenCount.ValueAt(int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt(int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ValueAt
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 97
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Gets the string value at the specified index.
+  example: []
+  syntax:
+    content: public string ValueAt(int i)
+    parameters:
+    - id: i
+      type: System.Int32
+      description: The zero-based index of the element to get.
+    return:
+      type: System.String
+      description: The string value.
+    content.vb: Public Function ValueAt(i As Integer) As String
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.ValueAt(Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt(Integer)
+  name.vb: ValueAt(Integer)
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt(System.Int32)
+  commentId: M:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt(System.Int32)
+  id: TokenCountAt(System.Int32)
+  parent: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  langs:
+  - csharp
+  - vb
+  name: TokenCountAt(int)
+  nameWithType: TextChunker.StringListWithTokenCount.TokenCountAt(int)
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt(int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TokenCountAt
+    path: LocalSearchEngine.Core/TextProcessing/TextChunker.cs
+    startLine: 104
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  summary: Gets the token count at the specified index.
+  example: []
+  syntax:
+    content: public int TokenCountAt(int i)
+    parameters:
+    - id: i
+      type: System.Int32
+      description: The zero-based index of the element to get.
+    return:
+      type: System.Int32
+      description: The token count.
+    content.vb: Public Function TokenCountAt(i As Integer) As Integer
+  overload: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt*
+  nameWithType.vb: TextChunker.StringListWithTokenCount.TokenCountAt(Integer)
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt(Integer)
+  name.vb: TokenCountAt(Integer)
+references:
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.StringListWithTokenCount
+  nameWithType: TextChunker.StringListWithTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+- uid: LocalSearchEngine.Core.TextProcessing
+  commentId: N:LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.TextProcessing
+  nameWithType: LocalSearchEngine.Core.TextProcessing
+  fullName: LocalSearchEngine.Core.TextProcessing
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing
+    name: TextProcessing
+    href: LocalSearchEngine.Core.TextProcessing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.#ctor
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount__ctor_LocalSearchEngine_Core_TextProcessing_TextChunker_TokenCounter_
+  name: StringListWithTokenCount
+  nameWithType: TextChunker.StringListWithTokenCount.StringListWithTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.StringListWithTokenCount
+  nameWithType.vb: TextChunker.StringListWithTokenCount.New
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.TokenCounter
+  nameWithType: TextChunker.TokenCounter
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
+    name: TokenCounter
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter.html
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_Add_System_String_
+  name: Add
+  nameWithType: TextChunker.StringListWithTokenCount.Add
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Add
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_AddRange_LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_
+  name: AddRange
+  nameWithType: TextChunker.StringListWithTokenCount.AddRange
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.AddRange
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_RemoveRange_System_Int32_System_Int32_
+  name: RemoveRange
+  nameWithType: TextChunker.StringListWithTokenCount.RemoveRange
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.RemoveRange
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_Count
+  name: Count
+  nameWithType: TextChunker.StringListWithTokenCount.Count
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Count
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_ToStringList
+  name: ToStringList
+  nameWithType: TextChunker.StringListWithTokenCount.ToStringList
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ToStringList
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_Values
+  name: Values
+  nameWithType: TextChunker.StringListWithTokenCount.Values
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.Values
+- uid: System.Collections.Generic.List{System.ValueTuple{System.String,System.Int32}}
+  commentId: T:System.Collections.Generic.List{System.ValueTuple{System.String,System.Int32}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<(string Value, int TokenCount)>
+  nameWithType: List<(string Value, int TokenCount)>
+  fullName: System.Collections.Generic.List<(string Value, int TokenCount)>
+  nameWithType.vb: List(Of (Value As String, TokenCount As Integer))
+  fullName.vb: System.Collections.Generic.List(Of (Value As String, TokenCount As Integer))
+  name.vb: List(Of (Value As String, TokenCount As Integer))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Int32}.Value
+    name: Value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.int32-.value
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Int32}.TokenCount
+    name: TokenCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.int32-.tokencount
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.Int32}.Value
+    name: Value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.int32-.value
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.Int32}.TokenCount
+    name: TokenCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.int32-.tokencount
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_ValueAt_System_Int32_
+  name: ValueAt
+  nameWithType: TextChunker.StringListWithTokenCount.ValueAt
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.ValueAt
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html#LocalSearchEngine_Core_TextProcessing_TextChunker_StringListWithTokenCount_TokenCountAt_System_Int32_
+  name: TokenCountAt
+  nameWithType: TextChunker.StringListWithTokenCount.TokenCountAt
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.TokenCountAt

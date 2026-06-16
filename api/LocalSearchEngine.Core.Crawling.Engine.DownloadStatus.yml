@@ -1,0 +1,279 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  id: DownloadStatus
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Failed
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.NotModified
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.SizeLimitExceeded
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Success
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.UnsupportedType
+  langs:
+  - csharp
+  - vb
+  name: DownloadStatus
+  nameWithType: DownloadStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DownloadStatus
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Dictates the outcomes of a document download attempt.
+  example: []
+  syntax:
+    content: internal enum DownloadStatus
+    content.vb: Friend Enum DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Success
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Success
+  id: Success
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: Success
+  nameWithType: DownloadStatus.Success
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Success
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Success
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The download was successful and the resource was fetched.
+  example: []
+  syntax:
+    content: Success = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.NotModified
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.NotModified
+  id: NotModified
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: NotModified
+  nameWithType: DownloadStatus.NotModified
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.NotModified
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NotModified
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The server returned 304 Not Modified, indicating the local cached copy is still fresh.
+  example: []
+  syntax:
+    content: NotModified = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  id: RedirectBlocked
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: RedirectBlocked
+  nameWithType: DownloadStatus.RedirectBlocked
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RedirectBlocked
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The redirect chain led out-of-scope or was disallowed by policy, so the download was blocked.
+  example: []
+  syntax:
+    content: RedirectBlocked = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
+  id: Gone
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: Gone
+  nameWithType: DownloadStatus.Gone
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Gone
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The resource returned 404 Not Found or 410 Gone.
+  example: []
+  syntax:
+    content: Gone = 3
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Failed
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Failed
+  id: Failed
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: Failed
+  nameWithType: DownloadStatus.Failed
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Failed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Failed
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The connection failed, timed out, or returned an HTTP error code.
+  example: []
+  syntax:
+    content: Failed = 4
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.SizeLimitExceeded
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.SizeLimitExceeded
+  id: SizeLimitExceeded
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: SizeLimitExceeded
+  nameWithType: DownloadStatus.SizeLimitExceeded
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.SizeLimitExceeded
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SizeLimitExceeded
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The resource content length or downloaded body exceeded the maximum size limit.
+  example: []
+  syntax:
+    content: SizeLimitExceeded = 5
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.UnsupportedType
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.UnsupportedType
+  id: UnsupportedType
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  langs:
+  - csharp
+  - vb
+  name: UnsupportedType
+  nameWithType: DownloadStatus.UnsupportedType
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.UnsupportedType
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: UnsupportedType
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The resource content-type is not supported for indexing.
+  example: []
+  syntax:
+    content: UnsupportedType = 6
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.html
+  name: DownloadStatus
+  nameWithType: DownloadStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus

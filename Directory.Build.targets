@@ -1,8 +1,0 @@
-<Project>
-  <!-- Disable all Roslyn analyzers during DocFX metadata generation to prevent loading errors due to SDK mismatches. -->
-  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(IsDocfxBuild)' == 'true'">
-    <ItemGroup>
-      <Analyzer Remove="@(Analyzer)" />
-    </ItemGroup>
-  </Target>
-</Project>

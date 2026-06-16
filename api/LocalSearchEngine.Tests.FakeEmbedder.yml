@@ -7,6 +7,7 @@ items:
   children:
   - LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
   - LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
+  - LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
   - LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
   langs:
   - csharp
@@ -69,7 +70,7 @@ items:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: public int EmbedCount { get; }
+    content: public int EmbedCount { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -155,6 +156,40 @@ items:
   nameWithType.vb: FakeEmbedder.Embed(String)
   fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.Embed(String)
   name.vb: Embed(String)
+- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
+  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
+  id: EmbedInternal(System.String)
+  parent: LocalSearchEngine.Tests.FakeEmbedder
+  langs:
+  - csharp
+  - vb
+  name: EmbedInternal(string)
+  nameWithType: FakeEmbedder.EmbedInternal(string)
+  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/FakeEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedInternal
+    path: LocalSearchEngine.Tests/FakeEmbedder.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static ReadOnlyMemory<float> EmbedInternal(string text)
+    parameters:
+    - id: text
+      type: System.String
+    return:
+      type: System.ReadOnlyMemory{System.Single}
+    content.vb: Private Shared Function EmbedInternal(text As String) As ReadOnlyMemory(Of Single)
+  overload: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal*
+  nameWithType.vb: FakeEmbedder.EmbedInternal(String)
+  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(String)
+  name.vb: EmbedInternal(String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -617,3 +652,9 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal*
+  commentId: Overload:LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal
+  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedInternal_System_String_
+  name: EmbedInternal
+  nameWithType: FakeEmbedder.EmbedInternal
+  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal

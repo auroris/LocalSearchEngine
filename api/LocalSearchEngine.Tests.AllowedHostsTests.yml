@@ -12,6 +12,7 @@ items:
   - LocalSearchEngine.Tests.AllowedHostsTests.Port_restricts_when_specified
   - LocalSearchEngine.Tests.AllowedHostsTests.Scheme_restricts_when_specified
   - LocalSearchEngine.Tests.AllowedHostsTests.Seed_origin_pins_the_schemes_default_port
+  - LocalSearchEngine.Tests.AllowedHostsTests.U(System.String)
   langs:
   - csharp
   - vb
@@ -43,6 +44,40 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.U(System.String)
+  commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.U(System.String)
+  id: U(System.String)
+  parent: LocalSearchEngine.Tests.AllowedHostsTests
+  langs:
+  - csharp
+  - vb
+  name: U(string)
+  nameWithType: AllowedHostsTests.U(string)
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.U(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: U
+    path: LocalSearchEngine.Tests/AllowedHostsTests.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static Uri U(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Uri
+    content.vb: Private Shared Function U(url As String) As Uri
+  overload: LocalSearchEngine.Tests.AllowedHostsTests.U*
+  nameWithType.vb: AllowedHostsTests.U(String)
+  fullName.vb: LocalSearchEngine.Tests.AllowedHostsTests.U(String)
+  name.vb: U(String)
 - uid: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
   commentId: M:LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
   id: Bare_host_matches_any_scheme_and_port
@@ -593,6 +628,31 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: LocalSearchEngine.Tests.AllowedHostsTests.U*
+  commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.U
+  href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_U_System_String_
+  name: U
+  nameWithType: AllowedHostsTests.U
+  fullName: LocalSearchEngine.Tests.AllowedHostsTests.U
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
 - uid: LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port*
   commentId: Overload:LocalSearchEngine.Tests.AllowedHostsTests.Bare_host_matches_any_scheme_and_port
   href: LocalSearchEngine.Tests.AllowedHostsTests.html#LocalSearchEngine_Tests_AllowedHostsTests_Bare_host_matches_any_scheme_and_port
@@ -635,14 +695,3 @@ references:
   name: Invalid_entries_are_rejected
   nameWithType: AllowedHostsTests.Invalid_entries_are_rejected
   fullName: LocalSearchEngine.Tests.AllowedHostsTests.Invalid_entries_are_rejected
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String

@@ -1,0 +1,729 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter
+  commentId: T:LocalSearchEngine.Crawler.BrokenLinksWriter
+  id: BrokenLinksWriter
+  parent: LocalSearchEngine.Crawler
+  children:
+  - LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection(System.Text.StringBuilder,System.String,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink})
+  - LocalSearchEngine.Crawler.BrokenLinksWriter.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.Boolean)
+  - LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.Boolean,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: BrokenLinksWriter
+  nameWithType: BrokenLinksWriter
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: BrokenLinksWriter
+    path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+    startLine: 11
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: >-
+    Writes the end-of-run broken-links report: in-scope links that returned 404/410 while crawling,
+
+    off-site links that failed the optional verification pass, and the hosts written off as
+
+    unreachable. The same data is also present (structured) in the JSON stats file; this is the
+
+    human-readable companion. Each broken link is listed with the page it was found on.
+  example: []
+  syntax:
+    content: internal static class BrokenLinksWriter
+    content.vb: Friend Module BrokenLinksWriter
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.Boolean,System.Threading.CancellationToken)
+  id: WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.Boolean,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Crawler.BrokenLinksWriter
+  langs:
+  - csharp
+  - vb
+  name: WriteAsync(CrawlReport, string, bool, CancellationToken)
+  nameWithType: BrokenLinksWriter.WriteAsync(CrawlReport, string, bool, CancellationToken)
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, string, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WriteAsync
+    path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Writes the broken-links report to <code class="paramref">path</code>.
+  example: []
+  syntax:
+    content: public static Task WriteAsync(CrawlReport report, string path, bool externalChecked, CancellationToken cancellationToken)
+    parameters:
+    - id: report
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+      description: The completed crawl report.
+    - id: path
+      type: System.String
+      description: Destination path for the text report.
+    - id: externalChecked
+      type: System.Boolean
+      description: Whether off-site link verification ran this crawl.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous write.
+    content.vb: Public Shared Function WriteAsync(report As CrawlReport, path As String, externalChecked As Boolean, cancellationToken As CancellationToken) As Task
+  overload: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync*
+  nameWithType.vb: BrokenLinksWriter.WriteAsync(CrawlReport, String, Boolean, CancellationToken)
+  fullName.vb: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, String, Boolean, System.Threading.CancellationToken)
+  name.vb: WriteAsync(CrawlReport, String, Boolean, CancellationToken)
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.Boolean)
+  commentId: M:LocalSearchEngine.Crawler.BrokenLinksWriter.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.Boolean)
+  id: Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.Boolean)
+  parent: LocalSearchEngine.Crawler.BrokenLinksWriter
+  langs:
+  - csharp
+  - vb
+  name: Build(CrawlReport, bool)
+  nameWithType: BrokenLinksWriter.Build(CrawlReport, bool)
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Build
+    path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private static string Build(CrawlReport report, bool externalChecked)
+    parameters:
+    - id: report
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+    - id: externalChecked
+      type: System.Boolean
+    return:
+      type: System.String
+    content.vb: Private Shared Function Build(report As CrawlReport, externalChecked As Boolean) As String
+  overload: LocalSearchEngine.Crawler.BrokenLinksWriter.Build*
+  nameWithType.vb: BrokenLinksWriter.Build(CrawlReport, Boolean)
+  fullName.vb: LocalSearchEngine.Crawler.BrokenLinksWriter.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, Boolean)
+  name.vb: Build(CrawlReport, Boolean)
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection(System.Text.StringBuilder,System.String,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink})
+  commentId: M:LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection(System.Text.StringBuilder,System.String,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink})
+  id: AppendLinkSection(System.Text.StringBuilder,System.String,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink})
+  parent: LocalSearchEngine.Crawler.BrokenLinksWriter
+  langs:
+  - csharp
+  - vb
+  name: AppendLinkSection(StringBuilder, string, IReadOnlyList<BrokenLink>)
+  nameWithType: BrokenLinksWriter.AppendLinkSection(StringBuilder, string, IReadOnlyList<BrokenLink>)
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection(System.Text.StringBuilder, string, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AppendLinkSection
+    path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
+    startLine: 57
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Writes a titled, counted section of links, on-site first then off-site, grouped by the page each sits on.
+  example: []
+  syntax:
+    content: private static void AppendLinkSection(StringBuilder sb, string title, IReadOnlyList<BrokenLink> links)
+    parameters:
+    - id: sb
+      type: System.Text.StringBuilder
+    - id: title
+      type: System.String
+    - id: links
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+    content.vb: Private Shared Sub AppendLinkSection(sb As StringBuilder, title As String, links As IReadOnlyList(Of BrokenLink))
+  overload: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection*
+  nameWithType.vb: BrokenLinksWriter.AppendLinkSection(StringBuilder, String, IReadOnlyList(Of BrokenLink))
+  fullName.vb: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection(System.Text.StringBuilder, String, System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink))
+  name.vb: AppendLinkSection(StringBuilder, String, IReadOnlyList(Of BrokenLink))
+references:
+- uid: LocalSearchEngine.Crawler
+  commentId: N:LocalSearchEngine.Crawler
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Crawler
+  nameWithType: LocalSearchEngine.Crawler
+  fullName: LocalSearchEngine.Crawler
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync*
+  commentId: Overload:LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync
+  href: LocalSearchEngine.Crawler.BrokenLinksWriter.html#LocalSearchEngine_Crawler_BrokenLinksWriter_WriteAsync_LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_System_String_System_Boolean_System_Threading_CancellationToken_
+  name: WriteAsync
+  nameWithType: BrokenLinksWriter.WriteAsync
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.WriteAsync
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
+  name: CrawlReport
+  nameWithType: CrawlReport
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.Build*
+  commentId: Overload:LocalSearchEngine.Crawler.BrokenLinksWriter.Build
+  href: LocalSearchEngine.Crawler.BrokenLinksWriter.html#LocalSearchEngine_Crawler_BrokenLinksWriter_Build_LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_System_Boolean_
+  name: Build
+  nameWithType: BrokenLinksWriter.Build
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.Build
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection*
+  commentId: Overload:LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection
+  href: LocalSearchEngine.Crawler.BrokenLinksWriter.html#LocalSearchEngine_Crawler_BrokenLinksWriter_AppendLinkSection_System_Text_StringBuilder_System_String_System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__
+  name: AppendLinkSection
+  nameWithType: BrokenLinksWriter.AppendLinkSection
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter.AppendLinkSection
+- uid: System.Text.StringBuilder
+  commentId: T:System.Text.StringBuilder
+  parent: System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.stringbuilder
+  name: StringBuilder
+  nameWithType: StringBuilder
+  fullName: System.Text.StringBuilder
+- uid: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+  commentId: T:System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<BrokenLink>
+  nameWithType: IReadOnlyList<BrokenLink>
+  fullName: System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>
+  nameWithType.vb: IReadOnlyList(Of BrokenLink)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink)
+  name.vb: IReadOnlyList(Of BrokenLink)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+    name: BrokenLink
+    href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+    name: BrokenLink
+    href: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink.html
+  - name: )
+- uid: System.Text
+  commentId: N:System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text
+  nameWithType: System.Text
+  fullName: System.Text
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

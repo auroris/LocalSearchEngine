@@ -7,6 +7,8 @@ items:
   children:
   - LocalSearchEngine.Web.Controllers.SearchController.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController})
   - LocalSearchEngine.Web.Controllers.SearchController.Query(System.String)
+  - LocalSearchEngine.Web.Controllers.SearchController._logger
+  - LocalSearchEngine.Web.Controllers.SearchController._vectorSearchService
   langs:
   - csharp
   - vb
@@ -235,6 +237,60 @@ items:
     arguments:
     - type: System.String
       value: api/[controller]
+- uid: LocalSearchEngine.Web.Controllers.SearchController._vectorSearchService
+  commentId: F:LocalSearchEngine.Web.Controllers.SearchController._vectorSearchService
+  id: _vectorSearchService
+  parent: LocalSearchEngine.Web.Controllers.SearchController
+  langs:
+  - csharp
+  - vb
+  name: _vectorSearchService
+  nameWithType: SearchController._vectorSearchService
+  fullName: LocalSearchEngine.Web.Controllers.SearchController._vectorSearchService
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Web/Controllers/SearchController.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _vectorSearchService
+    path: LocalSearchEngine.Web/Controllers/SearchController.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Web
+  namespace: LocalSearchEngine.Web.Controllers
+  syntax:
+    content: private readonly VectorSearchService _vectorSearchService
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _vectorSearchService As VectorSearchService
+- uid: LocalSearchEngine.Web.Controllers.SearchController._logger
+  commentId: F:LocalSearchEngine.Web.Controllers.SearchController._logger
+  id: _logger
+  parent: LocalSearchEngine.Web.Controllers.SearchController
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: SearchController._logger
+  fullName: LocalSearchEngine.Web.Controllers.SearchController._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Web/Controllers/SearchController.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Web/Controllers/SearchController.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Web
+  namespace: LocalSearchEngine.Web.Controllers
+  syntax:
+    content: private readonly ILogger<SearchController> _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController}
+    content.vb: Private ReadOnly _logger As ILogger(Of SearchController)
 - uid: LocalSearchEngine.Web.Controllers.SearchController.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController})
   commentId: M:LocalSearchEngine.Web.Controllers.SearchController.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController})
   id: '#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController})'
@@ -9577,21 +9633,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
-- uid: LocalSearchEngine.Web.Controllers.SearchController
-  commentId: T:LocalSearchEngine.Web.Controllers.SearchController
-  href: LocalSearchEngine.Web.Controllers.SearchController.html
-  name: SearchController
-  nameWithType: SearchController
-  fullName: LocalSearchEngine.Web.Controllers.SearchController
-- uid: LocalSearchEngine.Web.Controllers.SearchController.#ctor*
-  commentId: Overload:LocalSearchEngine.Web.Controllers.SearchController.#ctor
-  href: LocalSearchEngine.Web.Controllers.SearchController.html#LocalSearchEngine_Web_Controllers_SearchController__ctor_LocalSearchEngine_Core_Searching_VectorSearchService_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Web_Controllers_SearchController__
-  name: SearchController
-  nameWithType: SearchController.SearchController
-  fullName: LocalSearchEngine.Web.Controllers.SearchController.SearchController
-  nameWithType.vb: SearchController.New
-  fullName.vb: LocalSearchEngine.Web.Controllers.SearchController.New
-  name.vb: New
 - uid: LocalSearchEngine.Core.Searching.VectorSearchService
   commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
   parent: LocalSearchEngine.Core.Searching
@@ -9599,6 +9640,36 @@ references:
   name: VectorSearchService
   nameWithType: VectorSearchService
   fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
 - uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController}
   commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController}
   parent: Microsoft.Extensions.Logging
@@ -9632,36 +9703,6 @@ references:
     name: SearchController
     href: LocalSearchEngine.Web.Controllers.SearchController.html
   - name: )
-- uid: LocalSearchEngine.Core.Searching
-  commentId: N:LocalSearchEngine.Core.Searching
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Searching
-  nameWithType: LocalSearchEngine.Core.Searching
-  fullName: LocalSearchEngine.Core.Searching
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching
-    name: Searching
-    href: LocalSearchEngine.Core.Searching.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching
-    name: Searching
-    href: LocalSearchEngine.Core.Searching.html
 - uid: Microsoft.Extensions.Logging.ILogger`1
   commentId: T:Microsoft.Extensions.Logging.ILogger`1
   isExternal: true
@@ -9727,6 +9768,21 @@ references:
     name: Logging
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Web.Controllers.SearchController
+  commentId: T:LocalSearchEngine.Web.Controllers.SearchController
+  href: LocalSearchEngine.Web.Controllers.SearchController.html
+  name: SearchController
+  nameWithType: SearchController
+  fullName: LocalSearchEngine.Web.Controllers.SearchController
+- uid: LocalSearchEngine.Web.Controllers.SearchController.#ctor*
+  commentId: Overload:LocalSearchEngine.Web.Controllers.SearchController.#ctor
+  href: LocalSearchEngine.Web.Controllers.SearchController.html#LocalSearchEngine_Web_Controllers_SearchController__ctor_LocalSearchEngine_Core_Searching_VectorSearchService_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Web_Controllers_SearchController__
+  name: SearchController
+  nameWithType: SearchController.SearchController
+  fullName: LocalSearchEngine.Web.Controllers.SearchController.SearchController
+  nameWithType.vb: SearchController.New
+  fullName.vb: LocalSearchEngine.Web.Controllers.SearchController.New
+  name.vb: New
 - uid: LocalSearchEngine.Web.Controllers.SearchController.Query*
   commentId: Overload:LocalSearchEngine.Web.Controllers.SearchController.Query
   href: LocalSearchEngine.Web.Controllers.SearchController.html#LocalSearchEngine_Web_Controllers_SearchController_Query_System_String_

@@ -6,11 +6,18 @@ items:
   parent: LocalSearchEngine.Tests
   children:
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Deleting_a_url_clears_data_vector_and_fts_rows_together
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_filter_restricts_results_to_the_named_host
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete(System.String)
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._connectionString
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._dbPath
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._provider
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._service
   langs:
   - csharp
   - vb
@@ -54,6 +61,114 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._dbPath
+  commentId: F:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._dbPath
+  id: _dbPath
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _dbPath
+  nameWithType: VectorSearchServiceIntegrationTests._dbPath
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._dbPath
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _dbPath
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _dbPath
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _dbPath As String
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._connectionString
+  commentId: F:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._connectionString
+  id: _connectionString
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _connectionString
+  nameWithType: VectorSearchServiceIntegrationTests._connectionString
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._connectionString
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connectionString
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _connectionString
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _connectionString As String
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._provider
+  commentId: F:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._provider
+  id: _provider
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _provider
+  nameWithType: VectorSearchServiceIntegrationTests._provider
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._provider
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _provider
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly ServiceProvider _provider
+    return:
+      type: Microsoft.Extensions.DependencyInjection.ServiceProvider
+    content.vb: Private ReadOnly _provider As ServiceProvider
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._service
+  commentId: F:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._service
+  id: _service
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: _service
+  nameWithType: VectorSearchServiceIntegrationTests._service
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests._service
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _service
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly VectorSearchService _service
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _service As VectorSearchService
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor
   commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor
   id: '#ctor'
@@ -83,6 +198,34 @@ items:
   nameWithType.vb: VectorSearchServiceIntegrationTests.New()
   fullName.vb: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.New()
   name.vb: New()
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
+  commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
+  id: SeedSchemaAndDataAsync
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: SeedSchemaAndDataAsync()
+  nameWithType: VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync()
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SeedSchemaAndDataAsync
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 43
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task SeedSchemaAndDataAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Function SeedSchemaAndDataAsync() As Task
+  overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync*
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
   commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
   id: Self_match_ranks_first_with_near_zero_distance
@@ -235,6 +378,40 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
+  commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
+  id: Count(System.String)
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Count(string)
+  nameWithType: VectorSearchServiceIntegrationTests.Count(string)
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Count
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 127
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private long Count(string sql)
+    parameters:
+    - id: sql
+      type: System.String
+    return:
+      type: System.Int64
+    content.vb: Private Function Count(sql As String) As Long
+  overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count*
+  nameWithType.vb: VectorSearchServiceIntegrationTests.Count(String)
+  fullName.vb: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(String)
+  name.vb: Count(String)
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
   commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
   id: Dispose
@@ -265,6 +442,38 @@ items:
   overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose*
   implements:
   - System.IDisposable.Dispose
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete(System.String)
+  commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete(System.String)
+  id: TryDelete(System.String)
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: TryDelete(string)
+  nameWithType: VectorSearchServiceIntegrationTests.TryDelete(string)
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryDelete
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 145
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static void TryDelete(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Private Shared Sub TryDelete(path As String)
+  overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete*
+  nameWithType.vb: VectorSearchServiceIntegrationTests.TryDelete(String)
+  fullName.vb: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete(String)
+  name.vb: TryDelete(String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -509,6 +718,99 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Microsoft.Extensions.DependencyInjection.ServiceProvider
+  commentId: T:Microsoft.Extensions.DependencyInjection.ServiceProvider
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovider
+  name: ServiceProvider
+  nameWithType: ServiceProvider
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceProvider
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor*
   commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor
   href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests__ctor
@@ -518,12 +820,12 @@ references:
   nameWithType.vb: VectorSearchServiceIntegrationTests.New
   fullName.vb: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.New
   name.vb: New
-- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance*
-  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
-  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Self_match_ranks_first_with_near_zero_distance
-  name: Self_match_ranks_first_with_near_zero_distance
-  nameWithType: VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
-  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_SeedSchemaAndDataAsync
+  name: SeedSchemaAndDataAsync
+  nameWithType: VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -569,6 +871,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Self_match_ranks_first_with_near_zero_distance
+  name: Self_match_ranks_first_with_near_zero_distance
+  nameWithType: VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Deleting_a_url_clears_data_vector_and_fts_rows_together*
   commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Deleting_a_url_clears_data_vector_and_fts_rows_together
   href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Deleting_a_url_clears_data_vector_and_fts_rows_together
@@ -587,6 +895,23 @@ references:
   name: Site_only_query_returns_no_results
   nameWithType: VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results
   fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Count_System_String_
+  name: Count
+  nameWithType: VectorSearchServiceIntegrationTests.Count
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose*
   commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
   href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Dispose
@@ -615,3 +940,9 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
   - name: (
   - name: )
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_TryDelete_System_String_
+  name: TryDelete
+  nameWithType: VectorSearchServiceIntegrationTests.TryDelete
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.TryDelete

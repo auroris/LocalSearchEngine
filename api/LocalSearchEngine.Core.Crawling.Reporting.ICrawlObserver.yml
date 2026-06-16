@@ -68,6 +68,8 @@ items:
   syntax:
     content: public interface ICrawlObserver
     content.vb: Public Interface ICrawlObserver
+  derivedClasses:
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.Stats
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.Stats
   id: Stats

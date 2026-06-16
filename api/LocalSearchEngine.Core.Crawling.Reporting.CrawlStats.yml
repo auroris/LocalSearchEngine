@@ -84,7 +84,7 @@ items:
   summary: Pages whose content was (re-)indexed.
   example: []
   syntax:
-    content: public int Indexed { get; }
+    content: public int Indexed { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -115,7 +115,7 @@ items:
   summary: Pages unchanged since the last crawl (304 or identical content hash).
   example: []
   syntax:
-    content: public int Unchanged { get; }
+    content: public int Unchanged { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -146,7 +146,7 @@ items:
   summary: Pages fetched but left unindexed by a noindex directive.
   example: []
   syntax:
-    content: public int NoIndex { get; }
+    content: public int NoIndex { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -177,7 +177,7 @@ items:
   summary: Pages skipped for an unsupported content type or a failed sniff.
   example: []
   syntax:
-    content: public int SkippedType { get; }
+    content: public int SkippedType { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -208,7 +208,7 @@ items:
   summary: Pages skipped for exceeding the size limit.
   example: []
   syntax:
-    content: public int SkippedSize { get; }
+    content: public int SkippedSize { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -239,7 +239,7 @@ items:
   summary: URLs that resolved to a redirect, canonical alias, or duplicate.
   example: []
   syntax:
-    content: public int Redirected { get; }
+    content: public int Redirected { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -270,7 +270,7 @@ items:
   summary: Pages found gone (404/410) and removed from the index.
   example: []
   syntax:
-    content: public int Gone { get; }
+    content: public int Gone { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -301,7 +301,7 @@ items:
   summary: URLs not fetched because robots.txt disallowed them.
   example: []
   syntax:
-    content: public int Disallowed { get; }
+    content: public int Disallowed { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -332,7 +332,7 @@ items:
   summary: URLs that errored or returned a non-success status.
   example: []
   syntax:
-    content: public int Failed { get; }
+    content: public int Failed { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -363,7 +363,7 @@ items:
   summary: Total outlinks seen across pages, duplicates included.
   example: []
   syntax:
-    content: public long LinksFound { get; }
+    content: public long LinksFound { get; private set; }
     parameters: []
     return:
       type: System.Int64
@@ -394,7 +394,7 @@ items:
   summary: Indexed URLs removed because an origin's robots.txt now disallows them.
   example: []
   syntax:
-    content: public int RemovedBanned { get; }
+    content: public int RemovedBanned { get; private set; }
     parameters: []
     return:
       type: System.Int32
@@ -425,7 +425,7 @@ items:
   summary: Indexed URLs pruned because a completed crawl no longer reaches them.
   example: []
   syntax:
-    content: public int RemovedStale { get; }
+    content: public int RemovedStale { get; private set; }
     parameters: []
     return:
       type: System.Int32

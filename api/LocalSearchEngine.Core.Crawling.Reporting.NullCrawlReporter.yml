@@ -5,6 +5,7 @@ items:
   id: NullCrawlReporter
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
+  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
   - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.Instance
   - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
@@ -74,6 +75,35 @@ items:
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
     content.vb: Public Shared ReadOnly Instance As NullCrawlReporter
+- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
+  id: '#ctor'
+  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: NullCrawlReporter()
+  nameWithType: NullCrawlReporter.NullCrawlReporter()
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.NullCrawlReporter()
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+    startLine: 11
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private NullCrawlReporter()
+    content.vb: Private Sub New()
+  overload: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor*
+  nameWithType.vb: NullCrawlReporter.New()
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.New()
+  name.vb: New()
 - uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
@@ -420,6 +450,15 @@ references:
   name: NullCrawlReporter
   nameWithType: NullCrawlReporter
   fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
+  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_NullCrawlReporter__ctor
+  name: NullCrawlReporter
+  nameWithType: NullCrawlReporter.NullCrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.NullCrawlReporter
+  nameWithType.vb: NullCrawlReporter.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.New
+  name.vb: New
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting

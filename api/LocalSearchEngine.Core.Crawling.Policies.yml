@@ -5,6 +5,7 @@ items:
   id: LocalSearchEngine.Core.Crawling.Policies
   children:
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
   - LocalSearchEngine.Core.Crawling.Policies.DocKind
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
@@ -28,6 +29,28 @@ references:
   name: AllowedHosts
   nameWithType: AllowedHosts
   fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  name: AllowedHosts.HostRule
+  nameWithType: AllowedHosts.HostRule
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
 - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
   parent: LocalSearchEngine.Core.Crawling.Policies
@@ -43,6 +66,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  parent: LocalSearchEngine.Core.Crawling.Policies
   href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html
   name: HostHealthTracker
   nameWithType: HostHealthTracker

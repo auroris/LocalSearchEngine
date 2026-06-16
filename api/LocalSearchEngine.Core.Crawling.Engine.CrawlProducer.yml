@@ -1,0 +1,1586 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  id: CrawlProducer
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._logger
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._pageDownloader
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._robotsService
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._vectorSearchService
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
+  langs:
+  - csharp
+  - vb
+  name: CrawlProducer
+  nameWithType: CrawlProducer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlProducer
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Orchestrates the crawling of pages, checking constraints, and producing database write jobs.
+  example: []
+  syntax:
+    content: internal sealed class CrawlProducer
+    content.vb: Friend NotInheritable Class CrawlProducer
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
+  id: DefaultRequestDelayMs
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: DefaultRequestDelayMs
+  nameWithType: CrawlProducer.DefaultRequestDelayMs
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DefaultRequestDelayMs
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The default request delay in milliseconds when robots.txt does not specify one.
+  example: []
+  syntax:
+    content: private const int DefaultRequestDelayMs = 250
+    return:
+      type: System.Int32
+    content.vb: Private Const DefaultRequestDelayMs As Integer = 250
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
+  id: MaxCrawlDelaySeconds
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: MaxCrawlDelaySeconds
+  nameWithType: CrawlProducer.MaxCrawlDelaySeconds
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxCrawlDelaySeconds
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The maximum allowed crawl delay in seconds to prevent excessive waiting.
+  example: []
+  syntax:
+    content: private const int MaxCrawlDelaySeconds = 30
+    return:
+      type: System.Int32
+    content.vb: Private Const MaxCrawlDelaySeconds As Integer = 30
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._vectorSearchService
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._vectorSearchService
+  id: _vectorSearchService
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _vectorSearchService
+  nameWithType: CrawlProducer._vectorSearchService
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._vectorSearchService
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _vectorSearchService
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The vector search service to record and update vector index chunks.
+  example: []
+  syntax:
+    content: private readonly VectorSearchService _vectorSearchService
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _vectorSearchService As VectorSearchService
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
+  id: _writer
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _writer
+  nameWithType: CrawlProducer._writer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _writer
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The channel writer used to send finished jobs to the consumer.
+  example: []
+  syntax:
+    content: private readonly ChannelWriter<CrawlJob> _writer
+    return:
+      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+    content.vb: Private ReadOnly _writer As ChannelWriter(Of CrawlJob)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
+  id: _context
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _context
+  nameWithType: CrawlProducer._context
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _context
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The shared crawl context holding queue and visited state.
+  example: []
+  syntax:
+    content: private readonly CrawlContext _context
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+    content.vb: Private ReadOnly _context As CrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._robotsService
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._robotsService
+  id: _robotsService
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _robotsService
+  nameWithType: CrawlProducer._robotsService
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._robotsService
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _robotsService
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Service to fetch and evaluate robots.txt rules.
+  example: []
+  syntax:
+    content: private readonly RobotsService _robotsService
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+    content.vb: Private ReadOnly _robotsService As RobotsService
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._pageDownloader
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._pageDownloader
+  id: _pageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _pageDownloader
+  nameWithType: CrawlProducer._pageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._pageDownloader
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _pageDownloader
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Downloader to fetch web content and apply page rules.
+  example: []
+  syntax:
+    content: private readonly PageDownloader _pageDownloader
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    content.vb: Private ReadOnly _pageDownloader As PageDownloader
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._logger
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._logger
+  id: _logger
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: CrawlProducer._logger
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The logger instance.
+  example: []
+  syntax:
+    content: private readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Private ReadOnly _logger As ILogger
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)'
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: CrawlProducer(VectorSearchService, ChannelWriter<CrawlJob>, CrawlContext, RobotsService, PageDownloader, ILogger)
+  nameWithType: CrawlProducer.CrawlProducer(VectorSearchService, ChannelWriter<CrawlJob>, CrawlContext, RobotsService, PageDownloader, ILogger)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.CrawlProducer(LocalSearchEngine.Core.Searching.VectorSearchService, System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 48
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlProducer" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public CrawlProducer(VectorSearchService vectorSearchService, ChannelWriter<CrawlJob> writer, CrawlContext context, RobotsService robotsService, PageDownloader pageDownloader, ILogger logger)
+    parameters:
+    - id: vectorSearchService
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+      description: The vector search service provider.
+    - id: writer
+      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+      description: The channel writer to submit crawl jobs.
+    - id: context
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+      description: The active crawl context.
+    - id: robotsService
+      type: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+      description: The robots.txt service handler.
+    - id: pageDownloader
+      type: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+      description: The page downloader service.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The logger instance.
+    content.vb: Public Sub New(vectorSearchService As VectorSearchService, writer As ChannelWriter(Of CrawlJob), context As CrawlContext, robotsService As RobotsService, pageDownloader As PageDownloader, logger As ILogger)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor*
+  nameWithType.vb: CrawlProducer.New(VectorSearchService, ChannelWriter(Of CrawlJob), CrawlContext, RobotsService, PageDownloader, ILogger)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.New(LocalSearchEngine.Core.Searching.VectorSearchService, System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob), LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(VectorSearchService, ChannelWriter(Of CrawlJob), CrawlContext, RobotsService, PageDownloader, ILogger)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ProduceAsync(int, int, CancellationToken)
+  nameWithType: CrawlProducer.ProduceAsync(int, int, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProduceAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 71
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Executes the main crawl loop, fetching pages from the queue and producing crawl jobs.
+  example: []
+  syntax:
+    content: public Task<(int ProducedJobs, int IndexedCount)> ProduceAsync(int maxPages, int maxPagesPerHost, CancellationToken cancellationToken)
+    parameters:
+    - id: maxPages
+      type: System.Int32
+      description: The maximum total pages to index.
+    - id: maxPagesPerHost
+      type: System.Int32
+      description: The maximum pages allowed per individual host.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
+      description: A tuple containing the number of produced jobs and the number of successfully indexed pages.
+    content.vb: Public Function ProduceAsync(maxPages As Integer, maxPagesPerHost As Integer, cancellationToken As CancellationToken) As Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync*
+  nameWithType.vb: CrawlProducer.ProduceAsync(Integer, Integer, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(Integer, Integer, System.Threading.CancellationToken)
+  name.vb: ProduceAsync(Integer, Integer, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
+  id: PruneStaleUrlsAsync(System.DateTime)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: PruneStaleUrlsAsync(DateTime)
+  nameWithType: CrawlProducer.PruneStaleUrlsAsync(DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PruneStaleUrlsAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 150
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Removes index entries for in-scope URLs the completed crawl never reached.
+  example: []
+  syntax:
+    content: public Task<int> PruneStaleUrlsAsync(DateTime crawlStartUtc)
+    parameters:
+    - id: crawlStartUtc
+      type: System.DateTime
+      description: The UTC timestamp indicating when the crawl started.
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+      description: The number of stale URLs pruned from storage.
+    content.vb: Public Function PruneStaleUrlsAsync(crawlStartUtc As Date) As Task(Of Integer)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync*
+  nameWithType.vb: CrawlProducer.PruneStaleUrlsAsync(Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(Date)
+  name.vb: PruneStaleUrlsAsync(Date)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
+  id: ProduceJobAsync(System.String,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ProduceJobAsync(string, CancellationToken)
+  nameWithType: CrawlProducer.ProduceJobAsync(string, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProduceJobAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 184
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: 'Processes a single URL: checks robot rules, downloads the page, and constructs the appropriate crawl job.'
+  example: []
+  syntax:
+    content: private Task<CrawlJob?> ProduceJobAsync(string currentUrl, CancellationToken cancellationToken)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The URL to crawl.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> representing the results of processing, or <code>null</code> if skipped.
+    content.vb: Private Function ProduceJobAsync(currentUrl As String, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync*
+  nameWithType.vb: CrawlProducer.ProduceJobAsync(String, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(String, System.Threading.CancellationToken)
+  name.vb: ProduceJobAsync(String, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
+  id: ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult, CancellationToken)
+  nameWithType: CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), LocalSearchEngine.Core.Crawling.Engine.DownloadResult, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProcessDownloadSuccessAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 297
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Processes a successfully downloaded page or file, verifying duplicate content, extracting content/metadata, and scheduling the appropriate indexing job.
+  example: []
+  syntax:
+    content: private Task<CrawlJob?> ProcessDownloadSuccessAsync(string currentUrl, (string? ETag, string? LastModified, string? ContentHash) state, DownloadResult downloadResult, CancellationToken cancellationToken)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The request URL.
+    - id: state
+      type: System.ValueTuple{System.String,System.String,System.String}
+      description: The previously recorded crawl state of the URL.
+    - id: downloadResult
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+      description: The result details of the successful download.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> representing the classification of the download success.
+    content.vb: Private Function ProcessDownloadSuccessAsync(currentUrl As String, state As (ETag As String, LastModified As String, ContentHash As String), downloadResult As DownloadResult, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync*
+  nameWithType.vb: CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), LocalSearchEngine.Core.Crawling.Engine.DownloadResult, System.Threading.CancellationToken)
+  name.vb: ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+  id: EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: EnqueueStoredOutlinksAsync(string, CancellationToken)
+  nameWithType: CrawlProducer.EnqueueStoredOutlinksAsync(string, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnqueueStoredOutlinksAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 404
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Reads outlinks stored in the database for an unchanged page and enqueues them for crawling.
+  example: []
+  syntax:
+    content: private Task EnqueueStoredOutlinksAsync(string url, CancellationToken cancellationToken)
+    parameters:
+    - id: url
+      type: System.String
+      description: The URL of the unchanged page.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Function EnqueueStoredOutlinksAsync(url As String, cancellationToken As CancellationToken) As Task
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync*
+  nameWithType.vb: CrawlProducer.EnqueueStoredOutlinksAsync(String, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(String, System.Threading.CancellationToken)
+  name.vb: EnqueueStoredOutlinksAsync(String, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  id: DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: DelayForHostAsync(string, TimeSpan, CancellationToken)
+  nameWithType: CrawlProducer.DelayForHostAsync(string, TimeSpan, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(string, System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DelayForHostAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 431
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Enforces host crawl delay politely by delaying execution if the last contact was too recent.
+  example: []
+  syntax:
+    content: private Task DelayForHostAsync(string host, TimeSpan minGap, CancellationToken cancellationToken)
+    parameters:
+    - id: host
+      type: System.String
+      description: The host name to check.
+    - id: minGap
+      type: System.TimeSpan
+      description: The minimum gap/duration between requests to this host.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Function DelayForHostAsync(host As String, minGap As TimeSpan, cancellationToken As CancellationToken) As Task
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync*
+  nameWithType.vb: CrawlProducer.DelayForHostAsync(String, TimeSpan, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(String, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: DelayForHostAsync(String, TimeSpan, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  id: ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ResolveRequestDelay(RobotsRules)
+  nameWithType: CrawlProducer.ResolveRequestDelay(RobotsRules)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ResolveRequestDelay
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 451
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Resolves the request delay based on robots.txt rules, falling back to a default value if not specified.
+  example: []
+  syntax:
+    content: private static TimeSpan ResolveRequestDelay(RobotsRules robots)
+    parameters:
+    - id: robots
+      type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+      description: The robots.txt rules for the host.
+    return:
+      type: System.TimeSpan
+      description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> representing the delay duration.
+    content.vb: Private Shared Function ResolveRequestDelay(robots As RobotsRules) As TimeSpan
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  commentId: T:System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  parent: System.Threading.Channels
+  definition: System.Threading.Channels.ChannelWriter`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  name: ChannelWriter<CrawlJob>
+  nameWithType: ChannelWriter<CrawlJob>
+  fullName: System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>
+  nameWithType.vb: ChannelWriter(Of CrawlJob)
+  fullName.vb: System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  name.vb: ChannelWriter(Of CrawlJob)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: )
+- uid: System.Threading.Channels.ChannelWriter`1
+  commentId: T:System.Threading.Channels.ChannelWriter`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  name: ChannelWriter<T>
+  nameWithType: ChannelWriter<T>
+  fullName: System.Threading.Channels.ChannelWriter<T>
+  nameWithType.vb: ChannelWriter(Of T)
+  fullName.vb: System.Threading.Channels.ChannelWriter(Of T)
+  name.vb: ChannelWriter(Of T)
+  spec.csharp:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Channels.ChannelWriter`1
+    name: ChannelWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Channels
+  commentId: N:System.Threading.Channels
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Channels
+  nameWithType: System.Threading.Channels
+  fullName: System.Threading.Channels
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Channels
+    name: Channels
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html
+  name: CrawlContext
+  nameWithType: CrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.RobotsService
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html
+  name: RobotsService
+  nameWithType: RobotsService
+  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader
+  nameWithType: PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html
+  name: CrawlProducer
+  nameWithType: CrawlProducer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer__ctor_LocalSearchEngine_Core_Searching_VectorSearchService_System_Threading_Channels_ChannelWriter_LocalSearchEngine_Core_Crawling_Engine_CrawlJob__LocalSearchEngine_Core_Crawling_Engine_CrawlContext_LocalSearchEngine_Core_Crawling_Engine_RobotsService_LocalSearchEngine_Core_Crawling_Engine_PageDownloader_Microsoft_Extensions_Logging_ILogger_
+  name: CrawlProducer
+  nameWithType: CrawlProducer.CrawlProducer
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.CrawlProducer
+  nameWithType.vb: CrawlProducer.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: ProduceAsync
+  nameWithType: CrawlProducer.ProduceAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(int ProducedJobs, int IndexedCount)>
+  nameWithType: Task<(int ProducedJobs, int IndexedCount)>
+  fullName: System.Threading.Tasks.Task<(int ProducedJobs, int IndexedCount)>
+  nameWithType.vb: Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
+  fullName.vb: System.Threading.Tasks.Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
+  name.vb: Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.ProducedJobs
+    name: ProducedJobs
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.producedjobs
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.IndexedCount
+    name: IndexedCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.indexedcount
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.ProducedJobs
+    name: ProducedJobs
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.producedjobs
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.IndexedCount
+    name: IndexedCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.indexedcount
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_PruneStaleUrlsAsync_System_DateTime_
+  name: PruneStaleUrlsAsync
+  nameWithType: CrawlProducer.PruneStaleUrlsAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceJobAsync_System_String_System_Threading_CancellationToken_
+  name: ProduceJobAsync
+  nameWithType: CrawlProducer.ProduceJobAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<CrawlJob>
+  nameWithType: Task<CrawlJob>
+  fullName: System.Threading.Tasks.Task<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>
+  nameWithType.vb: Task(Of CrawlJob)
+  fullName.vb: System.Threading.Tasks.Task(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  name.vb: Task(Of CrawlJob)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProcessDownloadSuccessAsync_System_String_System_ValueTuple_System_String_System_String_System_String__LocalSearchEngine_Core_Crawling_Engine_DownloadResult_System_Threading_CancellationToken_
+  name: ProcessDownloadSuccessAsync
+  nameWithType: CrawlProducer.ProcessDownloadSuccessAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync
+- uid: System.ValueTuple{System.String,System.String,System.String}
+  commentId: T:System.ValueTuple{System.String,System.String,System.String}
+  parent: System
+  definition: System.ValueTuple`3
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: (string ETag, string LastModified, string ContentHash)
+  nameWithType: (string ETag, string LastModified, string ContentHash)
+  fullName: (string ETag, string LastModified, string ContentHash)
+  nameWithType.vb: (ETag As String, LastModified As String, ContentHash As String)
+  fullName.vb: (ETag As String, LastModified As String, ContentHash As String)
+  name.vb: (ETag As String, LastModified As String, ContentHash As String)
+  spec.csharp:
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ETag
+    name: ETag
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.etag
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.LastModified
+    name: LastModified
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.lastmodified
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentHash
+    name: ContentHash
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenthash
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ETag
+    name: ETag
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.etag
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.LastModified
+    name: LastModified
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.lastmodified
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentHash
+    name: ContentHash
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenthash
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+- uid: System.ValueTuple`3
+  commentId: T:System.ValueTuple`3
+  name: (T1, T2, T3)
+  nameWithType: (T1, T2, T3)
+  fullName: (T1, T2, T3)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EnqueueStoredOutlinksAsync_System_String_System_Threading_CancellationToken_
+  name: EnqueueStoredOutlinksAsync
+  nameWithType: CrawlProducer.EnqueueStoredOutlinksAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_DelayForHostAsync_System_String_System_TimeSpan_System_Threading_CancellationToken_
+  name: DelayForHostAsync
+  nameWithType: CrawlProducer.DelayForHostAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ResolveRequestDelay_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_
+  name: ResolveRequestDelay
+  nameWithType: CrawlProducer.ResolveRequestDelay
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

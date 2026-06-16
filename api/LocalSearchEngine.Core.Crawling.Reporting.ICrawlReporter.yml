@@ -39,6 +39,9 @@ items:
     content.vb: Public Interface ICrawlReporter
   derivedClasses:
   - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  - LocalSearchEngine.Crawler.PlainCrawlReporter
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)

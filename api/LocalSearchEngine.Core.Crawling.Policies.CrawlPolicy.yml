@@ -6,9 +6,17 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.GenericMimeTypes
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsAllowedByRobots(System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedPrefix(System.Byte[],System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml(System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.PdfMagic
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff(System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith(System.Byte[],System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument(System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipMagic
   langs:
   - csharp
   - vb
@@ -42,6 +50,33 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.GenericMimeTypes
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.GenericMimeTypes
+  id: GenericMimeTypes
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: GenericMimeTypes
+  nameWithType: CrawlPolicy.GenericMimeTypes
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.GenericMimeTypes
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GenericMimeTypes
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private static readonly HashSet<string> GenericMimeTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Private Shared ReadOnly GenericMimeTypes As HashSet(Of String)
 - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType(System.String)
   id: IsSupportedOrGenericContentType(System.String)
@@ -206,6 +241,253 @@ items:
   nameWithType.vb: CrawlPolicy.ClassifyContent(String, Byte())
   fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(String, Byte())
   name.vb: ClassifyContent(String, Byte())
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType(System.String)
+  id: FromContentType(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: FromContentType(string?)
+  nameWithType: CrawlPolicy.FromContentType(string?)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType(string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FromContentType
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 102
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Classifies a MIME media type into a supported document kind.
+  example: []
+  syntax:
+    content: private static DocKind FromContentType(string? mediaType)
+    parameters:
+    - id: mediaType
+      type: System.String
+      description: The media type string to classify.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind" data-throw-if-not-resolved="false"></xref> corresponding to the media type, or <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown" data-throw-if-not-resolved="false"></xref> if not recognized.
+    content.vb: Private Shared Function FromContentType(mediaType As String) As DocKind
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType*
+  nameWithType.vb: CrawlPolicy.FromContentType(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType(String)
+  name.vb: FromContentType(String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.PdfMagic
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.PdfMagic
+  id: PdfMagic
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: PdfMagic
+  nameWithType: CrawlPolicy.PdfMagic
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.PdfMagic
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PdfMagic
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 112
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private static readonly byte[] PdfMagic
+    return:
+      type: System.Byte[]
+    content.vb: Private Shared ReadOnly PdfMagic As Byte()
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipMagic
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipMagic
+  id: ZipMagic
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: ZipMagic
+  nameWithType: CrawlPolicy.ZipMagic
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipMagic
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ZipMagic
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 113
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private static readonly byte[] ZipMagic
+    return:
+      type: System.Byte[]
+    content.vb: Private Shared ReadOnly ZipMagic As Byte()
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff(System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff(System.Byte[])
+  id: Sniff(System.Byte[])
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: Sniff(byte[])
+  nameWithType: CrawlPolicy.Sniff(byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff(byte[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Sniff
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 120
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Sniffs the magic bytes of a content body to detect its document kind.
+  example: []
+  syntax:
+    content: private static DocKind Sniff(byte[] body)
+    parameters:
+    - id: body
+      type: System.Byte[]
+      description: The raw byte array of the content body.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind" data-throw-if-not-resolved="false"></xref> detected from the bytes, or <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown" data-throw-if-not-resolved="false"></xref> if no signature matches.
+    content.vb: Private Shared Function Sniff(body As Byte()) As DocKind
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff*
+  nameWithType.vb: CrawlPolicy.Sniff(Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff(Byte())
+  name.vb: Sniff(Byte())
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith(System.Byte[],System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith(System.Byte[],System.Byte[])
+  id: StartsWith(System.Byte[],System.Byte[])
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: StartsWith(byte[], byte[])
+  nameWithType: CrawlPolicy.StartsWith(byte[], byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith(byte[], byte[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StartsWith
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 134
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Checks if the content body starts with the specified signature bytes.
+  example: []
+  syntax:
+    content: private static bool StartsWith(byte[] body, byte[] signature)
+    parameters:
+    - id: body
+      type: System.Byte[]
+      description: The raw content body byte array.
+    - id: signature
+      type: System.Byte[]
+      description: The signature bytes to match.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the body starts with the signature; otherwise, <code>false</code>.
+    content.vb: Private Shared Function StartsWith(body As Byte(), signature As Byte()) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith*
+  nameWithType.vb: CrawlPolicy.StartsWith(Byte(), Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith(Byte(), Byte())
+  name.vb: StartsWith(Byte(), Byte())
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument(System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument(System.Byte[])
+  id: ZipIsWordDocument(System.Byte[])
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: ZipIsWordDocument(byte[])
+  nameWithType: CrawlPolicy.ZipIsWordDocument(byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument(byte[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ZipIsWordDocument
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 142
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Determines whether the zip archive body represents a Word processing document (.docx).
+  example: []
+  syntax:
+    content: private static bool ZipIsWordDocument(byte[] body)
+    parameters:
+    - id: body
+      type: System.Byte[]
+      description: The raw zip file byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the zip archive contains the main word document entry; otherwise, <code>false</code>.
+    content.vb: Private Shared Function ZipIsWordDocument(body As Byte()) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument*
+  nameWithType.vb: CrawlPolicy.ZipIsWordDocument(Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument(Byte())
+  name.vb: ZipIsWordDocument(Byte())
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml(System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml(System.Byte[])
+  id: LooksLikeHtml(System.Byte[])
+  parent: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
+  langs:
+  - csharp
+  - vb
+  name: LooksLikeHtml(byte[])
+  nameWithType: CrawlPolicy.LooksLikeHtml(byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml(byte[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LooksLikeHtml
+    path: LocalSearchEngine.Core/Crawling/Policies/CrawlPolicy.cs
+    startLine: 161
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: Inspects the content body to determine if it resembles HTML markup.
+  example: []
+  syntax:
+    content: private static bool LooksLikeHtml(byte[] body)
+    parameters:
+    - id: body
+      type: System.Byte[]
+      description: The raw content body byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the content looks like HTML; otherwise, <code>false</code>.
+    content.vb: Private Shared Function LooksLikeHtml(body As Byte()) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml*
+  nameWithType.vb: CrawlPolicy.LooksLikeHtml(Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml(Byte())
+  name.vb: LooksLikeHtml(Byte())
 references:
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
@@ -482,6 +764,106 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Collections.Generic.HashSet{System.String}
+  commentId: T:System.Collections.Generic.HashSet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.HashSet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<string>
+  nameWithType: HashSet<string>
+  fullName: System.Collections.Generic.HashSet<string>
+  nameWithType.vb: HashSet(Of String)
+  fullName.vb: System.Collections.Generic.HashSet(Of String)
+  name.vb: HashSet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.HashSet`1
+  commentId: T:System.Collections.Generic.HashSet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<T>
+  nameWithType: HashSet<T>
+  fullName: System.Collections.Generic.HashSet<T>
+  nameWithType.vb: HashSet(Of T)
+  fullName.vb: System.Collections.Generic.HashSet(Of T)
+  name.vb: HashSet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.IsSupportedOrGenericContentType
   href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_IsSupportedOrGenericContentType_System_String_
@@ -565,3 +947,39 @@ references:
   name: ClassifyContent
   nameWithType: CrawlPolicy.ClassifyContent
   fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html#LocalSearchEngine_Core_Crawling_Policies_DocKind_Unknown
+  name: Unknown
+  nameWithType: DocKind.Unknown
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind.Unknown
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_FromContentType_System_String_
+  name: FromContentType
+  nameWithType: CrawlPolicy.FromContentType
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.FromContentType
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_Sniff_System_Byte___
+  name: Sniff
+  nameWithType: CrawlPolicy.Sniff
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.Sniff
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_StartsWith_System_Byte___System_Byte___
+  name: StartsWith
+  nameWithType: CrawlPolicy.StartsWith
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.StartsWith
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_ZipIsWordDocument_System_Byte___
+  name: ZipIsWordDocument
+  nameWithType: CrawlPolicy.ZipIsWordDocument
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ZipIsWordDocument
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_LooksLikeHtml_System_Byte___
+  name: LooksLikeHtml
+  nameWithType: CrawlPolicy.LooksLikeHtml
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.LooksLikeHtml

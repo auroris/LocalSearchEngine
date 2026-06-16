@@ -7,6 +7,9 @@ items:
   children:
   - LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
   - LocalSearchEngine.Web.Controllers.StatsController.Get
+  - LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Web.Controllers.StatsController._dbConfig
+  - LocalSearchEngine.Web.Controllers.StatsController._logger
   langs:
   - csharp
   - vb
@@ -235,6 +238,60 @@ items:
     arguments:
     - type: System.String
       value: api/[controller]
+- uid: LocalSearchEngine.Web.Controllers.StatsController._dbConfig
+  commentId: F:LocalSearchEngine.Web.Controllers.StatsController._dbConfig
+  id: _dbConfig
+  parent: LocalSearchEngine.Web.Controllers.StatsController
+  langs:
+  - csharp
+  - vb
+  name: _dbConfig
+  nameWithType: StatsController._dbConfig
+  fullName: LocalSearchEngine.Web.Controllers.StatsController._dbConfig
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Web/Controllers/StatsController.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _dbConfig
+    path: LocalSearchEngine.Web/Controllers/StatsController.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Web
+  namespace: LocalSearchEngine.Web.Controllers
+  syntax:
+    content: private readonly DatabaseConfig _dbConfig
+    return:
+      type: LocalSearchEngine.Core.DatabaseConfig
+    content.vb: Private ReadOnly _dbConfig As DatabaseConfig
+- uid: LocalSearchEngine.Web.Controllers.StatsController._logger
+  commentId: F:LocalSearchEngine.Web.Controllers.StatsController._logger
+  id: _logger
+  parent: LocalSearchEngine.Web.Controllers.StatsController
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: StatsController._logger
+  fullName: LocalSearchEngine.Web.Controllers.StatsController._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Web/Controllers/StatsController.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Web/Controllers/StatsController.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Web
+  namespace: LocalSearchEngine.Web.Controllers
+  syntax:
+    content: private readonly ILogger<StatsController> _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
+    content.vb: Private ReadOnly _logger As ILogger(Of StatsController)
 - uid: LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
   commentId: M:LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
   id: '#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})'
@@ -317,6 +374,47 @@ items:
   - type: Microsoft.AspNetCore.Mvc.HttpGetAttribute
     ctor: Microsoft.AspNetCore.Mvc.HttpGetAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Web.Controllers.StatsController
+  langs:
+  - csharp
+  - vb
+  name: ScalarLongAsync(SqliteConnection, string)
+  nameWithType: StatsController.ScalarLongAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Web/Controllers/StatsController.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ScalarLongAsync
+    path: LocalSearchEngine.Web/Controllers/StatsController.cs
+    startLine: 88
+  assemblies:
+  - LocalSearchEngine.Web
+  namespace: LocalSearchEngine.Web.Controllers
+  summary: Executes a query returning a single integer/long value.
+  example: []
+  syntax:
+    content: private static Task<long> ScalarLongAsync(SqliteConnection connection, string sql)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The open database connection.
+    - id: sql
+      type: System.String
+      description: The query to execute.
+    return:
+      type: System.Threading.Tasks.Task{System.Int64}
+      description: The long value, or 0 if the query returned null.
+    content.vb: Private Shared Function ScalarLongAsync(connection As SqliteConnection, sql As String) As Task(Of Long)
+  overload: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync*
+  nameWithType.vb: StatsController.ScalarLongAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: ScalarLongAsync(SqliteConnection, String)
 references:
 - uid: LocalSearchEngine.Web.Controllers
   commentId: N:LocalSearchEngine.Web.Controllers
@@ -9567,21 +9665,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
-- uid: LocalSearchEngine.Web.Controllers.StatsController
-  commentId: T:LocalSearchEngine.Web.Controllers.StatsController
-  href: LocalSearchEngine.Web.Controllers.StatsController.html
-  name: StatsController
-  nameWithType: StatsController
-  fullName: LocalSearchEngine.Web.Controllers.StatsController
-- uid: LocalSearchEngine.Web.Controllers.StatsController.#ctor*
-  commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.#ctor
-  href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController__ctor_LocalSearchEngine_Core_DatabaseConfig_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Web_Controllers_StatsController__
-  name: StatsController
-  nameWithType: StatsController.StatsController
-  fullName: LocalSearchEngine.Web.Controllers.StatsController.StatsController
-  nameWithType.vb: StatsController.New
-  fullName.vb: LocalSearchEngine.Web.Controllers.StatsController.New
-  name.vb: New
 - uid: LocalSearchEngine.Core.DatabaseConfig
   commentId: T:LocalSearchEngine.Core.DatabaseConfig
   parent: LocalSearchEngine.Core
@@ -9589,6 +9672,28 @@ references:
   name: DatabaseConfig
   nameWithType: DatabaseConfig
   fullName: LocalSearchEngine.Core.DatabaseConfig
+- uid: LocalSearchEngine.Core
+  commentId: N:LocalSearchEngine.Core
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core
+  nameWithType: LocalSearchEngine.Core
+  fullName: LocalSearchEngine.Core
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
 - uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
   commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
   parent: Microsoft.Extensions.Logging
@@ -9622,28 +9727,6 @@ references:
     name: StatsController
     href: LocalSearchEngine.Web.Controllers.StatsController.html
   - name: )
-- uid: LocalSearchEngine.Core
-  commentId: N:LocalSearchEngine.Core
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core
-  nameWithType: LocalSearchEngine.Core
-  fullName: LocalSearchEngine.Core
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
 - uid: Microsoft.Extensions.Logging.ILogger`1
   commentId: T:Microsoft.Extensions.Logging.ILogger`1
   isExternal: true
@@ -9709,6 +9792,21 @@ references:
     name: Logging
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Web.Controllers.StatsController
+  commentId: T:LocalSearchEngine.Web.Controllers.StatsController
+  href: LocalSearchEngine.Web.Controllers.StatsController.html
+  name: StatsController
+  nameWithType: StatsController
+  fullName: LocalSearchEngine.Web.Controllers.StatsController
+- uid: LocalSearchEngine.Web.Controllers.StatsController.#ctor*
+  commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.#ctor
+  href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController__ctor_LocalSearchEngine_Core_DatabaseConfig_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Web_Controllers_StatsController__
+  name: StatsController
+  nameWithType: StatsController.StatsController
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.StatsController
+  nameWithType.vb: StatsController.New
+  fullName.vb: LocalSearchEngine.Web.Controllers.StatsController.New
+  name.vb: New
 - uid: LocalSearchEngine.Web.Controllers.StatsController.Get*
   commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.Get
   href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController_Get
@@ -9815,3 +9913,100 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync*
+  commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync
+  href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController_ScalarLongAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: ScalarLongAsync
+  nameWithType: StatsController.ScalarLongAsync
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.ScalarLongAsync
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Int64}
+  commentId: T:System.Threading.Tasks.Task{System.Int64}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<long>
+  nameWithType: Task<long>
+  fullName: System.Threading.Tasks.Task<long>
+  nameWithType.vb: Task(Of Long)
+  fullName.vb: System.Threading.Tasks.Task(Of Long)
+  name.vb: Task(Of Long)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite

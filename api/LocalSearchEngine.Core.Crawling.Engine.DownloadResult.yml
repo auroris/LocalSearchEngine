@@ -1,0 +1,766 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  id: DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+  langs:
+  - csharp
+  - vb
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DownloadResult
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Represents the result and metadata of a page or file download.
+  example: []
+  syntax:
+    content: internal sealed class DownloadResult
+    content.vb: Friend NotInheritable Class DownloadResult
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+  id: Status
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: Status
+  nameWithType: DownloadResult.Status
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Status
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the outcome status of the download attempt.
+  example: []
+  syntax:
+    content: public DownloadStatus Status { get; init; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+    content.vb: Public Property Status As DownloadStatus
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+  id: StatusCode
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: StatusCode
+  nameWithType: DownloadResult.StatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StatusCode
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the HTTP response status code.
+  example: []
+  syntax:
+    content: public HttpStatusCode StatusCode { get; init; }
+    parameters: []
+    return:
+      type: System.Net.HttpStatusCode
+    content.vb: Public Property StatusCode As HttpStatusCode
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+  id: Body
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: DownloadResult.Body
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Body
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 41
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the binary body contents of the downloaded resource, or <code>null</code> if not loaded.
+  example: []
+  syntax:
+    content: public byte[]? Body { get; init; }
+    parameters: []
+    return:
+      type: System.Byte[]
+    content.vb: Public Property Body As Byte()
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+  id: ETag
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: ETag
+  nameWithType: DownloadResult.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ETag
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 43
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the ETag header returned by the server, if any.
+  example: []
+  syntax:
+    content: public string? ETag { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ETag As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+  id: LastModified
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: LastModified
+  nameWithType: DownloadResult.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LastModified
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the Last-Modified header returned by the server, if any.
+  example: []
+  syntax:
+    content: public string? LastModified { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastModified As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+  id: ContentType
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: ContentType
+  nameWithType: DownloadResult.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContentType
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 47
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the MIME type of the response content.
+  example: []
+  syntax:
+    content: public string? ContentType { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContentType As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+  id: CharSet
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: CharSet
+  nameWithType: DownloadResult.CharSet
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CharSet
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 49
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the character set of the response content, if HTML/text.
+  example: []
+  syntax:
+    content: public string? CharSet { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CharSet As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+  id: XRobotsTag
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: XRobotsTag
+  nameWithType: DownloadResult.XRobotsTag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: XRobotsTag
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 51
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the X-Robots-Tag header value returned by the server, if any.
+  example: []
+  syntax:
+    content: public string? XRobotsTag { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property XRobotsTag As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  id: FinalRequestUri
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: FinalRequestUri
+  nameWithType: DownloadResult.FinalRequestUri
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FinalRequestUri
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 53
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the final request URI after any redirects were followed.
+  example: []
+  syntax:
+    content: public Uri? FinalRequestUri { get; init; }
+    parameters: []
+    return:
+      type: System.Uri
+    content.vb: Public Property FinalRequestUri As Uri
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri*
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+  id: SizeRead
+  parent: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  langs:
+  - csharp
+  - vb
+  name: SizeRead
+  nameWithType: DownloadResult.SizeRead
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SizeRead
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 55
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the total size in bytes read from the response stream.
+  example: []
+  syntax:
+    content: public long SizeRead { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property SizeRead As Long
+  overload: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_Status
+  name: Status
+  nameWithType: DownloadResult.Status
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Status
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.html
+  name: DownloadStatus
+  nameWithType: DownloadStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_StatusCode
+  name: StatusCode
+  nameWithType: DownloadResult.StatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.StatusCode
+- uid: System.Net.HttpStatusCode
+  commentId: T:System.Net.HttpStatusCode
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode
+  name: HttpStatusCode
+  nameWithType: HttpStatusCode
+  fullName: System.Net.HttpStatusCode
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_Body
+  name: Body
+  nameWithType: DownloadResult.Body
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.Body
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_ETag
+  name: ETag
+  nameWithType: DownloadResult.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ETag
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_LastModified
+  name: LastModified
+  nameWithType: DownloadResult.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.LastModified
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_ContentType
+  name: ContentType
+  nameWithType: DownloadResult.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.ContentType
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_CharSet
+  name: CharSet
+  nameWithType: DownloadResult.CharSet
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.CharSet
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_XRobotsTag
+  name: XRobotsTag
+  nameWithType: DownloadResult.XRobotsTag
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.XRobotsTag
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_FinalRequestUri
+  name: FinalRequestUri
+  nameWithType: DownloadResult.FinalRequestUri
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_SizeRead
+  name: SizeRead
+  nameWithType: DownloadResult.SizeRead
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.SizeRead
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

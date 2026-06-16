@@ -10,6 +10,9 @@ items:
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._gate
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._reachable
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._unreachable
   langs:
   - csharp
   - vb
@@ -66,6 +69,87 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._gate
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._gate
+  id: _gate
+  parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: HostHealthTracker._gate
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._reachable
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._reachable
+  id: _reachable
+  parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  langs:
+  - csharp
+  - vb
+  name: _reachable
+  nameWithType: HostHealthTracker._reachable
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._reachable
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _reachable
+    path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly HashSet<string> _reachable
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Private ReadOnly _reachable As HashSet(Of String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._unreachable
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._unreachable
+  id: _unreachable
+  parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  langs:
+  - csharp
+  - vb
+  name: _unreachable
+  nameWithType: HostHealthTracker._unreachable
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._unreachable
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _unreachable
+    path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly HashSet<string> _unreachable
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Private ReadOnly _unreachable As HashSet(Of String)
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
   id: RecordResponse(System.String)
@@ -610,6 +694,106 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Collections.Generic.HashSet{System.String}
+  commentId: T:System.Collections.Generic.HashSet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.HashSet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<string>
+  nameWithType: HashSet<string>
+  fullName: System.Collections.Generic.HashSet<string>
+  nameWithType.vb: HashSet(Of String)
+  fullName.vb: System.Collections.Generic.HashSet(Of String)
+  name.vb: HashSet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.HashSet`1
+  commentId: T:System.Collections.Generic.HashSet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<T>
+  nameWithType: HashSet<T>
+  fullName: System.Collections.Generic.HashSet<T>
+  nameWithType.vb: HashSet(Of T)
+  fullName.vb: System.Collections.Generic.HashSet(Of T)
+  name.vb: HashSet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse
   href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordResponse_System_String_
@@ -762,43 +946,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure
   href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_System_Threading_CancellationToken_

@@ -7,6 +7,7 @@ items:
   - LocalSearchEngine.Core.TextProcessing.IEmbedder
   - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
   - LocalSearchEngine.Core.TextProcessing.TextChunker
+  - LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
   - LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
   langs:
   - csharp
@@ -37,6 +38,29 @@ references:
   name: TextChunker
   nameWithType: TextChunker
   fullName: LocalSearchEngine.Core.TextProcessing.TextChunker
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker.StringListWithTokenCount
+  nameWithType: TextChunker.StringListWithTokenCount
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+    name: TextChunker
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: StringListWithTokenCount
+    href: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount.html
 - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
   commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
   parent: LocalSearchEngine.Core.TextProcessing

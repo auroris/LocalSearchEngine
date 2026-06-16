@@ -1,0 +1,453 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Crawler.SummaryPanel
+  commentId: T:LocalSearchEngine.Crawler.SummaryPanel
+  id: SummaryPanel
+  parent: LocalSearchEngine.Crawler
+  children:
+  - LocalSearchEngine.Crawler.SummaryPanel.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.String,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: SummaryPanel
+  nameWithType: SummaryPanel
+  fullName: LocalSearchEngine.Crawler.SummaryPanel
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SummaryPanel.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SummaryPanel
+    path: LocalSearchEngine.Crawler/SummaryPanel.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: >-
+    Builds the boxed end-of-run summary printed to the console after a crawl, echoing the headline
+
+    figures from the <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref> and pointing at the files that were written.
+  example: []
+  syntax:
+    content: internal static class SummaryPanel
+    content.vb: Friend Module SummaryPanel
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Crawler.SummaryPanel.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.String,System.String,System.String)
+  commentId: M:LocalSearchEngine.Crawler.SummaryPanel.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.String,System.String,System.String)
+  id: Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport,System.String,System.String,System.String,System.String)
+  parent: LocalSearchEngine.Crawler.SummaryPanel
+  langs:
+  - csharp
+  - vb
+  name: Build(CrawlReport, string, string, string, string)
+  nameWithType: SummaryPanel.Build(CrawlReport, string, string, string, string)
+  fullName: LocalSearchEngine.Crawler.SummaryPanel.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, string, string, string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SummaryPanel.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Build
+    path: LocalSearchEngine.Crawler/SummaryPanel.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Builds the summary panel.
+  example: []
+  syntax:
+    content: public static IRenderable Build(CrawlReport report, string statsJsonPath, string statsTextPath, string logPath, string brokenLinksPath)
+    parameters:
+    - id: report
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+      description: The completed crawl report.
+    - id: statsJsonPath
+      type: System.String
+      description: Where the JSON stats were written.
+    - id: statsTextPath
+      type: System.String
+      description: Where the text stats were written.
+    - id: logPath
+      type: System.String
+      description: Where the log file was written.
+    - id: brokenLinksPath
+      type: System.String
+      description: Where the broken-links report was written.
+    return:
+      type: Spectre.Console.Rendering.IRenderable
+      description: A renderable panel for <code>AnsiConsole.Write</code>.
+    content.vb: Public Shared Function Build(report As CrawlReport, statsJsonPath As String, statsTextPath As String, logPath As String, brokenLinksPath As String) As IRenderable
+  overload: LocalSearchEngine.Crawler.SummaryPanel.Build*
+  nameWithType.vb: SummaryPanel.Build(CrawlReport, String, String, String, String)
+  fullName.vb: LocalSearchEngine.Crawler.SummaryPanel.Build(LocalSearchEngine.Core.Crawling.Reporting.CrawlReport, String, String, String, String)
+  name.vb: Build(CrawlReport, String, String, String, String)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html
+  name: CrawlReport
+  nameWithType: CrawlReport
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+- uid: LocalSearchEngine.Crawler
+  commentId: N:LocalSearchEngine.Crawler
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Crawler
+  nameWithType: LocalSearchEngine.Crawler
+  fullName: LocalSearchEngine.Crawler
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Crawler.SummaryPanel.Build*
+  commentId: Overload:LocalSearchEngine.Crawler.SummaryPanel.Build
+  href: LocalSearchEngine.Crawler.SummaryPanel.html#LocalSearchEngine_Crawler_SummaryPanel_Build_LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_System_String_System_String_System_String_System_String_
+  name: Build
+  nameWithType: SummaryPanel.Build
+  fullName: LocalSearchEngine.Crawler.SummaryPanel.Build
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Spectre.Console.Rendering.IRenderable
+  commentId: T:Spectre.Console.Rendering.IRenderable
+  parent: Spectre.Console.Rendering
+  isExternal: true
+  name: IRenderable
+  nameWithType: IRenderable
+  fullName: Spectre.Console.Rendering.IRenderable
+- uid: Spectre.Console.Rendering
+  commentId: N:Spectre.Console.Rendering
+  isExternal: true
+  name: Spectre.Console.Rendering
+  nameWithType: Spectre.Console.Rendering
+  fullName: Spectre.Console.Rendering
+  spec.csharp:
+  - uid: Spectre
+    name: Spectre
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console
+    name: Console
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console.Rendering
+    name: Rendering
+    isExternal: true
+  spec.vb:
+  - uid: Spectre
+    name: Spectre
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console
+    name: Console
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console.Rendering
+    name: Rendering
+    isExternal: true

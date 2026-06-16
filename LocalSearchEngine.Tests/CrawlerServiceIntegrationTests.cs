@@ -979,6 +979,28 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         Assert.Equal(0, ChunkCount("http://test.local/data.zip")); // skipped because it's zip magic but extension is not docx
     }
 
+    [Fact]
+    public async Task Cancellation_midcrawl_returns_cancelled_report_without_throwing()
+    {
+        await EnsureSchemaAsync();
+
+        // Seed is indexable and links to another page, so the frontier still has work when we cancel.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/page2\">two</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+
+        // Cancel the instant the first page is resolved. PageProcessed fires from inside the producer
+        // before that page's job is written, so the producer reaches WriteAsync with an already-cancelled
+        // token — the path that used to throw OperationCanceledException out of CrawlAsync instead of
+        // returning a cancelled report.
+        using var cts = new CancellationTokenSource();
+        var reporter = new CancelOnFirstPageReporter(cts);
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50, reporter: reporter, cancellationToken: cts.Token);
+
+        Assert.True(report.Cancelled);
+        Assert.False(report.CompletedNaturally);
+    }
+
     public void Dispose()
     {
         _provider.Dispose();
@@ -1033,5 +1055,16 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
             response.RequestMessage ??= request; // crawler reads RequestMessage.RequestUri for redirects
             return Task.FromResult(response);
         }
+    }
+
+    /// <summary>Cancels the supplied token the first time a page is resolved, to drive mid-crawl cancellation deterministically.</summary>
+    private sealed class CancelOnFirstPageReporter : ICrawlReporter
+    {
+        private readonly CancellationTokenSource _cts;
+        public CancelOnFirstPageReporter(CancellationTokenSource cts) => _cts = cts;
+
+        public void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats) { }
+
+        public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats) => _cts.Cancel();
     }
 }

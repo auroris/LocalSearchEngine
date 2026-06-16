@@ -6,8 +6,19 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Extraction
   children:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.AnalyzeHtml(System.Byte[],System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx(System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings(HtmlAgilityPack.HtmlDocument)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf(System.Byte[])
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(System.Byte[],System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.WordSeparators
   langs:
   - csharp
   - vb
@@ -41,6 +52,33 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.WordSeparators
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.WordSeparators
+  id: WordSeparators
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: WordSeparators
+  nameWithType: ContentExtractor.WordSeparators
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.WordSeparators
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WordSeparators
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 11
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  syntax:
+    content: private static readonly char[] WordSeparators
+    return:
+      type: System.Char[]
+    content.vb: Private Shared ReadOnly WordSeparators As Char()
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.AnalyzeHtml(System.Byte[],System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.AnalyzeHtml(System.Byte[],System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},System.String)
   id: AnalyzeHtml(System.Byte[],System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},System.String)
@@ -97,6 +135,223 @@ items:
   nameWithType.vb: ContentExtractor.AnalyzeHtml(Byte(), String, String, String, AllowedHosts, IReadOnlyDictionary(Of String, RobotsRules), String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.AnalyzeHtml(Byte(), String, String, String, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Collections.Generic.IReadOnlyDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules), String)
   name.vb: AnalyzeHtml(Byte(), String, String, String, AllowedHosts, IReadOnlyDictionary(Of String, RobotsRules), String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(System.Byte[],System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(System.Byte[],System.String)
+  id: LoadHtml(System.Byte[],System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: LoadHtml(byte[], string?)
+  nameWithType: ContentExtractor.LoadHtml(byte[], string?)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(byte[], string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LoadHtml
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 112
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Decodes and parses an HTML body. A charset from the HTTP header is authoritative when
+
+    present. Otherwise the document is parsed once (BOM-sniffed, defaulting to UTF-8) and,
+
+    when the page itself declares a different encoding via <code>&lt;meta charset&gt;</code> or
+
+    <code>&lt;meta http-equiv="Content-Type"&gt;</code>, re-parsed with that encoding —
+
+    HtmlAgilityPack records the declaration as <xref href="HtmlAgilityPack.HtmlDocument.DeclaredEncoding" data-throw-if-not-resolved="false"></xref>
+
+    but never re-decodes a stream on its own.
+  example: []
+  syntax:
+    content: private static HtmlDocument LoadHtml(byte[] body, string? httpCharset)
+    parameters:
+    - id: body
+      type: System.Byte[]
+      description: The raw bytes of the HTML page.
+    - id: httpCharset
+      type: System.String
+      description: The charset from the HTTP Content-Type header, if any.
+    return:
+      type: HtmlAgilityPack.HtmlDocument
+      description: The parsed document.
+    content.vb: Private Shared Function LoadHtml(body As Byte(), httpCharset As String) As HtmlDocument
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml*
+  nameWithType.vb: ContentExtractor.LoadHtml(Byte(), String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(Byte(), String)
+  name.vb: LoadHtml(Byte(), String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  id: ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ExtractLinks(HtmlDocument, string, AllowedHosts, IReadOnlyDictionary<string, RobotsRules>, HtmlAnalysis)
+  nameWithType: ContentExtractor.ExtractLinks(HtmlDocument, string, AllowedHosts, IReadOnlyDictionary<string, RobotsRules>, ContentExtractor.HtmlAnalysis)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument, string, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Collections.Generic.IReadOnlyDictionary<string, LocalSearchEngine.Core.Crawling.Policies.RobotsRules>, LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExtractLinks
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 144
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Extracts the document's links into <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks" data-throw-if-not-resolved="false"></xref> (in-scope, crawlable)
+
+    and <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks" data-throw-if-not-resolved="false"></xref> (out-of-scope http(s) targets, kept only so an
+
+    optional end-of-crawl pass can verify they still resolve — they are never crawled).
+  example: []
+  syntax:
+    content: private static void ExtractLinks(HtmlDocument doc, string currentUrl, AllowedHosts allowedHosts, IReadOnlyDictionary<string, RobotsRules> robotsCache, ContentExtractor.HtmlAnalysis analysis)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    - id: currentUrl
+      type: System.String
+    - id: allowedHosts
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    - id: robotsCache
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+    - id: analysis
+      type: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    content.vb: Private Shared Sub ExtractLinks(doc As HtmlDocument, currentUrl As String, allowedHosts As AllowedHosts, robotsCache As IReadOnlyDictionary(Of String, RobotsRules), analysis As ContentExtractor.HtmlAnalysis)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks*
+  nameWithType.vb: ContentExtractor.ExtractLinks(HtmlDocument, String, AllowedHosts, IReadOnlyDictionary(Of String, RobotsRules), ContentExtractor.HtmlAnalysis)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument, String, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Collections.Generic.IReadOnlyDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules), LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  name.vb: ExtractLinks(HtmlDocument, String, AllowedHosts, IReadOnlyDictionary(Of String, RobotsRules), HtmlAnalysis)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
+  id: ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ParseRobotsDirectives(HtmlDocument, string?, string)
+  nameWithType: ContentExtractor.ParseRobotsDirectives(HtmlDocument, string?, string)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument, string?, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ParseRobotsDirectives
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 189
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Parses the HTML meta tags and HTTP headers for robots directives.
+  example: []
+  syntax:
+    content: private static (bool NoIndex, bool NoFollow) ParseRobotsDirectives(HtmlDocument doc, string? xRobotsTag, string userAgentToken)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    - id: xRobotsTag
+      type: System.String
+    - id: userAgentToken
+      type: System.String
+    return:
+      type: System.ValueTuple{System.Boolean,System.Boolean}
+    content.vb: Private Shared Function ParseRobotsDirectives(doc As HtmlDocument, xRobotsTag As String, userAgentToken As String) As (NoIndex As Boolean, NoFollow As Boolean)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives*
+  nameWithType.vb: ContentExtractor.ParseRobotsDirectives(HtmlDocument, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument, String, String)
+  name.vb: ParseRobotsDirectives(HtmlDocument, String, String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
+  id: StripXRobotsAgent(System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: StripXRobotsAgent(string, string)
+  nameWithType: ContentExtractor.StripXRobotsAgent(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StripXRobotsAgent
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 230
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Strips any user agent prefix from an X-Robots-Tag HTTP header value, verifying if the rule applies to this bot.
+  example: []
+  syntax:
+    content: private static string StripXRobotsAgent(string value, string userAgentToken)
+    parameters:
+    - id: value
+      type: System.String
+    - id: userAgentToken
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Private Shared Function StripXRobotsAgent(value As String, userAgentToken As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent*
+  nameWithType.vb: ContentExtractor.StripXRobotsAgent(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(String, String)
+  name.vb: StripXRobotsAgent(String, String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  id: ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ResolveCanonicalAlias(HtmlDocument, string, AllowedHosts)
+  nameWithType: ContentExtractor.ResolveCanonicalAlias(HtmlDocument, string, AllowedHosts)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument, string, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ResolveCanonicalAlias
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 243
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Resolves the canonical URL specified by a rel='canonical' link tag.
+  example: []
+  syntax:
+    content: private static string? ResolveCanonicalAlias(HtmlDocument doc, string currentUrl, AllowedHosts allowedHosts)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    - id: currentUrl
+      type: System.String
+    - id: allowedHosts
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    return:
+      type: System.String
+    content.vb: Private Shared Function ResolveCanonicalAlias(doc As HtmlDocument, currentUrl As String, allowedHosts As AllowedHosts) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias*
+  nameWithType.vb: ContentExtractor.ResolveCanonicalAlias(HtmlDocument, String, AllowedHosts)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument, String, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
+  name.vb: ResolveCanonicalAlias(HtmlDocument, String, AllowedHosts)
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf(System.Byte[])
   commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf(System.Byte[])
   id: ExtractPdf(System.Byte[])
@@ -169,6 +424,180 @@ items:
   nameWithType.vb: ContentExtractor.ExtractDocx(Byte())
   fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx(Byte())
   name.vb: ExtractDocx(Byte())
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(System.String)
+  id: CleanTitle(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: CleanTitle(string?)
+  nameWithType: ContentExtractor.CleanTitle(string?)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CleanTitle
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 300
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Cleans and collapses whitespace in a document-metadata title.
+  example: []
+  syntax:
+    content: private static string? CleanTitle(string? title)
+    parameters:
+    - id: title
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Private Shared Function CleanTitle(title As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle*
+  nameWithType.vb: ContentExtractor.CleanTitle(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(String)
+  name.vb: CleanTitle(String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  id: ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ExtractTitle(HtmlDocument)
+  nameWithType: ContentExtractor.ExtractTitle(HtmlDocument)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExtractTitle
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 310
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Extracts the page title from the HTML document's &lt;title&gt; tag.
+  example: []
+  syntax:
+    content: private static string? ExtractTitle(HtmlDocument doc)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    return:
+      type: System.String
+    content.vb: Private Shared Function ExtractTitle(doc As HtmlDocument) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings(HtmlAgilityPack.HtmlDocument)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings(HtmlAgilityPack.HtmlDocument)
+  id: ExtractHeadings(HtmlAgilityPack.HtmlDocument)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ExtractHeadings(HtmlDocument)
+  nameWithType: ContentExtractor.ExtractHeadings(HtmlDocument)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings(HtmlAgilityPack.HtmlDocument)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExtractHeadings
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 321
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Extracts all heading elements (&lt;h1&gt; through &lt;h6&gt;) and the page title, merging them.
+  example: []
+  syntax:
+    content: private static string ExtractHeadings(HtmlDocument doc)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    return:
+      type: System.String
+    content.vb: Private Shared Function ExtractHeadings(doc As HtmlDocument) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(System.String)
+  id: CollapseWhitespace(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: CollapseWhitespace(string)
+  nameWithType: ContentExtractor.CollapseWhitespace(string)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CollapseWhitespace
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 342
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Collapses multiple consecutive whitespace characters into a single space.
+  example: []
+  syntax:
+    content: private static string CollapseWhitespace(string text)
+    parameters:
+    - id: text
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Private Shared Function CollapseWhitespace(text As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace*
+  nameWithType.vb: ContentExtractor.CollapseWhitespace(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(String)
+  name.vb: CollapseWhitespace(String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(System.String)
+  id: ResolveEncoding(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ResolveEncoding(string?)
+  nameWithType: ContentExtractor.ResolveEncoding(string?)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ResolveEncoding
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 348
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Attempts to resolve a character encoding name into an <xref href="System.Text.Encoding" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: private static Encoding? ResolveEncoding(string? charset)
+    parameters:
+    - id: charset
+      type: System.String
+    return:
+      type: System.Text.Encoding
+    content.vb: Private Shared Function ResolveEncoding(charset As String) As Encoding
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding*
+  nameWithType.vb: ContentExtractor.ResolveEncoding(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(String)
+  name.vb: ResolveEncoding(String)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Extraction
   commentId: N:LocalSearchEngine.Core.Crawling.Extraction
@@ -445,6 +874,29 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Char[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.char
+  name: char[]
+  nameWithType: char[]
+  fullName: char[]
+  nameWithType.vb: Char()
+  fullName.vb: Char()
+  name.vb: Char()
+  spec.csharp:
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: (
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
   commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
   parent: LocalSearchEngine.Core.Crawling.Extraction
@@ -669,6 +1121,145 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: HtmlAgilityPack.HtmlDocument.DeclaredEncoding
+  commentId: P:HtmlAgilityPack.HtmlDocument.DeclaredEncoding
+  isExternal: true
+  href: https://github.com/zzzprojects/html-agility-pack/blob/64a718a815a6a25e03a73d6c53dfc58a7ed692d3/src/HtmlAgilityPack.Shared/HtmlDocument.cs
+  name: DeclaredEncoding
+  nameWithType: HtmlDocument.DeclaredEncoding
+  fullName: HtmlAgilityPack.HtmlDocument.DeclaredEncoding
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_LoadHtml_System_Byte___System_String_
+  name: LoadHtml
+  nameWithType: ContentExtractor.LoadHtml
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml
+- uid: HtmlAgilityPack.HtmlDocument
+  commentId: T:HtmlAgilityPack.HtmlDocument
+  parent: HtmlAgilityPack
+  isExternal: true
+  href: https://github.com/zzzprojects/html-agility-pack/blob/64a718a815a6a25e03a73d6c53dfc58a7ed692d3/src/HtmlAgilityPack.Shared/HtmlDocument.PathMethods.cs
+  name: HtmlDocument
+  nameWithType: HtmlDocument
+  fullName: HtmlAgilityPack.HtmlDocument
+- uid: HtmlAgilityPack
+  commentId: N:HtmlAgilityPack
+  isExternal: true
+  name: HtmlAgilityPack
+  nameWithType: HtmlAgilityPack
+  fullName: HtmlAgilityPack
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_Outlinks
+  name: Outlinks
+  nameWithType: ContentExtractor.HtmlAnalysis.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_OffsiteLinks
+  name: OffsiteLinks
+  nameWithType: ContentExtractor.HtmlAnalysis.OffsiteLinks
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractLinks_HtmlAgilityPack_HtmlDocument_System_String_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_System_Collections_Generic_IReadOnlyDictionary_System_String_LocalSearchEngine_Core_Crawling_Policies_RobotsRules__LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_
+  name: ExtractLinks
+  nameWithType: ContentExtractor.ExtractLinks
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ParseRobotsDirectives_HtmlAgilityPack_HtmlDocument_System_String_System_String_
+  name: ParseRobotsDirectives
+  nameWithType: ContentExtractor.ParseRobotsDirectives
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives
+- uid: System.ValueTuple{System.Boolean,System.Boolean}
+  commentId: T:System.ValueTuple{System.Boolean,System.Boolean}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: (bool NoIndex, bool NoFollow)
+  nameWithType: (bool NoIndex, bool NoFollow)
+  fullName: (bool NoIndex, bool NoFollow)
+  nameWithType.vb: (NoIndex As Boolean, NoFollow As Boolean)
+  fullName.vb: (NoIndex As Boolean, NoFollow As Boolean)
+  name.vb: (NoIndex As Boolean, NoFollow As Boolean)
+  spec.csharp:
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Boolean}.NoIndex
+    name: NoIndex
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean-.noindex
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Boolean}.NoFollow
+    name: NoFollow
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean-.nofollow
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Boolean,System.Boolean}.NoIndex
+    name: NoIndex
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean-.noindex
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Boolean,System.Boolean}.NoFollow
+    name: NoFollow
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean-.nofollow
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_StripXRobotsAgent_System_String_System_String_
+  name: StripXRobotsAgent
+  nameWithType: ContentExtractor.StripXRobotsAgent
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ResolveCanonicalAlias_HtmlAgilityPack_HtmlDocument_System_String_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_
+  name: ResolveCanonicalAlias
+  nameWithType: ContentExtractor.ResolveCanonicalAlias
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractPdf_System_Byte___
@@ -732,28 +1323,74 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: System.ValueTuple`2
-  commentId: T:System.ValueTuple`2
-  name: (T1, T2)
-  nameWithType: (T1, T2)
-  fullName: (T1, T2)
-  spec.csharp:
-  - name: (
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: )
-  spec.vb:
-  - name: (
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractDocx_System_Byte___
   name: ExtractDocx
   nameWithType: ContentExtractor.ExtractDocx
   fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_CleanTitle_System_String_
+  name: CleanTitle
+  nameWithType: ContentExtractor.CleanTitle
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractTitle_HtmlAgilityPack_HtmlDocument_
+  name: ExtractTitle
+  nameWithType: ContentExtractor.ExtractTitle
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractHeadings_HtmlAgilityPack_HtmlDocument_
+  name: ExtractHeadings
+  nameWithType: ContentExtractor.ExtractHeadings
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_CollapseWhitespace_System_String_
+  name: CollapseWhitespace
+  nameWithType: ContentExtractor.CollapseWhitespace
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace
+- uid: System.Text.Encoding
+  commentId: T:System.Text.Encoding
+  parent: System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.encoding
+  name: Encoding
+  nameWithType: Encoding
+  fullName: System.Text.Encoding
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ResolveEncoding_System_String_
+  name: ResolveEncoding
+  nameWithType: ContentExtractor.ResolveEncoding
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding
+- uid: System.Text
+  commentId: N:System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text
+  nameWithType: System.Text
+  fullName: System.Text
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text

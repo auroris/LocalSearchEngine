@@ -11,6 +11,7 @@ items:
   - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
   - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_detects_magic_bytes_or_html_markup
   - LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedPrefix_filters_zip_files_by_extension(System.String,System.Boolean)
+  - LocalSearchEngine.Tests.CrawlPolicyTests.Zip(System.String[])
   langs:
   - csharp
   - vb
@@ -182,6 +183,42 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.Zip(System.String[])
+  commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.Zip(System.String[])
+  id: Zip(System.String[])
+  parent: LocalSearchEngine.Tests.CrawlPolicyTests
+  langs:
+  - csharp
+  - vb
+  name: Zip(params string[])
+  nameWithType: CrawlPolicyTests.Zip(params string[])
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.Zip(params string[])
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Zip
+    path: LocalSearchEngine.Tests/CrawlPolicyTests.cs
+    startLine: 47
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Builds an in-memory zip containing the named (tiny) entries.
+  example: []
+  syntax:
+    content: private static byte[] Zip(params string[] entryNames)
+    parameters:
+    - id: entryNames
+      type: System.String[]
+    return:
+      type: System.Byte[]
+    content.vb: Private Shared Function Zip(ParamArray entryNames As String()) As Byte()
+  overload: LocalSearchEngine.Tests.CrawlPolicyTests.Zip*
+  nameWithType.vb: CrawlPolicyTests.Zip(ParamArray String())
+  fullName.vb: LocalSearchEngine.Tests.CrawlPolicyTests.Zip(ParamArray String())
+  name.vb: Zip(ParamArray String())
 - uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
   commentId: M:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
   id: IsSupportedOrGenericContentType_validates_against_whitelist(System.String,System.Boolean)
@@ -712,6 +749,58 @@ references:
   name: ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
   nameWithType: CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
   fullName: LocalSearchEngine.Tests.CrawlPolicyTests.ClassifyContent_sniffs_docx_only_for_a_zip_with_the_word_part
+- uid: LocalSearchEngine.Tests.CrawlPolicyTests.Zip*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.Zip
+  href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_Zip_System_String___
+  name: Zip
+  nameWithType: CrawlPolicyTests.Zip
+  fullName: LocalSearchEngine.Tests.CrawlPolicyTests.Zip
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
 - uid: LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist*
   commentId: Overload:LocalSearchEngine.Tests.CrawlPolicyTests.IsSupportedOrGenericContentType_validates_against_whitelist
   href: LocalSearchEngine.Tests.CrawlPolicyTests.html#LocalSearchEngine_Tests_CrawlPolicyTests_IsSupportedOrGenericContentType_validates_against_whitelist_System_String_System_Boolean_

@@ -12,6 +12,7 @@ items:
   - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.EmbedQuery(System.String)
   - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.ModelName
   - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter._inner
   langs:
   - csharp
   - vb
@@ -105,6 +106,33 @@ items:
     return:
       type: System.String
     content.vb: 'Public Const QueryInstruction As String = "query: "'
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter._inner
+  commentId: F:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter._inner
+  id: _inner
+  parent: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  langs:
+  - csharp
+  - vb
+  name: _inner
+  nameWithType: LocalEmbedderAdapter._inner
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter._inner
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _inner
+    path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.TextProcessing
+  syntax:
+    content: private readonly LocalEmbedder _inner
+    return:
+      type: SmartComponents.LocalEmbeddings.LocalEmbedder
+    content.vb: Private ReadOnly _inner As LocalEmbedder
 - uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
   commentId: M:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
   id: '#ctor'
@@ -551,21 +579,6 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
-  commentId: T:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
-  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html
-  name: LocalEmbedderAdapter
-  nameWithType: LocalEmbedderAdapter
-  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
-- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor*
-  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
-  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter__ctor
-  name: LocalEmbedderAdapter
-  nameWithType: LocalEmbedderAdapter.LocalEmbedderAdapter
-  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.LocalEmbedderAdapter
-  nameWithType.vb: LocalEmbedderAdapter.New
-  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.New
-  name.vb: New
 - uid: SmartComponents.LocalEmbeddings.LocalEmbedder
   commentId: T:SmartComponents.LocalEmbeddings.LocalEmbedder
   parent: SmartComponents.LocalEmbeddings
@@ -595,6 +608,21 @@ references:
   - uid: SmartComponents.LocalEmbeddings
     name: LocalEmbeddings
     isExternal: true
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  commentId: T:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.#ctor
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter__ctor
+  name: LocalEmbedderAdapter
+  nameWithType: LocalEmbedderAdapter.LocalEmbedderAdapter
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.LocalEmbedderAdapter
+  nameWithType.vb: LocalEmbedderAdapter.New
+  fullName.vb: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.New
+  name.vb: New
 - uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed*
   commentId: Overload:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.Embed
   href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter_Embed_System_String_

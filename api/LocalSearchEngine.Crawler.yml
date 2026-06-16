@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Crawler
+  commentId: N:LocalSearchEngine.Crawler
+  id: LocalSearchEngine.Crawler
+  children:
+  - LocalSearchEngine.Crawler.BrokenLinksWriter
+  - LocalSearchEngine.Crawler.CrawlStatsWriter
+  - LocalSearchEngine.Crawler.PlainCrawlReporter
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter
+  - LocalSearchEngine.Crawler.SummaryPanel
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Crawler
+  nameWithType: LocalSearchEngine.Crawler
+  fullName: LocalSearchEngine.Crawler
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Crawler
+references:
+- uid: LocalSearchEngine.Crawler.BrokenLinksWriter
+  commentId: T:LocalSearchEngine.Crawler.BrokenLinksWriter
+  href: LocalSearchEngine.Crawler.BrokenLinksWriter.html
+  name: BrokenLinksWriter
+  nameWithType: BrokenLinksWriter
+  fullName: LocalSearchEngine.Crawler.BrokenLinksWriter
+- uid: LocalSearchEngine.Crawler.CrawlStatsWriter
+  commentId: T:LocalSearchEngine.Crawler.CrawlStatsWriter
+  href: LocalSearchEngine.Crawler.CrawlStatsWriter.html
+  name: CrawlStatsWriter
+  nameWithType: CrawlStatsWriter
+  fullName: LocalSearchEngine.Crawler.CrawlStatsWriter
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter
+  commentId: T:LocalSearchEngine.Crawler.PlainCrawlReporter
+  href: LocalSearchEngine.Crawler.PlainCrawlReporter.html
+  name: PlainCrawlReporter
+  nameWithType: PlainCrawlReporter
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  commentId: T:LocalSearchEngine.Crawler.SpectreCrawlReporter
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html
+  name: SpectreCrawlReporter
+  nameWithType: SpectreCrawlReporter
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter
+- uid: LocalSearchEngine.Crawler.SummaryPanel
+  commentId: T:LocalSearchEngine.Crawler.SummaryPanel
+  href: LocalSearchEngine.Crawler.SummaryPanel.html
+  name: SummaryPanel
+  nameWithType: SummaryPanel
+  fullName: LocalSearchEngine.Crawler.SummaryPanel

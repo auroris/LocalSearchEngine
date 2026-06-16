@@ -14,6 +14,58 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.CrawlerService
     name: CrawlerService
     type: Class
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  name: LocalSearchEngine.Core.Crawling.Engine
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+    name: AliasJob
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+    name: CrawlConsumer
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+    name: CrawlContext
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+    name: CrawlJob
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+    name: CrawlProducer
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+    name: DownloadResult
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+    name: DownloadStatus
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob
+    name: GoneJob
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+    name: HttpContentReader
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+    name: IndexJob
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
+    name: LinkVerifier
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
+    name: NoIndexJob
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService
+    name: RobotsService
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService
+    name: SitemapService
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+    name: TouchJob
+    type: Class
 - uid: LocalSearchEngine.Core.Crawling.Extraction
   name: LocalSearchEngine.Core.Crawling.Extraction
   type: Namespace
@@ -31,6 +83,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
     name: AllowedHosts
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: AllowedHosts.HostRule
+    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
     name: CrawlPolicy
     type: Class
@@ -55,6 +110,9 @@ items:
   items:
   - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
     name: BrokenLink
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
+    name: CrawlObserver
     type: Class
   - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
     name: CrawlOutcome
@@ -106,6 +164,9 @@ items:
   - uid: LocalSearchEngine.Core.Searching.SearchRanker
     name: SearchRanker
     type: Class
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    name: SearchRanker.Aggregate
+    type: Class
   - uid: LocalSearchEngine.Core.Searching.SearchResponse
     name: SearchResponse
     type: Class
@@ -137,9 +198,31 @@ items:
   - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
     name: TextChunker
     type: Class
+  - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.StringListWithTokenCount
+    name: TextChunker.StringListWithTokenCount
+    type: Class
   - uid: LocalSearchEngine.Core.TextProcessing.TextChunker.TokenCounter
     name: TextChunker.TokenCounter
     type: Delegate
+- uid: LocalSearchEngine.Crawler
+  name: LocalSearchEngine.Crawler
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Crawler.BrokenLinksWriter
+    name: BrokenLinksWriter
+    type: Class
+  - uid: LocalSearchEngine.Crawler.CrawlStatsWriter
+    name: CrawlStatsWriter
+    type: Class
+  - uid: LocalSearchEngine.Crawler.PlainCrawlReporter
+    name: PlainCrawlReporter
+    type: Class
+  - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter
+    name: SpectreCrawlReporter
+    type: Class
+  - uid: LocalSearchEngine.Crawler.SummaryPanel
+    name: SummaryPanel
+    type: Class
 - uid: LocalSearchEngine.Tests
   name: LocalSearchEngine.Tests
   type: Namespace
@@ -155,6 +238,12 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
     name: CrawlerServiceIntegrationTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+    name: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    name: CrawlerServiceIntegrationTests.FakeHandler
     type: Class
   - uid: LocalSearchEngine.Tests.FakeEmbedder
     name: FakeEmbedder

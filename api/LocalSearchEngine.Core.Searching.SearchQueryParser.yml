@@ -5,7 +5,9 @@ items:
   id: SearchQueryParser
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost(System.String)
   - LocalSearchEngine.Core.Searching.SearchQueryParser.Parse(System.String)
+  - LocalSearchEngine.Core.Searching.SearchQueryParser.SiteToken
   langs:
   - csharp
   - vb
@@ -39,6 +41,33 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Searching.SearchQueryParser.SiteToken
+  commentId: F:LocalSearchEngine.Core.Searching.SearchQueryParser.SiteToken
+  id: SiteToken
+  parent: LocalSearchEngine.Core.Searching.SearchQueryParser
+  langs:
+  - csharp
+  - vb
+  name: SiteToken
+  nameWithType: SearchQueryParser.SiteToken
+  fullName: LocalSearchEngine.Core.Searching.SearchQueryParser.SiteToken
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchQueryParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SiteToken
+    path: LocalSearchEngine.Core/Searching/SearchQueryParser.cs
+    startLine: 42
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static readonly Regex SiteToken
+    return:
+      type: System.Text.RegularExpressions.Regex
+    content.vb: Private Shared ReadOnly SiteToken As Regex
 - uid: LocalSearchEngine.Core.Searching.SearchQueryParser.Parse(System.String)
   commentId: M:LocalSearchEngine.Core.Searching.SearchQueryParser.Parse(System.String)
   id: Parse(System.String)
@@ -77,6 +106,47 @@ items:
   nameWithType.vb: SearchQueryParser.Parse(String)
   fullName.vb: LocalSearchEngine.Core.Searching.SearchQueryParser.Parse(String)
   name.vb: Parse(String)
+- uid: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost(System.String)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost(System.String)
+  id: NormalizeHost(System.String)
+  parent: LocalSearchEngine.Core.Searching.SearchQueryParser
+  langs:
+  - csharp
+  - vb
+  name: NormalizeHost(string)
+  nameWithType: SearchQueryParser.NormalizeHost(string)
+  fullName: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchQueryParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NormalizeHost
+    path: LocalSearchEngine.Core/Searching/SearchQueryParser.cs
+    startLine: 70
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Reduces a site filter value to a bare lowercase hostname: a pasted scheme, path,
+
+    or port is tolerated and stripped ("https://Example.com:8080/docs" → "example.com").
+  example: []
+  syntax:
+    content: private static string NormalizeHost(string value)
+    parameters:
+    - id: value
+      type: System.String
+      description: The raw value following <code>site:</code>.
+    return:
+      type: System.String
+      description: The normalized hostname, or an empty string if nothing remains.
+    content.vb: Private Shared Function NormalizeHost(value As String) As String
+  overload: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost*
+  nameWithType.vb: SearchQueryParser.NormalizeHost(String)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost(String)
+  name.vb: NormalizeHost(String)
 references:
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
@@ -345,6 +415,51 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Text.RegularExpressions.Regex
+  commentId: T:System.Text.RegularExpressions.Regex
+  parent: System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex
+  name: Regex
+  nameWithType: Regex
+  fullName: System.Text.RegularExpressions.Regex
+- uid: System.Text.RegularExpressions
+  commentId: N:System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.RegularExpressions
+  nameWithType: System.Text.RegularExpressions
+  fullName: System.Text.RegularExpressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
 - uid: LocalSearchEngine.Core.Searching.ParsedQuery
   commentId: T:LocalSearchEngine.Core.Searching.ParsedQuery
   parent: LocalSearchEngine.Core.Searching
@@ -369,3 +484,9 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost
+  href: LocalSearchEngine.Core.Searching.SearchQueryParser.html#LocalSearchEngine_Core_Searching_SearchQueryParser_NormalizeHost_System_String_
+  name: NormalizeHost
+  nameWithType: SearchQueryParser.NormalizeHost
+  fullName: LocalSearchEngine.Core.Searching.SearchQueryParser.NormalizeHost

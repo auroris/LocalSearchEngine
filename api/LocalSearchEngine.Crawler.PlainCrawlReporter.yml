@@ -1,0 +1,680 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter
+  commentId: T:LocalSearchEngine.Crawler.PlainCrawlReporter
+  id: PlainCrawlReporter
+  parent: LocalSearchEngine.Crawler
+  children:
+  - LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
+  - LocalSearchEngine.Crawler.PlainCrawlReporter.PageInterval
+  - LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Crawler.PlainCrawlReporter._console
+  langs:
+  - csharp
+  - vb
+  name: PlainCrawlReporter
+  nameWithType: PlainCrawlReporter
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PlainCrawlReporter
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: >-
+    A fallback reporter for non-interactive output (redirected to a file or a CI log, or when
+
+    <code>--no-live</code> is set), where a live-updating display would just emit control-code noise.
+
+    Prints a line on every phase change and a periodic progress line so the run is still followable.
+  example: []
+  syntax:
+    content: 'internal sealed class PlainCrawlReporter : ICrawlReporter'
+    content.vb: Friend NotInheritable Class PlainCrawlReporter Implements ICrawlReporter
+  inheritance:
+  - System.Object
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.PageInterval
+  commentId: F:LocalSearchEngine.Crawler.PlainCrawlReporter.PageInterval
+  id: PageInterval
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PageInterval
+  nameWithType: PlainCrawlReporter.PageInterval
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PageInterval
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageInterval
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 12
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private const int PageInterval = 25
+    return:
+      type: System.Int32
+    content.vb: Private Const PageInterval As Integer = 25
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter._console
+  commentId: F:LocalSearchEngine.Crawler.PlainCrawlReporter._console
+  id: _console
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: _console
+  nameWithType: PlainCrawlReporter._console
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter._console
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _console
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private readonly IAnsiConsole _console
+    return:
+      type: Spectre.Console.IAnsiConsole
+    content.vb: Private ReadOnly _console As IAnsiConsole
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
+  commentId: M:LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
+  id: '#ctor(Spectre.Console.IAnsiConsole)'
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PlainCrawlReporter(IAnsiConsole)
+  nameWithType: PlainCrawlReporter.PlainCrawlReporter(IAnsiConsole)
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PlainCrawlReporter(Spectre.Console.IAnsiConsole)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Initializes the reporter to write to the given console.
+  example: []
+  syntax:
+    content: public PlainCrawlReporter(IAnsiConsole console)
+    parameters:
+    - id: console
+      type: Spectre.Console.IAnsiConsole
+      description: The console to write progress lines to.
+    content.vb: Public Sub New(console As IAnsiConsole)
+  overload: LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor*
+  nameWithType.vb: PlainCrawlReporter.New(IAnsiConsole)
+  fullName.vb: LocalSearchEngine.Crawler.PlainCrawlReporter.New(Spectre.Console.IAnsiConsole)
+  name.vb: New(IAnsiConsole)
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  nameWithType: PlainCrawlReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PhaseChanged
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: The crawl moved into a new high-level <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats)
+    parameters:
+    - id: phase
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+      description: The phase just entered.
+    - id: stats
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+      description: The running tally at this moment.
+    content.vb: Public Sub PhaseChanged(phase As CrawlPhase, stats As CrawlStatsSnapshot)
+  overload: LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  id: PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  nameWithType: PlainCrawlReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageProcessed
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: A dequeued URL was resolved to an outcome.
+  example: []
+  syntax:
+    content: public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats)
+    parameters:
+    - id: url
+      type: System.String
+      description: The URL that was processed.
+    - id: outcome
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+      description: How the crawler resolved it.
+    - id: stats
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+      description: The running tally, including this page.
+    content.vb: Public Sub PageProcessed(url As String, outcome As CrawlOutcome, stats As CrawlStatsSnapshot)
+  overload: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType.vb: PlainCrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  fullName.vb: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+references:
+- uid: LocalSearchEngine.Crawler
+  commentId: N:LocalSearchEngine.Crawler
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Crawler
+  nameWithType: LocalSearchEngine.Crawler
+  fullName: LocalSearchEngine.Crawler
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Crawler
+    name: Crawler
+    href: LocalSearchEngine.Crawler.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html
+  name: ICrawlReporter
+  nameWithType: ICrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Spectre.Console.IAnsiConsole
+  commentId: T:Spectre.Console.IAnsiConsole
+  parent: Spectre.Console
+  isExternal: true
+  name: IAnsiConsole
+  nameWithType: IAnsiConsole
+  fullName: Spectre.Console.IAnsiConsole
+- uid: Spectre.Console
+  commentId: N:Spectre.Console
+  isExternal: true
+  name: Spectre.Console
+  nameWithType: Spectre.Console
+  fullName: Spectre.Console
+  spec.csharp:
+  - uid: Spectre
+    name: Spectre
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console
+    name: Console
+    isExternal: true
+  spec.vb:
+  - uid: Spectre
+    name: Spectre
+    isExternal: true
+  - name: .
+  - uid: Spectre.Console
+    name: Console
+    isExternal: true
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor*
+  commentId: Overload:LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor
+  href: LocalSearchEngine.Crawler.PlainCrawlReporter.html#LocalSearchEngine_Crawler_PlainCrawlReporter__ctor_Spectre_Console_IAnsiConsole_
+  name: PlainCrawlReporter
+  nameWithType: PlainCrawlReporter.PlainCrawlReporter
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PlainCrawlReporter
+  nameWithType.vb: PlainCrawlReporter.New
+  fullName.vb: LocalSearchEngine.Crawler.PlainCrawlReporter.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  name: CrawlPhase
+  nameWithType: CrawlPhase
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged*
+  commentId: Overload:LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged
+  href: LocalSearchEngine.Crawler.PlainCrawlReporter.html#LocalSearchEngine_Crawler_PlainCrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PhaseChanged
+  nameWithType: PlainCrawlReporter.PhaseChanged
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PhaseChanged
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PhaseChanged
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  name: CrawlStatsSnapshot
+  nameWithType: CrawlStatsSnapshot
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed*
+  commentId: Overload:LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed
+  href: LocalSearchEngine.Crawler.PlainCrawlReporter.html#LocalSearchEngine_Crawler_PlainCrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PageProcessed
+  nameWithType: PlainCrawlReporter.PageProcessed
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType.vb: ICrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PageProcessed
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+    name: CrawlOutcome
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PageProcessed
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+    name: CrawlOutcome
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  name: CrawlOutcome
+  nameWithType: CrawlOutcome
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome

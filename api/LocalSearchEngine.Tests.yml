@@ -8,6 +8,8 @@ items:
   - LocalSearchEngine.Tests.ContentExtractorTests
   - LocalSearchEngine.Tests.CrawlPolicyTests
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
   - LocalSearchEngine.Tests.FakeEmbedder
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   - LocalSearchEngine.Tests.RobotsRulesTests
@@ -44,6 +46,51 @@ references:
   name: CrawlerServiceIntegrationTests
   nameWithType: CrawlerServiceIntegrationTests
   fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  name: CrawlerServiceIntegrationTests.FakeHandler
+  nameWithType: CrawlerServiceIntegrationTests.FakeHandler
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    name: FakeHandler
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+    name: FakeHandler
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler.html
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  name: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  nameWithType: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+    name: CancelOnFirstPageReporter
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+    name: CancelOnFirstPageReporter
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter.html
 - uid: LocalSearchEngine.Tests.CrawlPolicyTests
   commentId: T:LocalSearchEngine.Tests.CrawlPolicyTests
   href: LocalSearchEngine.Tests.CrawlPolicyTests.html
@@ -52,6 +99,7 @@ references:
   fullName: LocalSearchEngine.Tests.CrawlPolicyTests
 - uid: LocalSearchEngine.Tests.FakeEmbedder
   commentId: T:LocalSearchEngine.Tests.FakeEmbedder
+  parent: LocalSearchEngine.Tests
   href: LocalSearchEngine.Tests.FakeEmbedder.html
   name: FakeEmbedder
   nameWithType: FakeEmbedder
@@ -98,3 +146,25 @@ references:
   name: VectorSearchServiceIntegrationTests
   nameWithType: VectorSearchServiceIntegrationTests
   fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html

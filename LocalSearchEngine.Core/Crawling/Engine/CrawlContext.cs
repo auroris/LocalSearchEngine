@@ -41,8 +41,8 @@ internal sealed class CrawlContext
     /// <summary>Gets the lookup mapping content hashes to the URLs they were first indexed under.</summary>
     public Dictionary<string, string> IndexedContentHashes { get; } = new(StringComparer.Ordinal);
 
-    /// <summary>Gets or sets the maximum size in bytes allowed for any single download (pages, files, robots.txt, sitemaps).</summary>
-    public long MaxCrawlSizeBytes { get; set; }
+    /// <summary>Gets the maximum size in bytes allowed for any single download (pages, files, robots.txt, sitemaps).</summary>
+    public required long MaxCrawlSizeBytes { get; init; }
 
     /// <summary>Gets the origins (scheme://host:port) whose robots.txt was unavailable (5xx) this run; their URLs are exempt from pruning.</summary>
     public HashSet<string> RobotsUnavailable { get; } = new(StringComparer.OrdinalIgnoreCase);
@@ -50,8 +50,8 @@ internal sealed class CrawlContext
     /// <summary>Gets the per-host reachability tracker: which servers have answered this run and which have been written off as unreachable.</summary>
     public HostHealthTracker HostHealth { get; } = new();
 
-    /// <summary>Gets or sets a value indicating whether off-site links are probed during the end-of-crawl verification pass and included in the report.</summary>
-    public bool CheckExternalLinks { get; set; }
+    /// <summary>Gets a value indicating whether off-site links are probed during the end-of-crawl verification pass and included in the report.</summary>
+    public required bool CheckExternalLinks { get; init; }
 
     /// <summary>Gets or sets a value indicating whether the per-host cap skipped any URL this run, which disables pruning.</summary>
     public bool HostCapSkipped { get; set; }

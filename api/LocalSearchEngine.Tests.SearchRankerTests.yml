@@ -14,9 +14,12 @@ items:
   - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
   - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
   - LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
+  - LocalSearchEngine.Tests.SearchRankerTests.NoKeywords
+  - LocalSearchEngine.Tests.SearchRankerTests.NoVectors
   - LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
   - LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
   - LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  - LocalSearchEngine.Tests.SearchRankerTests.Settings
   - LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
   langs:
   - csharp
@@ -49,6 +52,88 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Settings
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Settings
+  id: Settings
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Settings()
+  nameWithType: SearchRankerTests.Settings()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Settings()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Settings
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static SearchSettings Settings()
+    return:
+      type: LocalSearchEngine.Core.Searching.SearchSettings
+    content.vb: Private Shared Function Settings() As SearchSettings
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Settings*
+- uid: LocalSearchEngine.Tests.SearchRankerTests.NoKeywords
+  commentId: F:LocalSearchEngine.Tests.SearchRankerTests.NoKeywords
+  id: NoKeywords
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: NoKeywords
+  nameWithType: SearchRankerTests.NoKeywords
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.NoKeywords
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoKeywords
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static readonly KeywordCandidate[] NoKeywords
+    return:
+      type: LocalSearchEngine.Core.Searching.KeywordCandidate[]
+    content.vb: Private Shared ReadOnly NoKeywords As KeywordCandidate()
+- uid: LocalSearchEngine.Tests.SearchRankerTests.NoVectors
+  commentId: F:LocalSearchEngine.Tests.SearchRankerTests.NoVectors
+  id: NoVectors
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: NoVectors
+  nameWithType: SearchRankerTests.NoVectors
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.NoVectors
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoVectors
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static readonly VectorCandidate[] NoVectors
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorCandidate[]
+    content.vb: Private Shared ReadOnly NoVectors As VectorCandidate()
 - uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
   commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
   id: Excludes_results_below_similarity_threshold
@@ -777,6 +862,85 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Settings*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Settings
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Settings
+  name: Settings
+  nameWithType: SearchRankerTests.Settings
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Settings
+- uid: LocalSearchEngine.Core.Searching.SearchSettings
+  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html
+  name: SearchSettings
+  nameWithType: SearchSettings
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: LocalSearchEngine.Core.Searching.KeywordCandidate[]
+  isExternal: true
+  name: KeywordCandidate[]
+  nameWithType: KeywordCandidate[]
+  fullName: LocalSearchEngine.Core.Searching.KeywordCandidate[]
+  nameWithType.vb: KeywordCandidate()
+  fullName.vb: LocalSearchEngine.Core.Searching.KeywordCandidate()
+  name.vb: KeywordCandidate()
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+    name: KeywordCandidate
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
+    name: KeywordCandidate
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Searching.VectorCandidate[]
+  isExternal: true
+  name: VectorCandidate[]
+  nameWithType: VectorCandidate[]
+  fullName: LocalSearchEngine.Core.Searching.VectorCandidate[]
+  nameWithType.vb: VectorCandidate()
+  fullName.vb: LocalSearchEngine.Core.Searching.VectorCandidate()
+  name.vb: VectorCandidate()
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.VectorCandidate
+    name: VectorCandidate
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.VectorCandidate
+    name: VectorCandidate
+  - name: (
+  - name: )
 - uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold*
   commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
   href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Excludes_results_below_similarity_threshold
