@@ -34,7 +34,7 @@ To run the documentation portal locally:
    ```
 3. Open `http://localhost:8080` in your web browser.
 
-Conceptual guides are located in the [`/docs`](docs/) directory:
+Conceptual guides are located in the `docs/` directory:
 * [Introduction & Architecture](docs/introduction.md)
 * [Getting Started Guide](docs/getting-started.md)
 * [Configuration Guide](docs/configuration.md)
