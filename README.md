@@ -34,10 +34,10 @@ To run the documentation portal locally:
    ```
 3. Open `http://localhost:8080` in your web browser.
 
-Conceptual guides are located in the [`/docs`](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/) directory:
-* [Introduction & Architecture](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/introduction.md)
-* [Getting Started Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/getting-started.md)
-* [Configuration Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/configuration.md)
+Conceptual guides are located in the [`/docs`](docs/) directory:
+* [Introduction & Architecture](docs/introduction.md)
+* [Getting Started Guide](docs/getting-started.md)
+* [Configuration Guide](docs/configuration.md)
 
 ---
 
@@ -69,4 +69,4 @@ Conceptual guides are located in the [`/docs`](file:///c:/Users/steph/source/rep
    ```
    Navigate to `http://localhost:5000` to start searching.
 
-For advanced settings, CLI options, and crawl scope rules, see the [Configuration Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/configuration.md).
+For advanced settings, CLI options, and crawl scope rules, see the [Configuration Guide](docs/configuration.md).

@@ -62,7 +62,7 @@ When a crawl drains its frontier naturally, it compares the visited URLs with th
 
 ## Document Handling & Text Extraction
 
-The engine processes files based on their actual **magic-byte signatures** rather than extension names, with one exception for Word documents (as `.docx` is technically a ZIP container, the extension is checked early to avoid downloading large unrelated archives).
+The engine processes files based on their **magic-byte signatures** rather than extension names, with one exception for Word documents (as `.docx` is technically a ZIP container, the extension is checked early to avoid downloading large unrelated archives).
 
 * **HTML**: Boilerplate elements like `nav`, `footer`, `script`, `style`, and header links are stripped. Page-controls (inputs/buttons) are ignored, but ASP.NET or Oracle APEX pages wrapped in giant forms are parsed correctly.
 * **PDFs**: Text is extracted utilizing `iText`, and metadata like document titles are extracted.
@@ -72,10 +72,10 @@ The engine processes files based on their actual **magic-byte signatures** rathe
 
 ## Local AI & Hybrid Search
 
-The search engine does not rely on cloud services like OpenAI or Cohere. Instead, it embeds and searches text entirely on your CPU:
+The search engine embeds and searches text entirely on your CPU:
 
 * **Vector Embedding Model**: Bundles `snowflake-arctic-embed-s` (a 384-dimensional, quantized int8 model) powered by **ONNX Runtime**.
-* **Vector Index**: Utilizes `sqlite-vec` (via Semantic Kernel) to perform local k-NN search using cosine similarity.
+* **Vector Index**: Utilizes `sqlite-vec` (via Microsoft Semantic Kernel) to perform local k-NN search using cosine similarity.
 * **Keyword Index**: Utilizes SQLite's native **FTS5** virtual table with a Porter Stemming tokenizer for linguistic stemming (e.g. mapping "running" to "run").
 * **Hybrid Search Ranker**: Ranks search results combining:
   1. Dense vector cosine similarity.
