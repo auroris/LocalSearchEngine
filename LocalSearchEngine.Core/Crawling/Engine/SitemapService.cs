@@ -110,7 +110,7 @@ internal sealed class SitemapService
                 return (locations, nested);
             }
 
-            var (bytes, truncated) = await ReadBodyLimitedAsync(response, maxBytes, cancellationToken);
+            var (bytes, truncated) = await HttpContentReader.ReadLimitedAsync(response, maxBytes, cancellationToken);
             if (truncated)
             {
                 _logger.LogWarning("Skipping sitemap {Url}: body exceeds the {Limit}-byte limit.", sitemapUrl, maxBytes);
@@ -145,28 +145,5 @@ internal sealed class SitemapService
         }
 
         return (locations, nested);
-    }
-
-    /// <summary>
-    /// Reads response stream up to a byte limit, returning the read byte array and whether it was truncated.
-    /// </summary>
-    /// <param name="response">The HTTP response message.</param>
-    /// <param name="maxBytes">The maximum bytes to read.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A tuple containing the read byte array and a boolean indicating if reading was truncated.</returns>
-    private static async Task<(byte[] Body, bool Truncated)> ReadBodyLimitedAsync(HttpResponseMessage response, long maxBytes, CancellationToken cancellationToken)
-    {
-        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
-        using var bodyStream = new MemoryStream();
-        var buffer = new byte[8192];
-        while (bodyStream.Length < maxBytes)
-        {
-            int toRead = (int)Math.Min(buffer.Length, maxBytes - bodyStream.Length);
-            int bytesRead = await responseStream.ReadAsync(buffer.AsMemory(0, toRead), cancellationToken);
-            if (bytesRead == 0) return (bodyStream.ToArray(), false);
-            bodyStream.Write(buffer, 0, bytesRead);
-        }
-        bool truncated = await responseStream.ReadAsync(buffer.AsMemory(0, 1), cancellationToken) > 0;
-        return (bodyStream.ToArray(), truncated);
     }
 }

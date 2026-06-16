@@ -48,16 +48,8 @@ internal sealed class RobotsService
     {
         var origin = UrlOrigin.Key(uri);
         if (context.RobotsCache.TryGetValue(origin, out var cached)) return cached;
-        var (rules, unavailable, reachable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), context.MaxCrawlSizeBytes, cancellationToken);
 
-        if (reachable)
-        {
-            context.HostHealth.RecordContacted(uri.Host);
-        }
-        else if (context.HostHealth.RecordUnreachable(uri.Host))
-        {
-            _logger.LogWarning("Host {Host} did not respond on first contact; writing it off and skipping its URLs for the rest of this run.", uri.Host);
-        }
+        var (rules, unavailable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), context, cancellationToken);
 
         if (unavailable)
         {
@@ -106,64 +98,47 @@ internal sealed class RobotsService
     }
 
     /// <summary>
-    /// Performs the HTTP fetch of robots.txt for the given base URI, returning parse results or policy fallbacks.
+    /// Performs the HTTP fetch of robots.txt for the given base URI, recording host reachability and
+    /// returning parse results or policy fallbacks.
     /// </summary>
     /// <param name="baseUri">The base URI/origin host to request robots.txt from.</param>
-    /// <param name="maxBytes">The maximum allowed size of robots.txt to download.</param>
+    /// <param name="context">The active crawl context (supplies the size limit and host-health tracker).</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A tuple containing the parsed rules, whether robots.txt was unavailable (5xx error), and whether the host was reachable.</returns>
-    private async Task<(RobotsRules Rules, bool Unavailable, bool Reachable)> GetRobotsRulesAsync(Uri baseUri, long maxBytes, CancellationToken cancellationToken)
+    /// <returns>A tuple containing the parsed rules and whether robots.txt was unavailable (5xx error).</returns>
+    private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, CrawlContext context, CancellationToken cancellationToken)
     {
         try
         {
             var robotsUrl = new Uri(baseUri, "/robots.txt");
             using var response = await _httpClient.GetAsync(robotsUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            context.HostHealth.RecordResponse(baseUri.Host);
+
             if (response.IsSuccessStatusCode)
             {
-                var (body, truncated) = await ReadBodyLimitedAsync(response, maxBytes, cancellationToken);
+                var (body, truncated) = await HttpContentReader.ReadLimitedAsync(response, context.MaxCrawlSizeBytes, cancellationToken);
                 if (truncated)
                 {
-                    _logger.LogWarning("robots.txt for {Host} exceeds the {Limit}-byte limit; parsing the truncated prefix.", baseUri.Host, maxBytes);
+                    _logger.LogWarning("robots.txt for {Host} exceeds the {Limit}-byte limit; parsing the truncated prefix.", baseUri.Host, context.MaxCrawlSizeBytes);
                 }
-                return (RobotsRules.Parse(Encoding.UTF8.GetString(body), CrawlerService.UserAgent), false, true);
+                return (RobotsRules.Parse(Encoding.UTF8.GetString(body), CrawlerService.UserAgent), false);
             }
 
             if ((int)response.StatusCode >= 500)
             {
                 _logger.LogWarning("robots.txt for {Host} returned {Status}; treating as disallow-all.", baseUri.Host, (int)response.StatusCode);
-                return (RobotsRules.DisallowAll, true, true);
+                return (RobotsRules.DisallowAll, true);
             }
 
-            return (RobotsRules.AllowAll, false, true);
+            return (RobotsRules.AllowAll, false);
         }
         catch (Exception ex)
         {
-            bool reachable = !PageDownloader.IsUnreachableError(ex, cancellationToken);
+            if (context.HostHealth.RecordFailure(baseUri.Host, ex, cancellationToken))
+            {
+                _logger.LogWarning("Host {Host} is unreachable on first contact; writing it off and skipping its URLs for the rest of this run.", baseUri.Host);
+            }
             _logger.LogWarning(ex, "Failed to fetch or parse robots.txt for {Host}.", baseUri.Host);
-            return (RobotsRules.AllowAll, false, reachable);
+            return (RobotsRules.AllowAll, false);
         }
-    }
-
-    /// <summary>
-    /// Reads response stream up to a byte limit, returning the read byte array and whether it was truncated.
-    /// </summary>
-    /// <param name="response">The HTTP response message.</param>
-    /// <param name="maxBytes">The maximum bytes to read.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A tuple containing the read byte array and a boolean indicating if reading was truncated.</returns>
-    private static async Task<(byte[] Body, bool Truncated)> ReadBodyLimitedAsync(HttpResponseMessage response, long maxBytes, CancellationToken cancellationToken)
-    {
-        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
-        using var bodyStream = new MemoryStream();
-        var buffer = new byte[8192];
-        while (bodyStream.Length < maxBytes)
-        {
-            int toRead = (int)Math.Min(buffer.Length, maxBytes - bodyStream.Length);
-            int bytesRead = await responseStream.ReadAsync(buffer.AsMemory(0, toRead), cancellationToken);
-            if (bytesRead == 0) return (bodyStream.ToArray(), false);
-            bodyStream.Write(buffer, 0, bytesRead);
-        }
-        bool truncated = await responseStream.ReadAsync(buffer.AsMemory(0, 1), cancellationToken) > 0;
-        return (bodyStream.ToArray(), truncated);
     }
 }

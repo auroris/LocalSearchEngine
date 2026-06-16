@@ -142,7 +142,7 @@ internal sealed class LinkVerifier
         try
         {
             using var response = await SendProbeAsync(url, cancellationToken);
-            context.HostHealth.RecordContacted(response.RequestMessage?.RequestUri?.Host ?? "");
+            context.HostHealth.RecordResponse(response.RequestMessage?.RequestUri?.Host ?? "");
 
             var finalUri = response.RequestMessage?.RequestUri;
             if (finalUri != null)
@@ -160,11 +160,11 @@ internal sealed class LinkVerifier
         }
         catch (Exception ex)
         {
-            if (PageDownloader.IsUnreachableError(ex, cancellationToken))
+            if (HostHealthTracker.IsTransportFailure(ex, cancellationToken))
             {
                 if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
-                    context.HostHealth.RecordUnreachable(uri.Host);
+                    context.HostHealth.RecordFailure(uri.Host, ex, cancellationToken);
                 }
                 return (LinkStatus.Error, 503);
             }

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using LocalSearchEngine.Core.Crawling.Policies;
@@ -231,7 +230,7 @@ internal sealed class PageDownloader
             return new DownloadResult
             {
                 Status = DownloadStatus.Failed,
-                StatusCode = IsUnreachableError(ex, cancellationToken) ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.InternalServerError
+                StatusCode = HostHealthTracker.IsTransportFailure(ex, cancellationToken) ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.InternalServerError
             };
         }
     }
@@ -288,31 +287,5 @@ internal sealed class PageDownloader
         }
 
         return (body, false);
-    }
-
-    /// <summary>
-    /// Evaluates if an exception signals a host connection failure.
-    /// </summary>
-    /// <param name="ex">The thrown exception to evaluate.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns><c>true</c> if the error represents an unreachable host; otherwise, <c>false</c>.</returns>
-    public static bool IsUnreachableError(Exception ex, CancellationToken cancellationToken)
-    {
-        if (cancellationToken.IsCancellationRequested) return false;
-
-        for (Exception? e = ex; e is not null; e = e.InnerException)
-        {
-            switch (e)
-            {
-                case HttpRequestException { HttpRequestError: HttpRequestError.NameResolutionError
-                                                           or HttpRequestError.ConnectionError
-                                                           or HttpRequestError.SecureConnectionError }:
-                case SocketException:
-                case TimeoutException:
-                case TaskCanceledException:
-                    return true;
-            }
-        }
-        return false;
     }
 }

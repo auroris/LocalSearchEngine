@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+
 namespace LocalSearchEngine.Core.Crawling.Policies;
 
 /// <summary>
@@ -10,11 +12,14 @@ namespace LocalSearchEngine.Core.Crawling.Policies;
 /// later failures fall back to the normal retry-and-keep-the-index handling, because "the server
 /// went quiet after talking to us" says nothing as clearly as "the server was never there".
 ///
-/// This is per-run state, mutated only from the crawl's producer thread (like
-/// <see cref="Reporting.CrawlStats"/>), so it carries no synchronization of its own.
+/// This is the single home for reachability decisions: every place that contacts a host (robots.txt
+/// fetch, page download, end-of-crawl link check) feeds outcomes here through <see cref="RecordResponse"/>
+/// and <see cref="RecordFailure"/>. All members are safe to call concurrently, because the link check
+/// probes many hosts in parallel.
 /// </summary>
 public sealed class HostHealthTracker
 {
+    private readonly object _gate = new();
     private readonly HashSet<string> _reachable = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _unreachable = new(StringComparer.OrdinalIgnoreCase);
 
@@ -24,32 +29,89 @@ public sealed class HostHealthTracker
     /// (its requests are short-circuited, so in practice this is only ever reached for live hosts).
     /// </summary>
     /// <param name="host">The host that answered.</param>
-    public void RecordContacted(string host)
+    public void RecordResponse(string host)
     {
-        if (_unreachable.Contains(host)) return;
-        _reachable.Add(host);
+        if (string.IsNullOrEmpty(host)) return;
+        lock (_gate)
+        {
+            if (_unreachable.Contains(host)) return;
+            _reachable.Add(host);
+        }
     }
 
     /// <summary>
-    /// Records a connection-level failure for <paramref name="host"/>. If the host has never answered
-    /// this run, it is written off as unreachable.
+    /// Records that a request to <paramref name="host"/> threw <paramref name="ex"/>. If the
+    /// exception is a connection-level failure and the host has never answered this run, the host is
+    /// written off as unreachable. Non-transport errors — and anything thrown because the crawl was
+    /// cancelled — leave the tracker untouched.
     /// </summary>
-    /// <param name="host">The host whose connection failed.</param>
+    /// <param name="host">The host whose request failed.</param>
+    /// <param name="ex">The exception the request threw.</param>
+    /// <param name="cancellationToken">The crawl token; a cancelled request is never a write-off.</param>
     /// <returns>
     /// <c>true</c> only on the transition into the unreachable state (so the caller can log it once);
-    /// <c>false</c> if the host had already answered, or was already written off.
+    /// <c>false</c> if the failure was not a transport failure, the host had already answered, or it
+    /// was already written off.
     /// </returns>
-    public bool RecordUnreachable(string host)
+    public bool RecordFailure(string host, Exception ex, CancellationToken cancellationToken)
     {
-        if (_reachable.Contains(host)) return false;
-        return _unreachable.Add(host);
+        if (string.IsNullOrEmpty(host)) return false;
+        if (!IsTransportFailure(ex, cancellationToken)) return false;
+        lock (_gate)
+        {
+            if (_reachable.Contains(host)) return false;
+            return _unreachable.Add(host);
+        }
     }
 
     /// <summary>Whether <paramref name="host"/> has been written off as unreachable this run.</summary>
     /// <param name="host">The host to test.</param>
     /// <returns><c>true</c> if the host has been written off; otherwise, <c>false</c>.</returns>
-    public bool IsUnreachable(string host) => _unreachable.Contains(host);
+    public bool IsUnreachable(string host)
+    {
+        lock (_gate)
+        {
+            return _unreachable.Contains(host);
+        }
+    }
 
-    /// <summary>The hosts written off as unreachable this run.</summary>
-    public IReadOnlyCollection<string> UnreachableHosts => _unreachable;
+    /// <summary>A snapshot of the hosts written off as unreachable this run.</summary>
+    public IReadOnlyCollection<string> UnreachableHosts
+    {
+        get
+        {
+            lock (_gate)
+            {
+                return _unreachable.ToArray();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Classifies whether <paramref name="ex"/> is a connection-level failure that means the host
+    /// could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A request aborted
+    /// because <paramref name="cancellationToken"/> fired is never treated as unreachable.
+    /// </summary>
+    /// <param name="ex">The thrown exception to evaluate.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns><c>true</c> if the error represents an unreachable host; otherwise, <c>false</c>.</returns>
+    public static bool IsTransportFailure(Exception ex, CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested) return false;
+
+        for (Exception? e = ex; e is not null; e = e.InnerException)
+        {
+            switch (e)
+            {
+                case HttpRequestException { HttpRequestError: HttpRequestError.NameResolutionError
+                                                           or HttpRequestError.ConnectionError
+                                                           or HttpRequestError.SecureConnectionError }:
+                case SocketException:
+                case TimeoutException:
+                case TaskCanceledException:
+                    return true;
+            }
+        }
+        return false;
+    }
 }

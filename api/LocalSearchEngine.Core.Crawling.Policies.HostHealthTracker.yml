@@ -5,9 +5,10 @@ items:
   id: HostHealthTracker
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
-  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted(System.String)
-  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable(System.String)
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts
   langs:
   - csharp
@@ -23,7 +24,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostHealthTracker
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 15
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -45,9 +46,13 @@ items:
     went quiet after talking to us" says nothing as clearly as "the server was never there".
 
 
-    This is per-run state, mutated only from the crawl's producer thread (like
+    This is the single home for reachability decisions: every place that contacts a host (robots.txt
 
-    <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlStats" data-throw-if-not-resolved="false"></xref>), so it carries no synchronization of its own.
+    fetch, page download, end-of-crawl link check) feeds outcomes here through <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)" data-throw-if-not-resolved="false"></xref>
+
+    and <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String%2cSystem.Exception%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>. All members are safe to call concurrently, because the link check
+
+    probes many hosts in parallel.
   example: []
   syntax:
     content: public sealed class HostHealthTracker
@@ -61,25 +66,25 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted(System.String)
-  id: RecordContacted(System.String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+  id: RecordResponse(System.String)
   parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
   langs:
   - csharp
   - vb
-  name: RecordContacted(string)
-  nameWithType: HostHealthTracker.RecordContacted(string)
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted(string)
+  name: RecordResponse(string)
+  nameWithType: HostHealthTracker.RecordResponse(string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(string)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: RecordContacted
+    id: RecordResponse
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 26
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -91,60 +96,72 @@ items:
     (its requests are short-circuited, so in practice this is only ever reached for live hosts).
   example: []
   syntax:
-    content: public void RecordContacted(string host)
+    content: public void RecordResponse(string host)
     parameters:
     - id: host
       type: System.String
       description: The host that answered.
-    content.vb: Public Sub RecordContacted(host As String)
-  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted*
-  nameWithType.vb: HostHealthTracker.RecordContacted(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted(String)
-  name.vb: RecordContacted(String)
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable(System.String)
-  id: RecordUnreachable(System.String)
+    content.vb: Public Sub RecordResponse(host As String)
+  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse*
+  nameWithType.vb: HostHealthTracker.RecordResponse(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(String)
+  name.vb: RecordResponse(String)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  id: RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
   parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
   langs:
   - csharp
   - vb
-  name: RecordUnreachable(string)
-  nameWithType: HostHealthTracker.RecordUnreachable(string)
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable(string)
+  name: RecordFailure(string, Exception, CancellationToken)
+  nameWithType: HostHealthTracker.RecordFailure(string, Exception, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: RecordUnreachable
+    id: RecordFailure
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 41
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
   summary: >-
-    Records a connection-level failure for <code class="paramref">host</code>. If the host has never answered
+    Records that a request to <code class="paramref">host</code> threw <code class="paramref">ex</code>. If the
 
-    this run, it is written off as unreachable.
+    exception is a connection-level failure and the host has never answered this run, the host is
+
+    written off as unreachable. Non-transport errors — and anything thrown because the crawl was
+
+    cancelled — leave the tracker untouched.
   example: []
   syntax:
-    content: public bool RecordUnreachable(string host)
+    content: public bool RecordFailure(string host, Exception ex, CancellationToken cancellationToken)
     parameters:
     - id: host
       type: System.String
-      description: The host whose connection failed.
+      description: The host whose request failed.
+    - id: ex
+      type: System.Exception
+      description: The exception the request threw.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The crawl token; a cancelled request is never a write-off.
     return:
       type: System.Boolean
       description: >-
         <code>true</code> only on the transition into the unreachable state (so the caller can log it once);
 
-        <code>false</code> if the host had already answered, or was already written off.
-    content.vb: Public Function RecordUnreachable(host As String) As Boolean
-  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable*
-  nameWithType.vb: HostHealthTracker.RecordUnreachable(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable(String)
-  name.vb: RecordUnreachable(String)
+        <code>false</code> if the failure was not a transport failure, the host had already answered, or it
+
+        was already written off.
+    content.vb: Public Function RecordFailure(host As String, ex As Exception, cancellationToken As CancellationToken) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure*
+  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception, System.Threading.CancellationToken)
+  name.vb: RecordFailure(String, Exception, CancellationToken)
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
   id: IsUnreachable(System.String)
@@ -163,7 +180,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsUnreachable
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 50
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -201,11 +218,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UnreachableHosts
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 53
+    startLine: 78
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
-  summary: The hosts written off as unreachable this run.
+  summary: A snapshot of the hosts written off as unreachable this run.
   example: []
   syntax:
     content: public IReadOnlyCollection<string> UnreachableHosts { get; }
@@ -214,14 +231,134 @@ items:
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
     content.vb: Public ReadOnly Property UnreachableHosts As IReadOnlyCollection(Of String)
   overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts*
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
+  id: IsTransportFailure(System.Exception,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  langs:
+  - csharp
+  - vb
+  name: IsTransportFailure(Exception, CancellationToken)
+  nameWithType: HostHealthTracker.IsTransportFailure(Exception, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsTransportFailure
+    path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+    startLine: 97
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    Classifies whether <code class="paramref">ex</code> is a connection-level failure that means the host
+
+    could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A request aborted
+
+    because <code class="paramref">cancellationToken</code> fired is never treated as unreachable.
+  example: []
+  syntax:
+    content: public static bool IsTransportFailure(Exception ex, CancellationToken cancellationToken)
+    parameters:
+    - id: ex
+      type: System.Exception
+      description: The thrown exception to evaluate.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the error represents an unreachable host; otherwise, <code>false</code>.
+    content.vb: Public Shared Function IsTransportFailure(ex As Exception, cancellationToken As CancellationToken) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure*
 references:
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
-  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
-  parent: LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html
-  name: CrawlStats
-  nameWithType: CrawlStats
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordResponse_System_String_
+  name: RecordResponse(string)
+  nameWithType: HostHealthTracker.RecordResponse(string)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(string)
+  nameWithType.vb: HostHealthTracker.RecordResponse(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(String)
+  name.vb: RecordResponse(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+    name: RecordResponse
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordResponse_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
+    name: RecordResponse
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordResponse_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+  name: RecordFailure(string, Exception, CancellationToken)
+  nameWithType: HostHealthTracker.RecordFailure(string, Exception, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception, System.Threading.CancellationToken)
+  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception, System.Threading.CancellationToken)
+  name.vb: RecordFailure(String, Exception, CancellationToken)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+    name: RecordFailure
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+    name: RecordFailure
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
   href: LocalSearchEngine.html
@@ -466,44 +603,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting
-  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Crawling.Reporting
-  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
-  fullName: LocalSearchEngine.Core.Crawling.Reporting
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
 - uid: System
   commentId: N:System
   isExternal: true
@@ -511,12 +610,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted
-  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordContacted_System_String_
-  name: RecordContacted
-  nameWithType: HostHealthTracker.RecordContacted
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordContacted
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordResponse_System_String_
+  name: RecordResponse
+  nameWithType: HostHealthTracker.RecordResponse
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -528,12 +627,28 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable
-  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordUnreachable_System_String_
-  name: RecordUnreachable
-  nameWithType: HostHealthTracker.RecordUnreachable
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordUnreachable
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+  name: RecordFailure
+  nameWithType: HostHealthTracker.RecordFailure
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -545,6 +660,33 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable
   href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsUnreachable_System_String_
@@ -657,3 +799,9 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_System_Threading_CancellationToken_
+  name: IsTransportFailure
+  nameWithType: HostHealthTracker.IsTransportFailure
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure

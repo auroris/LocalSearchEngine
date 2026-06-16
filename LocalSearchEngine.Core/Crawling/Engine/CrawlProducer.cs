@@ -235,11 +235,9 @@ internal sealed class CrawlProducer
 
         var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, state.ETag, state.LastModified, _context.MaxCrawlSizeBytes, redirectValidator, cancellationToken);
 
-        if (downloadResult.Status != DownloadStatus.Failed || (int)downloadResult.StatusCode != 0)
-        {
-            _context.HostHealth.RecordContacted(currentUri.Host);
-        }
-
+        // Reachability for this host was already recorded when its robots.txt was fetched above,
+        // and an unreachable host would have been skipped before we got here. The tracker never
+        // writes off a host that has answered, so a per-download recording can't change anything.
         int statusCode = (int)downloadResult.StatusCode;
 
         switch (downloadResult.Status)
