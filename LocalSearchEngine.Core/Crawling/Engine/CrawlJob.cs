@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
 /// Represents the base crawl job result class containing URL and HTTP status information.
@@ -13,6 +13,17 @@ internal abstract record CrawlJob(string Url, int StatusCode, string? RedirectSo
 /// <summary>
 /// Represents a job classification to fully index the page content and outlinks.
 /// </summary>
+/// <param name="Url">The target page URL.</param>
+/// <param name="StatusCode">The response HTTP status code.</param>
+/// <param name="Title">The document/page title.</param>
+/// <param name="Headings">The extracted page headings text.</param>
+/// <param name="Text">The main extracted text content.</param>
+/// <param name="ETag">The HTTP response ETag for cache validation.</param>
+/// <param name="LastModified">The HTTP response Last-Modified header value.</param>
+/// <param name="ContentHash">The SHA256 content hash of the downloaded body.</param>
+/// <param name="Outlinks">List of extracted in-scope outlinks.</param>
+/// <param name="OffsiteLinks">List of extracted out-of-scope/offsite links.</param>
+/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record IndexJob(
     string Url, int StatusCode, string? Title, string Headings, string Text,
     string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks,
@@ -22,6 +33,15 @@ internal sealed record IndexJob(
 /// <summary>
 /// Represents a job classification where indexing is skipped but crawl state and outlinks are stored.
 /// </summary>
+/// <param name="Url">The target page URL.</param>
+/// <param name="StatusCode">The response HTTP status code.</param>
+/// <param name="Title">The document/page title.</param>
+/// <param name="ETag">The HTTP response ETag.</param>
+/// <param name="LastModified">The HTTP response Last-Modified header value.</param>
+/// <param name="ContentHash">The SHA256 content hash.</param>
+/// <param name="Outlinks">List of extracted in-scope outlinks.</param>
+/// <param name="OffsiteLinks">List of extracted out-of-scope/offsite links.</param>
+/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record NoIndexJob(
     string Url, int StatusCode, string? Title, string? ETag, string? LastModified,
     string ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks,
@@ -31,17 +51,26 @@ internal sealed record NoIndexJob(
 /// <summary>
 /// Represents a job classification for pages that returned 404 or 410 Gone status.
 /// </summary>
+/// <param name="Url">The target page URL.</param>
+/// <param name="StatusCode">The response HTTP status code.</param>
+/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record GoneJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
     : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
 /// <summary>
 /// Represents a job classification for canonical page aliases.
 /// </summary>
+/// <param name="Url">The target page URL.</param>
+/// <param name="StatusCode">The response HTTP status code.</param>
+/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record AliasJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
     : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
 /// <summary>
 /// Represents a job classification for unchanged pages (304) or transient errors.
 /// </summary>
+/// <param name="Url">The target page URL.</param>
+/// <param name="StatusCode">The response HTTP status code.</param>
+/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record TouchJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
     : CrawlJob(Url, StatusCode, RedirectSourceUrl);

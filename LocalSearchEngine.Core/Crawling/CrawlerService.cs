@@ -12,6 +12,7 @@ using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.Crawling.Policies;
 using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Crawling.Storage;
+using LocalSearchEngine.Core.Crawling.Engine;
 
 namespace LocalSearchEngine.Core.Crawling;
 
@@ -32,8 +33,11 @@ public partial class CrawlerService
     }
 
     private readonly HttpClient _httpClient;
+    /// <summary>The vector search service for storing and indexing embeddings.</summary>
     private readonly VectorSearchService _vectorSearchService;
+    /// <summary>The logger instance for this service.</summary>
     private readonly ILogger<CrawlerService> _logger;
+    /// <summary>The SQLite connection string.</summary>
     private readonly string _connectionString;
 
     /// <summary>
@@ -134,8 +138,13 @@ public partial class CrawlerService
         var consumer = new CrawlConsumer(ctx.Write, channel.Reader, _vectorSearchService, _logger);
         var consumerTask = consumer.ConsumeAsync();
 
-        var producer = new CrawlProducer(_httpClient, _vectorSearchService, channel.Writer, ctx, _logger);
-        var seedRobots = await producer.GetOrFetchRobotsAsync(baseUri, cancellationToken);
+        var robotsService = new RobotsService(_httpClient, _vectorSearchService, _logger);
+        var sitemapService = new SitemapService(_httpClient, _logger);
+        var pageDownloader = new PageDownloader(_httpClient);
+        var linkVerifier = new LinkVerifier(_httpClient);
+
+        var producer = new CrawlProducer(_vectorSearchService, channel.Writer, ctx, robotsService, pageDownloader, _logger);
+        var seedRobots = await robotsService.GetOrFetchRobotsAsync(baseUri, ctx, cancellationToken);
 
         int producedJobs = 0;
         int indexedCount = 0;
@@ -147,7 +156,7 @@ public partial class CrawlerService
         }
         else
         {
-            await producer.EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), cancellationToken);
+            await sitemapService.EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, seedRobots, cancellationToken);
 
             var normalizedSeed = UrlNormalizer.Normalize(baseUri);
             ctx.SeedUrl = normalizedSeed;
@@ -177,7 +186,7 @@ public partial class CrawlerService
             await consumerTask;
 
             ctx.Observer.OnPhaseChanged(CrawlPhase.RemovingBanned);
-            ctx.Observer.OnBannedUrlsRemoved(await producer.RemoveRobotsBannedUrlsAsync());
+            ctx.Observer.OnBannedUrlsRemoved(await robotsService.RemoveRobotsBannedUrlsAsync(ctx));
             if (completedNaturally)
             {
                 ctx.Observer.OnPhaseChanged(CrawlPhase.Pruning);
@@ -194,7 +203,7 @@ public partial class CrawlerService
 
         if (!cancellationToken.IsCancellationRequested)
         {
-            await producer.VerifyUndeterminedLinksAsync(crawlStartUtc, cancellationToken);
+            await linkVerifier.VerifyUndeterminedLinksAsync(ctx, crawlStartUtc, cancellationToken);
         }
 
         bool cancelled = cancellationToken.IsCancellationRequested;
@@ -204,7 +213,8 @@ public partial class CrawlerService
         long itemsDeleted = ctx.Observer.Stats.Gone + ctx.Observer.Stats.RemovedBanned + ctx.Observer.Stats.RemovedStale;
         long itemsAdded = Math.Max(0, indexedUrlsInDb - indexedUrlsAtStart + itemsDeleted);
 
-        var (brokenLinks, redirectedLinks) = await producer.BuildLinkReportAsync(crawlStartUtc);
+        var (brokenLinks, redirectedLinks) = await linkVerifier.BuildLinkReportAsync(ctx, crawlStartUtc);
+
 
         ctx.Observer.OnCrawlCompleted(seedUrl);
 
@@ -224,6 +234,12 @@ public partial class CrawlerService
             ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray());
     }
 
+    /// <summary>
+    /// Creates an empty crawl report in the event of an early failure or invalid input.
+    /// </summary>
+    /// <param name="seedUrl">The seed URL that failed validation or was unreachable.</param>
+    /// <param name="startedUtc">The time the crawl was initiated.</param>
+    /// <returns>An empty <see cref="CrawlReport"/>.</returns>
     private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
         seedUrl, startedUtc, DateTime.UtcNow, false, false,
         new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,

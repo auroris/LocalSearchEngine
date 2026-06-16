@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 using LocalSearchEngine.Core.Crawling.Policies;
 using LocalSearchEngine.Core.Crawling.Reporting;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
 /// Holds the state and tracking information for an active crawl execution.
@@ -61,4 +61,29 @@ internal sealed class CrawlContext
 
     /// <summary>Gets or sets the moment the crawl started, used to stamp elapsed time onto snapshots.</summary>
     public required DateTime StartedUtc { get; init; }
+
+    /// <summary>
+    /// Discovers a URL: adds to Visited and enqueues to Queue if it is new.
+    /// </summary>
+    /// <param name="url">The URL to discover.</param>
+    /// <returns><c>true</c> if the URL was newly discovered and enqueued; otherwise, <c>false</c>.</returns>
+    public bool Discover(string url)
+    {
+        if (!Visited.Add(url)) return false;
+        Queue.Enqueue(url);
+        return true;
+    }
+
+    /// <summary>
+    /// Enqueues a single URL if it has not been visited yet.
+    /// </summary>
+    /// <param name="url">The URL to enqueue.</param>
+    public void EnqueueSingle(string url)
+    {
+        if (Visited.Add(url))
+        {
+            Queue.Enqueue(url);
+        }
+    }
 }
+

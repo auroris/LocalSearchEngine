@@ -8,21 +8,29 @@ using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Crawling.Storage;
 
-namespace LocalSearchEngine.Core.Crawling;
+namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
 /// Reads crawl jobs from the channel and persists indexing changes and visit states to the database.
 /// </summary>
 internal sealed class CrawlConsumer
 {
+    /// <summary>The SQLite connection used to write crawl state and links.</summary>
     private readonly SqliteConnection _connection;
+    /// <summary>The channel reader to receive crawl jobs from the producer.</summary>
     private readonly ChannelReader<CrawlJob> _reader;
+    /// <summary>The vector search service to index or delete page content embeddings.</summary>
     private readonly VectorSearchService _vectorSearchService;
+    /// <summary>The logger instance.</summary>
     private readonly ILogger _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CrawlConsumer"/> class.
     /// </summary>
+    /// <param name="connection">The SQLite database connection.</param>
+    /// <param name="reader">The reader to consume crawl jobs from.</param>
+    /// <param name="vectorSearchService">The vector search service for text indexing.</param>
+    /// <param name="logger">The logger instance.</param>
     public CrawlConsumer(
         SqliteConnection connection,
         ChannelReader<CrawlJob> reader,
@@ -102,6 +110,11 @@ internal sealed class CrawlConsumer
         }
     }
 
+    /// <summary>
+    /// Classifies a crawl job into a <see cref="LinkStatus"/> based on status code and redirect context.
+    /// </summary>
+    /// <param name="job">The crawl job to classify.</param>
+    /// <returns>The classified <see cref="LinkStatus"/>.</returns>
     private static LinkStatus ClassifyLinkStatus(CrawlJob job)
     {
         if (job.RedirectSourceUrl != null) return LinkStatus.Redirect;

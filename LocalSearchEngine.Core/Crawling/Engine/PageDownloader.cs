@@ -1,0 +1,318 @@
+using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
+using LocalSearchEngine.Core.Crawling.Policies;
+
+namespace LocalSearchEngine.Core.Crawling.Engine;
+
+/// <summary>
+/// Dictates the outcomes of a document download attempt.
+/// </summary>
+internal enum DownloadStatus
+{
+    /// <summary>The download was successful and the resource was fetched.</summary>
+    Success,
+    /// <summary>The server returned 304 Not Modified, indicating the local cached copy is still fresh.</summary>
+    NotModified,
+    /// <summary>The redirect chain led out-of-scope or was disallowed by policy, so the download was blocked.</summary>
+    RedirectBlocked,
+    /// <summary>The resource returned 404 Not Found or 410 Gone.</summary>
+    Gone,
+    /// <summary>The connection failed, timed out, or returned an HTTP error code.</summary>
+    Failed,
+    /// <summary>The resource content length or downloaded body exceeded the maximum size limit.</summary>
+    SizeLimitExceeded,
+    /// <summary>The resource content-type is not supported for indexing.</summary>
+    UnsupportedType
+}
+
+/// <summary>
+/// Represents the result and metadata of a page or file download.
+/// </summary>
+internal sealed class DownloadResult
+{
+    /// <summary>Gets the outcome status of the download attempt.</summary>
+    public DownloadStatus Status { get; init; }
+    /// <summary>Gets the HTTP response status code.</summary>
+    public HttpStatusCode StatusCode { get; init; }
+    /// <summary>Gets the binary body contents of the downloaded resource, or <c>null</c> if not loaded.</summary>
+    public byte[]? Body { get; init; }
+    /// <summary>Gets the ETag header returned by the server, if any.</summary>
+    public string? ETag { get; init; }
+    /// <summary>Gets the Last-Modified header returned by the server, if any.</summary>
+    public string? LastModified { get; init; }
+    /// <summary>Gets the MIME type of the response content.</summary>
+    public string? ContentType { get; init; }
+    /// <summary>Gets the character set of the response content, if HTML/text.</summary>
+    public string? CharSet { get; init; }
+    /// <summary>Gets the X-Robots-Tag header value returned by the server, if any.</summary>
+    public string? XRobotsTag { get; init; }
+    /// <summary>Gets the final request URI after any redirects were followed.</summary>
+    public Uri? FinalRequestUri { get; init; }
+    /// <summary>Gets the total size in bytes read from the response stream.</summary>
+    public long SizeRead { get; init; }
+}
+
+/// <summary>
+/// Downloads pages and documents from the web, validating size limits, media types, and signature prefixes.
+/// </summary>
+internal sealed class PageDownloader
+{
+    /// <summary>The HTTP client instance used to execute requests.</summary>
+    private readonly HttpClient _httpClient;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PageDownloader"/> class.
+    /// </summary>
+    /// <param name="httpClient">The HTTP client to send requests.</param>
+    public PageDownloader(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    /// <summary>
+    /// Executes a request, validating redirects, content sizes, and mime-types.
+    /// </summary>
+    /// <param name="url">The target page URL to download.</param>
+    /// <param name="etag">The cached ETag, if any, for conditional request validation.</param>
+    /// <param name="lastModified">The cached Last-Modified string, if any, for conditional request validation.</param>
+    /// <param name="maxBytes">The maximum allowed download size in bytes.</param>
+    /// <param name="redirectValidator">The delegate to check if followed redirects are allowed.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="DownloadResult"/> object summarizing the download status and metadata.</returns>
+    public async Task<DownloadResult> DownloadAsync(
+        string url,
+        string? etag,
+        string? lastModified,
+        long maxBytes,
+        Func<Uri, Task<bool>> redirectValidator,
+        CancellationToken cancellationToken)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        if (!string.IsNullOrEmpty(etag))
+        {
+            request.Headers.IfNoneMatch.ParseAdd(etag);
+        }
+        if (!string.IsNullOrEmpty(lastModified) && DateTimeOffset.TryParse(lastModified, out var lastModDate))
+        {
+            request.Headers.IfModifiedSince = lastModDate;
+        }
+
+        try
+        {
+            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            int statusCode = (int)response.StatusCode;
+
+            if (response.StatusCode == HttpStatusCode.NotModified)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.NotModified,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = response.RequestMessage?.RequestUri
+                };
+            }
+
+            var finalRequestUri = response.RequestMessage?.RequestUri;
+            if (finalRequestUri != null)
+            {
+                var normalizedFinal = UrlNormalizer.Normalize(finalRequestUri);
+                if (!string.Equals(normalizedFinal, url, StringComparison.OrdinalIgnoreCase))
+                {
+                    bool allowed = await redirectValidator(finalRequestUri);
+                    if (!allowed)
+                    {
+                        return new DownloadResult
+                        {
+                            Status = DownloadStatus.RedirectBlocked,
+                            StatusCode = response.StatusCode,
+                            FinalRequestUri = finalRequestUri
+                        };
+                    }
+                }
+            }
+
+            if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.Gone,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri
+                };
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.Failed,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri
+                };
+            }
+
+            long? contentLength = response.Content.Headers.ContentLength;
+            if (contentLength.HasValue && contentLength.Value > maxBytes)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.SizeLimitExceeded,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri,
+                    SizeRead = contentLength.Value
+                };
+            }
+
+            var contentType = response.Content.Headers.ContentType?.MediaType;
+            if (!CrawlPolicy.IsSupportedOrGenericContentType(contentType))
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.UnsupportedType,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri,
+                    ContentType = contentType
+                };
+            }
+
+            var (body, truncated) = await ReadBodyAndValidatePrefixAsync(response, maxBytes, contentType, finalRequestUri?.ToString() ?? url, cancellationToken);
+            if (truncated)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.SizeLimitExceeded,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri,
+                    SizeRead = maxBytes + 1
+                };
+            }
+
+            if (body == null)
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.UnsupportedType,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri,
+                    ContentType = contentType
+                };
+            }
+
+            string? responseEtag = response.Headers.ETag?.Tag;
+            string? responseLastModified = response.Content.Headers.LastModified?.ToString("r");
+            var charSet = response.Content.Headers.ContentType?.CharSet;
+            response.Headers.TryGetValues("X-Robots-Tag", out var xRobotsValues);
+            string? xRobotsTag = xRobotsValues != null ? string.Join(",", xRobotsValues) : null;
+
+            return new DownloadResult
+            {
+                Status = DownloadStatus.Success,
+                StatusCode = response.StatusCode,
+                FinalRequestUri = finalRequestUri,
+                Body = body,
+                ETag = responseEtag,
+                LastModified = responseLastModified,
+                ContentType = contentType,
+                CharSet = charSet,
+                XRobotsTag = xRobotsTag
+            };
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            return new DownloadResult
+            {
+                Status = DownloadStatus.Failed,
+                StatusCode = IsUnreachableError(ex, cancellationToken) ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.InternalServerError
+            };
+        }
+    }
+
+    /// <summary>
+    /// Reads the response stream up to the max byte limit, performing MIME type signature prefix verification on the first 4096 bytes.
+    /// </summary>
+    /// <param name="response">The HTTP response message containing the stream.</param>
+    /// <param name="maxBytes">The maximum allowed bytes to read.</param>
+    /// <param name="contentType">The MIME type content header value.</param>
+    /// <param name="finalUrl">The final request URL.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A tuple containing the downloaded body bytes (or <c>null</c> if validation fails) and a boolean indicating if reading was truncated due to exceeding the size limit.</returns>
+    private static async Task<(byte[]? Body, bool Truncated)> ReadBodyAndValidatePrefixAsync(
+        HttpResponseMessage response,
+        long maxBytes,
+        string? contentType,
+        string finalUrl,
+        CancellationToken cancellationToken)
+    {
+        using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        using var bodyStream = new MemoryStream();
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        bool checkedPrefix = false;
+
+        while ((bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+        {
+            if (bodyStream.Length + bytesRead > maxBytes)
+            {
+                return (null, true);
+            }
+
+            bodyStream.Write(buffer, 0, bytesRead);
+
+            if (!checkedPrefix && bodyStream.Length >= 4096)
+            {
+                checkedPrefix = true;
+                var prefix = bodyStream.ToArray();
+                if (!CrawlPolicy.IsSupportedPrefix(prefix, contentType, finalUrl))
+                {
+                    return (null, false);
+                }
+            }
+        }
+
+        var body = bodyStream.ToArray();
+        if (!checkedPrefix)
+        {
+            if (!CrawlPolicy.IsSupportedPrefix(body, contentType, finalUrl))
+            {
+                return (null, false);
+            }
+        }
+
+        return (body, false);
+    }
+
+    /// <summary>
+    /// Evaluates if an exception signals a host connection failure.
+    /// </summary>
+    /// <param name="ex">The thrown exception to evaluate.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns><c>true</c> if the error represents an unreachable host; otherwise, <c>false</c>.</returns>
+    public static bool IsUnreachableError(Exception ex, CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested) return false;
+
+        for (Exception? e = ex; e is not null; e = e.InnerException)
+        {
+            switch (e)
+            {
+                case HttpRequestException { HttpRequestError: HttpRequestError.NameResolutionError
+                                                           or HttpRequestError.ConnectionError
+                                                           or HttpRequestError.SecureConnectionError }:
+                case SocketException:
+                case TimeoutException:
+                case TaskCanceledException:
+                    return true;
+            }
+        }
+        return false;
+    }
+}
