@@ -1,135 +1,72 @@
 # LocalSearchEngine
 
-LocalSearchEngine is a fully self-hosted, local search platform built with C# and .NET. A console crawler builds a knowledge base from web pages and documents into a single SQLite file (full-text index + vector embeddings), and a web app serves a hybrid search interface over it. Everything — crawling, embedding, and querying — runs on your machine; indexed data never leaves it.
+LocalSearchEngine is a fully self-hosted, local search platform built with C# and .NET. 
 
-## Features
+A console crawler builds a knowledge base from web pages and documents into a single SQLite file (full-text index + vector embeddings), and a web app serves a hybrid search interface over it. Everything — crawling, embedding, and querying — runs entirely on your local machine; indexed data never leaves it.
 
-### Crawler (`LocalSearchEngine.Crawler`)
+---
 
-- **Polite by design**: honors `robots.txt` (user-agent groups, `Allow`/`Disallow` with `*`/`$` wildcards, longest-match precedence) via [RobotsExclusionTools](https://github.com/TurnerSoftware/RobotsExclusionTools). `Crawl-delay` is respected — fractional values are rounded up to whole seconds, and the delay is capped at 30s so a misconfigured file can't stall the crawl. A 5xx from `robots.txt` is treated as *disallow-all* (per RFC 9309); a 4xx as *no restrictions*. Requests to the same host are spaced at least 250 ms apart.
-- **Origin-scoped, lazy robots**: rules and sitemaps are tracked per origin (scheme + host + port), so a site on a non-default port gets its `robots.txt` from that port. Robots are fetched lazily on first contact — a host that's merely *allowed* is never contacted.
-- **Sitemap discovery** for the seed's origin only: `Sitemap:` directives in robots.txt plus the conventional `/sitemap.xml`, including nested sitemap indexes (XXE-safe parsing). Only entries on the seed's own origin are taken — sitemaps never bulk-enumerate other hosts, even allowed ones.
-- **Incremental re-crawls**: conditional requests with `ETag`/`Last-Modified`, SHA-256 content hashing to skip re-embedding unchanged bodies, and stored per-page outlinks so a 304/unchanged page still keeps the frontier growing.
-- **Deduplication and aliasing**: byte-identical content served under two URLs is indexed once; `rel="canonical"` links are followed instead of indexed; redirects clean up the index entry of their source. A seed that redirects to a different host adopts that host into scope.
-- **Robots directives on pages**: `noindex`/`nofollow`/`none` from `<meta name="robots">`, bot-specific meta tags, and the `X-Robots-Tag` header are honored; 404/410 pages are removed from the index; transient errors (5xx) never erase previously indexed content.
-- **Graceful shutdown**: `Ctrl+C` stops fetching and flushes in-flight indexing work before exiting.
-- **Trap protection**: an optional per-host page cap (`--max-pages-per-host`) guards against crawler traps like calendars and faceted navigation.
-- **Streaming fetch with early abort**: responses are read incrementally and abandoned mid-download as soon as the `Content-Type`, a magic-byte sniff of the first 4 KB, or the size cap (15 MB by default, `--max-crawl-size-bytes`, counted after decompression) rules them out for indexing. The same size limit is universal: an oversized sitemap is skipped outright, and an oversized robots.txt is parsed from its truncated prefix (directives are line-based, so everything read still applies).
-- **Automatic stale pruning**: a crawl that drains its frontier completely finishes by removing index entries for in-scope URLs it could no longer reach — orphaned pages whose links were removed, and pages a robots rule now disallows. Pruning only trusts a *complete* crawl: it is skipped when the crawl was cancelled or cut short by `--max-pages`/`--max-pages-per-host`, rows on hosts outside the crawl's scope (e.g. another site sharing the database) are never touched, and an origin whose robots.txt was unavailable (5xx) that run is exempt.
+## Key Features
 
-### Document handling
+* **Polite & Origin-Scoped Crawler**: Respects `robots.txt` rules, sitemaps, and `Crawl-delay` settings per origin. Includes crawler trap protection and site-cap controls.
+* **Document Extraction**: Sniffs and extracts text from HTML pages (boilerplate stripped), PDFs, and Word (`.docx`) files.
+* **Incremental Crawls**: Employs conditional HTTP requests, SHA-256 content hashing to avoid re-embedding duplicate text, and outlink persistence to crawl efficiently.
+* **Local AI Embeddings**: Uses `snowflake-arctic-embed-s` (384-dim, int8 ONNX) running locally on CPU via ONNX Runtime.
+* **Hybrid Search Ranker**: Ranks search results combining sparse keyword matching (SQLite FTS5) and dense semantic vector similarity (`sqlite-vec`).
 
-- Content is classified by the server's `Content-Type`, falling back to magic-byte sniffing — never by the URL's file extension. `/page.php` and `/release-1.0` crawl just fine; JSON or images served at pretty URLs are skipped. One deliberate exception: a body that sniffs as a ZIP container but whose URL extension says it isn't `.docx` (`.zip`, `.xlsx`, …) is abandoned mid-download — a `.docx` *is* a ZIP, and the entry listing that tells them apart sits at the end of the archive, so the extension is the only signal available before paying for the whole file.
-- HTML: titles, headings, and visible text are extracted with boilerplate (nav, header, footer, scripts, form controls, etc.) stripped. Pages whose entire body sits inside a `<form>` (Oracle APEX, ASP.NET WebForms) are indexed normally — only the form *controls* are treated as chrome.
-- Character encodings resolve in standards order: a charset in the HTTP header is authoritative; otherwise the BOM, then the page's own `<meta charset>` / `http-equiv` declaration (the document is re-decoded when it declares something different — legacy code pages like windows-1252 included), falling back to UTF-8.
-- PDF text extraction (iText) and modern Word `.docx` extraction (NPOI), with embedded document titles indexed like HTML titles.
+---
 
-### Search (`LocalSearchEngine.Web`)
+## Documentation
 
-- **Hybrid ranking**: semantic (vector cosine similarity) + keyword (SQLite FTS5 with porter stemming) in two tiers — verbatim phrase and all-terms.
-- Returns *every* result at or above a configurable similarity threshold (no fixed result-count cap), with score boosts for exact-phrase, all-terms, heading, title, file-name, and literal-text matches. All weights are tunable under `SearchSettings` in `appsettings.json`.
-- **`site:` filter**: `site:example.com` anywhere in the query restricts results to that host and its subdomains (any port, any scheme); the rest of the query ranks as usual, and multiple `site:` tokens are OR'd together.
-- **Index stats**: `/api/stats` reports indexed pages, chunk count, tracked URLs, database size, and the most recent crawl time; the search page shows the summary in its footer.
-- **Local AI**: the embedding model (`snowflake-arctic-embed-s`, 384-dim, int8 ONNX, ~32 MB) runs on the CPU via ONNX Runtime. It is downloaded once at build time and bundled next to the binaries — see `Directory.Build.props`.
+Comprehensive conceptual and API documentation is built using **DocFX** and is available in the repository.
 
-## Crawl scope
+### Viewing the Docs Locally
 
-The seed URL's exact origin — scheme, host, and port (the scheme's default port if none is given) — is always in scope. Additional hosts come from the `allowed-servers` array in the crawler's `appsettings.json`, with entries of the form:
+To run the documentation portal locally:
 
-```
-[scheme://]host[:port]
-```
-
-- `example.com` — any scheme, any port
-- `https://example.com` — HTTPS only, any port
-- `example.com:8080` — any scheme, port 8080 only
-- `http://example.com:8080` — exactly that origin
-
-An omitted scheme or port matches anything. **The `www.` variant of a host is not implied** — if a site lives on both `example.com` and `www.example.com`, list both.
-
-Allowed hosts are a filter, not a target list. Being allowed means the crawler *may* fetch a page on that host when links lead there — it is not a commitment to index the server wholesale: a host that nothing links to is never contacted (not even for robots.txt), and sitemap enumeration applies only to the seed. To fully index another server, run the crawler again with that server as the seed.
-
-## Project Structure
-
-- **`LocalSearchEngine.Core`**: the backbone — crawling (`CrawlerService`, content extraction, robots/URL policy), text chunking, and hybrid search (`VectorSearchService`, `SearchRanker`).
-- **`LocalSearchEngine.Crawler`**: console app that runs the crawl and builds the index.
-- **`LocalSearchEngine.Web`**: ASP.NET Core app serving the search API (`/api/search/query`), the index stats API (`/api/stats`), and a static frontend.
-- **`LocalSearchEngine.Tests`**: xUnit unit and integration tests.
-
-## Technologies Used
-
-- **C# / .NET 10**
-- **SQLite** with **FTS5** and **sqlite-vec** (via `Microsoft.SemanticKernel.Connectors.SqliteVec`)
-- **HtmlAgilityPack** (HTML parsing), **iText** (PDF), **NPOI** (`.docx`)
-- **RobotsExclusionTools** (robots.txt parsing)
-- **SmartComponents.LocalEmbeddings** (`snowflake-arctic-embed-s` via ONNX Runtime)
-
-> **Note**: Both `iText` and `NPOI` transitively depend on `System.Security.Cryptography.Xml` version `8.0.2`, which has known high-severity vulnerabilities (NU1903). To address this, we explicitly reference version `8.0.3` in `LocalSearchEngine.Core`.
-
-## Getting Started
-
-1. Ensure you have the .NET SDK installed.
-2. Clone the repository and navigate to the project root.
-3. Restore NuGet dependencies (*equivalent to `npm install`*):
-   ```bash
-   dotnet restore
-   ```
-4. Build the solution. On the first build, this also downloads the local embedding model and bundles it next to the binaries:
-   ```bash
-   dotnet build
-   ```
-5. Run the crawler against a seed URL (*equivalent to `npm run <script>`*):
-   ```bash
-   dotnet run --project LocalSearchEngine.Crawler -- https://example.com
-   ```
-6. Launch the web interface and search your index:
-   ```bash
-   dotnet run --project LocalSearchEngine.Web
-   ```
-
-### Crawler options
-
-| Option | Default | Description |
-|---|---|---|
-| `--db <path>` | `search.db` | Path to the SQLite database. |
-| `--max-pages <n>` | unlimited | Pages to index this run (304s, skips, and failures don't count). |
-| `--max-pages-per-host <n>` | unlimited | Stop indexing a host after it contributes n pages. |
-| `--max-crawl-size-bytes <n>` | 15 MB | Skip any page/file larger than n bytes (enforced while downloading, after decompression). |
-
-Each option can also be set in the crawler's `appsettings.json` (`db`, `max-pages`, `max-pages-per-host`, `max-crawl-size-bytes`), which is also where `allowed-servers` lives.
-
-### Database location
-
-The crawler writes `search.db` relative to the directory it is run from; the web app looks for it in its own content root (`LocalSearchEngine.Web/`). To keep the index where the web app serves it, point the crawler there explicitly:
-
-```bash
-dotnet run --project LocalSearchEngine.Crawler -- --db LocalSearchEngine.Web/search.db https://example.com
-```
-
-On the web side, the `db` setting names the file (relative to the content root), and a full `ConnectionStrings:SearchDb` connection string overrides it entirely. The web app opens the database read-write because a WAL reader needs write access to the shared-memory index, so searching works even while a crawl is running.
-
-## Testing
-
-```bash
-dotnet test
-```
-
-Unit tests cover the pure logic — URL normalization, allowed-host rules, robots.txt parsing/matching (including fractional crawl delays), content classification, character-encoding resolution, `site:` query parsing, FTS5 match semantics, text chunking, and search ranking. Integration tests drive the real crawl loop against a fake HTTP server and the real sqlite-vec connector in a temporary database (with a deterministic fake embedder, so no model download), covering 304 handling, redirects, deduplication, per-host caps, form-wrapped pages, non-default ports, crawl-scope rules, stale pruning (and the cases where pruning must hold its fire), and oversized-sitemap skipping.
-
-## Generating Documentation
-
-The project uses XML documentation comments within the source code. You can generate HTML documentation using the pre-configured local **DocFX** tool.
-
-1. Restore the local tools (*equivalent to `npm install` for CLI tools*):
+1. Restore the DocFX CLI tool:
    ```bash
    dotnet tool restore
    ```
-2. Build and host the documentation server locally:
+2. Build and serve the docs:
    ```bash
    dotnet tool run docfx docfx.json --serve
    ```
-   Or explicitly target the file path:
+3. Open `http://localhost:8080` in your web browser.
+
+Conceptual guides are located in the [`/docs`](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/) directory:
+* [Introduction & Architecture](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/introduction.md)
+* [Getting Started Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/getting-started.md)
+* [Configuration Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/configuration.md)
+
+---
+
+## Project Structure
+
+* **`LocalSearchEngine.Core`**: Core logic for network fetching, parsing, vector embedding, and hybrid ranking.
+* **`LocalSearchEngine.Crawler`**: Console application that crawls seed URLs and generates the SQLite search index.
+* **`LocalSearchEngine.Web`**: ASP.NET Core web application serving the search UI and index statistics.
+* **`LocalSearchEngine.Tests`**: Unit and integration test suite.
+
+---
+
+## Quick Start
+
+1. **Build the Solution**:
    ```bash
-   dotnet tool run docfx C:\Users\steph\source\repos\LocalSearchEngine\docfx.json --serve
+   dotnet build
    ```
-3. Open `http://localhost:8080` in your browser to view the generated documentation site.
+   *(This builds the binaries and copies the embedded model from the repository into your build outputs)*
+
+2. **Crawl a Website**:
+   ```bash
+   dotnet run --project LocalSearchEngine.Crawler -- --db LocalSearchEngine.Web/search.db https://example.com
+   ```
+
+3. **Start the Search Web App**:
+   ```bash
+   dotnet run --project LocalSearchEngine.Web
+   ```
+   Navigate to `http://localhost:5000` to start searching.
+
+For advanced settings, CLI options, and crawl scope rules, see the [Configuration Guide](file:///c:/Users/steph/source/repos/LocalSearchEngine/docs/configuration.md).

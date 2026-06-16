@@ -3,7 +3,7 @@ using LocalSearchEngine.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 
-namespace LocalSearchEngine.Controllers;
+namespace LocalSearchEngine.Web.Controllers;
 
 /// <summary>
 /// Provides an HTTP API endpoint summarizing the search index: how much is indexed and how fresh it is.

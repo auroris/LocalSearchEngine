@@ -2,7 +2,7 @@ using LocalSearchEngine.Core.Searching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 
-namespace LocalSearchEngine.Controllers;
+namespace LocalSearchEngine.Web.Controllers;
 
 /// <summary>
 /// Provides HTTP API endpoints for executing search queries against the vector search engine.

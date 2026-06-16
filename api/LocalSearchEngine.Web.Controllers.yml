@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Web.Controllers
+  commentId: N:LocalSearchEngine.Web.Controllers
+  id: LocalSearchEngine.Web.Controllers
+  children:
+  - LocalSearchEngine.Web.Controllers.SearchController
+  - LocalSearchEngine.Web.Controllers.StatsController
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Web.Controllers
+  nameWithType: LocalSearchEngine.Web.Controllers
+  fullName: LocalSearchEngine.Web.Controllers
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Web
+references:
+- uid: LocalSearchEngine.Web.Controllers.SearchController
+  commentId: T:LocalSearchEngine.Web.Controllers.SearchController
+  href: LocalSearchEngine.Web.Controllers.SearchController.html
+  name: SearchController
+  nameWithType: SearchController
+  fullName: LocalSearchEngine.Web.Controllers.SearchController
+- uid: LocalSearchEngine.Web.Controllers.StatsController
+  commentId: T:LocalSearchEngine.Web.Controllers.StatsController
+  href: LocalSearchEngine.Web.Controllers.StatsController.html
+  name: StatsController
+  nameWithType: StatsController
+  fullName: LocalSearchEngine.Web.Controllers.StatsController

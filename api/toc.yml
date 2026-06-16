@@ -1,15 +1,5 @@
 ### YamlMime:TableOfContent
 items:
-- uid: LocalSearchEngine.Controllers
-  name: LocalSearchEngine.Controllers
-  type: Namespace
-  items:
-  - uid: LocalSearchEngine.Controllers.SearchController
-    name: SearchController
-    type: Class
-  - uid: LocalSearchEngine.Controllers.StatsController
-    name: StatsController
-    type: Class
 - uid: LocalSearchEngine.Core
   name: LocalSearchEngine.Core
   type: Namespace
@@ -189,5 +179,15 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
     name: VectorSearchServiceIntegrationTests
+    type: Class
+- uid: LocalSearchEngine.Web.Controllers
+  name: LocalSearchEngine.Web.Controllers
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Web.Controllers.SearchController
+    name: SearchController
+    type: Class
+  - uid: LocalSearchEngine.Web.Controllers.StatsController
+    name: StatsController
     type: Class
 memberLayout: SamePage

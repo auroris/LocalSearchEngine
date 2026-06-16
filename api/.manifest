@@ -1,11 +1,4 @@
 {
-  "LocalSearchEngine.Controllers": "LocalSearchEngine.Controllers.yml",
-  "LocalSearchEngine.Controllers.SearchController": "LocalSearchEngine.Controllers.SearchController.yml",
-  "LocalSearchEngine.Controllers.SearchController.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.SearchController})": "LocalSearchEngine.Controllers.SearchController.yml",
-  "LocalSearchEngine.Controllers.SearchController.Query(System.String)": "LocalSearchEngine.Controllers.SearchController.yml",
-  "LocalSearchEngine.Controllers.StatsController": "LocalSearchEngine.Controllers.StatsController.yml",
-  "LocalSearchEngine.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController})": "LocalSearchEngine.Controllers.StatsController.yml",
-  "LocalSearchEngine.Controllers.StatsController.Get": "LocalSearchEngine.Controllers.StatsController.yml",
   "LocalSearchEngine.Core": "LocalSearchEngine.Core.yml",
   "LocalSearchEngine.Core.Crawling": "LocalSearchEngine.Core.Crawling.yml",
   "LocalSearchEngine.Core.Crawling.CrawlerService": "LocalSearchEngine.Core.Crawling.CrawlerService.yml",
@@ -409,5 +402,12 @@
   "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose": "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.yml",
   "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance": "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.yml",
   "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_filter_restricts_results_to_the_named_host": "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.yml",
-  "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results": "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.yml"
+  "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results": "LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.yml",
+  "LocalSearchEngine.Web.Controllers": "LocalSearchEngine.Web.Controllers.yml",
+  "LocalSearchEngine.Web.Controllers.SearchController": "LocalSearchEngine.Web.Controllers.SearchController.yml",
+  "LocalSearchEngine.Web.Controllers.SearchController.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.SearchController})": "LocalSearchEngine.Web.Controllers.SearchController.yml",
+  "LocalSearchEngine.Web.Controllers.SearchController.Query(System.String)": "LocalSearchEngine.Web.Controllers.SearchController.yml",
+  "LocalSearchEngine.Web.Controllers.StatsController": "LocalSearchEngine.Web.Controllers.StatsController.yml",
+  "LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})": "LocalSearchEngine.Web.Controllers.StatsController.yml",
+  "LocalSearchEngine.Web.Controllers.StatsController.Get": "LocalSearchEngine.Web.Controllers.StatsController.yml"
 }

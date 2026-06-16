@@ -1,18 +1,18 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Controllers.StatsController
-  commentId: T:LocalSearchEngine.Controllers.StatsController
+- uid: LocalSearchEngine.Web.Controllers.StatsController
+  commentId: T:LocalSearchEngine.Web.Controllers.StatsController
   id: StatsController
-  parent: LocalSearchEngine.Controllers
+  parent: LocalSearchEngine.Web.Controllers
   children:
-  - LocalSearchEngine.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController})
-  - LocalSearchEngine.Controllers.StatsController.Get
+  - LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
+  - LocalSearchEngine.Web.Controllers.StatsController.Get
   langs:
   - csharp
   - vb
   name: StatsController
   nameWithType: StatsController
-  fullName: LocalSearchEngine.Controllers.StatsController
+  fullName: LocalSearchEngine.Web.Controllers.StatsController
   type: Class
   source:
     remote:
@@ -24,7 +24,7 @@ items:
     startLine: 10
   assemblies:
   - LocalSearchEngine.Web
-  namespace: LocalSearchEngine.Controllers
+  namespace: LocalSearchEngine.Web.Controllers
   summary: 'Provides an HTTP API endpoint summarizing the search index: how much is indexed and how fresh it is.'
   example: []
   syntax:
@@ -235,16 +235,16 @@ items:
     arguments:
     - type: System.String
       value: api/[controller]
-- uid: LocalSearchEngine.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController})
-  commentId: M:LocalSearchEngine.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController})
-  id: '#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController})'
-  parent: LocalSearchEngine.Controllers.StatsController
+- uid: LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
+  commentId: M:LocalSearchEngine.Web.Controllers.StatsController.#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})
+  id: '#ctor(LocalSearchEngine.Core.DatabaseConfig,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController})'
+  parent: LocalSearchEngine.Web.Controllers.StatsController
   langs:
   - csharp
   - vb
   name: StatsController(DatabaseConfig, ILogger<StatsController>)
   nameWithType: StatsController.StatsController(DatabaseConfig, ILogger<StatsController>)
-  fullName: LocalSearchEngine.Controllers.StatsController.StatsController(LocalSearchEngine.Core.DatabaseConfig, Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Controllers.StatsController>)
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.StatsController(LocalSearchEngine.Core.DatabaseConfig, Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Web.Controllers.StatsController>)
   type: Constructor
   source:
     remote:
@@ -256,8 +256,8 @@ items:
     startLine: 22
   assemblies:
   - LocalSearchEngine.Web
-  namespace: LocalSearchEngine.Controllers
-  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Controllers.StatsController" data-throw-if-not-resolved="false"></xref> class.
+  namespace: LocalSearchEngine.Web.Controllers
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Web.Controllers.StatsController" data-throw-if-not-resolved="false"></xref> class.
   example: []
   syntax:
     content: public StatsController(DatabaseConfig dbConfig, ILogger<StatsController> logger)
@@ -266,23 +266,23 @@ items:
       type: LocalSearchEngine.Core.DatabaseConfig
       description: The configuration containing database connection details.
     - id: logger
-      type: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController}
+      type: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
       description: The logger instance.
     content.vb: Public Sub New(dbConfig As DatabaseConfig, logger As ILogger(Of StatsController))
-  overload: LocalSearchEngine.Controllers.StatsController.#ctor*
+  overload: LocalSearchEngine.Web.Controllers.StatsController.#ctor*
   nameWithType.vb: StatsController.New(DatabaseConfig, ILogger(Of StatsController))
-  fullName.vb: LocalSearchEngine.Controllers.StatsController.New(LocalSearchEngine.Core.DatabaseConfig, Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Controllers.StatsController))
+  fullName.vb: LocalSearchEngine.Web.Controllers.StatsController.New(LocalSearchEngine.Core.DatabaseConfig, Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Web.Controllers.StatsController))
   name.vb: New(DatabaseConfig, ILogger(Of StatsController))
-- uid: LocalSearchEngine.Controllers.StatsController.Get
-  commentId: M:LocalSearchEngine.Controllers.StatsController.Get
+- uid: LocalSearchEngine.Web.Controllers.StatsController.Get
+  commentId: M:LocalSearchEngine.Web.Controllers.StatsController.Get
   id: Get
-  parent: LocalSearchEngine.Controllers.StatsController
+  parent: LocalSearchEngine.Web.Controllers.StatsController
   langs:
   - csharp
   - vb
   name: Get()
   nameWithType: StatsController.Get()
-  fullName: LocalSearchEngine.Controllers.StatsController.Get()
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.Get()
   type: Method
   source:
     remote:
@@ -294,7 +294,7 @@ items:
     startLine: 33
   assemblies:
   - LocalSearchEngine.Web
-  namespace: LocalSearchEngine.Controllers
+  namespace: LocalSearchEngine.Web.Controllers
   summary: >-
     Returns index statistics: indexed page count, chunk count, tracked URL count,
 
@@ -312,34 +312,42 @@ items:
       <HttpGet>
 
       Public Function [Get]() As Task(Of IActionResult)
-  overload: LocalSearchEngine.Controllers.StatsController.Get*
+  overload: LocalSearchEngine.Web.Controllers.StatsController.Get*
   attributes:
   - type: Microsoft.AspNetCore.Mvc.HttpGetAttribute
     ctor: Microsoft.AspNetCore.Mvc.HttpGetAttribute.#ctor
     arguments: []
 references:
-- uid: LocalSearchEngine.Controllers
-  commentId: N:LocalSearchEngine.Controllers
+- uid: LocalSearchEngine.Web.Controllers
+  commentId: N:LocalSearchEngine.Web.Controllers
   href: LocalSearchEngine.html
-  name: LocalSearchEngine.Controllers
-  nameWithType: LocalSearchEngine.Controllers
-  fullName: LocalSearchEngine.Controllers
+  name: LocalSearchEngine.Web.Controllers
+  nameWithType: LocalSearchEngine.Web.Controllers
+  fullName: LocalSearchEngine.Web.Controllers
   spec.csharp:
   - uid: LocalSearchEngine
     name: LocalSearchEngine
     href: LocalSearchEngine.html
   - name: .
-  - uid: LocalSearchEngine.Controllers
+  - uid: LocalSearchEngine.Web
+    name: Web
+    href: LocalSearchEngine.Web.html
+  - name: .
+  - uid: LocalSearchEngine.Web.Controllers
     name: Controllers
-    href: LocalSearchEngine.Controllers.html
+    href: LocalSearchEngine.Web.Controllers.html
   spec.vb:
   - uid: LocalSearchEngine
     name: LocalSearchEngine
     href: LocalSearchEngine.html
   - name: .
-  - uid: LocalSearchEngine.Controllers
+  - uid: LocalSearchEngine.Web
+    name: Web
+    href: LocalSearchEngine.Web.html
+  - name: .
+  - uid: LocalSearchEngine.Web.Controllers
     name: Controllers
-    href: LocalSearchEngine.Controllers.html
+    href: LocalSearchEngine.Web.Controllers.html
 - uid: System.Object
   commentId: T:System.Object
   parent: System
@@ -9559,20 +9567,20 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
-- uid: LocalSearchEngine.Controllers.StatsController
-  commentId: T:LocalSearchEngine.Controllers.StatsController
-  href: LocalSearchEngine.Controllers.StatsController.html
+- uid: LocalSearchEngine.Web.Controllers.StatsController
+  commentId: T:LocalSearchEngine.Web.Controllers.StatsController
+  href: LocalSearchEngine.Web.Controllers.StatsController.html
   name: StatsController
   nameWithType: StatsController
-  fullName: LocalSearchEngine.Controllers.StatsController
-- uid: LocalSearchEngine.Controllers.StatsController.#ctor*
-  commentId: Overload:LocalSearchEngine.Controllers.StatsController.#ctor
-  href: LocalSearchEngine.Controllers.StatsController.html#LocalSearchEngine_Controllers_StatsController__ctor_LocalSearchEngine_Core_DatabaseConfig_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Controllers_StatsController__
+  fullName: LocalSearchEngine.Web.Controllers.StatsController
+- uid: LocalSearchEngine.Web.Controllers.StatsController.#ctor*
+  commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.#ctor
+  href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController__ctor_LocalSearchEngine_Core_DatabaseConfig_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Web_Controllers_StatsController__
   name: StatsController
   nameWithType: StatsController.StatsController
-  fullName: LocalSearchEngine.Controllers.StatsController.StatsController
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.StatsController
   nameWithType.vb: StatsController.New
-  fullName.vb: LocalSearchEngine.Controllers.StatsController.New
+  fullName.vb: LocalSearchEngine.Web.Controllers.StatsController.New
   name.vb: New
 - uid: LocalSearchEngine.Core.DatabaseConfig
   commentId: T:LocalSearchEngine.Core.DatabaseConfig
@@ -9581,16 +9589,16 @@ references:
   name: DatabaseConfig
   nameWithType: DatabaseConfig
   fullName: LocalSearchEngine.Core.DatabaseConfig
-- uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController}
-  commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Controllers.StatsController}
+- uid: Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Web.Controllers.StatsController}
   parent: Microsoft.Extensions.Logging
   definition: Microsoft.Extensions.Logging.ILogger`1
   href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
   name: ILogger<StatsController>
   nameWithType: ILogger<StatsController>
-  fullName: Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Controllers.StatsController>
+  fullName: Microsoft.Extensions.Logging.ILogger<LocalSearchEngine.Web.Controllers.StatsController>
   nameWithType.vb: ILogger(Of StatsController)
-  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Controllers.StatsController)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of LocalSearchEngine.Web.Controllers.StatsController)
   name.vb: ILogger(Of StatsController)
   spec.csharp:
   - uid: Microsoft.Extensions.Logging.ILogger`1
@@ -9598,9 +9606,9 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
   - name: <
-  - uid: LocalSearchEngine.Controllers.StatsController
+  - uid: LocalSearchEngine.Web.Controllers.StatsController
     name: StatsController
-    href: LocalSearchEngine.Controllers.StatsController.html
+    href: LocalSearchEngine.Web.Controllers.StatsController.html
   - name: '>'
   spec.vb:
   - uid: Microsoft.Extensions.Logging.ILogger`1
@@ -9610,9 +9618,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: LocalSearchEngine.Controllers.StatsController
+  - uid: LocalSearchEngine.Web.Controllers.StatsController
     name: StatsController
-    href: LocalSearchEngine.Controllers.StatsController.html
+    href: LocalSearchEngine.Web.Controllers.StatsController.html
   - name: )
 - uid: LocalSearchEngine.Core
   commentId: N:LocalSearchEngine.Core
@@ -9701,12 +9709,12 @@ references:
     name: Logging
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
-- uid: LocalSearchEngine.Controllers.StatsController.Get*
-  commentId: Overload:LocalSearchEngine.Controllers.StatsController.Get
-  href: LocalSearchEngine.Controllers.StatsController.html#LocalSearchEngine_Controllers_StatsController_Get
+- uid: LocalSearchEngine.Web.Controllers.StatsController.Get*
+  commentId: Overload:LocalSearchEngine.Web.Controllers.StatsController.Get
+  href: LocalSearchEngine.Web.Controllers.StatsController.html#LocalSearchEngine_Web_Controllers_StatsController_Get
   name: Get
   nameWithType: StatsController.Get
-  fullName: LocalSearchEngine.Controllers.StatsController.Get
+  fullName: LocalSearchEngine.Web.Controllers.StatsController.Get
 - uid: System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}
   commentId: T:System.Threading.Tasks.Task{Microsoft.AspNetCore.Mvc.IActionResult}
   parent: System.Threading.Tasks
