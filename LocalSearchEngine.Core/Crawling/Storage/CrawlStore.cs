@@ -44,13 +44,27 @@ public static class CrawlStore
                     ContentHash TEXT
                 );
 
-                -- Outlinks per page, so an incremental re-crawl can keep growing the frontier
-                -- even when a page returns 304/unchanged (we never re-parse its HTML then).
-                CREATE TABLE IF NOT EXISTS CrawlLinks (
+                -- Every link the crawler encounters: in-scope outlinks AND off-site links, each
+                -- with a verified Status (0 Unknown, 1 Ok, 2 Redirect, 3 Error) and when it was
+                -- last set. In-scope rows (External=0) drive frontier re-derivation on 304/unchanged
+                -- pages — we never re-parse their HTML then — while off-site rows let the end-of-crawl
+                -- pass verify links even on pages whose content didn't change this run.
+                CREATE TABLE IF NOT EXISTS LinkIndex (
                     FromUrl TEXT NOT NULL,
                     ToUrl TEXT NOT NULL,
+                    External INTEGER NOT NULL DEFAULT 0,
+                    Status INTEGER NOT NULL DEFAULT 0,
+                    StatusCode INTEGER NOT NULL DEFAULT 0,
+                    LastUpdated DATETIME,
                     PRIMARY KEY (FromUrl, ToUrl)
                 );
+
+                -- After visiting a page, the status of every link pointing at it is set in one
+                -- statement (WHERE ToUrl = ...), so ToUrl needs its own index.
+                CREATE INDEX IF NOT EXISTS idx_linkindex_tourl ON LinkIndex(ToUrl);
+
+                -- The end-of-crawl verify and report scans filter on Status and LastUpdated.
+                CREATE INDEX IF NOT EXISTS idx_linkindex_status ON LinkIndex(Status, LastUpdated);
 
                 -- porter stemming over unicode61 so 'running' matches 'run', 'guides' matches
                 -- 'guide', etc. The URL isn't stored here: keyword hits join back to
@@ -220,70 +234,85 @@ public static class CrawlStore
     }
 
     /// <summary>
-    /// Stores the list of outlinks discovered on a page, replacing any existing links for that page in a transaction.
+    /// Stores every link discovered on a page — in-scope outlinks and off-site links alike —
+    /// replacing any existing links for that page in a transaction. New rows start
+    /// <see cref="Reporting.LinkStatus.Unknown"/> with no <c>LastUpdated</c>; their status is
+    /// filled in when the destination is visited this run, or by the end-of-crawl verification pass.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="fromUrl">The source page URL.</param>
-    /// <param name="outlinks">The collection of target outlink URLs.</param>
+    /// <param name="inScopeLinks">Target URLs within the crawl scope (stored with <c>External=0</c>).</param>
+    /// <param name="offsiteLinks">Off-site target URLs (stored with <c>External=1</c>).</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task StoreOutlinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> outlinks, CancellationToken cancellationToken)
+    public static async Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, CancellationToken cancellationToken)
     {
         using var transaction = connection.BeginTransaction();
- 
+
         using (var delete = connection.CreateCommand())
         {
             delete.Transaction = transaction;
-            delete.CommandText = "DELETE FROM CrawlLinks WHERE FromUrl = @From";
+            delete.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
             delete.Parameters.AddWithValue("@From", fromUrl);
             await delete.ExecuteNonQueryAsync(cancellationToken);
         }
- 
-        if (outlinks.Count > 0)
+
+        if (inScopeLinks.Count > 0 || offsiteLinks.Count > 0)
         {
             using var insert = connection.CreateCommand();
             insert.Transaction = transaction;
-            insert.CommandText = "INSERT OR IGNORE INTO CrawlLinks (FromUrl, ToUrl) VALUES (@From, @To)";
+            insert.CommandText = "INSERT OR IGNORE INTO LinkIndex (FromUrl, ToUrl, External, Status, StatusCode, LastUpdated) VALUES (@From, @To, @External, 0, 0, NULL)";
             var fromParam = insert.Parameters.Add("@From", SqliteType.Text);
             var toParam = insert.Parameters.Add("@To", SqliteType.Text);
+            var externalParam = insert.Parameters.Add("@External", SqliteType.Integer);
             fromParam.Value = fromUrl;
-            foreach (var to in outlinks)
+
+            externalParam.Value = 0;
+            foreach (var to in inScopeLinks)
+            {
+                toParam.Value = to;
+                await insert.ExecuteNonQueryAsync(cancellationToken);
+            }
+
+            externalParam.Value = 1;
+            foreach (var to in offsiteLinks)
             {
                 toParam.Value = to;
                 await insert.ExecuteNonQueryAsync(cancellationToken);
             }
         }
- 
+
         await transaction.CommitAsync(cancellationToken);
     }
 
     /// <summary>
-    /// Deletes all stored outlinks associated with the specified source URL.
+    /// Deletes all stored links (in-scope and off-site) originating from the specified source URL.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="fromUrl">The source page URL.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task DeleteOutlinksAsync(SqliteConnection connection, string fromUrl, CancellationToken cancellationToken)
+    public static async Task DeleteLinksAsync(SqliteConnection connection, string fromUrl, CancellationToken cancellationToken)
     {
         using var command = connection.CreateCommand();
-        command.CommandText = "DELETE FROM CrawlLinks WHERE FromUrl = @From";
+        command.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
         command.Parameters.AddWithValue("@From", fromUrl);
         await command.ExecuteNonQueryAsync(cancellationToken);
     }
 
     /// <summary>
-    /// Retrieves the list of outlinks stored for the specified page.
+    /// Retrieves the in-scope outlinks stored for the specified page, used to re-derive the frontier
+    /// when a page is unchanged (off-site links are excluded — they are never crawled).
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The source page URL.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A list of outlink URL strings.</returns>
+    /// <returns>A list of in-scope outlink URL strings.</returns>
     public static async Task<List<string>> GetStoredOutlinksAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
     {
         var links = new List<string>();
         using var command = connection.CreateCommand();
-        command.CommandText = "SELECT ToUrl FROM CrawlLinks WHERE FromUrl = @From";
+        command.CommandText = "SELECT ToUrl FROM LinkIndex WHERE FromUrl = @From AND External = 0";
         command.Parameters.AddWithValue("@From", url);
         using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
@@ -291,6 +320,75 @@ public static class CrawlStore
             links.Add(reader.GetString(0));
         }
         return links;
+    }
+
+    /// <summary>
+    /// Sets the verified status of every link pointing at the given destination URL, stamping the
+    /// current time. Called once per page the crawler resolves, so all the links that led to that
+    /// page reflect how it last responded.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="toUrl">The destination URL whose inbound links to update.</param>
+    /// <param name="status">The <see cref="Reporting.LinkStatus"/> integer value.</param>
+    /// <param name="statusCode">The HTTP status observed (0 for a connection-level failure).</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public static async Task UpdateLinkStatusByDestinationAsync(SqliteConnection connection, string toUrl, int status, int statusCode, CancellationToken cancellationToken)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = "UPDATE LinkIndex SET Status = @Status, StatusCode = @StatusCode, LastUpdated = @Now WHERE ToUrl = @To";
+        command.Parameters.AddWithValue("@Status", status);
+        command.Parameters.AddWithValue("@StatusCode", statusCode);
+        command.Parameters.AddWithValue("@Now", DateTime.UtcNow);
+        command.Parameters.AddWithValue("@To", toUrl);
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Lists links not determined this run — those whose <c>LastUpdated</c> predates the crawl start
+    /// or is unset — so the end-of-crawl pass can verify them. Spans the whole table; the caller
+    /// narrows to the links found on pages in the current crawl's scope.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="crawlStartUtc">The crawl start; rows last updated before it are returned.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The (origin, destination, external) tuples awaiting verification.</returns>
+    public static async Task<List<(string FromUrl, string ToUrl, bool External)>> GetLinksToVerifyAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    {
+        var rows = new List<(string, string, bool)>();
+        using var command = connection.CreateCommand();
+        // LastUpdated is stored as sortable ISO-8601 text, so the comparison below is sound.
+        command.CommandText = "SELECT FromUrl, ToUrl, External FROM LinkIndex WHERE LastUpdated IS NULL OR LastUpdated < @Cutoff";
+        command.Parameters.AddWithValue("@Cutoff", crawlStartUtc);
+        using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            rows.Add((reader.GetString(0), reader.GetString(1), reader.GetBoolean(2)));
+        }
+        return rows;
+    }
+
+    /// <summary>
+    /// Lists links that resolved to a redirect or an error and were determined this run (their
+    /// <c>LastUpdated</c> is at or after the crawl start), for the broken/redirected-links report.
+    /// The caller narrows to the links found on pages in the current crawl's scope.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="crawlStartUtc">The crawl start; only rows updated at or after it are returned.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The (origin, destination, external, status, statusCode) tuples to report.</returns>
+    public static async Task<List<(string FromUrl, string ToUrl, bool External, int Status, int StatusCode)>> GetReportableLinksAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    {
+        var rows = new List<(string, string, bool, int, int)>();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT FromUrl, ToUrl, External, Status, StatusCode FROM LinkIndex WHERE Status IN (2, 3) AND LastUpdated >= @Cutoff";
+        command.Parameters.AddWithValue("@Cutoff", crawlStartUtc);
+        using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            rows.Add((reader.GetString(0), reader.GetString(1), reader.GetBoolean(2), reader.GetInt32(3), reader.GetInt32(4)));
+        }
+        return rows;
     }
 
     /// <summary>

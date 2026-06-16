@@ -27,30 +27,15 @@ internal static class BrokenLinksWriter
         sb.AppendLine("=====================================");
         sb.AppendLine($"Seed:                {report.SeedUrl}");
         sb.AppendLine($"Finished:            {report.FinishedUtc:yyyy-MM-dd HH:mm:ss} UTC");
-        sb.AppendLine($"External link check: {(externalChecked ? "enabled" : "disabled (in-scope 404s only)")}");
+        sb.AppendLine($"External link check: {(externalChecked ? "enabled" : "disabled (in-scope links only)")}");
         sb.AppendLine();
 
-        // On-site 404/410s first, then off-site failures; within each, grouped by the page they sit on.
-        var links = report.BrokenLinks
-            .OrderBy(b => b.External)
-            .ThenBy(b => b.FoundOn ?? string.Empty, StringComparer.OrdinalIgnoreCase)
-            .ThenBy(b => b.Url, StringComparer.OrdinalIgnoreCase)
-            .ToList();
+        // Links whose destination errored or could not be reached.
+        AppendLinkSection(sb, "Broken links", report.BrokenLinks);
+        sb.AppendLine();
 
-        sb.AppendLine($"Broken links ({links.Count})");
-        if (links.Count == 0)
-        {
-            sb.AppendLine("  none");
-        }
-        else
-        {
-            foreach (var link in links)
-            {
-                string tag = link.External ? $"{link.Reason}, external" : link.Reason;
-                sb.AppendLine($"  {link.Url}");
-                sb.AppendLine($"    [{tag}]  found on: {link.FoundOn ?? "—"}");
-            }
-        }
+        // Links that still resolve but redirect — the source should be updated to the new location.
+        AppendLinkSection(sb, "Redirected links", report.RedirectedLinks);
         sb.AppendLine();
 
         sb.AppendLine($"Unreachable hosts ({report.UnreachableHosts.Count})");
@@ -67,5 +52,29 @@ internal static class BrokenLinksWriter
         }
 
         return sb.ToString();
+    }
+
+    /// <summary>Writes a titled, counted section of links, on-site first then off-site, grouped by the page each sits on.</summary>
+    private static void AppendLinkSection(StringBuilder sb, string title, IReadOnlyList<BrokenLink> links)
+    {
+        var ordered = links
+            .OrderBy(b => b.External)
+            .ThenBy(b => b.FoundOn ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(b => b.Url, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        sb.AppendLine($"{title} ({ordered.Count})");
+        if (ordered.Count == 0)
+        {
+            sb.AppendLine("  none");
+            return;
+        }
+
+        foreach (var link in ordered)
+        {
+            string tag = link.External ? $"{link.Reason}, external" : link.Reason;
+            sb.AppendLine($"  {link.Url}");
+            sb.AppendLine($"    [{tag}]  found on: {link.FoundOn ?? "—"}");
+        }
     }
 }

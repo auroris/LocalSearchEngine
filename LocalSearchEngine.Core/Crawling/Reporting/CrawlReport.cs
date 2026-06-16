@@ -14,7 +14,8 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <param name="CrawlStateRowsInDb">Crawl-state rows in the database after the crawl.</param>
 /// <param name="ItemsAdded">Net new indexed URLs this run (end total minus start total, plus deletions).</param>
 /// <param name="ItemsDeleted">Index entries removed this run (gone, banned, and stale).</param>
-/// <param name="BrokenLinks">Links the crawl found leading nowhere: in-scope 404/410s, plus off-site links that failed verification when external link checking was enabled.</param>
+/// <param name="BrokenLinks">Links the crawl found leading nowhere this run: a destination that returned an error (4xx/5xx) or could not be reached. Off-site links are included only when external link checking was enabled.</param>
+/// <param name="RedirectedLinks">Links whose destination redirected this run: they still resolve, but the source page should be updated to point at the new location. Off-site links are included only when external link checking was enabled.</param>
 /// <param name="UnreachableHosts">Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.</param>
 public sealed record CrawlReport(
     string SeedUrl,
@@ -28,6 +29,7 @@ public sealed record CrawlReport(
     long ItemsAdded,
     long ItemsDeleted,
     IReadOnlyList<BrokenLink> BrokenLinks,
+    IReadOnlyList<BrokenLink> RedirectedLinks,
     IReadOnlyList<string> UnreachableHosts)
 {
     /// <summary>Wall-clock duration of the crawl.</summary>

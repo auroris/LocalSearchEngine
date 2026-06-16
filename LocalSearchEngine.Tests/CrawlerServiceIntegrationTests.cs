@@ -2,6 +2,7 @@ using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Extraction;
 using LocalSearchEngine.Core.Crawling.Policies;
+using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Crawling.Storage;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
@@ -653,6 +654,106 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Links_are_recorded_in_the_link_index_with_their_status()
+    {
+        await EnsureSchemaAsync();
+
+        // An in-scope link that resolves, plus an off-site link. Both must be recorded; the in-scope
+        // one is determined OK by crawling it, the off-site one stays unknown without external checks.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p>" +
+            " <a href=\"/page2\">two</a> <a href=\"http://external.example/x\">x</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        var inScope = LinkRow(Seed, Page2);
+        Assert.NotNull(inScope);
+        Assert.Equal((int)LinkStatus.Ok, inScope!.Value.Status);
+        Assert.False(inScope.Value.External);
+
+        var offsite = LinkRow(Seed, "http://external.example/x");
+        Assert.NotNull(offsite); // recorded even though external checking is off
+        Assert.True(offsite!.Value.External);
+        Assert.Equal((int)LinkStatus.Unknown, offsite.Value.Status); // never probed
+    }
+
+    [Fact]
+    public async Task Inscope_redirect_is_reported_as_a_redirected_link()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links to /old, which redirects to /new. The link still resolves, so it belongs in
+        // the redirected list (update the source), not the broken list.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"/old\">old</a>");
+        _handler.Routes["http://test.local/old"] = _ =>
+        {
+            var resp = Html("<title>New</title><p>moved here</p>");
+            resp.RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://test.local/new");
+            return resp;
+        };
+        _handler.Routes["http://test.local/new"] = _ => Html("<title>New</title><p>moved here</p>");
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+
+        var redirect = Assert.Single(report.RedirectedLinks);
+        Assert.Equal("http://test.local/old", redirect.Url);
+        Assert.Equal(Seed, redirect.FoundOn);
+        Assert.False(redirect.External);
+        Assert.Empty(report.BrokenLinks);
+    }
+
+    [Fact]
+    public async Task External_redirect_is_reported_as_redirected_not_broken()
+    {
+        await EnsureSchemaAsync();
+
+        // With external checking on, an off-site link that redirects is a redirect, not a dead link.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home</p> <a href=\"http://external.example/moved\">moved</a>");
+        _handler.Routes["http://external.example/moved"] = _ =>
+        {
+            var resp = Html("<title>Moved</title><p>now here</p>");
+            resp.RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://external.example/here");
+            return resp;
+        };
+
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50, checkExternalLinks: true);
+
+        var redirect = Assert.Single(report.RedirectedLinks);
+        Assert.Equal("http://external.example/moved", redirect.Url);
+        Assert.True(redirect.External);
+        Assert.Empty(report.BrokenLinks);
+    }
+
+    [Fact]
+    public async Task Unchanged_page_external_links_are_reverified_each_run()
+    {
+        await EnsureSchemaAsync();
+
+        // Run 1: the seed (with an ETag) links off-site to a page that is alive. External checking
+        // probes it and records it OK.
+        _handler.Routes[Seed] = req => req.Headers.IfNoneMatch.Any()
+            ? new HttpResponseMessage(HttpStatusCode.NotModified)
+            : Html("<title>Home</title><p>home</p> <a href=\"http://external.example/x\">x</a>", etag: "\"v1\"");
+        _handler.Routes["http://external.example/x"] = _ => Html("<title>X</title><p>alive</p>");
+
+        var first = await NewCrawler().CrawlAsync(Seed, maxPages: 5, checkExternalLinks: true);
+        Assert.Empty(first.BrokenLinks);
+
+        // Run 2: the seed is unchanged (304, so its HTML is never re-parsed), but the off-site link
+        // is now dead. Because the link persisted in the index, it must still be re-verified and
+        // reported — this is the whole point of persisting links rather than holding them in memory.
+        _handler.Routes["http://external.example/x"] = _ => new HttpResponseMessage(HttpStatusCode.NotFound);
+
+        var second = await NewCrawler().CrawlAsync(Seed, maxPages: 5, checkExternalLinks: true);
+
+        var broken = Assert.Single(second.BrokenLinks);
+        Assert.Equal("http://external.example/x", broken.Url);
+        Assert.Equal(Seed, broken.FoundOn);
+        Assert.True(broken.External);
+        Assert.Equal(404, broken.StatusCode);
+    }
+
+    [Fact]
     public async Task Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune()
     {
         await EnsureSchemaAsync();
@@ -749,9 +850,22 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(*) FROM CrawlLinks WHERE FromUrl = @u";
+        command.CommandText = "SELECT COUNT(*) FROM LinkIndex WHERE FromUrl = @u AND External = 0";
         command.Parameters.AddWithValue("@u", url);
         return (long)(command.ExecuteScalar() ?? 0L) > 0;
+    }
+
+    /// <summary>Returns the link index row for a (from, to) edge, or null if no such link is recorded.</summary>
+    private (int Status, int StatusCode, bool External)? LinkRow(string fromUrl, string toUrl)
+    {
+        using var connection = new SqliteConnection(_connectionString);
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT Status, StatusCode, External FROM LinkIndex WHERE FromUrl = @f AND ToUrl = @t";
+        command.Parameters.AddWithValue("@f", fromUrl);
+        command.Parameters.AddWithValue("@t", toUrl);
+        using var reader = command.ExecuteReader();
+        return reader.Read() ? (reader.GetInt32(0), reader.GetInt32(1), reader.GetBoolean(2)) : null;
     }
 
     private long ChunkCount(string url)

@@ -146,11 +146,12 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("  --stats-file <path>      Base path for the end-of-run stats files; '.json' and '.txt'");
     Console.WriteLine("                           are appended. Default is 'crawl-stats'. (Or 'stats-file'.)");
     Console.WriteLine("  --broken-links-file <path>  Base path for the broken-links report ('.txt' is appended).");
-    Console.WriteLine("                           Default is 'broken-links'. Lists in-scope 404/410 links and the");
-    Console.WriteLine("                           page each was found on, plus unreachable hosts. (Or 'broken-links-file'.)");
+    Console.WriteLine("                           Default is 'broken-links'. Lists broken links (errors) and redirected");
+    Console.WriteLine("                           links (which still resolve but should be updated), the page each was");
+    Console.WriteLine("                           found on, plus unreachable hosts. (Or 'broken-links-file'.)");
     Console.WriteLine("  --check-external-links   After the crawl, probe off-site links (hosts outside the allowed");
-    Console.WriteLine("                           set) to confirm they still resolve; dead ones are added to the");
-    Console.WriteLine("                           broken-links report. Off by default. (Or 'check-external-links'.)");
+    Console.WriteLine("                           set) to confirm they still resolve; broken or redirected ones are");
+    Console.WriteLine("                           added to the broken-links report. Off by default. (Or 'check-external-links'.)");
     Console.WriteLine("  --no-live                Force plain progress lines instead of the live display. Not");
     Console.WriteLine("                           usually needed: the live display turns itself off automatically");
     Console.WriteLine("                           when output is redirected or there is no interactive console");

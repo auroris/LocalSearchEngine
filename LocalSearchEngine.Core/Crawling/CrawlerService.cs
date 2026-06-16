@@ -32,11 +32,11 @@ public partial class CrawlerService
     /// <summary>Upper bound honored for a robots.txt Crawl-delay; larger values are clamped.</summary>
     private const int MaxCrawlDelaySeconds = 30;
 
-    /// <summary>Maximum off-site hosts probed concurrently during external link checking.</summary>
-    private const int ExternalCheckConcurrency = 8;
+    /// <summary>Maximum hosts probed concurrently during end-of-crawl link verification.</summary>
+    private const int LinkCheckConcurrency = 8;
 
-    /// <summary>Politeness gap between consecutive probes to the same off-site host during external link checking.</summary>
-    private static readonly TimeSpan ExternalCheckPerHostGap = TimeSpan.FromMilliseconds(250);
+    /// <summary>Politeness gap between consecutive probes to the same host during link verification.</summary>
+    private static readonly TimeSpan LinkCheckPerHostGap = TimeSpan.FromMilliseconds(250);
 
     static CrawlerService()
     {
@@ -107,7 +107,7 @@ public partial class CrawlerService
             Queue = new Queue<string>(),
             Visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase),
             MaxCrawlSizeBytes = maxCrawlSizeBytes,
-            CollectOffsiteLinks = checkExternalLinks,
+            CheckExternalLinks = checkExternalLinks,
             Observer = observer,
             StartedUtc = crawlStartUtc,
         };
@@ -291,13 +291,12 @@ public partial class CrawlerService
             await CrawlStore.OptimizeDatabaseAsync(ctx.Write, _logger);
         }
 
-        // Optional, opt-in: verify off-site links (outside the allowed hosts) still resolve. This is a
-        // final reporting pass — a lightweight liveness probe per link, not a crawl — and is skipped
-        // entirely on cancellation.
-        if (checkExternalLinks && !cancellationToken.IsCancellationRequested && ctx.OffsiteLinks.Count > 0)
+        // Verify links not already determined this run — off-site links (never crawled) plus any
+        // in-scope links the crawl didn't reach — with a single lazy probe each. This is a final
+        // reporting pass, not a crawl, and is skipped entirely on cancellation.
+        if (!cancellationToken.IsCancellationRequested)
         {
-            ctx.Observer.OnPhaseChanged(CrawlPhase.CheckingLinks);
-            await VerifyExternalLinksAsync(ctx, cancellationToken);
+            await VerifyUndeterminedLinksAsync(ctx, crawlStartUtc, cancellationToken);
         }
 
         bool cancelled = cancellationToken.IsCancellationRequested;
@@ -308,6 +307,10 @@ public partial class CrawlerService
         // end = start + added - deleted, so added = end - start + deleted. Clamped at zero against
         // a concurrent writer skewing the before/after counts.
         long itemsAdded = Math.Max(0, indexedUrlsInDb - indexedUrlsAtStart + itemsDeleted);
+
+        // The broken/redirected link lists come from the link index (the source of truth), scoped to
+        // links found on this crawl's pages and determined this run.
+        var (brokenLinks, redirectedLinks) = await BuildLinkReportAsync(ctx, crawlStartUtc);
 
         ctx.Observer.OnCrawlCompleted(seedUrl);
 
@@ -322,7 +325,8 @@ public partial class CrawlerService
             crawlStateRowsInDb,
             itemsAdded,
             itemsDeleted,
-            ctx.Observer.BrokenLinks.ToList(),
+            brokenLinks,
+            redirectedLinks,
             ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray());
     }
 
@@ -333,7 +337,7 @@ public partial class CrawlerService
     private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
         seedUrl, startedUtc, DateTime.UtcNow, false, false,
         new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,
-        Array.Empty<BrokenLink>(), Array.Empty<string>());
+        Array.Empty<BrokenLink>(), Array.Empty<BrokenLink>(), Array.Empty<string>());
 
 
 
@@ -558,7 +562,7 @@ public partial class CrawlerService
         if (duplicateOf != null)
         {
             ctx.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
-            EnqueueSingle(ctx, duplicateOf, finalUrl);
+            EnqueueSingle(ctx, duplicateOf);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
@@ -577,7 +581,7 @@ public partial class CrawlerService
             ctx.IndexedContentHashes[newHash] = finalUrl;
             ctx.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
             return new IndexJob(finalUrl, statusCode, pdfTitle, pdfTitle ?? string.Empty, pdfText,
-                newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
+                newETag, newLastModified, newHash, Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
         }
 
         if (kind == DocKind.Docx)
@@ -586,7 +590,7 @@ public partial class CrawlerService
             ctx.IndexedContentHashes[newHash] = finalUrl;
             ctx.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
             return new IndexJob(finalUrl, statusCode, docxTitle, docxTitle ?? string.Empty, docxText,
-                newETag, newLastModified, newHash, Array.Empty<string>(), redirectSourceUrl);
+                newETag, newLastModified, newHash, Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
         }
 
         // Not a document we extract and not HTML (by Content-Type or sniff): skip it, so JSON,
@@ -608,39 +612,30 @@ public partial class CrawlerService
         if (analysis.CanonicalAlias != null)
         {
             ctx.Observer.OnPageAlias(currentUrl, finalUrl, analysis.CanonicalAlias);
-            EnqueueSingle(ctx, analysis.CanonicalAlias, finalUrl);
+            EnqueueSingle(ctx, analysis.CanonicalAlias);
             return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
-        // Enqueue newly discovered links now (producer-owned frontier); the indexer persists
-        // this page's outlink set for future 304/unchanged re-crawls.
+        // Enqueue newly discovered in-scope links now (producer-owned frontier); the indexer
+        // persists this page's full link set — in-scope and off-site — to the link index for future
+        // 304/unchanged re-crawls and end-of-crawl verification.
         ctx.Observer.OnOutlinksAdded(analysis.Outlinks.Count);
         foreach (var link in analysis.Outlinks)
         {
-            Discover(ctx, link, finalUrl);
-        }
-
-        // Off-site links aren't crawled, but when external link checking is on they're remembered
-        // (first referrer wins) so the end-of-crawl pass can verify they still resolve.
-        if (ctx.CollectOffsiteLinks)
-        {
-            foreach (var external in analysis.OffsiteLinks)
-            {
-                if (ctx.OffsiteLinks.TryAdd(external, finalUrl)) ctx.Observer.OnOffsiteLinkDiscovered(external, finalUrl);
-            }
+            Discover(ctx, link);
         }
 
         if (analysis.NoIndex)
         {
-            // Respect noindex: ensure it isn't in the index, but keep crawl state + outlinks.
+            // Respect noindex: ensure it isn't in the index, but keep crawl state + links.
             ctx.Observer.OnPageNoIndex(currentUrl, finalUrl);
-            return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
+            return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, analysis.OffsiteLinks, redirectSourceUrl);
         }
 
         ctx.IndexedContentHashes[newHash] = finalUrl;
         ctx.Observer.OnPageIndexed(currentUrl, finalUrl, analysis.Outlinks.Count);
         return new IndexJob(finalUrl, statusCode, analysis.Title, analysis.Headings, analysis.Text,
-            newETag, newLastModified, newHash, analysis.Outlinks, redirectSourceUrl);
+            newETag, newLastModified, newHash, analysis.Outlinks, analysis.OffsiteLinks, redirectSourceUrl);
     }
 
     /// <summary>
@@ -658,7 +653,7 @@ public partial class CrawlerService
                 if (job.RedirectSourceUrl != null)
                 {
                     await _vectorSearchService.DeleteUrlChunksAsync(job.RedirectSourceUrl);
-                    await CrawlStore.DeleteOutlinksAsync(connection, job.RedirectSourceUrl, CancellationToken.None);
+                    await CrawlStore.DeleteLinksAsync(connection, job.RedirectSourceUrl, CancellationToken.None);
                     await CrawlStore.RecordVisitAsync(connection, job.RedirectSourceUrl, 302, clearMetadata: true, CancellationToken.None);
                 }
 
@@ -672,25 +667,25 @@ public partial class CrawlerService
                             await _vectorSearchService.IndexUrlChunksAsync(j.Url, j.Headings, isHeading: true);
                         }
                         await CrawlStore.RecordCrawlStateAsync(connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
-                        await CrawlStore.StoreOutlinksAsync(connection, j.Url, j.Outlinks, CancellationToken.None);
+                        await CrawlStore.StoreLinksAsync(connection, j.Url, j.Outlinks, j.OffsiteLinks, CancellationToken.None);
 
                         break;
 
                     case NoIndexJob j:
                         await _vectorSearchService.DeleteUrlChunksAsync(j.Url);
-                        await CrawlStore.StoreOutlinksAsync(connection, j.Url, j.Outlinks, CancellationToken.None);
+                        await CrawlStore.StoreLinksAsync(connection, j.Url, j.Outlinks, j.OffsiteLinks, CancellationToken.None);
                         await CrawlStore.RecordCrawlStateAsync(connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
                         break;
 
                     case GoneJob j:
                         await _vectorSearchService.DeleteUrlChunksAsync(j.Url);
-                        await CrawlStore.DeleteOutlinksAsync(connection, j.Url, CancellationToken.None);
+                        await CrawlStore.DeleteLinksAsync(connection, j.Url, CancellationToken.None);
                         await CrawlStore.RecordVisitAsync(connection, j.Url, j.StatusCode, clearMetadata: true, CancellationToken.None);
                         break;
 
                     case AliasJob j:
                         await _vectorSearchService.DeleteUrlChunksAsync(j.Url);
-                        await CrawlStore.DeleteOutlinksAsync(connection, j.Url, CancellationToken.None);
+                        await CrawlStore.DeleteLinksAsync(connection, j.Url, CancellationToken.None);
                         await CrawlStore.RecordVisitAsync(connection, j.Url, j.StatusCode, clearMetadata: true, CancellationToken.None);
                         break;
 
@@ -698,6 +693,13 @@ public partial class CrawlerService
                         await CrawlStore.RecordVisitAsync(connection, j.Url, j.StatusCode, clearMetadata: false, CancellationToken.None);
                         break;
                 }
+
+                // Record how this destination last responded against every link in the index that
+                // points at it — so links to it (including from pages not re-parsed this run) reflect
+                // its current status. The dequeued URL is the redirect source when a redirect was
+                // followed, otherwise the job's own URL.
+                var dequeuedUrl = job.RedirectSourceUrl ?? job.Url;
+                await CrawlStore.UpdateLinkStatusByDestinationAsync(connection, dequeuedUrl, (int)ClassifyLinkStatus(job), job.StatusCode, CancellationToken.None);
             }
             catch (Exception ex)
             {
@@ -720,7 +722,7 @@ public partial class CrawlerService
     private sealed record IndexJob(
         string Url, int StatusCode, string? Title, string Headings, string Text,
         string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks,
-        string? RedirectSourceUrl = null)
+        IReadOnlyCollection<string> OffsiteLinks, string? RedirectSourceUrl = null)
         : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
     /// <summary>
@@ -728,7 +730,8 @@ public partial class CrawlerService
     /// </summary>
     private sealed record NoIndexJob(
         string Url, int StatusCode, string? Title, string? ETag, string? LastModified,
-        string ContentHash, IReadOnlyCollection<string> Outlinks, string? RedirectSourceUrl = null)
+        string ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks,
+        string? RedirectSourceUrl = null)
         : CrawlJob(Url, StatusCode, RedirectSourceUrl);
 
     /// <summary>
@@ -776,7 +779,7 @@ public partial class CrawlerService
                 if (ctx.HostHealth.IsUnreachable(uri.Host)) continue;
 
                 await _vectorSearchService.DeleteUrlChunksAsync(url);
-                await CrawlStore.DeleteOutlinksAsync(ctx.Write, url, CancellationToken.None);
+                await CrawlStore.DeleteLinksAsync(ctx.Write, url, CancellationToken.None);
                 await CrawlStore.DeleteCrawlStateAsync(ctx.Write, url, CancellationToken.None);
                 pruned++;
             }
@@ -825,7 +828,7 @@ public partial class CrawlerService
                     if (CrawlPolicy.IsAllowedByRobots(url, rules)) continue;
 
                     await _vectorSearchService.DeleteUrlChunksAsync(url);
-                    await CrawlStore.DeleteOutlinksAsync(ctx.Write, url, CancellationToken.None);
+                    await CrawlStore.DeleteLinksAsync(ctx.Write, url, CancellationToken.None);
                     await CrawlStore.DeleteCrawlStateAsync(ctx.Write, url, CancellationToken.None);
                     removed++;
                 }
@@ -841,18 +844,15 @@ public partial class CrawlerService
     }
 
     /// <summary>
-    /// Adds a freshly discovered URL to the frontier, recording the page it was first seen on so a
-    /// later 404/410 can be attributed to where it was linked from.
+    /// Adds a freshly discovered URL to the frontier if it has not been seen yet.
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
     /// <param name="url">The URL to enqueue.</param>
-    /// <param name="referrer">The page the URL was found on, or <c>null</c> for the seed.</param>
     /// <returns><c>true</c> if the URL was newly enqueued; <c>false</c> if it had already been seen.</returns>
-    private static bool Discover(CrawlContext ctx, string url, string? referrer)
+    private static bool Discover(CrawlContext ctx, string url)
     {
         if (!ctx.Visited.Add(url)) return false;
         ctx.Queue.Enqueue(url);
-        if (referrer != null) ctx.Observer.OnUrlDiscovered(url, referrer);
         return true;
     }
 
@@ -863,14 +863,13 @@ public partial class CrawlerService
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
     /// <param name="url">The URL string to enqueue.</param>
-    /// <param name="referrer">The page the URL was found on.</param>
-    private void EnqueueSingle(CrawlContext ctx, string url, string referrer)
+    private void EnqueueSingle(CrawlContext ctx, string url)
     {
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) return;
         if (!ctx.AllowedHosts.IsAllowed(uri)) return;
         var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
         if (!CrawlPolicy.IsAllowedByRobots(url, robots)) return;
-        Discover(ctx, url, referrer);
+        Discover(ctx, url);
     }
 
     /// <summary>
@@ -888,7 +887,7 @@ public partial class CrawlerService
             if (!ctx.AllowedHosts.IsAllowed(uri)) continue;
             var robots = ctx.RobotsCache.TryGetValue(UrlOrigin.Key(uri), out var r) ? r : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(link, robots)) continue;
-            Discover(ctx, link, url);
+            Discover(ctx, link);
         }
     }
 
@@ -964,40 +963,61 @@ public partial class CrawlerService
     }
 
     /// <summary>
-    /// Verifies the off-site links collected this run still resolve. Off-site hosts sit outside the
-    /// allowed set and so were never crawled; here we only confirm there is something on the other
-    /// end — a single HEAD (falling back to GET) per link, following redirects, with no parsing,
-    /// indexing, politeness-from-robots, or retry rigamarole. A 404/410 or a connection-level failure
-    /// is recorded as a broken link; anything else (a 401/403/5xx included) is taken as "it goes
-    /// somewhere". Different hosts are probed concurrently, each host serially and politely.
+    /// Verifies the links in the index that weren't determined this run — off-site links (never
+    /// crawled) and any in-scope links the crawl didn't reach — so the report reflects the current
+    /// run. Each distinct destination gets one lazy liveness probe: a single HEAD (falling back to
+    /// GET), no robots, no redirect chasing. The result (ok, redirect, or error) is written back to
+    /// every link pointing at that destination. Only links found on pages in this crawl's scope are
+    /// considered, and off-site links are skipped unless external checking is enabled. Different
+    /// hosts are probed concurrently, each host serially and politely; the status write-backs are
+    /// applied sequentially afterward (one write connection).
     /// </summary>
     /// <param name="ctx">The active crawl context.</param>
+    /// <param name="crawlStartUtc">The crawl start; links last updated before it are re-verified.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the verification pass.</returns>
-    private async Task VerifyExternalLinksAsync(CrawlContext ctx, CancellationToken cancellationToken)
+    private async Task VerifyUndeterminedLinksAsync(CrawlContext ctx, DateTime crawlStartUtc, CancellationToken cancellationToken)
     {
-        var byHost = ctx.OffsiteLinks
-            .Select(kv => (Target: kv.Key, Referrer: kv.Value, Uri: Uri.TryCreate(kv.Key, UriKind.Absolute, out var u) ? u : null))
+        var rows = await CrawlStore.GetLinksToVerifyAsync(ctx.Read, crawlStartUtc, CancellationToken.None);
+
+        // Distinct destinations to probe: links found on a page in this crawl's scope, skipping
+        // off-site links unless external checking is on, and skipping destinations on a host already
+        // written off as unreachable this run (we've stopped spending requests on it).
+        var destinations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var (fromUrl, toUrl, external) in rows)
+        {
+            if (external && !ctx.CheckExternalLinks) continue;
+            if (!Uri.TryCreate(fromUrl, UriKind.Absolute, out var fromUri) || !ctx.AllowedHosts.IsAllowed(fromUri)) continue;
+            if (Uri.TryCreate(toUrl, UriKind.Absolute, out var toUri) && ctx.HostHealth.IsUnreachable(toUri.Host)) continue;
+            destinations.Add(toUrl);
+        }
+
+        if (destinations.Count == 0) return;
+
+        ctx.Observer.OnPhaseChanged(CrawlPhase.CheckingLinks);
+
+        var byHost = destinations
+            .Select(target => (Target: target, Uri: Uri.TryCreate(target, UriKind.Absolute, out var u) ? u : null))
             .Where(x => x.Uri is not null)
             .GroupBy(x => x.Uri!.Host)
             .ToList();
 
-        var broken = new ConcurrentBag<BrokenLink>();
+        var results = new ConcurrentBag<(string Target, LinkStatus Status, int StatusCode)>();
         try
         {
             await Parallel.ForEachAsync(
                 byHost,
-                new ParallelOptions { MaxDegreeOfParallelism = ExternalCheckConcurrency, CancellationToken = cancellationToken },
+                new ParallelOptions { MaxDegreeOfParallelism = LinkCheckConcurrency, CancellationToken = cancellationToken },
                 async (group, token) =>
                 {
                     bool first = true;
-                    foreach (var (target, referrer, _) in group)
+                    foreach (var (target, _) in group)
                     {
-                        if (!first) await Task.Delay(ExternalCheckPerHostGap, token);
+                        if (!first) await Task.Delay(LinkCheckPerHostGap, token);
                         first = false;
 
-                        var (ok, status, reason) = await ProbeExternalLinkAsync(ctx, target, token);
-                        if (!ok) { broken.Add(new BrokenLink(target, referrer, External: true, status, reason)); ctx.Observer.OnExternalLinkBroken(target, status); }
+                        var (status, statusCode) = await ProbeLinkAsync(ctx, target, token);
+                        results.Add((target, status, statusCode));
                     }
                 });
         }
@@ -1006,28 +1026,53 @@ public partial class CrawlerService
             // Cancelled mid-pass: keep whatever was already probed and stop.
         }
 
-        ctx.Observer.OnExternalLinksChecked(broken.Count, ctx.OffsiteLinks.Count);
-        ctx.Observer.OnExternalLinksChecked(broken.Count, ctx.OffsiteLinks.Count);
+        // Write-backs are applied here, sequentially, rather than from inside the parallel probes:
+        // the crawl has a single write connection and SQLite allows only one writer.
+        int broken = 0, redirected = 0;
+        foreach (var (target, status, statusCode) in results)
+        {
+            await CrawlStore.UpdateLinkStatusByDestinationAsync(ctx.Write, target, (int)status, statusCode, CancellationToken.None);
+            if (status == LinkStatus.Error) broken++;
+            else if (status == LinkStatus.Redirect) redirected++;
+        }
+
+        ctx.Observer.OnLinksVerified(results.Count, broken, redirected);
     }
 
     /// <summary>
-    /// Probes a single off-site URL to see whether it resolves, trying HEAD first and falling back to
-    /// a header-only GET if the server rejects HEAD.
+    /// Probes a single URL to classify it as ok, a redirect, or an error, trying HEAD first and
+    /// falling back to a header-only GET if the server rejects HEAD. Redirects aren't chased: one
+    /// request, then classify. HttpClient transparently follows redirects, so a redirect surfaces as
+    /// a final request URI different from the one asked for (the same signal the crawler uses for
+    /// page redirects). A destination that ends on a 4xx/5xx is an error regardless of any redirect
+    /// along the way; a connection-level failure is an error; any other failure is inconclusive and
+    /// given the benefit of the doubt.
     /// </summary>
-    /// <param name="url">The off-site URL to probe.</param>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="url">The URL to probe (already normalized).</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>Whether the link resolves, the HTTP status (0 if the request never completed), and a short reason when broken.</returns>
-    private async Task<(bool Ok, int Status, string Reason)> ProbeExternalLinkAsync(CrawlContext ctx, string url, CancellationToken cancellationToken)
+    /// <returns>The classified <see cref="LinkStatus"/> and the HTTP status (0 if the request never completed).</returns>
+    private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(CrawlContext ctx, string url, CancellationToken cancellationToken)
     {
         try
         {
             using var response = await SendProbeAsync(url, cancellationToken);
-            int status = (int)response.StatusCode;
-            if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)
+            int statusCode = (int)response.StatusCode;
+
+            if (statusCode >= 400)
             {
-                return (false, status, response.StatusCode == HttpStatusCode.Gone ? "410 Gone" : "404 Not Found");
+                return (LinkStatus.Error, statusCode);
             }
-            return (true, status, string.Empty);
+
+            var finalUri = response.RequestMessage?.RequestUri;
+            bool redirected = finalUri is not null
+                && Uri.TryCreate(url, UriKind.Absolute, out var requested)
+                && !string.Equals(UrlNormalizer.Normalize(finalUri), UrlNormalizer.Normalize(requested), StringComparison.OrdinalIgnoreCase);
+            if (redirected || statusCode is >= 300 and < 400)
+            {
+                return (LinkStatus.Redirect, statusCode);
+            }
+            return (LinkStatus.Ok, statusCode);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -1039,11 +1084,79 @@ public partial class CrawlerService
             // give the link the benefit of the doubt rather than cry wolf over a transient hiccup.
             if (IsUnreachableError(ex, cancellationToken))
             {
-                return (false, 0, "connection failed");
+                return (LinkStatus.Error, 0);
             }
-            ctx.Observer.OnExternalLinkProbeFailed(ex, url);
-            return (true, 0, string.Empty);
+            ctx.Observer.OnLinkProbeInconclusive(ex, url);
+            return (LinkStatus.Ok, 0);
         }
+    }
+
+    /// <summary>
+    /// Classifies how a processed job's destination responded, for the link index: a followed
+    /// redirect (or any 3xx other than 304) is a redirect; a 2xx or 304 is ok; everything else
+    /// (4xx/5xx, or the 500 sentinel used for a fetch error) is an error.
+    /// </summary>
+    /// <param name="job">The job whose destination outcome to classify.</param>
+    /// <returns>The corresponding <see cref="LinkStatus"/>.</returns>
+    private static LinkStatus ClassifyLinkStatus(CrawlJob job)
+    {
+        if (job.RedirectSourceUrl != null) return LinkStatus.Redirect;
+        int code = job.StatusCode;
+        if (code == 304 || code is >= 200 and < 300) return LinkStatus.Ok;
+        if (code is >= 300 and < 400) return LinkStatus.Redirect;
+        return LinkStatus.Error;
+    }
+
+    /// <summary>
+    /// Builds the report's broken and redirected link lists from the link index: rows that resolved
+    /// to an error or a redirect this run, narrowed to links found on pages in this crawl's scope
+    /// (a shared database may hold other sites' links).
+    /// </summary>
+    /// <param name="ctx">The active crawl context.</param>
+    /// <param name="crawlStartUtc">The crawl start; only links determined at or after it are reported.</param>
+    /// <returns>The broken links and the redirected links, each sorted by origin then destination.</returns>
+    private static async Task<(List<BrokenLink> Broken, List<BrokenLink> Redirected)> BuildLinkReportAsync(CrawlContext ctx, DateTime crawlStartUtc)
+    {
+        var rows = await CrawlStore.GetReportableLinksAsync(ctx.Read, crawlStartUtc, CancellationToken.None);
+        var broken = new List<BrokenLink>();
+        var redirected = new List<BrokenLink>();
+        foreach (var (fromUrl, toUrl, external, status, statusCode) in rows)
+        {
+            if (!Uri.TryCreate(fromUrl, UriKind.Absolute, out var fromUri) || !ctx.AllowedHosts.IsAllowed(fromUri)) continue;
+            var linkStatus = (LinkStatus)status;
+            var link = new BrokenLink(toUrl, fromUrl, external, statusCode, ReasonFor(linkStatus, statusCode));
+            (linkStatus == LinkStatus.Error ? broken : redirected).Add(link);
+        }
+
+        broken.Sort(CompareLinks);
+        redirected.Sort(CompareLinks);
+        return (broken, redirected);
+    }
+
+    /// <summary>Orders report links by the page they were found on, then by the target URL.</summary>
+    private static int CompareLinks(BrokenLink a, BrokenLink b)
+    {
+        int byFound = string.Compare(a.FoundOn, b.FoundOn, StringComparison.OrdinalIgnoreCase);
+        return byFound != 0 ? byFound : string.Compare(a.Url, b.Url, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>Produces the short human-readable reason shown for a reportable link.</summary>
+    /// <param name="status">The link's verified status.</param>
+    /// <param name="statusCode">The HTTP status observed (0 for a connection-level failure).</param>
+    /// <returns>A short explanation, e.g. "404 Not Found", "connection failed", or "301 redirect".</returns>
+    private static string ReasonFor(LinkStatus status, int statusCode)
+    {
+        if (status == LinkStatus.Redirect)
+        {
+            return statusCode is >= 300 and < 400 ? $"{statusCode} redirect" : "redirect";
+        }
+        return statusCode switch
+        {
+            410 => "410 Gone",
+            404 => "404 Not Found",
+            0 => "connection failed",
+            _ => $"HTTP {statusCode}",
+        };
     }
 
     /// <summary>
@@ -1110,11 +1223,8 @@ public partial class CrawlerService
         /// <summary>Gets the per-host reachability tracker: which servers have answered this run and which have been written off as unreachable.</summary>
         public HostHealthTracker HostHealth = new();
 
-        /// <summary>Gets the first page each discovered URL was seen on, so a broken (404/410) link can be reported against where it was linked from.</summary>
-        public Dictionary<string, string> OffsiteLinks = new(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>Gets or sets a value indicating whether off-site links are collected for the optional end-of-crawl verification pass.</summary>
-        public bool CollectOffsiteLinks;
+        /// <summary>Gets or sets a value indicating whether off-site links are probed during the end-of-crawl verification pass and included in the report.</summary>
+        public bool CheckExternalLinks;
 
         /// <summary>Gets or sets a value indicating whether the per-host cap skipped any URL this run, which disables pruning.</summary>
         public bool HostCapSkipped;

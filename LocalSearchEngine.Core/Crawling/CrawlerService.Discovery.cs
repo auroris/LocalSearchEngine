@@ -178,7 +178,7 @@ public partial class CrawlerService
                 // Same origin as the seed, so the seed's already-fetched robots apply.
                 if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, robots)) continue;
 
-                if (Discover(ctx, normalizedUrl, sitemapUrl))
+                if (Discover(ctx, normalizedUrl))
                 {
                     added++;
                 }

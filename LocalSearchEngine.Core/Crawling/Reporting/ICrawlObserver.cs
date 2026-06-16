@@ -12,17 +12,12 @@ public interface ICrawlObserver
 {
     /// <summary>Gets the finalized stats for the crawl.</summary>
     CrawlStats Stats { get; }
-    
-    /// <summary>Gets the list of broken links found during the crawl.</summary>
-    IReadOnlyList<BrokenLink> BrokenLinks { get; }
 
     // Phase management
     void OnPhaseChanged(CrawlPhase phase);
 
     // Frontier tracking
-    void OnUrlDiscovered(string targetUrl, string sourceUrl);
     void OnOutlinksAdded(int count);
-    void OnOffsiteLinkDiscovered(string targetUrl, string sourceUrl);
 
     // Initial/High-level events
     void OnSeedInvalid(string seedUrl);
@@ -60,8 +55,7 @@ public interface ICrawlObserver
     void OnPruneFailed(Exception ex);
     void OnBannedUrlsRemoved(int count);
     void OnRemoveBannedFailed(Exception ex);
-    void OnExternalLinksChecked(int brokenCount, int totalCount);
-    void OnExternalLinkProbeFailed(Exception ex, string url);
-    void OnExternalLinkBroken(string url, int statusCode);
+    void OnLinksVerified(int probed, int broken, int redirected);
+    void OnLinkProbeInconclusive(Exception ex, string url);
     void OnAllowedServerIgnored(string entry);
 }

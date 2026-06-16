@@ -11,13 +11,8 @@ internal sealed class CrawlObserver : ICrawlObserver
     private readonly DateTime _startedUtc;
     
     private CrawlPhase _currentPhase;
-    
-    // State previously in CrawlContext
-    private readonly Dictionary<string, string> _firstReferrer = new(StringComparer.OrdinalIgnoreCase);
-    private readonly List<BrokenLink> _brokenLinks = new();
-    
+
     public CrawlStats Stats { get; } = new CrawlStats();
-    public IReadOnlyList<BrokenLink> BrokenLinks => _brokenLinks;
 
     public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc)
     {
@@ -35,13 +30,6 @@ internal sealed class CrawlObserver : ICrawlObserver
         Stats.Record(outcome);
         _reporter.PageProcessed(url, outcome, Snapshot(0)); // Discovered count doesn't need to be exact here for the page event
     }
-    
-    private void RecordBrokenLink(string url, int statusCode)
-    {
-        _firstReferrer.TryGetValue(url, out var sourceUrl);
-        string reason = statusCode == 410 ? "410 Gone" : statusCode == 404 ? "404 Not Found" : $"HTTP {statusCode}";
-        _brokenLinks.Add(new BrokenLink(url, sourceUrl, false, statusCode, reason));
-    }
 
     public void OnPhaseChanged(CrawlPhase phase)
     {
@@ -49,19 +37,9 @@ internal sealed class CrawlObserver : ICrawlObserver
         _reporter.PhaseChanged(phase, Snapshot(0));
     }
 
-    public void OnUrlDiscovered(string targetUrl, string sourceUrl)
-    {
-        _firstReferrer.TryAdd(targetUrl, sourceUrl);
-    }
-
     public void OnOutlinksAdded(int count)
     {
         Stats.AddLinks(count);
-    }
-
-    public void OnOffsiteLinkDiscovered(string targetUrl, string sourceUrl)
-    {
-        _firstReferrer.TryAdd(targetUrl, sourceUrl);
     }
 
     public void OnSeedInvalid(string seedUrl)
@@ -141,7 +119,6 @@ internal sealed class CrawlObserver : ICrawlObserver
     public void OnPageGone(string currentUrl, string finalUrl, int statusCode)
     {
         _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
-        RecordBrokenLink(currentUrl, statusCode);
         ReportPage(currentUrl, CrawlOutcome.Gone);
     }
 
@@ -232,21 +209,16 @@ internal sealed class CrawlObserver : ICrawlObserver
         _logger.LogError(ex, "Failed to remove robots-disallowed URLs.");
     }
 
-    public void OnExternalLinksChecked(int brokenCount, int totalCount)
+    public void OnLinksVerified(int probed, int broken, int redirected)
     {
-        _logger.LogInformation("External link check: {Broken} of {Total} off-site link(s) did not resolve.", brokenCount, totalCount);
+        _logger.LogInformation("Link verification: probed {Probed} undetermined link(s) — {Broken} broken, {Redirected} redirected.", probed, broken, redirected);
     }
 
-    public void OnExternalLinkProbeFailed(Exception ex, string url)
+    public void OnLinkProbeInconclusive(Exception ex, string url)
     {
-        _logger.LogDebug(ex, "Inconclusive probe for off-site link {Url}; not reporting it as broken.", url);
+        _logger.LogDebug(ex, "Inconclusive probe for link {Url}; treating it as resolved.", url);
     }
-    
-    public void OnExternalLinkBroken(string url, int statusCode)
-    {
-        RecordBrokenLink(url, statusCode);
-    }
-    
+
     public void OnAllowedServerIgnored(string entry)
     {
         _logger.LogWarning("Ignoring allowed-server entry '{Entry}': expected [scheme://]host[:port].", entry);

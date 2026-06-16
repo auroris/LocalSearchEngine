@@ -36,7 +36,8 @@ internal static class SummaryPanel
         grid.AddRow("[grey]Removed[/]", $"[red]{report.ItemsDeleted}[/]  ([grey]banned[/] {s.RemovedBanned}, [grey]stale[/] {s.RemovedStale})");
         grid.AddRow("[grey]Links found / unique[/]", $"{s.LinksFound} / {s.Discovered}");
         string brokenColor = report.BrokenLinks.Count > 0 ? "red" : "grey";
-        grid.AddRow("[grey]Broken links / unreachable hosts[/]", $"[{brokenColor}]{report.BrokenLinks.Count}[/] / {report.UnreachableHosts.Count}");
+        string redirectedColor = report.RedirectedLinks.Count > 0 ? "yellow" : "grey";
+        grid.AddRow("[grey]Broken / redirected / unreachable[/]", $"[{brokenColor}]{report.BrokenLinks.Count}[/] / [{redirectedColor}]{report.RedirectedLinks.Count}[/] / {report.UnreachableHosts.Count}");
         grid.AddRow("[grey]Indexed URLs in DB[/]", report.IndexedUrlsInDb.ToString());
         grid.AddRow("[grey]Crawl-state rows[/]", report.CrawlStateRowsInDb.ToString());
         grid.AddEmptyRow();
