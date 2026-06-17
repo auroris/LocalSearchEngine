@@ -12,8 +12,11 @@ namespace LocalSearchEngine.Crawler;
 /// </summary>
 internal sealed class SpectreCrawlReporter : ICrawlReporter
 {
+    /// <summary>Maximum number of recent URL outcomes to display in the rolling list.</summary>
     private const int RecentCapacity = 10;
+    /// <summary>Width in characters of the progress bar.</summary>
     private const int BarWidth = 40;
+    /// <summary>Minimum time between consecutive redraws to avoid excessive CPU usage.</summary>
     private static readonly TimeSpan MinRedrawGap = TimeSpan.FromMilliseconds(50);
 
     private readonly LiveDisplayContext _live;
@@ -41,6 +44,8 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         Render(force: false);
     }
 
+    /// <summary>Renders the current state to the display if the minimum redraw gap has elapsed or if forced.</summary>
+    /// <param name="force">If true, bypasses the throttle and renders immediately.</param>
     private void Render(bool force)
     {
         var now = DateTime.UtcNow;
@@ -49,6 +54,8 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         _live.UpdateTarget(Build());
     }
 
+    /// <summary>Builds the visual component tree for the live display.</summary>
+    /// <returns>A renderable Spectre.Console element.</returns>
     private IRenderable Build()
     {
         var s = _stats;
@@ -80,9 +87,11 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         return new Rows(header, new Markup(" "), grid, table);
     }
 
+    /// <summary>Formats a single statistic value with a label and color.</summary>
     private static IRenderable Stat(string label, long value, string color) =>
         new Markup($"[grey]{label}[/] [{color}]{value}[/]");
 
+    /// <summary>Gets the display text and styling for a crawl phase.</summary>
     private static string PhaseText(CrawlPhase phase) => phase switch
     {
         CrawlPhase.Starting => "[grey]Starting[/]",
@@ -96,6 +105,7 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         _ => phase.ToString(),
     };
 
+    /// <summary>Gets the display label and color for a page processing outcome.</summary>
     private static (string Label, string Color) OutcomeStyle(CrawlOutcome outcome) => outcome switch
     {
         CrawlOutcome.Indexed => ("indexed", "green"),
@@ -110,8 +120,10 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         _ => (outcome.ToString().ToLowerInvariant(), "white"),
     };
 
+    /// <summary>Formats elapsed time as hh:mm:ss.</summary>
     private static string Elapsed(TimeSpan t) => $"{(int)t.TotalHours:00}:{t.Minutes:00}:{t.Seconds:00}";
 
+    /// <summary>Truncates a string to a maximum length, appending an ellipsis if truncated.</summary>
     private static string Truncate(string value, int max) =>
         value.Length <= max ? value : string.Concat(value.AsSpan(0, max - 1), "…");
 }

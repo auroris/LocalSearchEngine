@@ -10,6 +10,10 @@ namespace LocalSearchEngine.Crawler;
 /// </summary>
 internal sealed class PlainCrawlReporter : ICrawlReporter
 {
+    /// <summary>
+    /// The number of pages to process before emitting a progress line.
+    /// Reduces log noise while still providing regular updates.
+    /// </summary>
     private const int PageInterval = 25;
 
     private readonly IAnsiConsole _console;

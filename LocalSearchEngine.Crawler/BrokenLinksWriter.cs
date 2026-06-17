@@ -20,6 +20,10 @@ internal static class BrokenLinksWriter
     public static Task WriteAsync(CrawlReport report, string path, bool externalChecked, CancellationToken cancellationToken) =>
         File.WriteAllTextAsync(path, Build(report, externalChecked), cancellationToken);
 
+    /// <summary>Builds the text content of the broken-links report.</summary>
+    /// <param name="report">The completed crawl report.</param>
+    /// <param name="externalChecked">Whether off-site link verification ran this crawl.</param>
+    /// <returns>A formatted string containing the broken-links report.</returns>
     private static string Build(CrawlReport report, bool externalChecked)
     {
         var sb = new StringBuilder();

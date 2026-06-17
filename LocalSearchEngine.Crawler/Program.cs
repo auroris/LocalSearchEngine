@@ -1,3 +1,10 @@
+// <summary>
+// Main entry point for the LocalSearchEngine.Crawler application.
+// This application provides a command-line interface for crawling websites,
+// extracting content, generating embeddings, and storing the results
+// in a SQLite vector database for the search engine to use.
+// </summary>
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LocalSearchEngine.Core;
@@ -250,10 +257,10 @@ try
     // Banner, printed before the live display takes over the console. The database and log paths
     // lead, so a user (or someone inspecting a scheduled run) sees where output is being written
     // before anything else scrolls past.
-    AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
-    AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
     AnsiConsole.Write(new Rule("[bold]LocalSearchEngine crawler[/]").LeftJustified());
+    AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Seed[/]      {url}");
+    AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
     if (maxPages != int.MaxValue)
@@ -270,10 +277,7 @@ try
     }
     AnsiConsole.WriteLine();
 
-    // The live display runs only on an interactive console. Capabilities.Interactive is the single
-    // signal we need: it's false in a non-interactive session — a Windows scheduled task or service
-    // (Session 0), or any run where the console isn't user-interactive — so those fall back to the
-    // plain reporter automatically, no flag required. --no-live forces plain in a terminal that
+    // The live display runs only on an interactive console. --no-live forces plain in a terminal that
     // would otherwise qualify.
     bool useLive = !noLive && AnsiConsole.Profile.Capabilities.Interactive;
 

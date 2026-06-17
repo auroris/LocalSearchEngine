@@ -11,6 +11,10 @@ namespace LocalSearchEngine.Crawler;
 /// </summary>
 internal static class CrawlStatsWriter
 {
+    /// <summary>
+    /// JSON serialization options used for writing the crawl report.
+    /// Configured to write indented JSON and format enums as strings.
+    /// </summary>
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
@@ -29,6 +33,9 @@ internal static class CrawlStatsWriter
         await File.WriteAllTextAsync(textPath, BuildText(report), cancellationToken);
     }
 
+    /// <summary>Builds the human-readable text version of the crawl report.</summary>
+    /// <param name="r">The completed crawl report.</param>
+    /// <returns>A formatted string containing the statistics summary.</returns>
     private static string BuildText(CrawlReport r)
     {
         var s = r.Stats;

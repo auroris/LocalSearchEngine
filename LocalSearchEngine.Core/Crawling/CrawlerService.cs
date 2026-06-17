@@ -105,6 +105,9 @@ public partial class CrawlerService
             StartedUtc = crawlStartUtc,
         };
 
+        // Feed the live frontier size (unique URLs discovered) into the observer's progress snapshots.
+        observer.DiscoveredCount = () => ctx.Visited.Count;
+
         if (allowedServers != null)
         {
             foreach (var s in allowedServers)

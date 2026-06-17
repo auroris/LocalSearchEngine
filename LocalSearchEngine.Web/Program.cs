@@ -1,3 +1,9 @@
+// <summary>
+// Main entry point for the LocalSearchEngine.Web application.
+// This application provides an API and a web interface for querying
+// the SQLite vector database populated by the Crawler.
+// </summary>
+
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;

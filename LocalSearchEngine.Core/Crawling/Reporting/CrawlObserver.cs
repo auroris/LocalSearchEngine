@@ -14,6 +14,12 @@ internal sealed class CrawlObserver : ICrawlObserver
 
     public CrawlStats Stats { get; } = new CrawlStats();
 
+    /// <summary>
+    /// Returns the live count of unique URLs discovered so far (the crawl frontier). The orchestrator
+    /// wires this to the crawl context's visited set; until then it reports zero.
+    /// </summary>
+    public Func<int> DiscoveredCount { get; set; } = () => 0;
+
     public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc)
     {
         _logger = logger;
@@ -22,19 +28,19 @@ internal sealed class CrawlObserver : ICrawlObserver
         _currentPhase = CrawlPhase.Starting;
     }
 
-    private CrawlStatsSnapshot Snapshot(int visitedCount) =>
-        Stats.Snapshot(_currentPhase, visitedCount, DateTime.UtcNow - _startedUtc);
+    private CrawlStatsSnapshot Snapshot() =>
+        Stats.Snapshot(_currentPhase, DiscoveredCount(), DateTime.UtcNow - _startedUtc);
 
     private void ReportPage(string url, CrawlOutcome outcome)
     {
         Stats.Record(outcome);
-        _reporter.PageProcessed(url, outcome, Snapshot(0)); // Discovered count doesn't need to be exact here for the page event
+        _reporter.PageProcessed(url, outcome, Snapshot());
     }
 
     public void OnPhaseChanged(CrawlPhase phase)
     {
         _currentPhase = phase;
-        _reporter.PhaseChanged(phase, Snapshot(0));
+        _reporter.PhaseChanged(phase, Snapshot());
     }
 
     public void OnOutlinksAdded(int count)
