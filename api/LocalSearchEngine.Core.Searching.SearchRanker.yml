@@ -23,11 +23,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchRanker
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 23
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Provides ranking logic to score and sort search candidates based on semantic similarity and keyword matching.
+  summary: >-
+    Collapses the two candidate streams of a hybrid search — semantic vector hits and keyword (FTS5)
+
+    hits — into a single ranked result list. Candidates are aggregated by URL: the semantic pass drops
+
+    hits beyond the configured distance ceiling and seeds each URL's base score from its closest chunk,
+
+    while the keyword pass records whether the URL matched as a verbatim phrase or a looser all-terms
+
+    hit. A final pass layers on the configured boosts (phrase, all-terms, heading, title, filename, and
+
+    literal-term-in-snippet) from <xref href="LocalSearchEngine.Core.Searching.SearchSettings" data-throw-if-not-resolved="false"></xref> and sorts by the combined score. Pure and
+
+    stateless — the same candidates always rank the same way.
   example: []
   syntax:
     content: public static class SearchRanker
@@ -60,7 +73,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Rank
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 34
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -110,7 +123,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetOrCreate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 106
+    startLine: 112
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -151,7 +164,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlFileNameContains
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 122
+    startLine: 128
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -192,7 +205,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Slugify
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 140
+    startLine: 146
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -213,6 +226,13 @@ items:
   fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Slugify(String)
   name.vb: Slugify(String)
 references:
+- uid: LocalSearchEngine.Core.Searching.SearchSettings
+  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html
+  name: SearchSettings
+  nameWithType: SearchSettings
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -563,13 +583,6 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: LocalSearchEngine.Core.Searching.SearchSettings
-  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
-  parent: LocalSearchEngine.Core.Searching
-  href: LocalSearchEngine.Core.Searching.SearchSettings.html
-  name: SearchSettings
-  nameWithType: SearchSettings
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings
 - uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
   commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
   parent: System.Collections.Generic

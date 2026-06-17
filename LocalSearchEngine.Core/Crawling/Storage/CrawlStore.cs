@@ -4,7 +4,15 @@ using Microsoft.Extensions.Logging;
 namespace LocalSearchEngine.Core.Crawling.Storage;
 
 /// <summary>
-/// Provides database access operations for managing crawl state and per-page outlinks in SQLite.
+/// The crawler's SQL layer: one static home for every query and command it issues against SQLite,
+/// keeping raw SQL out of the engine. It owns the schema it depends on — the <c>CrawlState</c> table
+/// (per-URL status, cache validators, title, and content hash), the <c>LinkIndex</c> of every link
+/// seen and its verified status, and the FTS5 mirror of the vector store's chunks with the triggers
+/// that keep it in sync — created by <see cref="EnsureSchemaAsync"/> after the vector store has made
+/// its <c>text_chunks</c> table. The rest are focused reads and writes over those tables: record a
+/// visit, store or re-derive a page's links, find a duplicate by content hash, list URLs a crawl no
+/// longer reaches, and so on. Every method works on a connection the caller owns and opens, so callers
+/// control transactions and which connection (read vs. write) each runs on.
 /// </summary>
 public static class CrawlStore
 {

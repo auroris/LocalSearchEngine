@@ -21,7 +21,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResponse
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 182
+    startLine: 188
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -58,7 +58,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Items
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 185
+    startLine: 191
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -89,7 +89,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TotalMatches
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 187
+    startLine: 193
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

@@ -11,7 +11,13 @@ using LocalSearchEngine.Core.Crawling.Storage;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Reads crawl jobs from the channel and persists indexing changes and visit states to the database.
+/// The consumer half of the crawl. It reads <see cref="CrawlJob"/>s off the channel the producer fills
+/// and applies each to the database, so every index and crawl-state write funnels through one task on a
+/// single connection. The job's type selects the work — index or delete a page's chunks, record its
+/// crawl state, store or clear its links, or simply stamp a visit — and after each job it records how
+/// that destination last responded against the links that point at it, so even links on pages not
+/// re-parsed this run reflect its current status. Each job is wrapped in its own try/catch so one bad
+/// page can't tear down the whole consumer.
 /// </summary>
 internal sealed class CrawlConsumer
 {

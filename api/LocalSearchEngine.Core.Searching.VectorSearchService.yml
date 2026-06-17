@@ -34,11 +34,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorSearchService
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 41
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Provides vector search and keyword hybrid query operations over the text chunks index in SQLite.
+  summary: >-
+    The read/write gateway to the chunk index, and the seam between the crawler that fills it and the
+
+    web app that queries it. On the write side it splits a page's text into overlapping chunks
+
+    (<xref href="LocalSearchEngine.Core.TextProcessing.TextChunker" data-throw-if-not-resolved="false"></xref>), embeds each locally on the CPU (<xref href="LocalSearchEngine.Core.TextProcessing.IEmbedder" data-throw-if-not-resolved="false"></xref>), and upserts
+
+    the batch into the SQLite vector store in one transaction — whose triggers keep the FTS5 mirror in
+
+    step; a companion delete clears a URL's existing chunks first, so a re-crawl replaces rather than
+
+    duplicates. On the read side it runs a hybrid query: the text (minus any <code>site:</code> filters) is
+
+    embedded for a semantic nearest-neighbour pass and matched against FTS5 for keywords, then the two
+
+    candidate pools and their titles are handed to <xref href="LocalSearchEngine.Core.Searching.SearchRanker" data-throw-if-not-resolved="false"></xref> and blended into a ranked
+
+    <xref href="LocalSearchEngine.Core.Searching.SearchResponse" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: public class VectorSearchService
@@ -71,7 +88,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _embedder
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 43
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -98,7 +115,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _collection
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 44
+    startLine: 52
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -125,7 +142,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbConfig
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 45
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -152,7 +169,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _settings
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 46
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -179,7 +196,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 47
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -206,7 +223,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 57
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -253,7 +270,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureCreatedAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 70
+    startLine: 78
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -284,7 +301,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteUrlChunksAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 85
+    startLine: 93
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -322,7 +339,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexUrlChunksAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 125
+    startLine: 133
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -366,7 +383,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 153
+    startLine: 161
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -407,7 +424,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetVectorHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 194
+    startLine: 202
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -448,7 +465,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetKeywordHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 215
+    startLine: 223
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -489,7 +506,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadTitlesAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 247
+    startLine: 255
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -530,7 +547,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollectKeywordHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 278
+    startLine: 286
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -580,7 +597,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadTitlesAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 307
+    startLine: 315
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -607,6 +624,31 @@ items:
   fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.Dictionary(Of String, String))
   name.vb: LoadTitlesAsync(SqliteConnection, IReadOnlyCollection(Of String), Dictionary(Of String, String))
 references:
+- uid: LocalSearchEngine.Core.TextProcessing.TextChunker
+  commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker
+  href: LocalSearchEngine.Core.TextProcessing.TextChunker.html
+  name: TextChunker
+  nameWithType: TextChunker
+  fullName: LocalSearchEngine.Core.TextProcessing.TextChunker
+- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
+  parent: LocalSearchEngine.Core.TextProcessing
+  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html
+  name: IEmbedder
+  nameWithType: IEmbedder
+  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+- uid: LocalSearchEngine.Core.Searching.SearchRanker
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker
+  nameWithType: SearchRanker
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker
+- uid: LocalSearchEngine.Core.Searching.SearchResponse
+  commentId: T:LocalSearchEngine.Core.Searching.SearchResponse
+  href: LocalSearchEngine.Core.Searching.SearchResponse.html
+  name: SearchResponse
+  nameWithType: SearchResponse
+  fullName: LocalSearchEngine.Core.Searching.SearchResponse
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -867,20 +909,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System
-- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
-  commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
-  parent: LocalSearchEngine.Core.TextProcessing
-  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html
-  name: IEmbedder
-  nameWithType: IEmbedder
-  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
 - uid: LocalSearchEngine.Core.TextProcessing
   commentId: N:LocalSearchEngine.Core.TextProcessing
   href: LocalSearchEngine.html
@@ -911,6 +939,13 @@ references:
   - uid: LocalSearchEngine.Core.TextProcessing
     name: TextProcessing
     href: LocalSearchEngine.Core.TextProcessing.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: Microsoft.Extensions.VectorData.VectorStoreCollection{System.String,LocalSearchEngine.Core.Searching.TextChunkRecord}
   commentId: T:Microsoft.Extensions.VectorData.VectorStoreCollection{System.String,LocalSearchEngine.Core.Searching.TextChunkRecord}
   parent: Microsoft.Extensions.VectorData
@@ -1355,12 +1390,6 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: LocalSearchEngine.Core.Searching.SearchResponse
-  commentId: T:LocalSearchEngine.Core.Searching.SearchResponse
-  href: LocalSearchEngine.Core.Searching.SearchResponse.html
-  name: SearchResponse
-  nameWithType: SearchResponse
-  fullName: LocalSearchEngine.Core.Searching.SearchResponse
 - uid: LocalSearchEngine.Core.Searching.VectorSearchService.SearchAsync*
   commentId: Overload:LocalSearchEngine.Core.Searching.VectorSearchService.SearchAsync
   href: LocalSearchEngine.Core.Searching.VectorSearchService.html#LocalSearchEngine_Core_Searching_VectorSearchService_SearchAsync_System_String_

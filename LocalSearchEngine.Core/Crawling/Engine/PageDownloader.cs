@@ -57,7 +57,15 @@ internal sealed class DownloadResult
 }
 
 /// <summary>
-/// Downloads pages and documents from the web, validating size limits, media types, and signature prefixes.
+/// Fetches one page or file and reduces the messy result of an HTTP GET to a single tidy
+/// <see cref="DownloadResult"/> the producer can switch on. It sends conditional headers from the
+/// stored ETag/Last-Modified (so an unchanged page comes back as a cheap 304), validates the final URL
+/// after redirects through a caller-supplied callback, and streams the body under a hard byte cap —
+/// bailing out early on an oversized Content-Length, an unsupported media type, or a content signature
+/// that doesn't match. Each of those becomes a distinct <see cref="DownloadStatus"/> (not-modified,
+/// gone, redirect-blocked, too-big, unsupported, failed, or success), with transport-level failures
+/// mapped to a 503 so the rest of the crawl can tell a dead connection from a real server error. It
+/// classifies; it does not persist or parse — the body is handed on for extraction.
 /// </summary>
 internal sealed class PageDownloader
 {

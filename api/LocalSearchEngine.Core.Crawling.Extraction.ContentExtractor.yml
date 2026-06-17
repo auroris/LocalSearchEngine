@@ -17,7 +17,6 @@ items:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveEncoding(System.String)
-  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.WordSeparators
   langs:
   - csharp
@@ -33,11 +32,22 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ContentExtractor
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 9
+    startLine: 14
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
-  summary: Extracts structured elements (title, headings, text, robots directives, canonical aliases, and outlinks) from raw HTML, PDF, or DOCX document bodies.
+  summary: >-
+    Turns a fetched document body into the structured pieces the index needs. For HTML it decodes the
+
+    bytes with the right charset, strips scripts, nav, footers, and other chrome so they never reach the
+
+    index, then harvests the title, headings, and visible text, reads the page's robots directives and
+
+    canonical link, and collects its links — split into in-scope outlinks (crawlable) and off-site links
+
+    (kept only for optional verification). PDF and DOCX bodies are routed to their own extractors for
+
+    title and text. Stateless: it reads bytes in and returns values, contacting nothing.
   example: []
   syntax:
     content: public static class ContentExtractor
@@ -70,7 +80,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WordSeparators
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 11
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -97,7 +107,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AnalyzeHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 54
+    startLine: 59
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -153,7 +163,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 112
+    startLine: 117
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -205,7 +215,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 144
+    startLine: 149
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -252,7 +262,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ParseRobotsDirectives
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 189
+    startLine: 194
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -274,44 +284,6 @@ items:
   nameWithType.vb: ContentExtractor.ParseRobotsDirectives(HtmlDocument, String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument, String, String)
   name.vb: ParseRobotsDirectives(HtmlDocument, String, String)
-- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(System.String,System.String)
-  id: StripXRobotsAgent(System.String,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
-  langs:
-  - csharp
-  - vb
-  name: StripXRobotsAgent(string, string)
-  nameWithType: ContentExtractor.StripXRobotsAgent(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(string, string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: StripXRobotsAgent
-    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 230
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Extraction
-  summary: Strips any user agent prefix from an X-Robots-Tag HTTP header value, verifying if the rule applies to this bot.
-  example: []
-  syntax:
-    content: private static string StripXRobotsAgent(string value, string userAgentToken)
-    parameters:
-    - id: value
-      type: System.String
-    - id: userAgentToken
-      type: System.String
-    return:
-      type: System.String
-    content.vb: Private Shared Function StripXRobotsAgent(value As String, userAgentToken As String) As String
-  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent*
-  nameWithType.vb: ContentExtractor.StripXRobotsAgent(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent(String, String)
-  name.vb: StripXRobotsAgent(String, String)
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
   commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
   id: ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
@@ -330,7 +302,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveCanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 243
+    startLine: 264
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -370,7 +342,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractPdf
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 269
+    startLine: 290
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -406,7 +378,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractDocx
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 288
+    startLine: 309
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -442,7 +414,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CleanTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 300
+    startLine: 321
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -478,7 +450,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 310
+    startLine: 331
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -511,7 +483,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractHeadings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 321
+    startLine: 342
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -544,7 +516,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollapseWhitespace
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 342
+    startLine: 363
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -580,7 +552,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveEncoding
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 348
+    startLine: 369
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -1248,12 +1220,6 @@ references:
   - name: " "
   - name: T2
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent
-  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_StripXRobotsAgent_System_String_System_String_
-  name: StripXRobotsAgent
-  nameWithType: ContentExtractor.StripXRobotsAgent
-  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.StripXRobotsAgent
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ResolveCanonicalAlias_HtmlAgilityPack_HtmlDocument_System_String_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_

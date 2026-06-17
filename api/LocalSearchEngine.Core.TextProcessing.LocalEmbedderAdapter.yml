@@ -27,11 +27,20 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LocalEmbedderAdapter
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 27
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
-  summary: Adapts a local embedding model to the <xref href="LocalSearchEngine.Core.TextProcessing.IEmbedder" data-throw-if-not-resolved="false"></xref> interface.
+  summary: >-
+    Bridges the search code's <xref href="LocalSearchEngine.Core.TextProcessing.IEmbedder" data-throw-if-not-resolved="false"></xref> abstraction to the bundled local model
+
+    (snowflake-arctic-embed-s: 384-dimensional, int8 ONNX, run on the CPU), so nothing leaves the
+
+    machine to embed text. Passages and queries take different paths on purpose: a query is prefixed
+
+    with a retrieval instruction (<xref href="LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction" data-throw-if-not-resolved="false"></xref>) before embedding, the way this
+
+    asymmetric model is meant to be used, while documents are embedded as-is.
   example: []
   syntax:
     content: 'public sealed class LocalEmbedderAdapter : IEmbedder, IDisposable'
@@ -66,7 +75,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ModelName
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 32
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -95,7 +104,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: QueryInstruction
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 37
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -124,7 +133,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _inner
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 39
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -151,7 +160,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 44
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -182,7 +191,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 50
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -217,7 +226,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Embed
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 57
+    startLine: 61
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -257,7 +266,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmbedQuery
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 64
+    startLine: 68
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -297,7 +306,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Core/TextProcessing/IEmbedder.cs
-    startLine: 69
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.TextProcessing
@@ -317,6 +326,12 @@ references:
   name: IEmbedder
   nameWithType: IEmbedder
   fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+- uid: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  commentId: F:LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
+  href: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.html#LocalSearchEngine_Core_TextProcessing_LocalEmbedderAdapter_QueryInstruction
+  name: QueryInstruction
+  nameWithType: LocalEmbedderAdapter.QueryInstruction
+  fullName: LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter.QueryInstruction
 - uid: LocalSearchEngine.Core.TextProcessing
   commentId: N:LocalSearchEngine.Core.TextProcessing
   href: LocalSearchEngine.html

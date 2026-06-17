@@ -113,19 +113,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Build
     path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
-    startLine: 22
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Builds the text content of the broken-links report.
+  example: []
   syntax:
     content: private static string Build(CrawlReport report, bool externalChecked)
     parameters:
     - id: report
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+      description: The completed crawl report.
     - id: externalChecked
       type: System.Boolean
+      description: Whether off-site link verification ran this crawl.
     return:
       type: System.String
+      description: A formatted string containing the broken-links report.
     content.vb: Private Shared Function Build(report As CrawlReport, externalChecked As Boolean) As String
   overload: LocalSearchEngine.Crawler.BrokenLinksWriter.Build*
   nameWithType.vb: BrokenLinksWriter.Build(CrawlReport, Boolean)
@@ -149,7 +154,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AppendLinkSection
     path: LocalSearchEngine.Crawler/BrokenLinksWriter.cs
-    startLine: 57
+    startLine: 61
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler

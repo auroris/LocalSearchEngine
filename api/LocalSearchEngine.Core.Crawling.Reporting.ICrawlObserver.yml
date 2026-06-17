@@ -54,16 +54,20 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ICrawlObserver
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 10
+    startLine: 12
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: >-
-    A stateful, per-crawl observer that centralizes all logging, statistics gathering, and progress reporting.
+    A stateful, per-crawl observer that centralizes all logging, statistics gathering, and progress
 
-    Implementations handle the translation of crawler domain events into log messages, stat increments, and 
+    reporting. Implementations translate crawler domain events into log messages, stat increments,
 
-    <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter" data-throw-if-not-resolved="false"></xref> callbacks.
+    and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter" data-throw-if-not-resolved="false"></xref> callbacks. Many callbacks pass both the URL originally dequeued
+
+    (<code>currentUrl</code>) and where it ended up after redirects/normalization (<code>finalUrl</code>); these
+
+    differ only when a redirect was followed.
   example: []
   syntax:
     content: public interface ICrawlObserver
@@ -88,11 +92,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stats
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 13
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Gets the finalized stats for the crawl.
+  summary: Gets the running tallies for the crawl.
   example: []
   syntax:
     content: CrawlStats Stats { get; }
@@ -119,10 +123,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPhaseChanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 16
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The crawl moved into a new high-level <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: void OnPhaseChanged(CrawlPhase phase)
     parameters:
@@ -148,15 +154,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutlinksAdded
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 19
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Outlinks found on a page were added to the frontier; folds them into the link tally.
+  example: []
   syntax:
     content: void OnOutlinksAdded(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The number of outlinks discovered on the page.
     content.vb: Sub OnOutlinksAdded(count As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnOutlinksAdded*
   nameWithType.vb: ICrawlObserver.OnOutlinksAdded(Integer)
@@ -180,10 +189,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedInvalid
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 22
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The seed URL could not be parsed as an absolute URI, so the crawl cannot begin.
+  example: []
   syntax:
     content: void OnSeedInvalid(string seedUrl)
     parameters:
@@ -212,10 +223,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedUnreachable
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 23
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The seed host failed to answer on first contact; there is nothing to crawl.
+  example: []
   syntax:
     content: void OnSeedUnreachable(string host)
     parameters:
@@ -244,10 +257,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 24
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The seed URL itself is disallowed by robots.txt.
+  example: []
   syntax:
     content: void OnSeedDisallowed(string url)
     parameters:
@@ -276,15 +291,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnCrawlCancelled
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 25
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Cancellation was observed in the main crawl loop.
+  example: []
   syntax:
     content: void OnCrawlCancelled(int dispatchedCount)
     parameters:
     - id: dispatchedCount
       type: System.Int32
+      description: Pages already dispatched for indexing when cancellation was seen.
     content.vb: Sub OnCrawlCancelled(dispatchedCount As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled*
   nameWithType.vb: ICrawlObserver.OnCrawlCancelled(Integer)
@@ -308,19 +326,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnHostCapReached
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 26
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A host reached its per-host page cap, so the current URL is skipped.
+  example: []
   syntax:
     content: void OnHostCapReached(int cap, string host, string url)
     parameters:
     - id: cap
       type: System.Int32
+      description: The configured per-host page limit.
     - id: host
       type: System.String
+      description: The host that hit the cap.
     - id: url
       type: System.String
+      description: The URL skipped because of it.
     content.vb: Sub OnHostCapReached(cap As Integer, host As String, url As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnHostCapReached*
   nameWithType.vb: ICrawlObserver.OnHostCapReached(Integer, String, String)
@@ -344,19 +367,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFetching
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 27
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A URL is about to be fetched from the frontier.
+  example: []
   syntax:
     content: void OnPageFetching(int indexedCount, int discoveredCount, string url)
     parameters:
     - id: indexedCount
       type: System.Int32
+      description: Pages indexed so far this run.
     - id: discoveredCount
       type: System.Int32
+      description: Unique URLs discovered so far (the frontier size).
     - id: url
       type: System.String
+      description: The URL being fetched.
     content.vb: Sub OnPageFetching(indexedCount As Integer, discoveredCount As Integer, url As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFetching*
   nameWithType.vb: ICrawlObserver.OnPageFetching(Integer, Integer, String)
@@ -380,10 +408,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnFetchCancelled
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 28
+    startLine: 56
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Cancellation interrupted the fetch of this URL.
+  example: []
   syntax:
     content: void OnFetchCancelled(string url)
     parameters:
@@ -412,10 +442,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnFetchError
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 29
+    startLine: 59
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: An unexpected exception was thrown while fetching the URL; it is recorded as a failure.
+  example: []
   syntax:
     content: void OnFetchError(Exception ex, string url)
     parameters:
@@ -446,10 +478,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnCrawlCompleted
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 30
+    startLine: 62
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The crawl finished (whether it drained the frontier or was cancelled).
+  example: []
   syntax:
     content: void OnCrawlCompleted(string seedUrl)
     parameters:
@@ -478,10 +512,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutScopeUrlReached
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 33
+    startLine: 67
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: An out-of-scope URL reached the frontier — a guard that should not normally fire.
+  example: []
   syntax:
     content: void OnOutScopeUrlReached(string url)
     parameters:
@@ -510,17 +546,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedRedirectedToNewOrigin
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 34
+    startLine: 72
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The seed redirected to a different origin, which is added to the allowed hosts so the crawl can follow it.
+  example: []
   syntax:
     content: void OnSeedRedirectedToNewOrigin(string currentUrl, string newOrigin)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The seed URL that redirected.
     - id: newOrigin
       type: System.String
+      description: The new origin (scheme://host:port) now in scope.
     content.vb: Sub OnSeedRedirectedToNewOrigin(currentUrl As String, newOrigin As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnSeedRedirectedToNewOrigin*
   nameWithType.vb: ICrawlObserver.OnSeedRedirectedToNewOrigin(String, String)
@@ -544,17 +584,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirectedOutScope
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 35
+    startLine: 77
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A non-seed page redirected outside the allowed hosts; the target is not followed.
+  example: []
   syntax:
     content: void OnPageRedirectedOutScope(string currentUrl, string newUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: newUrl
       type: System.String
+      description: The off-scope redirect target.
     content.vb: Sub OnPageRedirectedOutScope(currentUrl As String, newUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedOutScope*
   nameWithType.vb: ICrawlObserver.OnPageRedirectedOutScope(String, String)
@@ -578,17 +622,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirectedDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 36
+    startLine: 82
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A redirect target is disallowed by robots.txt, so it is not followed.
+  example: []
   syntax:
     content: void OnPageRedirectedDisallowed(string currentUrl, string newUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: newUrl
       type: System.String
+      description: The disallowed redirect target.
     content.vb: Sub OnPageRedirectedDisallowed(currentUrl As String, newUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed*
   nameWithType.vb: ICrawlObserver.OnPageRedirectedDisallowed(String, String)
@@ -612,17 +660,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirectedAlreadySeen
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 37
+    startLine: 87
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A redirect resolved to a URL already seen this run, so it is not re-crawled.
+  example: []
   syntax:
     content: void OnPageRedirectedAlreadySeen(string currentUrl, string newUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: newUrl
       type: System.String
+      description: The already-seen redirect target.
     content.vb: Sub OnPageRedirectedAlreadySeen(currentUrl As String, newUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen*
   nameWithType.vb: ICrawlObserver.OnPageRedirectedAlreadySeen(String, String)
@@ -646,19 +698,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageGone
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 40
+    startLine: 95
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page returned 404/410 and is removed from the index.
+  example: []
   syntax:
     content: void OnPageGone(string currentUrl, string finalUrl, int statusCode)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: statusCode
       type: System.Int32
+      description: The HTTP status returned.
     content.vb: Sub OnPageGone(currentUrl As String, finalUrl As String, statusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone*
   nameWithType.vb: ICrawlObserver.OnPageGone(String, String, Integer)
@@ -682,19 +739,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 41
+    startLine: 101
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page returned an error or non-success status; any existing index entry is kept.
+  example: []
   syntax:
     content: void OnPageFailed(string currentUrl, string finalUrl, int statusCode)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: statusCode
       type: System.Int32
+      description: The HTTP status returned.
     content.vb: Sub OnPageFailed(currentUrl As String, finalUrl As String, statusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed*
   nameWithType.vb: ICrawlObserver.OnPageFailed(String, String, Integer)
@@ -718,21 +780,27 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedSize
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 42
+    startLine: 108
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page or file was skipped for exceeding the size limit.
+  example: []
   syntax:
     content: void OnPageSkippedSize(string currentUrl, string finalUrl, long contentLength, long limit)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: contentLength
       type: System.Int64
+      description: The size seen, in bytes.
     - id: limit
       type: System.Int64
+      description: The configured maximum size, in bytes.
     content.vb: Sub OnPageSkippedSize(currentUrl As String, finalUrl As String, contentLength As Long, limit As Long)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize*
   nameWithType.vb: ICrawlObserver.OnPageSkippedSize(String, String, Long, Long)
@@ -756,19 +824,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedType
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 43
+    startLine: 114
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page or file was skipped for an unsupported content type or a failed sniff.
+  example: []
   syntax:
     content: void OnPageSkippedType(string currentUrl, string finalUrl, string? contentType)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: contentType
       type: System.String
+      description: The Content-Type that was rejected, if any.
     content.vb: Sub OnPageSkippedType(currentUrl As String, finalUrl As String, contentType As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType*
   nameWithType.vb: ICrawlObserver.OnPageSkippedType(String, String, String)
@@ -792,10 +865,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 44
+    startLine: 117
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page was unchanged since the last crawl (server returned HTTP 304).
+  example: []
   syntax:
     content: void OnPageUnchanged(string currentUrl)
     parameters:
@@ -824,17 +899,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchangedHash
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 45
+    startLine: 122
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page's content hash matched the stored copy, so it was not re-indexed.
+  example: []
   syntax:
     content: void OnPageUnchangedHash(string currentUrl, string finalUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     content.vb: Sub OnPageUnchangedHash(currentUrl As String, finalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash*
   nameWithType.vb: ICrawlObserver.OnPageUnchangedHash(String, String)
@@ -858,19 +937,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDuplicateContent
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 46
+    startLine: 128
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page's content duplicates an already-indexed URL; the original is enqueued instead of indexing a copy.
+  example: []
   syntax:
     content: void OnPageDuplicateContent(string currentUrl, string finalUrl, string canonicalUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: canonicalUrl
       type: System.String
+      description: The already-indexed URL with identical content.
     content.vb: Sub OnPageDuplicateContent(currentUrl As String, finalUrl As String, canonicalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent*
   nameWithType.vb: ICrawlObserver.OnPageDuplicateContent(String, String, String)
@@ -894,19 +978,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageAlias
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 47
+    startLine: 134
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page declares a <code>rel="canonical"</code> pointing elsewhere in scope; the canonical is enqueued.
+  example: []
   syntax:
     content: void OnPageAlias(string currentUrl, string finalUrl, string canonicalUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: canonicalUrl
       type: System.String
+      description: The canonical URL the page points at.
     content.vb: Sub OnPageAlias(currentUrl As String, finalUrl As String, canonicalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias*
   nameWithType.vb: ICrawlObserver.OnPageAlias(String, String, String)
@@ -930,10 +1019,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 48
+    startLine: 137
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A URL was not fetched because robots.txt disallows it.
+  example: []
   syntax:
     content: void OnPageDisallowed(string currentUrl)
     parameters:
@@ -962,17 +1053,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageNoIndex
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 49
+    startLine: 142
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'A page carries a noindex directive: its content is not indexed, though its links are still followed.'
+  example: []
   syntax:
     content: void OnPageNoIndex(string currentUrl, string finalUrl)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     content.vb: Sub OnPageNoIndex(currentUrl As String, finalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex*
   nameWithType.vb: ICrawlObserver.OnPageNoIndex(String, String)
@@ -996,19 +1091,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageIndexed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 50
+    startLine: 148
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page's content was indexed.
+  example: []
   syntax:
     content: void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
     parameters:
     - id: currentUrl
       type: System.String
+      description: The requested URL.
     - id: finalUrl
       type: System.String
+      description: The URL after redirects.
     - id: outlinksCount
       type: System.Int32
+      description: The number of in-scope outlinks found on the page.
     content.vb: Sub OnPageIndexed(currentUrl As String, finalUrl As String, outlinksCount As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed*
   nameWithType.vb: ICrawlObserver.OnPageIndexed(String, String, Integer)
@@ -1032,15 +1132,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnStaleUrlsPruned
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 53
+    startLine: 154
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Post-crawl pruning removed indexed URLs that a completed crawl no longer reaches.
+  example: []
   syntax:
     content: void OnStaleUrlsPruned(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The number of stale URLs pruned.
     content.vb: Sub OnStaleUrlsPruned(count As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnStaleUrlsPruned*
   nameWithType.vb: ICrawlObserver.OnStaleUrlsPruned(Integer)
@@ -1064,10 +1167,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPruneFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 54
+    startLine: 157
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The stale-URL pruning pass failed.
+  example: []
   syntax:
     content: void OnPruneFailed(Exception ex)
     parameters:
@@ -1093,15 +1198,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnBannedUrlsRemoved
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 55
+    startLine: 161
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Post-crawl cleanup removed already-indexed URLs an origin's robots.txt now disallows.
+  example: []
   syntax:
     content: void OnBannedUrlsRemoved(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The number of newly banned URLs removed.
     content.vb: Sub OnBannedUrlsRemoved(count As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnBannedUrlsRemoved*
   nameWithType.vb: ICrawlObserver.OnBannedUrlsRemoved(Integer)
@@ -1125,10 +1233,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnRemoveBannedFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 56
+    startLine: 164
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The robots-banned removal pass failed.
+  example: []
   syntax:
     content: void OnRemoveBannedFailed(Exception ex)
     parameters:
@@ -1154,19 +1264,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinksVerified
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 57
+    startLine: 170
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The end-of-crawl link verification pass finished.
+  example: []
   syntax:
     content: void OnLinksVerified(int probed, int broken, int redirected)
     parameters:
     - id: probed
       type: System.Int32
+      description: The number of previously undetermined links probed.
     - id: broken
       type: System.Int32
+      description: How many of those resolved as broken.
     - id: redirected
       type: System.Int32
+      description: How many of those resolved as redirected.
     content.vb: Sub OnLinksVerified(probed As Integer, broken As Integer, redirected As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnLinksVerified*
   nameWithType.vb: ICrawlObserver.OnLinksVerified(Integer, Integer, Integer)
@@ -1190,10 +1305,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinkProbeInconclusive
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 58
+    startLine: 173
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A single link probe failed in a way that proves nothing about the target, so it is treated as resolved.
+  example: []
   syntax:
     content: void OnLinkProbeInconclusive(Exception ex, string url)
     parameters:
@@ -1224,15 +1341,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnAllowedServerIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 59
+    startLine: 177
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A configured allowed-server entry could not be parsed and was ignored.
+  example: []
   syntax:
     content: void OnAllowedServerIgnored(string entry)
     parameters:
     - id: entry
       type: System.String
+      description: The malformed entry, expected as <code>[scheme://]host[:port]</code>.
     content.vb: Sub OnAllowedServerIgnored(entry As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnAllowedServerIgnored*
   nameWithType.vb: ICrawlObserver.OnAllowedServerIgnored(String)
@@ -1297,12 +1417,6 @@ references:
   name: CrawlStats
   nameWithType: CrawlStats
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_
-  name: OnPhaseChanged
-  nameWithType: ICrawlObserver.OnPhaseChanged
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -1310,6 +1424,12 @@ references:
   name: CrawlPhase
   nameWithType: CrawlPhase
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_
+  name: OnPhaseChanged
+  nameWithType: ICrawlObserver.OnPhaseChanged
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPhaseChanged
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnOutlinksAdded*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnOutlinksAdded
   href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnOutlinksAdded_System_Int32_

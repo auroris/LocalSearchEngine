@@ -30,7 +30,7 @@ To run the documentation portal locally:
    ```
 2. Build and serve the docs:
    ```bash
-   dotnet tool run docfx docfx.json --serve
+   dotnet docfx docfx.json --serve
    ```
 3. Open `http://localhost:8080` in your web browser.
 

@@ -4,6 +4,13 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
+/// <summary>
+/// The single sink for crawl events: each <c>On…</c> callback both writes the run log and updates
+/// the running <see cref="CrawlStats"/>, and the page-outcome callbacks additionally push a fresh
+/// snapshot to the <see cref="ICrawlReporter"/> driving the live display. Centralizing this here
+/// keeps the crawl engine free of logging and presentation concerns. See <see cref="ICrawlObserver"/>
+/// for what each callback signifies.
+/// </summary>
 internal sealed class CrawlObserver : ICrawlObserver
 {
     private readonly ILogger _logger;

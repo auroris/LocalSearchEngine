@@ -67,10 +67,15 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageInterval
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 12
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: >-
+    The number of pages to process before emitting a progress line.
+
+    Reduces log noise while still providing regular updates.
+  example: []
   syntax:
     content: private const int PageInterval = 25
     return:
@@ -94,7 +99,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _console
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 14
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -121,7 +126,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -156,7 +161,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 21
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -193,7 +198,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 25
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler

@@ -15,7 +15,15 @@ using LocalSearchEngine.Core.Crawling.Storage;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Orchestrates the crawling of pages, checking constraints, and producing database write jobs.
+/// The producer half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
+/// checks — scope, robots.txt, the per-host cap, host reachability, and a politeness delay — before
+/// downloading the page with <see cref="PageDownloader"/> and classifying the outcome. Successful HTML
+/// is run through <see cref="Extraction.ContentExtractor"/>, deduplicated by content hash, and has its
+/// outlinks fed back into the frontier; every URL becomes a <see cref="CrawlJob"/> describing what
+/// should be persisted, written to the shared channel for the consumer to apply. Index writes are
+/// deliberately left to the consumer — the producer only reads existing crawl state, for conditional
+/// requests and duplicate detection — apart from the post-crawl pruning pass, which runs after the
+/// consumer has drained and so can write safely.
 /// </summary>
 internal sealed class CrawlProducer
 {

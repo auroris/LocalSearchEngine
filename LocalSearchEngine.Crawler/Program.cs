@@ -1,9 +1,8 @@
-// <summary>
-// Main entry point for the LocalSearchEngine.Crawler application.
-// This application provides a command-line interface for crawling websites,
-// extracting content, generating embeddings, and storing the results
-// in a SQLite vector database for the search engine to use.
-// </summary>
+// Entry point for the LocalSearchEngine crawler — a command-line tool that crawls a site from a
+// seed URL, extracts page content, generates embeddings locally, and stores them in a SQLite
+// vector database for the web app to search. This file handles the console concerns: parsing
+// options (CLI flags and appsettings.json), wiring up dependency injection, and running the crawl
+// behind a live or plain progress reporter. The crawl itself lives in CrawlerService.
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

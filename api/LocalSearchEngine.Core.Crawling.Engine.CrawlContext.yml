@@ -38,11 +38,26 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlContext
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 11
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Holds the state and tracking information for an active crawl execution.
+  summary: >-
+    The shared state of one crawl, passed to the producer and services so they work against the same
+
+    frontier and caches. It holds the queue of pending URLs and the visited set behind the
+
+    <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)" data-throw-if-not-resolved="false"></xref> / <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(System.String)" data-throw-if-not-resolved="false"></xref> helpers that keep the two consistent, the
+
+    in-scope host rules and the per-origin robots.txt cache, the read and write database connections,
+
+    and the run's bookkeeping: per-host fetch timestamps and page counts, the content-hash → URL map
+
+    that catches duplicates, the origins whose robots.txt was unavailable, the host-health tracker, and
+
+    the observer that progress flows to. The crawl mutates this from the single producer task; the
+
+    post-crawl cleanup phases run only after the consumer has drained, so they too can touch it safely.
   example: []
   syntax:
     content: internal sealed class CrawlContext
@@ -74,7 +89,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AllowedHosts
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 14
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -105,7 +120,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RobotsCache
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 17
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -136,7 +151,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Queue
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 20
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -167,7 +182,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Visited
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 23
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -198,7 +213,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedUrl
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 26
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -229,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Read
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 29
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -260,7 +275,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Write
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 32
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -291,7 +306,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastFetchUtc
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 35
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -322,7 +337,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedPerHost
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 38
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -353,7 +368,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedContentHashes
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 41
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -384,7 +399,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlSizeBytes
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 44
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -415,7 +430,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RobotsUnavailable
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 47
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -446,7 +461,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostHealth
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 50
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -477,7 +492,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CheckExternalLinks
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 53
+    startLine: 60
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -508,7 +523,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostCapSkipped
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 56
+    startLine: 63
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -539,7 +554,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Observer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 59
+    startLine: 66
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -570,7 +585,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StartedUtc
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 62
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -601,7 +616,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Discover
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 69
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -639,7 +654,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueSingle
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 80
+    startLine: 87
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -657,6 +672,66 @@ items:
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(String)
   name.vb: EnqueueSingle(String)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  name: Discover(string)
+  nameWithType: CrawlContext.Discover(string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(string)
+  nameWithType.vb: CrawlContext.Discover(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(String)
+  name.vb: Discover(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+    name: Discover
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+    name: Discover
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_EnqueueSingle_System_String_
+  name: EnqueueSingle(string)
+  nameWithType: CrawlContext.EnqueueSingle(string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(string)
+  nameWithType.vb: CrawlContext.EnqueueSingle(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(String)
+  name.vb: EnqueueSingle(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(System.String)
+    name: EnqueueSingle
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_EnqueueSingle_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.EnqueueSingle(System.String)
+    name: EnqueueSingle
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_EnqueueSingle_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html

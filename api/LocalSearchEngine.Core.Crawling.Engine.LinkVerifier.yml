@@ -29,11 +29,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinkVerifier
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Probes link status concurrently and compiles link validation reports.
+  summary: >-
+    The end-of-crawl link check. It takes the links the crawl didn't already resolve — off-site links
+
+    (never crawled) and any in-scope links it never reached — and probes each destination with a HEAD
+
+    (falling back to GET), classifying it Ok, Redirect, or Error. Probes run concurrently across hosts
+
+    with a bounded degree of parallelism and a politeness gap between hits on the same host; the results
+
+    are written back to the link index, and connection failures feed the host-health tracker. A second
+
+    method turns the index's redirected and errored rows into the sorted broken/redirected lists the
+
+    report shows. Its probes are safe to run in parallel — the trackers they touch are thread-safe.
   example: []
   syntax:
     content: internal sealed class LinkVerifier
@@ -65,7 +78,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinkCheckConcurrency
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 20
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -94,7 +107,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinkCheckPerHostGap
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 22
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -123,7 +136,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 25
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -152,7 +165,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 31
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -187,7 +200,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VerifyUndeterminedLinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 44
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -234,7 +247,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BuildLinkReportAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 107
+    startLine: 113
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -275,7 +288,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProbeLinkAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 139
+    startLine: 145
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -319,7 +332,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendProbeAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 180
+    startLine: 191
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -360,7 +373,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CompareLinks
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 209
+    startLine: 221
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -398,7 +411,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReasonFor
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 222
+    startLine: 234
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

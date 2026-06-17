@@ -81,10 +81,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecentCapacity
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Maximum number of recent URL outcomes to display in the rolling list.
+  example: []
   syntax:
     content: private const int RecentCapacity = 10
     return:
@@ -108,10 +110,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BarWidth
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 15
+    startLine: 17
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Width in characters of the progress bar.
+  example: []
   syntax:
     content: private const int BarWidth = 40
     return:
@@ -135,10 +139,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MinRedrawGap
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 16
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Minimum time between consecutive redraws to avoid excessive CPU usage.
+  example: []
   syntax:
     content: private static readonly TimeSpan MinRedrawGap
     return:
@@ -162,7 +168,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _live
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 18
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -189,7 +195,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _recent
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 19
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -216,7 +222,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _stats
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 20
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -243,7 +249,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _lastRenderUtc
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 21
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -270,7 +276,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 25
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -305,7 +311,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 28
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -342,7 +348,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 35
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -385,15 +391,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Render
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 43
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Renders the current state to the display if the minimum redraw gap has elapsed or if forced.
+  example: []
   syntax:
     content: private void Render(bool force)
     parameters:
     - id: force
       type: System.Boolean
+      description: If true, bypasses the throttle and renders immediately.
     content.vb: Private Sub Render(force As Boolean)
   overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.Render*
   nameWithType.vb: SpectreCrawlReporter.Render(Boolean)
@@ -417,14 +426,17 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Build
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 51
+    startLine: 58
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Builds the visual component tree for the live display.
+  example: []
   syntax:
     content: private IRenderable Build()
     return:
       type: Spectre.Console.Rendering.IRenderable
+      description: A renderable Spectre.Console element.
     content.vb: Private Function Build() As IRenderable
   overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.Build*
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat(System.String,System.Int64,System.String)
@@ -445,10 +457,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stat
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 82
+    startLine: 90
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Formats a single statistic value with a label and color.
+  example: []
   syntax:
     content: private static IRenderable Stat(string label, long value, string color)
     parameters:
@@ -483,10 +497,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseText
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 85
+    startLine: 94
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Gets the display text and styling for a crawl phase.
+  example: []
   syntax:
     content: private static string PhaseText(CrawlPhase phase)
     parameters:
@@ -514,10 +530,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OutcomeStyle
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 98
+    startLine: 108
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Gets the display label and color for a page processing outcome.
+  example: []
   syntax:
     content: private static (string Label, string Color) OutcomeStyle(CrawlOutcome outcome)
     parameters:
@@ -545,10 +563,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Elapsed
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 112
+    startLine: 123
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Formats elapsed time as hh:mm:ss.
+  example: []
   syntax:
     content: private static string Elapsed(TimeSpan t)
     parameters:
@@ -576,10 +596,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Truncate
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 114
+    startLine: 126
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Truncates a string to a maximum length, appending an ellipsis if truncated.
+  example: []
   syntax:
     content: private static string Truncate(string value, int max)
     parameters:

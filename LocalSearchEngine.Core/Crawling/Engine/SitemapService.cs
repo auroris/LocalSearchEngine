@@ -11,7 +11,13 @@ using LocalSearchEngine.Core.Crawling.Policies;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Fetches, parses, and enqueues URLs discovered in host XML sitemaps.
+/// Seeds the frontier from a site's XML sitemaps. Starting from the origin's <c>/sitemap.xml</c> plus
+/// any sitemaps declared in robots.txt, it fetches each (under the crawl's size cap), parses the
+/// <c>&lt;loc&gt;</c> entries, and follows sitemap-index files into their children — bounded by a
+/// safety limit so a cycle can't run away. Entries are normalized and kept only if they sit on the
+/// same origin and robots.txt allows them, then handed to <see cref="CrawlContext.Discover"/> to join
+/// the queue. XML is parsed with DTD processing and external resolution disabled, so a hostile sitemap
+/// can't trigger entity expansion or out-of-band fetches.
 /// </summary>
 internal sealed class SitemapService
 {

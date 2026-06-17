@@ -26,11 +26,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RobotsService
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 16
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Fetches, caches, and enforces robots.txt rules and reachability policies.
+  summary: >-
+    The crawl's source of truth for robots.txt. The first time a URL for an origin is seen it fetches
+
+    that origin's <code>/robots.txt</code>, parses it into <xref href="LocalSearchEngine.Core.Crawling.Policies.RobotsRules" data-throw-if-not-resolved="false"></xref>, and caches the
+
+    result on the <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlContext" data-throw-if-not-resolved="false"></xref> keyed by origin, so every later page on the same host
+
+    reuses it instead of re-fetching. Fetch outcomes also feed the host-health tracker (a connection
+
+    failure on first contact writes the host off), and a 5xx marks the origin's rules unavailable, which
+
+    exempts its URLs from pruning. It also drives the post-crawl pass that removes already-indexed URLs
+
+    an origin's robots.txt now disallows.
   example: []
   syntax:
     content: internal sealed class RobotsService
@@ -62,7 +75,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 19
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -91,7 +104,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 21
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -120,7 +133,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 23
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -149,7 +162,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 31
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -190,7 +203,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetOrFetchRobotsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 46
+    startLine: 52
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -234,7 +247,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemoveRobotsBannedUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 66
+    startLine: 72
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -269,7 +282,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetRobotsRulesAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 109
+    startLine: 115
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -296,6 +309,20 @@ items:
     content.vb: Private Function GetRobotsRulesAsync(baseUri As Uri, context As CrawlContext, cancellationToken As CancellationToken) As Task(Of (Rules As RobotsRules, Unavailable As Boolean))
   overload: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync*
 references:
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html
+  name: CrawlContext
+  nameWithType: CrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html
@@ -540,6 +567,44 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: System
   commentId: N:System
   isExternal: true
@@ -690,13 +755,6 @@ references:
   nameWithType.vb: RobotsService.New
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.RobotsService.New
   name.vb: New
-- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
-  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
-  parent: LocalSearchEngine.Core.Crawling.Policies
-  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
-  name: RobotsRules
-  nameWithType: RobotsRules
-  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
 - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync
   href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html#LocalSearchEngine_Core_Crawling_Engine_RobotsService_GetOrFetchRobotsAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_Threading_CancellationToken_
@@ -711,13 +769,6 @@ references:
   name: Uri
   nameWithType: Uri
   fullName: System.Uri
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html
-  name: CrawlContext
-  nameWithType: CrawlContext
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
 - uid: System.Threading.CancellationToken
   commentId: T:System.Threading.CancellationToken
   parent: System.Threading
@@ -759,44 +810,6 @@ references:
     name: RobotsRules
     href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Policies
-  commentId: N:LocalSearchEngine.Core.Crawling.Policies
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Crawling.Policies
-  nameWithType: LocalSearchEngine.Core.Crawling.Policies
-  fullName: LocalSearchEngine.Core.Crawling.Policies
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Policies
-    name: Policies
-    href: LocalSearchEngine.Core.Crawling.Policies.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Policies
-    name: Policies
-    href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: System.Threading
   commentId: N:System.Threading
   isExternal: true

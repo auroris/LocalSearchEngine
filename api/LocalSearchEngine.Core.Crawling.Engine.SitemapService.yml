@@ -24,11 +24,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SitemapService
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 15
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Fetches, parses, and enqueues URLs discovered in host XML sitemaps.
+  summary: >-
+    Seeds the frontier from a site's XML sitemaps. Starting from the origin's <code>/sitemap.xml</code> plus
+
+    any sitemaps declared in robots.txt, it fetches each (under the crawl's size cap), parses the
+
+    <code>&lt;loc&gt;</code> entries, and follows sitemap-index files into their children — bounded by a
+
+    safety limit so a cycle can't run away. Entries are normalized and kept only if they sit on the
+
+    same origin and robots.txt allows them, then handed to <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)" data-throw-if-not-resolved="false"></xref> to join
+
+    the queue. XML is parsed with DTD processing and external resolution disabled, so a hostile sitemap
+
+    can't trigger entity expansion or out-of-band fetches.
   example: []
   syntax:
     content: internal sealed class SitemapService
@@ -60,7 +73,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 18
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -89,7 +102,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 20
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -118,7 +131,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 27
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -156,7 +169,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueSitemapUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 41
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -200,7 +213,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FetchSitemapAsync
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 97
+    startLine: 103
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -227,6 +240,36 @@ items:
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(String, Long, System.Threading.CancellationToken)
   name.vb: FetchSitemapAsync(String, Long, CancellationToken)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  name: Discover(string)
+  nameWithType: CrawlContext.Discover(string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(string)
+  nameWithType.vb: CrawlContext.Discover(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(String)
+  name.vb: Discover(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+    name: Discover
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
+    name: Discover
+    href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_Discover_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html

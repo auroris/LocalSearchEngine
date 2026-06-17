@@ -26,11 +26,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlConsumer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 15
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Reads crawl jobs from the channel and persists indexing changes and visit states to the database.
+  summary: >-
+    The consumer half of the crawl. It reads <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref>s off the channel the producer fills
+
+    and applies each to the database, so every index and crawl-state write funnels through one task on a
+
+    single connection. The job's type selects the work — index or delete a page's chunks, record its
+
+    crawl state, store or clear its links, or simply stamp a visit — and after each job it records how
+
+    that destination last responded against the links that point at it, so even links on pages not
+
+    re-parsed this run reflect its current status. Each job is wrapped in its own try/catch so one bad
+
+    page can't tear down the whole consumer.
   example: []
   syntax:
     content: internal sealed class CrawlConsumer
@@ -62,7 +75,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connection
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 18
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -91,7 +104,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _reader
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 20
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -120,7 +133,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 22
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -149,7 +162,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 24
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -178,7 +191,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 33
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -222,7 +235,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ConsumeAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 48
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -252,7 +265,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ClassifyLinkStatus
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlConsumer.cs
-    startLine: 117
+    startLine: 123
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -270,6 +283,13 @@ items:
     content.vb: Private Shared Function ClassifyLinkStatus(job As CrawlJob) As LinkStatus
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer.ClassifyLinkStatus*
 references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html
@@ -825,13 +845,6 @@ references:
   name: ClassifyLinkStatus
   nameWithType: CrawlConsumer.ClassifyLinkStatus
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer.ClassifyLinkStatus
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
-  name: CrawlJob
-  nameWithType: CrawlJob
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
 - uid: LocalSearchEngine.Core.Crawling.Reporting
   commentId: N:LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.html

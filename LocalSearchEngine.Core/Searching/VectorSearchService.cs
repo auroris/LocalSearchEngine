@@ -37,7 +37,15 @@ public class TextChunkRecord
 }
 
 /// <summary>
-/// Provides vector search and keyword hybrid query operations over the text chunks index in SQLite.
+/// The read/write gateway to the chunk index, and the seam between the crawler that fills it and the
+/// web app that queries it. On the write side it splits a page's text into overlapping chunks
+/// (<see cref="TextChunker"/>), embeds each locally on the CPU (<see cref="IEmbedder"/>), and upserts
+/// the batch into the SQLite vector store in one transaction — whose triggers keep the FTS5 mirror in
+/// step; a companion delete clears a URL's existing chunks first, so a re-crawl replaces rather than
+/// duplicates. On the read side it runs a hybrid query: the text (minus any <c>site:</c> filters) is
+/// embedded for a semantic nearest-neighbour pass and matched against FTS5 for keywords, then the two
+/// candidate pools and their titles are handed to <see cref="SearchRanker"/> and blended into a ranked
+/// <see cref="SearchResponse"/>.
 /// </summary>
 public class VectorSearchService
 {

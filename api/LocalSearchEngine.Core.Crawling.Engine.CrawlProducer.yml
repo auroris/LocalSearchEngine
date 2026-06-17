@@ -35,11 +35,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlProducer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 19
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Orchestrates the crawling of pages, checking constraints, and producing database write jobs.
+  summary: >-
+    The producer half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
+
+    checks — scope, robots.txt, the per-host cap, host reachability, and a politeness delay — before
+
+    downloading the page with <xref href="LocalSearchEngine.Core.Crawling.Engine.PageDownloader" data-throw-if-not-resolved="false"></xref> and classifying the outcome. Successful HTML
+
+    is run through <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor" data-throw-if-not-resolved="false"></xref>, deduplicated by content hash, and has its
+
+    outlinks fed back into the frontier; every URL becomes a <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> describing what
+
+    should be persisted, written to the shared channel for the consumer to apply. Index writes are
+
+    deliberately left to the consumer — the producer only reads existing crawl state, for conditional
+
+    requests and duplicate detection — apart from the post-crawl pruning pass, which runs after the
+
+    consumer has drained and so can write safely.
   example: []
   syntax:
     content: internal sealed class CrawlProducer
@@ -71,7 +88,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DefaultRequestDelayMs
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 22
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -100,7 +117,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlDelaySeconds
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 24
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -129,7 +146,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 27
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -158,7 +175,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _writer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 29
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -187,7 +204,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _context
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 31
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -216,7 +233,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _robotsService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 33
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -245,7 +262,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _pageDownloader
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 35
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -274,7 +291,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 37
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -303,7 +320,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 48
+    startLine: 56
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -353,7 +370,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 71
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -397,7 +414,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStaleUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 150
+    startLine: 158
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -435,7 +452,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceJobAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 184
+    startLine: 192
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -476,7 +493,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessDownloadSuccessAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 297
+    startLine: 305
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -523,7 +540,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 404
+    startLine: 412
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -563,7 +580,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DelayForHostAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 431
+    startLine: 439
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -606,7 +623,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveRequestDelay
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 451
+    startLine: 459
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -624,6 +641,26 @@ items:
     content.vb: Private Shared Function ResolveRequestDelay(robots As RobotsRules) As TimeSpan
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay*
 references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader
+  nameWithType: PageDownloader
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor
+  nameWithType: ContentExtractor
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html
@@ -1035,13 +1072,6 @@ references:
   name: RobotsService
   nameWithType: RobotsService
   fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService
-- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
-  name: PageDownloader
-  nameWithType: PageDownloader
-  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
 - uid: Microsoft.Extensions.Logging.ILogger
   commentId: T:Microsoft.Extensions.Logging.ILogger
   parent: Microsoft.Extensions.Logging
@@ -1331,13 +1361,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
-  name: CrawlJob
-  nameWithType: CrawlJob
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync
   href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceJobAsync_System_String_System_Threading_CancellationToken_

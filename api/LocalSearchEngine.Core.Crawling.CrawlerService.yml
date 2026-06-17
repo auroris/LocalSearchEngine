@@ -345,7 +345,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmptyReport
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 257
+    startLine: 260
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling

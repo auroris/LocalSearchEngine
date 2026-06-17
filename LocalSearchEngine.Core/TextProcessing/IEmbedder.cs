@@ -23,7 +23,11 @@ public interface IEmbedder
 }
 
 /// <summary>
-/// Adapts a local embedding model to the <see cref="IEmbedder"/> interface.
+/// Bridges the search code's <see cref="IEmbedder"/> abstraction to the bundled local model
+/// (snowflake-arctic-embed-s: 384-dimensional, int8 ONNX, run on the CPU), so nothing leaves the
+/// machine to embed text. Passages and queries take different paths on purpose: a query is prefixed
+/// with a retrieval instruction (<see cref="QueryInstruction"/>) before embedding, the way this
+/// asymmetric model is meant to be used, while documents are embedded as-is.
 /// </summary>
 public sealed class LocalEmbedderAdapter : IEmbedder, IDisposable
 {

@@ -7,7 +7,14 @@ using LocalSearchEngine.Core.Crawling.Reporting;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Holds the state and tracking information for an active crawl execution.
+/// The shared state of one crawl, passed to the producer and services so they work against the same
+/// frontier and caches. It holds the queue of pending URLs and the visited set behind the
+/// <see cref="Discover"/> / <see cref="EnqueueSingle"/> helpers that keep the two consistent, the
+/// in-scope host rules and the per-origin robots.txt cache, the read and write database connections,
+/// and the run's bookkeeping: per-host fetch timestamps and page counts, the content-hash → URL map
+/// that catches duplicates, the origins whose robots.txt was unavailable, the host-health tracker, and
+/// the observer that progress flows to. The crawl mutates this from the single producer task; the
+/// post-crawl cleanup phases run only after the consumer has drained, so they too can touch it safely.
 /// </summary>
 internal sealed class CrawlContext
 {

@@ -1,8 +1,6 @@
-// <summary>
-// Main entry point for the LocalSearchEngine.Web application.
-// This application provides an API and a web interface for querying
-// the SQLite vector database populated by the Crawler.
-// </summary>
+// Entry point for the LocalSearchEngine web app: it exposes the search and stats HTTP API and
+// serves the static frontend, querying the SQLite vector index that the crawler builds. This file
+// configures services, resolves the database path, and sets up the request pipeline.
 
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Searching;

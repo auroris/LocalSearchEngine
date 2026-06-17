@@ -5,7 +5,12 @@ using LocalSearchEngine.Core.Crawling.Policies;
 namespace LocalSearchEngine.Core.Crawling.Extraction;
 
 /// <summary>
-/// Extracts structured elements (title, headings, text, robots directives, canonical aliases, and outlinks) from raw HTML, PDF, or DOCX document bodies.
+/// Turns a fetched document body into the structured pieces the index needs. For HTML it decodes the
+/// bytes with the right charset, strips scripts, nav, footers, and other chrome so they never reach the
+/// index, then harvests the title, headings, and visible text, reads the page's robots directives and
+/// canonical link, and collects its links — split into in-scope outlinks (crawlable) and off-site links
+/// (kept only for optional verification). PDF and DOCX bodies are routed to their own extractors for
+/// title and text. Stateless: it reads bytes in and returns values, contacting nothing.
 /// </summary>
 public static class ContentExtractor
 {

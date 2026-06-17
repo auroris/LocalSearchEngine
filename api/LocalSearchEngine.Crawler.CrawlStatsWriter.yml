@@ -62,10 +62,15 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: JsonOptions
     path: LocalSearchEngine.Crawler/CrawlStatsWriter.cs
-    startLine: 13
+    startLine: 17
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: >-
+    JSON serialization options used for writing the crawl report.
+
+    Configured to write indented JSON and format enums as strings.
+  example: []
   syntax:
     content: private static readonly JsonSerializerOptions JsonOptions
     return:
@@ -89,7 +94,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WriteAsync
     path: LocalSearchEngine.Crawler/CrawlStatsWriter.cs
-    startLine: 25
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -136,17 +141,21 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BuildText
     path: LocalSearchEngine.Crawler/CrawlStatsWriter.cs
-    startLine: 31
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
+  summary: Builds the human-readable text version of the crawl report.
+  example: []
   syntax:
     content: private static string BuildText(CrawlReport r)
     parameters:
     - id: r
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+      description: The completed crawl report.
     return:
       type: System.String
+      description: A formatted string containing the statistics summary.
     content.vb: Private Shared Function BuildText(r As CrawlReport) As String
   overload: LocalSearchEngine.Crawler.CrawlStatsWriter.BuildText*
 references:

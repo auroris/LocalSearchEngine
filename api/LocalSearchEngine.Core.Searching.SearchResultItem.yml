@@ -24,7 +24,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResultItem
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 165
+    startLine: 171
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 168
+    startLine: 174
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 170
+    startLine: 176
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -123,7 +123,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 172
+    startLine: 178
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -154,7 +154,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 174
+    startLine: 180
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -185,7 +185,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Score
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 176
+    startLine: 182
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

@@ -19,7 +19,13 @@ public readonly record struct VectorCandidate(string Url, string Text, bool IsHe
 public readonly record struct KeywordCandidate(string Url, string Text, bool IsHeading, bool ExactPhrase = true);
 
 /// <summary>
-/// Provides ranking logic to score and sort search candidates based on semantic similarity and keyword matching.
+/// Collapses the two candidate streams of a hybrid search — semantic vector hits and keyword (FTS5)
+/// hits — into a single ranked result list. Candidates are aggregated by URL: the semantic pass drops
+/// hits beyond the configured distance ceiling and seeds each URL's base score from its closest chunk,
+/// while the keyword pass records whether the URL matched as a verbatim phrase or a looser all-terms
+/// hit. A final pass layers on the configured boosts (phrase, all-terms, heading, title, filename, and
+/// literal-term-in-snippet) from <see cref="SearchSettings"/> and sorts by the combined score. Pure and
+/// stateless — the same candidates always rank the same way.
 /// </summary>
 public static class SearchRanker
 {

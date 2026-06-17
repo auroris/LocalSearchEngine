@@ -23,11 +23,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageDownloader
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 61
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Downloads pages and documents from the web, validating size limits, media types, and signature prefixes.
+  summary: >-
+    Fetches one page or file and reduces the messy result of an HTTP GET to a single tidy
+
+    <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadResult" data-throw-if-not-resolved="false"></xref> the producer can switch on. It sends conditional headers from the
+
+    stored ETag/Last-Modified (so an unchanged page comes back as a cheap 304), validates the final URL
+
+    after redirects through a caller-supplied callback, and streams the body under a hard byte cap —
+
+    bailing out early on an oversized Content-Length, an unsupported media type, or a content signature
+
+    that doesn't match. Each of those becomes a distinct <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadStatus" data-throw-if-not-resolved="false"></xref> (not-modified,
+
+    gone, redirect-blocked, too-big, unsupported, failed, or success), with transport-level failures
+
+    mapped to a 503 so the rest of the crawl can tell a dead connection from a real server error. It
+
+    classifies; it does not persist or parse — the body is handed on for extraction.
   example: []
   syntax:
     content: internal sealed class PageDownloader
@@ -59,7 +76,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 64
+    startLine: 72
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -88,7 +105,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 70
+    startLine: 78
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -123,7 +140,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DownloadAsync
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 85
+    startLine: 93
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -176,7 +193,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadBodyAndValidatePrefixAsync
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 246
+    startLine: 254
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -209,6 +226,20 @@ items:
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage, Long, String, String, System.Threading.CancellationToken)
   name.vb: ReadBodyAndValidatePrefixAsync(HttpResponseMessage, Long, String, String, CancellationToken)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.html
+  name: DownloadStatus
+  nameWithType: DownloadStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html
@@ -521,13 +552,6 @@ references:
   nameWithType.vb: PageDownloader.New
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.New
   name.vb: New
-- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
-  name: DownloadResult
-  nameWithType: DownloadResult
-  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
 - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync
   href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_DownloadAsync_System_String_System_String_System_String_System_Int64_System_Func_System_Uri_System_Threading_Tasks_Task_System_Boolean___System_Threading_CancellationToken_

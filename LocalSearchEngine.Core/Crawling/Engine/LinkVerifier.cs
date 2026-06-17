@@ -13,7 +13,13 @@ using LocalSearchEngine.Core.Crawling.Policies;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Probes link status concurrently and compiles link validation reports.
+/// The end-of-crawl link check. It takes the links the crawl didn't already resolve — off-site links
+/// (never crawled) and any in-scope links it never reached — and probes each destination with a HEAD
+/// (falling back to GET), classifying it Ok, Redirect, or Error. Probes run concurrently across hosts
+/// with a bounded degree of parallelism and a politeness gap between hits on the same host; the results
+/// are written back to the link index, and connection failures feed the host-health tracker. A second
+/// method turns the index's redirected and errored rows into the sorted broken/redirected lists the
+/// report shows. Its probes are safe to run in parallel — the trackers they touch are thread-safe.
 /// </summary>
 internal sealed class LinkVerifier
 {
@@ -160,6 +166,11 @@ internal sealed class LinkVerifier
         }
         catch (Exception ex)
         {
+            // A transport failure (DNS/connect/TLS/timeout) means the destination is genuinely
+            // unreachable: report it broken and feed the host-health tracker so its other links
+            // are short-circuited. Any other exception proves nothing about the link itself
+            // (a malformed response, an odd redirect, a client-side quirk), so don't condemn a
+            // link on that evidence — treat it as resolved.
             if (HostHealthTracker.IsTransportFailure(ex, cancellationToken))
             {
                 if (Uri.TryCreate(url, UriKind.Absolute, out var uri))

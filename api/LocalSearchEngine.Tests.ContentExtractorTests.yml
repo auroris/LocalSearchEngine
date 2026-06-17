@@ -11,6 +11,7 @@ items:
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
   - LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
+  - LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(System.String,System.Boolean,System.Boolean)
   langs:
   - csharp
   - vb
@@ -265,6 +266,68 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(System.String,System.Boolean,System.Boolean)
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(System.String,System.Boolean,System.Boolean)
+  id: XRobotsTag_directives_are_parsed_correctly(System.String,System.Boolean,System.Boolean)
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: XRobotsTag_directives_are_parsed_correctly(string, bool, bool)
+  nameWithType: ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(string, bool, bool)
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(string, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: XRobotsTag_directives_are_parsed_correctly
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 99
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "noindex, unavailable_after: 1 Jan 2030 00:00:00 GMT", true, false })]
+
+      [InlineData(new object[] { "noindex, max-image-preview: large", true, false })]
+
+      [InlineData(new object[] { "googlebot: noindex, nofollow", true, true })]
+
+      [InlineData(new object[] { "otherbot: noindex, nofollow", false, false })]
+
+      public void XRobotsTag_directives_are_parsed_correctly(string headerValue, bool expectedNoIndex, bool expectedNoFollow)
+    parameters:
+    - id: headerValue
+      type: System.String
+    - id: expectedNoIndex
+      type: System.Boolean
+    - id: expectedNoFollow
+      type: System.Boolean
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "noindex, unavailable_after: 1 Jan 2030 00:00:00 GMT", True, False })>
+
+      <InlineData(New Object() { "noindex, max-image-preview: large", True, False })>
+
+      <InlineData(New Object() { "googlebot: noindex, nofollow", True, True })>
+
+      <InlineData(New Object() { "otherbot: noindex, nofollow", False, False })>
+
+      Public Sub XRobotsTag_directives_are_parsed_correctly(headerValue As String, expectedNoIndex As Boolean, expectedNoFollow As Boolean)
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
+  fullName.vb: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
+  name.vb: XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -656,3 +719,20 @@ references:
   name: Matching_meta_charset_does_not_break_utf8_pages
   nameWithType: ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   fullName: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_XRobotsTag_directives_are_parsed_correctly_System_String_System_Boolean_System_Boolean_
+  name: XRobotsTag_directives_are_parsed_correctly
+  nameWithType: ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

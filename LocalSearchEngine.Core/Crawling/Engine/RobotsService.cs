@@ -12,7 +12,13 @@ using LocalSearchEngine.Core.Crawling.Storage;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// Fetches, caches, and enforces robots.txt rules and reachability policies.
+/// The crawl's source of truth for robots.txt. The first time a URL for an origin is seen it fetches
+/// that origin's <c>/robots.txt</c>, parses it into <see cref="Policies.RobotsRules"/>, and caches the
+/// result on the <see cref="CrawlContext"/> keyed by origin, so every later page on the same host
+/// reuses it instead of re-fetching. Fetch outcomes also feed the host-health tracker (a connection
+/// failure on first contact writes the host off), and a 5xx marks the origin's rules unavailable, which
+/// exempts its URLs from pruning. It also drives the post-crawl pass that removes already-indexed URLs
+/// an origin's robots.txt now disallows.
 /// </summary>
 internal sealed class RobotsService
 {
