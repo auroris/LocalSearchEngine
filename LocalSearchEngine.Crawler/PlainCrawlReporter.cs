@@ -32,6 +32,6 @@ internal sealed class PlainCrawlReporter : ICrawlReporter
         // One line every N pages, so a long crawl leaves a readable trail without flooding output.
         if (stats.Processed % PageInterval != 0) return;
         _console.MarkupLineInterpolated(
-            $"[grey]{stats.Indexed}/{stats.Discovered}[/]  processed={stats.Processed} links={stats.LinksFound} removed={stats.Removed}");
+            $"[grey]{stats.Processed}/{stats.Discovered}[/]  indexed={stats.Indexed} links={stats.LinksFound} removed={stats.Removed}");
     }
 }

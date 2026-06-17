@@ -5,7 +5,7 @@ using Spectre.Console.Rendering;
 namespace LocalSearchEngine.Crawler;
 
 /// <summary>
-/// Renders live crawl progress to an interactive terminal: a progress bar (indexed / discovered,
+/// Renders live crawl progress to an interactive terminal: a progress bar (processed / discovered,
 /// the denominator growing as the crawl finds links), a panel of running totals, and a rolling list
 /// of the most recent URLs with how each resolved. Every callback arrives on the crawler's single
 /// producer thread, so no locking is needed; updates are lightly throttled to keep redraws cheap.
@@ -60,14 +60,14 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
     {
         var s = _stats;
 
-        // Progress bar: indexed / discovered. The denominator grows as links are found, so the bar
+        // Progress bar: processed / discovered. The denominator grows as links are found, so the bar
         // can dip when a page yields many new links and climbs back as they're crawled.
-        double ratio = s.Discovered > 0 ? Math.Clamp((double)s.Indexed / s.Discovered, 0, 1) : 0;
+        double ratio = s.Discovered > 0 ? Math.Clamp((double)s.Processed / s.Discovered, 0, 1) : 0;
         int filled = (int)Math.Round(ratio * BarWidth);
         string bar = $"[green]{new string('█', filled)}[/][grey37]{new string('░', BarWidth - filled)}[/]";
         string pct = s.Discovered > 0 ? $"{ratio * 100:0.0}%" : "—";
         var header = new Markup(
-            $"[bold]{PhaseText(s.Phase)}[/]  {bar}  [bold]{s.Indexed}[/]/[bold]{s.Discovered}[/] ({pct})  [grey]{Elapsed(s.Elapsed)}[/]");
+            $"[bold]{PhaseText(s.Phase)}[/]  {bar}  [bold]{s.Processed}[/]/[bold]{s.Discovered}[/] ({pct})  [grey]{Elapsed(s.Elapsed)}[/]");
 
         var grid = new Grid();
         grid.AddColumn().AddColumn().AddColumn().AddColumn();
