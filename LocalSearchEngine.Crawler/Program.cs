@@ -263,6 +263,7 @@ try
     // lead, so a user (or someone inspecting a scheduled run) sees where output is being written
     // before anything else scrolls past.
     AnsiConsole.Write(new Rule("[bold]LocalSearchEngine crawler[/]").LeftJustified());
+    AnsiConsole.WriteLine();
     AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Seed[/]      {url}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
