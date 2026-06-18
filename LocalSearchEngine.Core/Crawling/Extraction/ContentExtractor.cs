@@ -143,6 +143,16 @@ public static class ContentExtractor
     }
 
     /// <summary>
+    /// Reads a node's href as a parseable URL string. HtmlAgilityPack's GetAttributeValue returns the
+    /// attribute's raw text, so an href that (correctly) HTML-escapes its ampersands — the only valid
+    /// way to write one in markup — arrives with the entities intact. They must be decoded before the
+    /// value is parsed as a URL, or the escaped ampersand travels into the stored URL and corrupts the
+    /// query string, 404ing the link.
+    /// </summary>
+    private static string GetHref(HtmlNode node) =>
+        HtmlEntity.DeEntitize(node.GetAttributeValue("href", "")) ?? string.Empty;
+
+    /// <summary>
     /// Extracts the document's links into <see cref="HtmlAnalysis.Outlinks"/> (in-scope, crawlable)
     /// and <see cref="HtmlAnalysis.OffsiteLinks"/> (out-of-scope http(s) targets, kept only so an
     /// optional end-of-crawl pass can verify they still resolve — they are never crawled).
@@ -164,7 +174,7 @@ public static class ContentExtractor
             var rel = link.GetAttributeValue("rel", "");
             if (rel.Contains("nofollow", StringComparison.OrdinalIgnoreCase)) continue;
 
-            var href = link.GetAttributeValue("href", "");
+            var href = GetHref(link);
             if (string.IsNullOrWhiteSpace(href)) continue;
             if (!Uri.TryCreate(baseForLinks, href, out var absoluteUri)) continue;
 
@@ -275,7 +285,7 @@ public static class ContentExtractor
             if (!string.Equals(link.GetAttributeValue("rel", "").Trim(), "canonical", StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            var href = link.GetAttributeValue("href", "");
+            var href = GetHref(link);
             if (string.IsNullOrWhiteSpace(href)) return null;
             if (!Uri.TryCreate(new Uri(currentUrl), href, out var canonicalUri)) return null;
 
