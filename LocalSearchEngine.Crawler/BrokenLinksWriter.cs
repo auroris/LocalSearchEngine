@@ -58,11 +58,11 @@ internal static class BrokenLinksWriter
         return sb.ToString();
     }
 
-    /// <summary>Writes a titled, counted section of links, on-site first then off-site, grouped by the page each sits on.</summary>
+    /// <summary>Writes a titled, counted section of links, grouped by status type (404, 410, 500, …), then by the page each was found on, then by destination — so all the broken links on a given page sit together.</summary>
     private static void AppendLinkSection(StringBuilder sb, string title, IReadOnlyList<BrokenLink> links)
     {
         var ordered = links
-            .OrderBy(b => b.External)
+            .OrderBy(b => b.StatusCode)
             .ThenBy(b => b.FoundOn ?? string.Empty, StringComparer.OrdinalIgnoreCase)
             .ThenBy(b => b.Url, StringComparer.OrdinalIgnoreCase)
             .ToList();
