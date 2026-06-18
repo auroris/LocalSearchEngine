@@ -250,7 +250,14 @@ internal sealed class CrawlProducer
             return true;
         };
 
-        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, state.ETag, state.LastModified, _context.MaxCrawlSizeBytes, redirectValidator, cancellationToken);
+        // A user noindex rule means we re-fetch the page in full every run: we must re-extract its
+        // links and ensure any content indexed before the rule existed is dropped. Skip conditional
+        // request headers so the server can't answer 304 with no body. (Matched on the requested URL;
+        // the post-redirect URL is checked again before indexing.)
+        bool suppressConditional = _context.NoIndexRules.Matches(currentUrl);
+        var condETag = suppressConditional ? null : state.ETag;
+        var condLastModified = suppressConditional ? null : state.LastModified;
+        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, condETag, condLastModified, _context.MaxCrawlSizeBytes, redirectValidator, cancellationToken);
 
         // Reachability for this host was already recorded when its robots.txt was fetched above,
         // and an unreachable host would have been skipped before we got here. The tracker never
@@ -317,6 +324,11 @@ internal sealed class CrawlProducer
             ? null
             : currentUrl;
 
+        // A user-configured noindex rule (matched on the final URL) forces "follow, don't index": the
+        // page is still parsed and its links followed, but the same-hash/duplicate/canonical shortcuts
+        // are skipped and its content is never indexed — exactly as if the page declared noindex itself.
+        bool userNoIndex = _context.NoIndexRules.Matches(finalUrl);
+
         int statusCode = (int)downloadResult.StatusCode;
         byte[] body = downloadResult.Body ?? Array.Empty<byte>();
 
@@ -325,7 +337,9 @@ internal sealed class CrawlProducer
             ? state
             : await CrawlStore.GetCrawlStateAsync(_context.Read, finalUrl, cancellationToken);
 
-        if (finalState.ContentHash is not null && finalState.ContentHash == newHash
+        // The unchanged-hash shortcut leaves a page's existing chunks in place; a rule-matched page
+        // must be re-parsed so any pre-rule index entry is removed, so skip the shortcut for it.
+        if (!userNoIndex && finalState.ContentHash is not null && finalState.ContentHash == newHash
             && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl, cancellationToken))
         {
             _context.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
@@ -333,18 +347,23 @@ internal sealed class CrawlProducer
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
         }
 
-        string? duplicateOf = null;
-        if (_context.IndexedContentHashes.TryGetValue(newHash, out var inRunUrl)
-            && !string.Equals(inRunUrl, finalUrl, StringComparison.OrdinalIgnoreCase))
+        // Duplicate detection only spares us from indexing the same content twice; a rule-matched page
+        // isn't indexed anyway, and aliasing it would drop the links we want to follow.
+        if (!userNoIndex)
         {
-            duplicateOf = inRunUrl;
-        }
-        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, newHash, finalUrl, cancellationToken);
-        if (duplicateOf != null)
-        {
-            _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
-            _context.EnqueueSingle(duplicateOf);
-            return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
+            string? duplicateOf = null;
+            if (_context.IndexedContentHashes.TryGetValue(newHash, out var inRunUrl)
+                && !string.Equals(inRunUrl, finalUrl, StringComparison.OrdinalIgnoreCase))
+            {
+                duplicateOf = inRunUrl;
+            }
+            duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, newHash, finalUrl, cancellationToken);
+            if (duplicateOf != null)
+            {
+                _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
+                _context.EnqueueSingle(duplicateOf);
+                return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
+            }
         }
 
         string? newETag = downloadResult.ETag;
@@ -352,8 +371,16 @@ internal sealed class CrawlProducer
 
         var kind = CrawlPolicy.ClassifyContent(downloadResult.ContentType, body);
 
+        // PDF/DOCX carry no in-scope outlinks to follow, so a noindex rule simply drops them from the
+        // index (and removes any prior entry). The empty link sets clear out stale links via NoIndexJob.
         if (kind == DocKind.Pdf)
         {
+            if (userNoIndex)
+            {
+                _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
+                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, newHash,
+                    Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+            }
             var (pdfTitle, pdfText) = ContentExtractor.ExtractPdf(body);
             _context.IndexedContentHashes[newHash] = finalUrl;
             _context.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
@@ -363,6 +390,12 @@ internal sealed class CrawlProducer
 
         if (kind == DocKind.Docx)
         {
+            if (userNoIndex)
+            {
+                _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
+                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, newHash,
+                    Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+            }
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
             _context.IndexedContentHashes[newHash] = finalUrl;
             _context.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
@@ -380,7 +413,9 @@ internal sealed class CrawlProducer
         var analysis = ContentExtractor.AnalyzeHtml(body, downloadResult.CharSet, xRobotsTag, finalUrl,
             _context.AllowedHosts, _context.RobotsCache, CrawlerService.UserAgent);
 
-        if (analysis.CanonicalAlias != null)
+        // A noindex rule means "follow, don't index", so honoring a canonical alias here would be
+        // wrong: aliasing skips this page's own links. Fall through to follow them instead.
+        if (!userNoIndex && analysis.CanonicalAlias != null)
         {
             _context.Observer.OnPageAlias(currentUrl, finalUrl, analysis.CanonicalAlias);
             _context.EnqueueSingle(analysis.CanonicalAlias);
@@ -393,7 +428,7 @@ internal sealed class CrawlProducer
             _context.Discover(link);
         }
 
-        if (analysis.NoIndex)
+        if (userNoIndex || analysis.NoIndex)
         {
             _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
             return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, analysis.OffsiteLinks, redirectSourceUrl);

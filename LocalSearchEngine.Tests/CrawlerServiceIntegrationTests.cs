@@ -295,6 +295,48 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task NoIndex_pattern_follows_links_but_does_not_index_the_matched_page()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed matches a noindex pattern: it must be crawled for its links (so page2 is reached
+        // and indexed) but its own content must never enter the index.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>home page text</p> <a href=\"/page2\">two</a>");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, noIndexPatterns: new[] { "http://test.local/$" });
+
+        Assert.Equal(0, ChunkCount(Seed));   // matched page is followed but not indexed
+        Assert.True(ChunkCount(Page2) > 0);  // its link was still followed and indexed
+        Assert.True(HasCrawlState(Seed));    // we still recorded that we visited it
+    }
+
+    [Fact]
+    public async Task NoIndex_pattern_drops_content_indexed_before_the_rule_existed()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed carries an ETag and 304s on a conditional request — the kind of unchanged page that
+        // would normally be skipped on re-crawl.
+        _handler.Routes[Seed] = req => req.Headers.IfNoneMatch.Any()
+            ? new HttpResponseMessage(HttpStatusCode.NotModified)
+            : Html("<title>Home</title><p>home page text</p> <a href=\"/page2\">two</a>", etag: "\"v1\"");
+        _handler.Routes[Page2] = _ => Html("<title>Two</title><p>second page</p>");
+
+        // First crawl with no rule: the seed is indexed.
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50);
+        Assert.True(ChunkCount(Seed) > 0);
+
+        // Second crawl adds a noindex rule for the seed. Even though its content is unchanged, the rule
+        // must drop the stale index entry (we suppress the conditional request so a full body arrives)
+        // while still following its link.
+        await NewCrawler().CrawlAsync(Seed, maxPages: 50, noIndexPatterns: new[] { "http://test.local/$" });
+
+        Assert.Equal(0, ChunkCount(Seed));   // pre-rule index entry removed
+        Assert.True(ChunkCount(Page2) > 0);  // still reachable through the followed link
+    }
+
+    [Fact]
     public async Task Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them()
     {
         await EnsureSchemaAsync();

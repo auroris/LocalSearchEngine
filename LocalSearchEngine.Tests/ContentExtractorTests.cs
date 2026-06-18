@@ -97,6 +97,37 @@ public class ContentExtractorTests
         Assert.Contains("Größe", analysis.Text);
     }
 
+    [Fact]
+    public void Meta_robots_name_is_matched_case_insensitively()
+    {
+        var html = "<html><head><meta name=\"ROBOTS\" content=\"noindex\"><title>T</title></head><body><p>x</p></body></html>";
+        var body = Encoding.UTF8.GetBytes(html);
+
+        var analysis = Analyze(body, httpCharset: null);
+
+        Assert.True(analysis.NoIndex);
+    }
+
+    [Fact]
+    public void Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing()
+    {
+        // A page targeting our bot by name must be honored even when the configured user-agent token
+        // is mixed-case (as the real CrawlerService.UserAgent is). Here the meta name and the token
+        // differ only in case, so this fails unless the comparison is case-insensitive.
+        var html = "<html><head><meta name=\"localsearchengine-bot/1.0\" content=\"noindex, nofollow\">" +
+                   "<title>T</title></head><body><p>x</p> <a href=\"/other\">o</a></body></html>";
+        var body = Encoding.UTF8.GetBytes(html);
+        var hosts = new AllowedHosts();
+        hosts.Add("test.local");
+
+        var analysis = ContentExtractor.AnalyzeHtml(
+            body, null, xRobotsTag: null, "http://test.local/page",
+            hosts, new Dictionary<string, RobotsRules>(), "LocalSearchEngine-Bot/1.0");
+
+        Assert.True(analysis.NoIndex);
+        Assert.True(analysis.NoFollow);
+    }
+
     [Theory]
     [InlineData("noindex, unavailable_after: 1 Jan 2030 00:00:00 GMT", true, false)]
     [InlineData("noindex, max-image-preview: large", true, false)]

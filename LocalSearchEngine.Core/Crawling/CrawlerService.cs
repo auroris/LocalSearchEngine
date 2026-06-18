@@ -67,6 +67,7 @@ public partial class CrawlerService
     /// <param name="seedUrl">The starting URL of the crawl.</param>
     /// <param name="maxPages">The maximum number of pages to index.</param>
     /// <param name="allowedServers">Optional additional allowed hosts.</param>
+    /// <param name="noIndexPatterns">Optional URL glob patterns whose pages are followed for links but never indexed ("noindex, follow").</param>
     /// <param name="maxPagesPerHost">The maximum pages to crawl on any single host.</param>
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
     /// <param name="checkExternalLinks">Whether to check external links after the crawl.</param>
@@ -77,6 +78,7 @@ public partial class CrawlerService
         string seedUrl,
         int maxPages = int.MaxValue,
         IEnumerable<string>? allowedServers = null,
+        IEnumerable<string>? noIndexPatterns = null,
         int maxPagesPerHost = int.MaxValue,
         long maxCrawlSizeBytes = 15 * 1024 * 1024,
         bool checkExternalLinks = false,
@@ -119,6 +121,17 @@ public partial class CrawlerService
             }
         }
         ctx.AllowedHosts.AddOrigin(baseUri);
+
+        if (noIndexPatterns != null)
+        {
+            foreach (var p in noIndexPatterns)
+            {
+                if (!ctx.NoIndexRules.Add(p))
+                {
+                    ctx.Observer.OnNoIndexPatternIgnored(p);
+                }
+            }
+        }
 
         ctx.Observer.OnPhaseChanged(CrawlPhase.Starting);
 

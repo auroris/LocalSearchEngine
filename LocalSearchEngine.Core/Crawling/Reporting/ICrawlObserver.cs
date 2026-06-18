@@ -176,4 +176,8 @@ public interface ICrawlObserver
     /// <summary>A configured allowed-server entry could not be parsed and was ignored.</summary>
     /// <param name="entry">The malformed entry, expected as <c>[scheme://]host[:port]</c>.</param>
     void OnAllowedServerIgnored(string entry);
+
+    /// <summary>A configured noindex URL pattern could not be parsed and was ignored.</summary>
+    /// <param name="pattern">The malformed (blank) pattern.</param>
+    void OnNoIndexPatternIgnored(string pattern);
 }

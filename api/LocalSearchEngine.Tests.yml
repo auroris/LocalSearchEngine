@@ -12,6 +12,7 @@ items:
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
   - LocalSearchEngine.Tests.FakeEmbedder
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+  - LocalSearchEngine.Tests.NoIndexRulesTests
   - LocalSearchEngine.Tests.RobotsRulesTests
   - LocalSearchEngine.Tests.SearchQueryParserTests
   - LocalSearchEngine.Tests.SearchRankerTests
@@ -110,6 +111,12 @@ references:
   name: Fts5MatchSemanticsTests
   nameWithType: Fts5MatchSemanticsTests
   fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+- uid: LocalSearchEngine.Tests.NoIndexRulesTests
+  commentId: T:LocalSearchEngine.Tests.NoIndexRulesTests
+  href: LocalSearchEngine.Tests.NoIndexRulesTests.html
+  name: NoIndexRulesTests
+  nameWithType: NoIndexRulesTests
+  fullName: LocalSearchEngine.Tests.NoIndexRulesTests
 - uid: LocalSearchEngine.Tests.RobotsRulesTests
   commentId: T:LocalSearchEngine.Tests.RobotsRulesTests
   href: LocalSearchEngine.Tests.RobotsRulesTests.html

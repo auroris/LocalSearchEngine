@@ -4,3 +4,5 @@
   href: getting-started.md
 - name: Configuration Guide
   href: configuration.md
+- name: Crawl Directives & Compliance
+  href: crawl-directives.md

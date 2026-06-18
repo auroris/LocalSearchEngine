@@ -31,6 +31,7 @@ int maxPages = config.GetValue<int?>("max-pages") ?? int.MaxValue;
 int maxPagesPerHost = config.GetValue<int?>("max-pages-per-host") ?? int.MaxValue;
 long maxCrawlSizeBytes = config.GetValue<long?>("max-crawl-size-bytes") ?? 15 * 1024 * 1024;
 var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
+var noIndexPatterns = config.GetSection("noindex-patterns").Get<string[]>() ?? Array.Empty<string>();
 string logFile = !string.IsNullOrWhiteSpace(config["log-file"]) ? config["log-file"]! : "crawl.log";
 string statsFile = !string.IsNullOrWhiteSpace(config["stats-file"]) ? config["stats-file"]! : "crawl-stats";
 string brokenLinksFile = !string.IsNullOrWhiteSpace(config["broken-links-file"]) ? config["broken-links-file"]! : "broken-links";
@@ -172,6 +173,11 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("appsettings.json. Entries are [scheme://]host[:port]; an omitted scheme or port");
     Console.WriteLine("matches any. The 'www.' variant of the seed host is NOT implied — list it as its");
     Console.WriteLine("own entry to crawl both.");
+    Console.WriteLine();
+    Console.WriteLine("Pages whose URL matches an entry in the 'noindex-patterns' array in appsettings.json");
+    Console.WriteLine("are crawled for their links but never indexed (\"noindex, follow\"). Patterns match the");
+    Console.WriteLine("whole URL with '*' as a wildcard and an optional trailing '$' to anchor the end, e.g.");
+    Console.WriteLine("'*/tag/*', 'https://example.com/calendar/*', or '*://wiki.example.com/*'.");
     return;
 }
 
@@ -274,6 +280,10 @@ try
     {
         AnsiConsole.MarkupLineInterpolated($"[grey]Allowed servers[/] {string.Join(", ", allowedServers)}");
     }
+    if (noIndexPatterns.Length > 0)
+    {
+        AnsiConsole.MarkupLineInterpolated($"[grey]Noindex patterns[/] {string.Join(", ", noIndexPatterns)}");
+    }
     AnsiConsole.WriteLine();
 
     // The live display runs only on an interactive console. --no-live forces plain in a terminal that
@@ -289,14 +299,14 @@ try
             .StartAsync(async live =>
             {
                 var reporter = new SpectreCrawlReporter(live);
-                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
+                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
             });
         report = captured!;
     }
     else
     {
         var reporter = new PlainCrawlReporter(AnsiConsole.Console);
-        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
+        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
     }
 
     // Channel 3: write the end-of-run stats to disk (JSON + text), then print a summary.

@@ -15,6 +15,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.IndexedPerHost
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.LastFetchUtc
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.MaxCrawlSizeBytes
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Observer
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Queue
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Read
@@ -102,6 +103,37 @@ items:
       type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
     content.vb: Public Property AllowedHosts As AllowedHosts
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.AllowedHosts*
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
+  id: NoIndexRules
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  langs:
+  - csharp
+  - vb
+  name: NoIndexRules
+  nameWithType: CrawlContext.NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndexRules
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Gets the user-configured URL glob patterns whose pages are followed for links but never indexed.
+  example: []
+  syntax:
+    content: public NoIndexRules NoIndexRules { get; init; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+    content.vb: Public Property NoIndexRules As NoIndexRules
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules*
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.RobotsCache
   commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.RobotsCache
   id: RobotsCache
@@ -120,7 +152,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RobotsCache
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 24
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -151,7 +183,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Queue
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 27
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -182,7 +214,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Visited
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 30
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -213,7 +245,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedUrl
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 33
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -244,7 +276,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Read
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 36
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -275,7 +307,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Write
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 39
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -306,7 +338,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastFetchUtc
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 42
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -337,7 +369,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedPerHost
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 45
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -368,7 +400,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedContentHashes
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 48
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -399,7 +431,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlSizeBytes
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 51
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -430,7 +462,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RobotsUnavailable
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 54
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -461,7 +493,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostHealth
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 57
+    startLine: 60
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -492,7 +524,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CheckExternalLinks
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 60
+    startLine: 63
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -523,7 +555,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostCapSkipped
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 63
+    startLine: 66
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -554,7 +586,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Observer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 66
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -585,7 +617,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StartedUtc
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 69
+    startLine: 72
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -616,7 +648,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Discover
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 76
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -654,7 +686,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueSingle
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlContext.cs
-    startLine: 87
+    startLine: 90
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -1034,6 +1066,19 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Policies
     name: Policies
     href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_NoIndexRules
+  name: NoIndexRules
+  nameWithType: CrawlContext.NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.NoIndexRules
+- uid: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules.html
+  name: NoIndexRules
+  nameWithType: NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.RobotsCache*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.RobotsCache
   href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html#LocalSearchEngine_Core_Crawling_Engine_CrawlContext_RobotsCache

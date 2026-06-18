@@ -55,6 +55,8 @@ To avoid re-indexing unchanged content:
 * **Canonical URLs**: Resolves and follows `rel="canonical"` tags.
 * **Error Handling**: 404/410 errors remove pages from the index, while transient 5xx errors leave previous versions intact to protect against temporary downtime.
 
+> For the full list of what the crawler reads and obeys — `robots.txt`, HTTP headers, and HTML hints — see [Crawl Directives & Compliance](crawl-directives.md).
+
 ### 4. Automatic Pruning
 When a crawl drains its frontier naturally, it compares the visited URLs with the existing database. Any page within the crawl scope that was *not* encountered in the current run (meaning it was deleted, orphaned, or blocked by new robots rules) is automatically pruned from the index.
 

@@ -302,7 +302,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveCanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 264
+    startLine: 267
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -342,7 +342,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractPdf
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 290
+    startLine: 293
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -378,7 +378,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractDocx
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 309
+    startLine: 312
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -414,7 +414,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CleanTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 321
+    startLine: 324
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -450,7 +450,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 331
+    startLine: 334
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -483,7 +483,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractHeadings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 342
+    startLine: 345
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -516,7 +516,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollapseWhitespace
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 363
+    startLine: 366
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -552,7 +552,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveEncoding
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 369
+    startLine: 372
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction

@@ -14,6 +14,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnHostCapReached(System.Int32,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnLinkProbeInconclusive(System.Exception,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnLinksVerified(System.Int32,System.Int32,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnOutScopeUrlReached(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnOutlinksAdded(System.Int32)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
@@ -1358,6 +1359,41 @@ items:
   nameWithType.vb: ICrawlObserver.OnAllowedServerIgnored(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnAllowedServerIgnored(String)
   name.vb: OnAllowedServerIgnored(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored(System.String)
+  id: OnNoIndexPatternIgnored(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  langs:
+  - csharp
+  - vb
+  name: OnNoIndexPatternIgnored(string)
+  nameWithType: ICrawlObserver.OnNoIndexPatternIgnored(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OnNoIndexPatternIgnored
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
+    startLine: 181
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A configured noindex URL pattern could not be parsed and was ignored.
+  example: []
+  syntax:
+    content: void OnNoIndexPatternIgnored(string pattern)
+    parameters:
+    - id: pattern
+      type: System.String
+      description: The malformed (blank) pattern.
+    content.vb: Sub OnNoIndexPatternIgnored(pattern As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored*
+  nameWithType.vb: ICrawlObserver.OnNoIndexPatternIgnored(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored(String)
+  name.vb: OnNoIndexPatternIgnored(String)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
@@ -1676,3 +1712,9 @@ references:
   name: OnAllowedServerIgnored
   nameWithType: ICrawlObserver.OnAllowedServerIgnored
   fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnAllowedServerIgnored
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnNoIndexPatternIgnored_System_String_
+  name: OnNoIndexPatternIgnored
+  nameWithType: ICrawlObserver.OnNoIndexPatternIgnored
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnNoIndexPatternIgnored

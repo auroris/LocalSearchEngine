@@ -33,6 +33,8 @@ items:
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.LinkRow(System.String,System.String)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Links_are_recorded_in_the_link_index_with_their_status
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NewCrawler
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Non_html_content_is_not_indexed
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotFound_removes_page_from_index
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NotModified_304_still_reaches_pages_linked_only_from_it
@@ -894,6 +896,82 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  id: NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: NoIndex_pattern_follows_links_but_does_not_index_the_matched_page()
+  nameWithType: CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 296
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NoIndex_pattern_follows_links_but_does_not_index_the_matched_page()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NoIndex_pattern_follows_links_but_does_not_index_the_matched_page() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  id: NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: NoIndex_pattern_drops_content_indexed_before_the_rule_existed()
+  nameWithType: CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed()
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task NoIndex_pattern_drops_content_indexed_before_the_rule_existed()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function NoIndex_pattern_drops_content_indexed_before_the_rule_existed() As Task
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
   id: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
@@ -912,7 +990,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 296
+    startLine: 338
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -950,7 +1028,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Sitemap_entries_are_limited_to_the_seed_origin
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 310
+    startLine: 352
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -988,7 +1066,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots_and_sitemap_requests_use_the_seeds_port
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 335
+    startLine: 377
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1026,7 +1104,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Seed_redirect_to_a_new_host_adopts_that_host
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 353
+    startLine: 395
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1064,7 +1142,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Identical_content_on_two_urls_is_indexed_once
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 375
+    startLine: 417
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1102,7 +1180,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Per_host_cap_stops_indexing_after_n_pages
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 394
+    startLine: 436
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1140,7 +1218,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirect_cleans_up_old_index_and_metadata
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 410
+    startLine: 452
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1178,7 +1256,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stale_pages_are_pruned_after_a_completed_crawl
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 457
+    startLine: 499
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1216,7 +1294,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Capped_crawl_does_not_prune
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 477
+    startLine: 519
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1254,7 +1332,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Pruning_leaves_other_hosts_rows_alone
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 496
+    startLine: 538
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1292,7 +1370,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots_5xx_for_an_origin_protects_it_from_pruning
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 521
+    startLine: 563
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1330,7 +1408,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unreachable_host_is_written_off_after_one_failed_contact
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 542
+    startLine: 584
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1368,7 +1446,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unreachable_host_keeps_its_existing_index
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 565
+    startLine: 607
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1406,7 +1484,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unreachable_host_is_listed_in_the_report
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 589
+    startLine: 631
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1444,7 +1522,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Onsite_404_is_recorded_as_a_broken_link_with_its_referrer
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 603
+    startLine: 645
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1482,7 +1560,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: External_link_check_disabled_leaves_offsite_links_untouched
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 620
+    startLine: 662
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1520,7 +1598,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: External_link_check_reports_dead_offsite_links
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 635
+    startLine: 677
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1558,7 +1636,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Links_are_recorded_in_the_link_index_with_their_status
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 655
+    startLine: 697
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1596,7 +1674,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Inscope_redirect_is_reported_as_a_redirected_link
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 679
+    startLine: 721
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1634,7 +1712,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: External_redirect_is_reported_as_redirected_not_broken
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 704
+    startLine: 746
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1672,7 +1750,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unchanged_page_external_links_are_reverified_each_run
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 726
+    startLine: 768
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1710,7 +1788,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots_disallow_drops_an_indexed_url_even_when_the_crawl_cannot_prune
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 755
+    startLine: 797
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1748,7 +1826,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots_removal_leaves_another_origins_index_untouched
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 785
+    startLine: 827
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1786,7 +1864,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Oversized_sitemap_is_skipped_but_crawl_proceeds
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 814
+    startLine: 856
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1824,7 +1902,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HasCrawlState
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 837
+    startLine: 879
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1858,7 +1936,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HasOutlinks
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 847
+    startLine: 889
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1892,7 +1970,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinkRow
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 858
+    startLine: 900
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1930,7 +2008,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ChunkCount
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 870
+    startLine: 912
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1964,7 +2042,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HasChunkContaining
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 880
+    startLine: 922
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2000,7 +2078,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CountIndexedUrls
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 891
+    startLine: 933
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2028,7 +2106,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_skips_files_exceeding_max_crawl_size_bytes
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 900
+    startLine: 942
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2066,7 +2144,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_skips_unsupported_content_types_by_header
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 915
+    startLine: 957
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2104,7 +2182,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_aborts_downloading_large_files_when_magic_bytes_do_not_match
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 935
+    startLine: 977
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2142,7 +2220,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_skips_non_docx_zip_files_by_extension
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 959
+    startLine: 1001
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2180,7 +2258,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Cancellation_midcrawl_returns_cancelled_report_without_throwing
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 981
+    startLine: 1023
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2218,7 +2296,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1003
+    startLine: 1045
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2248,7 +2326,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1014
+    startLine: 1056
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2280,7 +2358,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Xml
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1021
+    startLine: 1063
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2316,7 +2394,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1025
+    startLine: 1067
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2352,7 +2430,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Html
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1029
+    startLine: 1071
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -2959,6 +3037,18 @@ references:
   name: Allowed_servers_bring_additional_hosts_into_scope
   nameWithType: CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
   fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_servers_bring_additional_hosts_into_scope
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  name: NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  nameWithType: CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_follows_links_but_does_not_index_the_matched_page
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  name: NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  nameWithType: CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.NoIndex_pattern_drops_content_indexed_before_the_rule_existed
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_Allowed_hosts_are_not_contacted_unless_the_crawl_reaches_them

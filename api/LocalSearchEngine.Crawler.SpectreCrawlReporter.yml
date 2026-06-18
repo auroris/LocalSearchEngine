@@ -41,7 +41,7 @@ items:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
   summary: >-
-    Renders live crawl progress to an interactive terminal: a progress bar (indexed / discovered,
+    Renders live crawl progress to an interactive terminal: a progress bar (processed / discovered,
 
     the denominator growing as the crawl finds links), a panel of running totals, and a rolling list
 

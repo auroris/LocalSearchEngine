@@ -6,7 +6,7 @@ items:
   parent: LocalSearchEngine.Core.Crawling
   children:
   - LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
-  - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync
   - LocalSearchEngine.Core.Crawling.CrawlerService.UserAgent
@@ -268,16 +268,16 @@ items:
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous schema creation.
     content.vb: Public Function EnsureCreatedAsync() As Task
   overload: LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync*
-- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
-  id: CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+  id: CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
   parent: LocalSearchEngine.Core.Crawling.CrawlerService
   langs:
   - csharp
   - vb
-  name: CrawlAsync(string, int, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
-  nameWithType: CrawlerService.CrawlAsync(string, int, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(string, int, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, System.Threading.CancellationToken)
+  name: CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
+  nameWithType: CrawlerService.CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(string, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
@@ -286,14 +286,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 75
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
   summary: Orchestrates the crawl loop starting from a seed URL.
   example: []
   syntax:
-    content: public Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = 2147483647, IEnumerable<string>? allowedServers = null, int maxPagesPerHost = 2147483647, long maxCrawlSizeBytes = 15728640, bool checkExternalLinks = false, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
+    content: public Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = 2147483647, IEnumerable<string>? allowedServers = null, IEnumerable<string>? noIndexPatterns = null, int maxPagesPerHost = 2147483647, long maxCrawlSizeBytes = 15728640, bool checkExternalLinks = false, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
     parameters:
     - id: seedUrl
       type: System.String
@@ -304,6 +304,9 @@ items:
     - id: allowedServers
       type: System.Collections.Generic.IEnumerable{System.String}
       description: Optional additional allowed hosts.
+    - id: noIndexPatterns
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Optional URL glob patterns whose pages are followed for links but never indexed ("noindex, follow").
     - id: maxPagesPerHost
       type: System.Int32
       description: The maximum pages to crawl on any single host.
@@ -322,11 +325,11 @@ items:
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref> summarizing what the crawl indexed, removed, and discovered.
-    content.vb: Public Function CrawlAsync(seedUrl As String, maxPages As Integer = 2147483647, allowedServers As IEnumerable(Of String) = Nothing, maxPagesPerHost As Integer = 2147483647, maxCrawlSizeBytes As Long = 15728640, checkExternalLinks As Boolean = False, reporter As ICrawlReporter = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of CrawlReport)
+    content.vb: Public Function CrawlAsync(seedUrl As String, maxPages As Integer = 2147483647, allowedServers As IEnumerable(Of String) = Nothing, noIndexPatterns As IEnumerable(Of String) = Nothing, maxPagesPerHost As Integer = 2147483647, maxCrawlSizeBytes As Long = 15728640, checkExternalLinks As Boolean = False, reporter As ICrawlReporter = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of CrawlReport)
   overload: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync*
-  nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.Threading.CancellationToken)
-  name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
+  nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.Threading.CancellationToken)
+  name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   id: EmptyReport(System.String,System.DateTime)
@@ -345,7 +348,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmptyReport
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 260
+    startLine: 273
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -932,7 +935,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync
-  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_CrawlAsync_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_CrawlAsync_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Threading_CancellationToken_
   name: CrawlAsync
   nameWithType: CrawlerService.CrawlAsync
   fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync

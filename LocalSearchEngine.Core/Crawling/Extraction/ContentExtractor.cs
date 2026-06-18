@@ -214,8 +214,11 @@ public static class ContentExtractor
         {
             foreach (var meta in metas)
             {
-                var name = meta.GetAttributeValue("name", "").Trim().ToLowerInvariant();
-                if (name == "robots" || name == userAgentToken)
+                // Match "robots" (all crawlers) or our own user-agent token, case-insensitively —
+                // the same way the X-Robots-Tag user-agent prefix is matched below.
+                var name = meta.GetAttributeValue("name", "").Trim();
+                if (string.Equals(name, "robots", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(name, userAgentToken, StringComparison.OrdinalIgnoreCase))
                 {
                     Apply(HtmlEntity.DeEntitize(meta.GetAttributeValue("content", "")));
                 }

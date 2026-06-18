@@ -22,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FakeHandler
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1040
+    startLine: 1082
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Routes
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1042
+    startLine: 1084
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -89,7 +89,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Requested
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1043
+    startLine: 1085
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -116,7 +116,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendAsync
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1045
+    startLine: 1087
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

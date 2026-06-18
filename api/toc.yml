@@ -95,6 +95,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
     name: HostHealthTracker
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+    name: NoIndexRules
+    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
     name: RobotsRules
     type: Class
@@ -250,6 +253,9 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
     name: Fts5MatchSemanticsTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.NoIndexRulesTests
+    name: NoIndexRulesTests
     type: Class
   - uid: LocalSearchEngine.Tests.RobotsRulesTests
     name: RobotsRulesTests

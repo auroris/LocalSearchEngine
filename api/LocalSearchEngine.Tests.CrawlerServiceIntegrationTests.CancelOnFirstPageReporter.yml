@@ -23,7 +23,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CancelOnFirstPageReporter
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1060
+    startLine: 1102
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _cts
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1062
+    startLine: 1104
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -88,7 +88,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1063
+    startLine: 1105
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -120,7 +120,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1065
+    startLine: 1107
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -157,7 +157,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1067
+    startLine: 1109
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

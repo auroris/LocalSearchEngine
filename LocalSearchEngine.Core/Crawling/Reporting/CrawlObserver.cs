@@ -236,4 +236,9 @@ internal sealed class CrawlObserver : ICrawlObserver
     {
         _logger.LogWarning("Ignoring allowed-server entry '{Entry}': expected [scheme://]host[:port].", entry);
     }
+
+    public void OnNoIndexPatternIgnored(string pattern)
+    {
+        _logger.LogWarning("Ignoring noindex pattern '{Pattern}': it is blank.", pattern);
+    }
 }

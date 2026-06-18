@@ -21,6 +21,9 @@ internal sealed class CrawlContext
     /// <summary>Gets the scheme/host/port rules currently in crawl scope.</summary>
     public required AllowedHosts AllowedHosts { get; init; }
 
+    /// <summary>Gets the user-configured URL glob patterns whose pages are followed for links but never indexed.</summary>
+    public NoIndexRules NoIndexRules { get; init; } = new();
+
     /// <summary>Gets the cache of parsed robots.txt rules, keyed by origin (scheme://host:port).</summary>
     public required Dictionary<string, RobotsRules> RobotsCache { get; init; }
 
