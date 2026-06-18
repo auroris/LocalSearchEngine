@@ -98,6 +98,21 @@ public class ContentExtractorTests
     }
 
     [Fact]
+    public void Href_entities_are_decoded_before_the_url_is_parsed()
+    {
+        // The only valid way to put '&' in an HTML attribute is to escape it (&amp;). HtmlAgilityPack
+        // hands back that raw text, so without de-entitizing, the literal "&amp;" lands in the stored
+        // URL and the query string is wrong — the real cause of legacy .asp links 404ing in the crawl.
+        var html = "<html><body><a href=\"/form.asp?WSAOLANG=E&amp;WSAOTYPE=06\">x</a></body></html>";
+        var body = Encoding.UTF8.GetBytes(html);
+
+        var analysis = Analyze(body, httpCharset: null);
+
+        Assert.Contains("http://test.local/form.asp?WSAOLANG=E&WSAOTYPE=06", analysis.Outlinks);
+        Assert.DoesNotContain(analysis.Outlinks, u => u.Contains("&amp;"));
+    }
+
+    [Fact]
     public void Meta_robots_name_is_matched_case_insensitively()
     {
         var html = "<html><head><meta name=\"ROBOTS\" content=\"noindex\"><title>T</title></head><body><p>x</p></body></html>";
