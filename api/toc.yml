@@ -76,6 +76,12 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
     name: ContentExtractor.HtmlAnalysis
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: ContentExtractor.PdfExtraction
+    type: Struct
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+    name: ContentExtractor.TextQualityExtractionStrategy
+    type: Class
 - uid: LocalSearchEngine.Core.Crawling.Policies
   name: LocalSearchEngine.Core.Crawling.Policies
   type: Namespace
@@ -256,6 +262,9 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.NoIndexRulesTests
     name: NoIndexRulesTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.PdfTextQualityTests
+    name: PdfTextQualityTests
     type: Class
   - uid: LocalSearchEngine.Tests.RobotsRulesTests
     name: RobotsRulesTests

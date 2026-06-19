@@ -352,9 +352,18 @@ internal sealed class CrawlProducer
                 return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, null,
                     Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
             }
-            var (pdfTitle, pdfText) = ContentExtractor.ExtractPdf(body);
+            var pdf = ContentExtractor.ExtractPdf(body);
+            // A PDF whose text came out as font-encoding garbage (or that has no text layer at all) is
+            // worse than useless in the index: drop it the same way a noindex page is dropped, but flag
+            // it distinctly so the run stats show how much of the PDF corpus is unreadable.
+            if (pdf.IsLowQualityText)
+            {
+                _context.Observer.OnPageLowQualityText(currentUrl, finalUrl, pdf.MappableFraction, pdf.TotalGlyphs);
+                return new NoIndexJob(finalUrl, statusCode, pdf.Title, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
+            }
             return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
-                pdfTitle, pdfTitle ?? string.Empty, pdfText, newETag, newLastModified,
+                pdf.Title, pdf.Title ?? string.Empty, pdf.Text, newETag, newLastModified,
                 Array.Empty<string>(), Array.Empty<string>(), kind, cancellationToken);
         }
 

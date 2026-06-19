@@ -542,7 +542,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmitIndexableAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 435
+    startLine: 444
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -626,7 +626,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ComputeContentHash
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 491
+    startLine: 500
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -679,7 +679,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 502
+    startLine: 511
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -719,7 +719,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DelayForHostAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 529
+    startLine: 538
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -762,7 +762,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveRequestDelay
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 549
+    startLine: 558
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

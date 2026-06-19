@@ -31,6 +31,7 @@ internal static class SummaryPanel
         grid.AddRow("[grey]Indexed[/]", $"[green]{s.Indexed}[/]  ([grey]added[/] {report.ItemsAdded})");
         grid.AddRow("[grey]Unchanged[/]", s.Unchanged.ToString());
         grid.AddRow("[grey]Skipped / NoIndex[/]", $"{s.SkippedType + s.SkippedSize} / {s.NoIndex}");
+        grid.AddRow("[grey]Unreadable PDFs[/]", s.LowQualityText.ToString());
         grid.AddRow("[grey]Redirected[/]", s.Redirected.ToString());
         grid.AddRow("[grey]Gone / Disallowed / Failed[/]", $"{s.Gone} / {s.Disallowed} / {s.Failed}");
         grid.AddRow("[grey]Removed[/]", $"[red]{report.ItemsDeleted}[/]  ([grey]banned[/] {s.RemovedBanned}, [grey]stale[/] {s.RemovedStale})");

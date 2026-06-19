@@ -73,7 +73,7 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         grid.AddColumn().AddColumn().AddColumn().AddColumn();
         grid.AddRow(Stat("Indexed", s.Indexed, "green"), Stat("Unchanged", s.Unchanged, "grey"), Stat("Redirect", s.Redirected, "blue"), Stat("NoIndex", s.NoIndex, "grey"));
         grid.AddRow(Stat("Skipped", s.SkippedType + s.SkippedSize, "yellow"), Stat("Gone", s.Gone, "red"), Stat("Disallowed", s.Disallowed, "darkorange"), Stat("Failed", s.Failed, "red"));
-        grid.AddRow(Stat("Discovered", s.Discovered, "white"), Stat("Links", s.LinksFound, "white"), Stat("Removed", s.Removed, "red"), new Markup(" "));
+        grid.AddRow(Stat("Discovered", s.Discovered, "white"), Stat("Links", s.LinksFound, "white"), Stat("Removed", s.Removed, "red"), Stat("Unreadable", s.LowQualityText, "yellow"));
 
         var table = new Table().Border(TableBorder.Rounded).Expand();
         table.AddColumn(new TableColumn("[grey]outcome[/]").Width(11));
@@ -113,6 +113,7 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
         CrawlOutcome.NoIndex => ("noindex", "grey"),
         CrawlOutcome.SkippedType => ("skipped", "yellow"),
         CrawlOutcome.SkippedSize => ("skipped", "yellow"),
+        CrawlOutcome.LowQualityText => ("unreadable", "yellow"),
         CrawlOutcome.Redirected => ("redirect", "blue"),
         CrawlOutcome.Gone => ("gone", "red"),
         CrawlOutcome.Disallowed => ("disallowed", "darkorange"),

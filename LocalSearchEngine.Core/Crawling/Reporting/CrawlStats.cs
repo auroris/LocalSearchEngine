@@ -22,6 +22,9 @@ public sealed class CrawlStats
     /// <summary>Pages skipped for exceeding the size limit.</summary>
     public int SkippedSize { get; private set; }
 
+    /// <summary>Pages (PDFs) left unindexed because their extracted text was unusable (no text layer or a broken font encoding).</summary>
+    public int LowQualityText { get; private set; }
+
     /// <summary>URLs that resolved to a redirect, canonical alias, or duplicate.</summary>
     public int Redirected { get; private set; }
 
@@ -54,6 +57,7 @@ public sealed class CrawlStats
             case CrawlOutcome.NoIndex: NoIndex++; break;
             case CrawlOutcome.SkippedType: SkippedType++; break;
             case CrawlOutcome.SkippedSize: SkippedSize++; break;
+            case CrawlOutcome.LowQualityText: LowQualityText++; break;
             case CrawlOutcome.Redirected: Redirected++; break;
             case CrawlOutcome.Gone: Gone++; break;
             case CrawlOutcome.Disallowed: Disallowed++; break;
@@ -82,6 +86,6 @@ public sealed class CrawlStats
     /// <param name="elapsed">Wall-clock time since the crawl started.</param>
     /// <returns>A snapshot of the current tallies.</returns>
     public CrawlStatsSnapshot Snapshot(CrawlPhase phase, int discovered, TimeSpan elapsed) => new(
-        phase, discovered, Indexed, Unchanged, NoIndex, SkippedType, SkippedSize,
+        phase, discovered, Indexed, Unchanged, NoIndex, SkippedType, SkippedSize, LowQualityText,
         Redirected, Gone, Disallowed, Failed, LinksFound, RemovedBanned, RemovedStale, elapsed);
 }

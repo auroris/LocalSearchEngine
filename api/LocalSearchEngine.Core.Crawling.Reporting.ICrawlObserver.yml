@@ -24,6 +24,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFetching(System.Int32,System.Int32,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
@@ -1074,6 +1075,52 @@ items:
   nameWithType.vb: ICrawlObserver.OnPageNoIndex(String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(String, String)
   name.vb: OnPageNoIndex(String, String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  id: OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  langs:
+  - csharp
+  - vb
+  name: OnPageLowQualityText(string, string, double, long)
+  nameWithType: ICrawlObserver.OnPageLowQualityText(string, string, double, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(string, string, double, long)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OnPageLowQualityText
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
+    startLine: 150
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    A PDF was fetched but its extracted text is unusable — no text layer, or a font encoding that
+        doesn't reverse to Unicode — so it is not indexed. A candidate for an OCR fallback.
+  example: []
+  syntax:
+    content: void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The requested URL.
+    - id: finalUrl
+      type: System.String
+      description: The URL after redirects.
+    - id: mappableFraction
+      type: System.Double
+      description: The share of drawn glyphs that mapped to Unicode, in [0,1]; 0 when there was no text layer.
+    - id: totalGlyphs
+      type: System.Int64
+      description: The number of visible glyphs drawn in the document.
+    content.vb: Sub OnPageLowQualityText(currentUrl As String, finalUrl As String, mappableFraction As Double, totalGlyphs As Long)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText*
+  nameWithType.vb: ICrawlObserver.OnPageLowQualityText(String, String, Double, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(String, String, Double, Long)
+  name.vb: OnPageLowQualityText(String, String, Double, Long)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
   id: OnPageIndexed(System.String,System.String,System.Int32)
@@ -1092,7 +1139,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageIndexed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 148
+    startLine: 156
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1133,7 +1180,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnStaleUrlsPruned
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 154
+    startLine: 162
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1168,7 +1215,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPruneFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 157
+    startLine: 165
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1199,7 +1246,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnBannedUrlsRemoved
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 161
+    startLine: 169
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1234,7 +1281,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnRemoveBannedFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 164
+    startLine: 172
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1265,7 +1312,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinksVerified
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 170
+    startLine: 178
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1306,7 +1353,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinkProbeInconclusive
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 173
+    startLine: 181
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1342,7 +1389,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnAllowedServerIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 177
+    startLine: 185
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1377,7 +1424,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnNoIndexPatternIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 181
+    startLine: 189
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1664,6 +1711,23 @@ references:
   name: OnPageNoIndex
   nameWithType: ICrawlObserver.OnPageNoIndex
   fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_String_System_Double_System_Int64_
+  name: OnPageLowQualityText
+  nameWithType: ICrawlObserver.OnPageLowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed
   href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_String_System_Int32_

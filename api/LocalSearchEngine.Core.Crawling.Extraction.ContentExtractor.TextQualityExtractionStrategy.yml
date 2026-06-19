@@ -1,0 +1,1022 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  id: ContentExtractor.TextQualityExtractionStrategy
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  children:
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable(iText.Kernel.Font.PdfFont)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy._text
+  langs:
+  - csharp
+  - vb
+  name: ContentExtractor.TextQualityExtractionStrategy
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TextQualityExtractionStrategy
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 365
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    A text-extraction strategy that returns the same text as <xref href="iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy" data-throw-if-not-resolved="false"></xref>
+
+    (to which it delegates) while also counting, per drawn glyph, whether the glyph's font can be
+
+    reversed to Unicode. That ratio is what tells a readable PDF apart from one that extracts as
+
+    garbage because its fonts lack the mapping iText needs.
+  example: []
+  syntax:
+    content: 'private sealed class ContentExtractor.TextQualityExtractionStrategy : ITextExtractionStrategy, IEventListener'
+    content.vb: Private NotInheritable Class ContentExtractor.TextQualityExtractionStrategy Implements ITextExtractionStrategy, IEventListener
+  inheritance:
+  - System.Object
+  implements:
+  - iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy
+  - iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy._text
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy._text
+  id: _text
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: _text
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy._text
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy._text
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _text
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 367
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  syntax:
+    content: private readonly SimpleTextExtractionStrategy _text
+    return:
+      type: iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy
+    content.vb: Private ReadOnly _text As SimpleTextExtractionStrategy
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  id: TotalGlyphs
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TotalGlyphs
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 370
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Visible (non-space) glyphs seen so far.
+  example: []
+  syntax:
+    content: public long TotalGlyphs { get; private set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property TotalGlyphs As Long
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  id: MappableGlyphs
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: MappableGlyphs
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MappableGlyphs
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 372
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: How many of <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs" data-throw-if-not-resolved="false"></xref> were drawn with a Unicode-mappable font.
+  example: []
+  syntax:
+    content: public long MappableGlyphs { get; private set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property MappableGlyphs As Long
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  id: EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: EventOccurred(IEventData, EventType)
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.EventOccurred(IEventData, EventType)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData, iText.Kernel.Pdf.Canvas.Parser.EventType)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EventOccurred
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 374
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Called when some event occurs during parsing a content stream.
+  example: []
+  syntax:
+    content: public void EventOccurred(IEventData data, EventType type)
+    parameters:
+    - id: data
+      type: iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+      description: Combines the data required for processing corresponding event type.
+    - id: type
+      type: iText.Kernel.Pdf.Canvas.Parser.EventType
+      description: Event type.
+    content.vb: Public Sub EventOccurred(data As IEventData, type As EventType)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred*
+  implements:
+  - iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+  id: GetSupportedEvents
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: GetSupportedEvents()
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents()
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetSupportedEvents
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 391
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Provides the set of event types this listener supports.
+  remarks: >-
+    Provides the set of event types this listener supports.
+
+    Returns null if all possible event types are supported.
+  example: []
+  syntax:
+    content: public ICollection<EventType> GetSupportedEvents()
+    return:
+      type: System.Collections.Generic.ICollection{iText.Kernel.Pdf.Canvas.Parser.EventType}
+      description: >-
+        Set of event types supported by this listener or
+
+        null if all possible event types are supported.
+    content.vb: Public Function GetSupportedEvents() As ICollection(Of EventType)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents*
+  implements:
+  - iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+  id: GetResultantText
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: GetResultantText()
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.GetResultantText()
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetResultantText
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 392
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Returns the text that has been processed so far.
+  example: []
+  syntax:
+    content: public string GetResultantText()
+    return:
+      type: System.String
+      description: >-
+        <xref href="System.String" data-throw-if-not-resolved="false"></xref>
+
+        instance with the current resultant text
+    content.vb: Public Function GetResultantText() As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText*
+  implements:
+  - iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable(iText.Kernel.Font.PdfFont)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable(iText.Kernel.Font.PdfFont)
+  id: IsFontUnicodeMappable(iText.Kernel.Font.PdfFont)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  langs:
+  - csharp
+  - vb
+  name: IsFontUnicodeMappable(PdfFont)
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable(PdfFont)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable(iText.Kernel.Font.PdfFont)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsFontUnicodeMappable
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 400
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Decides whether text drawn with <code class="paramref">font</code> can be recovered as Unicode. A
+
+    ToUnicode CMap is the authoritative answer when present. Without one, only simple fonts
+
+    (Type1/TrueType) still reverse reliably through their glyph-name encoding; composite (Type0)
+
+    and Type3 fonts then expose only glyph IDs or private encodings — the garbage case.
+  example: []
+  syntax:
+    content: private static bool IsFontUnicodeMappable(PdfFont font)
+    parameters:
+    - id: font
+      type: iText.Kernel.Font.PdfFont
+    return:
+      type: System.Boolean
+    content.vb: Private Shared Function IsFontUnicodeMappable(font As PdfFont) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable*
+references:
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy
+  commentId: T:iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener
+  isExternal: true
+  name: SimpleTextExtractionStrategy
+  nameWithType: SimpleTextExtractionStrategy
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  commentId: N:LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  nameWithType: LocalSearchEngine.Core.Crawling.Extraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy
+  commentId: T:iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener
+  isExternal: true
+  name: ITextExtractionStrategy
+  nameWithType: ITextExtractionStrategy
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+  commentId: T:iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener
+  isExternal: true
+  name: IEventListener
+  nameWithType: IEventListener
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener
+  commentId: N:iText.Kernel.Pdf.Canvas.Parser.Listener
+  isExternal: true
+  name: iText.Kernel.Pdf.Canvas.Parser.Listener
+  nameWithType: iText.Kernel.Pdf.Canvas.Parser.Listener
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener
+  spec.csharp:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener
+    name: Listener
+    isExternal: true
+  spec.vb:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener
+    name: Listener
+    isExternal: true
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_TotalGlyphs
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_TotalGlyphs
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.TotalGlyphs
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_MappableGlyphs
+  name: MappableGlyphs
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.MappableGlyphs
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_EventOccurred_iText_Kernel_Pdf_Canvas_Parser_Data_IEventData_iText_Kernel_Pdf_Canvas_Parser_EventType_
+  name: EventOccurred
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.EventOccurred
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.EventOccurred
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  commentId: M:iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+  isExternal: true
+  name: EventOccurred(IEventData, EventType)
+  nameWithType: IEventListener.EventOccurred(IEventData, EventType)
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData, iText.Kernel.Pdf.Canvas.Parser.EventType)
+  spec.csharp:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+    name: EventOccurred
+    isExternal: true
+  - name: (
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+    name: IEventData
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: iText.Kernel.Pdf.Canvas.Parser.EventType
+    name: EventType
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.EventOccurred(iText.Kernel.Pdf.Canvas.Parser.Data.IEventData,iText.Kernel.Pdf.Canvas.Parser.EventType)
+    name: EventOccurred
+    isExternal: true
+  - name: (
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+    name: IEventData
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: iText.Kernel.Pdf.Canvas.Parser.EventType
+    name: EventType
+    isExternal: true
+  - name: )
+- uid: iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+  commentId: T:iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+  parent: iText.Kernel.Pdf.Canvas.Parser.Data
+  isExternal: true
+  name: IEventData
+  nameWithType: IEventData
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Data.IEventData
+- uid: iText.Kernel.Pdf.Canvas.Parser.EventType
+  commentId: T:iText.Kernel.Pdf.Canvas.Parser.EventType
+  parent: iText.Kernel.Pdf.Canvas.Parser
+  isExternal: true
+  name: EventType
+  nameWithType: EventType
+  fullName: iText.Kernel.Pdf.Canvas.Parser.EventType
+- uid: iText.Kernel.Pdf.Canvas.Parser.Data
+  commentId: N:iText.Kernel.Pdf.Canvas.Parser.Data
+  isExternal: true
+  name: iText.Kernel.Pdf.Canvas.Parser.Data
+  nameWithType: iText.Kernel.Pdf.Canvas.Parser.Data
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Data
+  spec.csharp:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Data
+    name: Data
+    isExternal: true
+  spec.vb:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Data
+    name: Data
+    isExternal: true
+- uid: iText.Kernel.Pdf.Canvas.Parser
+  commentId: N:iText.Kernel.Pdf.Canvas.Parser
+  isExternal: true
+  name: iText.Kernel.Pdf.Canvas.Parser
+  nameWithType: iText.Kernel.Pdf.Canvas.Parser
+  fullName: iText.Kernel.Pdf.Canvas.Parser
+  spec.csharp:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+  spec.vb:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf
+    name: Pdf
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas
+    name: Canvas
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Pdf.Canvas.Parser
+    name: Parser
+    isExternal: true
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_GetSupportedEvents
+  name: GetSupportedEvents
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetSupportedEvents
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents
+  commentId: M:iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener
+  isExternal: true
+  name: GetSupportedEvents()
+  nameWithType: IEventListener.GetSupportedEvents()
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents()
+  spec.csharp:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents
+    name: GetSupportedEvents
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.IEventListener.GetSupportedEvents
+    name: GetSupportedEvents
+    isExternal: true
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.ICollection{iText.Kernel.Pdf.Canvas.Parser.EventType}
+  commentId: T:System.Collections.Generic.ICollection{iText.Kernel.Pdf.Canvas.Parser.EventType}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<EventType>
+  nameWithType: ICollection<EventType>
+  fullName: System.Collections.Generic.ICollection<iText.Kernel.Pdf.Canvas.Parser.EventType>
+  nameWithType.vb: ICollection(Of EventType)
+  fullName.vb: System.Collections.Generic.ICollection(Of iText.Kernel.Pdf.Canvas.Parser.EventType)
+  name.vb: ICollection(Of EventType)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - uid: iText.Kernel.Pdf.Canvas.Parser.EventType
+    name: EventType
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: iText.Kernel.Pdf.Canvas.Parser.EventType
+    name: EventType
+    isExternal: true
+  - name: )
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_GetResultantText
+  name: GetResultantText
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.GetResultantText
+- uid: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText
+  commentId: M:iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText
+  parent: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy
+  isExternal: true
+  name: GetResultantText()
+  nameWithType: ITextExtractionStrategy.GetResultantText()
+  fullName: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText()
+  spec.csharp:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText
+    name: GetResultantText
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: iText.Kernel.Pdf.Canvas.Parser.Listener.ITextExtractionStrategy.GetResultantText
+    name: GetResultantText
+    isExternal: true
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_TextQualityExtractionStrategy_IsFontUnicodeMappable_iText_Kernel_Font_PdfFont_
+  name: IsFontUnicodeMappable
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.IsFontUnicodeMappable
+- uid: iText.Kernel.Font.PdfFont
+  commentId: T:iText.Kernel.Font.PdfFont
+  parent: iText.Kernel.Font
+  isExternal: true
+  name: PdfFont
+  nameWithType: PdfFont
+  fullName: iText.Kernel.Font.PdfFont
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: iText.Kernel.Font
+  commentId: N:iText.Kernel.Font
+  isExternal: true
+  name: iText.Kernel.Font
+  nameWithType: iText.Kernel.Font
+  fullName: iText.Kernel.Font
+  spec.csharp:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Font
+    name: Font
+    isExternal: true
+  spec.vb:
+  - uid: iText
+    name: iText
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel
+    name: Kernel
+    isExternal: true
+  - name: .
+  - uid: iText.Kernel.Font
+    name: Font
+    isExternal: true

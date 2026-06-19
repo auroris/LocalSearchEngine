@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Gone
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Indexed
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LinksFound
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.NoIndex
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Record(LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Redirected
@@ -214,6 +215,37 @@ items:
       type: System.Int32
     content.vb: Public Property SkippedSize As Integer
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.SkippedSize*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
+  id: LowQualityText
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+  langs:
+  - csharp
+  - vb
+  name: LowQualityText
+  nameWithType: CrawlStats.LowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LowQualityText
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Pages (PDFs) left unindexed because their extracted text was unusable (no text layer or a broken font encoding).
+  example: []
+  syntax:
+    content: public int LowQualityText { get; private set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LowQualityText As Integer
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText*
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Redirected
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Redirected
   id: Redirected
@@ -232,7 +264,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirected
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 25
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -263,7 +295,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gone
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 28
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -294,7 +326,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Disallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 31
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -325,7 +357,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Failed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 34
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -356,7 +388,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinksFound
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 37
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -387,7 +419,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedBanned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 40
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -418,7 +450,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedStale
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 43
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -449,7 +481,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Record
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 47
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -481,7 +513,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddLinks
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 65
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -516,7 +548,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddRemovedBanned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 69
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -551,7 +583,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddRemovedStale
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 73
+    startLine: 77
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -586,7 +618,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Snapshot
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 83
+    startLine: 87
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -908,6 +940,12 @@ references:
   name: SkippedSize
   nameWithType: CrawlStats.SkippedSize
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.SkippedSize
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStats_LowQualityText
+  name: LowQualityText
+  nameWithType: CrawlStats.LowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.LowQualityText
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Redirected*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Redirected
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStats_Redirected

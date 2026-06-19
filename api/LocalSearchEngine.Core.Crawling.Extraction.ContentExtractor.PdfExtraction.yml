@@ -1,0 +1,735 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  id: ContentExtractor.PdfExtraction
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  children:
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor(System.String,System.String,System.Int64,System.Int64)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MinMappableFraction
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  langs:
+  - csharp
+  - vb
+  name: ContentExtractor.PdfExtraction
+  nameWithType: ContentExtractor.PdfExtraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  type: Struct
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PdfExtraction
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    The result of extracting a PDF: its metadata title, the concatenated page text, and a measure of
+
+    how much of that text is actually recoverable as Unicode rather than font-encoding garbage.
+  example: []
+  syntax:
+    content: 'public readonly record struct ContentExtractor.PdfExtraction : IEquatable<ContentExtractor.PdfExtraction>'
+    content.vb: Public Structure ContentExtractor.PdfExtraction Implements IEquatable(Of ContentExtractor.PdfExtraction)
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor(System.String,System.String,System.Int64,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor(System.String,System.String,System.Int64,System.Int64)
+  id: '#ctor(System.String,System.String,System.Int64,System.Int64)'
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: PdfExtraction(string?, string, long, long)
+  nameWithType: ContentExtractor.PdfExtraction.PdfExtraction(string?, string, long, long)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.PdfExtraction(string?, string, long, long)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    The result of extracting a PDF: its metadata title, the concatenated page text, and a measure of
+
+    how much of that text is actually recoverable as Unicode rather than font-encoding garbage.
+  example: []
+  syntax:
+    content: public PdfExtraction(string? Title, string Text, long TotalGlyphs, long MappableGlyphs)
+    parameters:
+    - id: Title
+      type: System.String
+      description: The cleaned document-metadata title, or <code>null</code> when absent.
+    - id: Text
+      type: System.String
+      description: The whitespace-collapsed text harvested from every page.
+    - id: TotalGlyphs
+      type: System.Int64
+      description: Visible (non-space) glyphs drawn across all pages.
+    - id: MappableGlyphs
+      type: System.Int64
+      description: How many of those glyphs were drawn with a font that can be reversed to Unicode.
+    content.vb: Public Sub New(Title As String, Text As String, TotalGlyphs As Long, MappableGlyphs As Long)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor*
+  nameWithType.vb: ContentExtractor.PdfExtraction.New(String, String, Long, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.New(String, String, Long, Long)
+  name.vb: New(String, String, Long, Long)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+  id: Title
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: Title
+  nameWithType: ContentExtractor.PdfExtraction.Title
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Title
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: The cleaned document-metadata title, or <code>null</code> when absent.
+  example: []
+  syntax:
+    content: public string? Title { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Title As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+  id: Text
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: ContentExtractor.PdfExtraction.Text
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Text
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: The whitespace-collapsed text harvested from every page.
+  example: []
+  syntax:
+    content: public string Text { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  id: TotalGlyphs
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.PdfExtraction.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TotalGlyphs
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: Visible (non-space) glyphs drawn across all pages.
+  example: []
+  syntax:
+    content: public long TotalGlyphs { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property TotalGlyphs As Long
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+  id: MappableGlyphs
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: MappableGlyphs
+  nameWithType: ContentExtractor.PdfExtraction.MappableGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MappableGlyphs
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 313
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: How many of those glyphs were drawn with a font that can be reversed to Unicode.
+  example: []
+  syntax:
+    content: public long MappableGlyphs { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property MappableGlyphs As Long
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MinMappableFraction
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MinMappableFraction
+  id: MinMappableFraction
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: MinMappableFraction
+  nameWithType: ContentExtractor.PdfExtraction.MinMappableFraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MinMappableFraction
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MinMappableFraction
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 319
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  syntax:
+    content: private const double MinMappableFraction = 0.8
+    return:
+      type: System.Double
+    content.vb: Private Const MinMappableFraction As Double = 0.8
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+  id: MappableFraction
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: MappableFraction
+  nameWithType: ContentExtractor.PdfExtraction.MappableFraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MappableFraction
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 322
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: The share of drawn glyphs that map to Unicode, in [0,1]; 0 when the PDF carries no text.
+  example: []
+  syntax:
+    content: public double MappableFraction { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property MappableFraction As Double
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  id: IsLowQualityText
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  langs:
+  - csharp
+  - vb
+  name: IsLowQualityText
+  nameWithType: ContentExtractor.PdfExtraction.IsLowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsLowQualityText
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 329
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    True when the extracted text isn't worth indexing: either the PDF has no text layer at all
+
+    (<xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs" data-throw-if-not-resolved="false"></xref> is 0 — typically a scanned image), or too few of its glyphs are
+
+    Unicode-mappable (a broken/subset font encoding). Both are candidates for an OCR fallback.
+  example: []
+  syntax:
+    content: public bool IsLowQualityText { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsLowQualityText As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Extraction
+  commentId: N:LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Extraction
+  nameWithType: LocalSearchEngine.Core.Crawling.Extraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction
+    name: Extraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.html
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<ContentExtractor.PdfExtraction>
+  nameWithType: IEquatable<ContentExtractor.PdfExtraction>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction>
+  nameWithType.vb: IEquatable(Of ContentExtractor.PdfExtraction)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction)
+  name.vb: IEquatable(Of ContentExtractor.PdfExtraction)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.#ctor
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction__ctor_System_String_System_String_System_Int64_System_Int64_
+  name: PdfExtraction
+  nameWithType: ContentExtractor.PdfExtraction.PdfExtraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.PdfExtraction
+  nameWithType.vb: ContentExtractor.PdfExtraction.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_Title
+  name: Title
+  nameWithType: ContentExtractor.PdfExtraction.Title
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Title
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_Text
+  name: Text
+  nameWithType: ContentExtractor.PdfExtraction.Text
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.Text
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_TotalGlyphs
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.PdfExtraction.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_MappableGlyphs
+  name: MappableGlyphs
+  nameWithType: ContentExtractor.PdfExtraction.MappableGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableGlyphs
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_MappableFraction
+  name: MappableFraction
+  nameWithType: ContentExtractor.PdfExtraction.MappableFraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.MappableFraction
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_TotalGlyphs
+  name: TotalGlyphs
+  nameWithType: ContentExtractor.PdfExtraction.TotalGlyphs
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.TotalGlyphs
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_IsLowQualityText
+  name: IsLowQualityText
+  nameWithType: ContentExtractor.PdfExtraction.IsLowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

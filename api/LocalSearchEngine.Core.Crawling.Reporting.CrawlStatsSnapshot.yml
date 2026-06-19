@@ -5,7 +5,7 @@ items:
   id: CrawlStatsSnapshot
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Disallowed
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Discovered
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Elapsed
@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Gone
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Indexed
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LinksFound
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.NoIndex
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Phase
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Processed
@@ -37,7 +38,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStatsSnapshot
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -58,16 +59,16 @@ items:
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
-  id: '#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)'
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)
+  id: '#ctor(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int64,System.Int32,System.Int32,System.TimeSpan)'
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
   langs:
   - csharp
   - vb
-  name: CrawlStatsSnapshot(CrawlPhase, int, int, int, int, int, int, int, int, int, int, long, int, int, TimeSpan)
-  nameWithType: CrawlStatsSnapshot.CrawlStatsSnapshot(CrawlPhase, int, int, int, int, int, int, int, int, int, int, long, int, int, TimeSpan)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.CrawlStatsSnapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, int, int, int, int, int, int, int, int, int, int, long, int, int, System.TimeSpan)
+  name: CrawlStatsSnapshot(CrawlPhase, int, int, int, int, int, int, int, int, int, int, int, long, int, int, TimeSpan)
+  nameWithType: CrawlStatsSnapshot.CrawlStatsSnapshot(CrawlPhase, int, int, int, int, int, int, int, int, int, int, int, long, int, int, TimeSpan)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.CrawlStatsSnapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, int, int, int, int, int, int, int, int, int, int, int, long, int, int, System.TimeSpan)
   type: Constructor
   source:
     remote:
@@ -76,7 +77,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -86,7 +87,7 @@ items:
     live display can render from a stable copy rather than reaching into the mutable tally.
   example: []
   syntax:
-    content: public CrawlStatsSnapshot(CrawlPhase Phase, int Discovered, int Indexed, int Unchanged, int NoIndex, int SkippedType, int SkippedSize, int Redirected, int Gone, int Disallowed, int Failed, long LinksFound, int RemovedBanned, int RemovedStale, TimeSpan Elapsed)
+    content: public CrawlStatsSnapshot(CrawlPhase Phase, int Discovered, int Indexed, int Unchanged, int NoIndex, int SkippedType, int SkippedSize, int LowQualityText, int Redirected, int Gone, int Disallowed, int Failed, long LinksFound, int RemovedBanned, int RemovedStale, TimeSpan Elapsed)
     parameters:
     - id: Phase
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
@@ -109,6 +110,9 @@ items:
     - id: SkippedSize
       type: System.Int32
       description: Pages skipped for exceeding the size limit.
+    - id: LowQualityText
+      type: System.Int32
+      description: Pages (PDFs) left unindexed because their extracted text was unusable.
     - id: Redirected
       type: System.Int32
       description: URLs that resolved to a redirect, canonical alias, or duplicate.
@@ -133,11 +137,11 @@ items:
     - id: Elapsed
       type: System.TimeSpan
       description: Wall-clock time since the crawl started.
-    content.vb: Public Sub New(Phase As CrawlPhase, Discovered As Integer, Indexed As Integer, Unchanged As Integer, NoIndex As Integer, SkippedType As Integer, SkippedSize As Integer, Redirected As Integer, Gone As Integer, Disallowed As Integer, Failed As Integer, LinksFound As Long, RemovedBanned As Integer, RemovedStale As Integer, Elapsed As TimeSpan)
+    content.vb: Public Sub New(Phase As CrawlPhase, Discovered As Integer, Indexed As Integer, Unchanged As Integer, NoIndex As Integer, SkippedType As Integer, SkippedSize As Integer, LowQualityText As Integer, Redirected As Integer, Gone As Integer, Disallowed As Integer, Failed As Integer, LinksFound As Long, RemovedBanned As Integer, RemovedStale As Integer, Elapsed As TimeSpan)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor*
-  nameWithType.vb: CrawlStatsSnapshot.New(CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, TimeSpan)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.New(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, System.TimeSpan)
-  name.vb: New(CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, TimeSpan)
+  nameWithType.vb: CrawlStatsSnapshot.New(CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, TimeSpan)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.New(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, System.TimeSpan)
+  name.vb: New(CrawlPhase, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Long, Integer, Integer, TimeSpan)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Phase
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Phase
   id: Phase
@@ -156,7 +160,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Phase
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -187,7 +191,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Discovered
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 23
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -218,7 +222,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Indexed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -249,7 +253,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unchanged
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -280,7 +284,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoIndex
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 26
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -311,7 +315,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SkippedType
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 27
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -342,7 +346,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SkippedSize
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -355,6 +359,37 @@ items:
       type: System.Int32
     content.vb: Public Property SkippedSize As Integer
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.SkippedSize*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
+  id: LowQualityText
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+  langs:
+  - csharp
+  - vb
+  name: LowQualityText
+  nameWithType: CrawlStatsSnapshot.LowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LowQualityText
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Pages (PDFs) left unindexed because their extracted text was unusable.
+  example: []
+  syntax:
+    content: public int LowQualityText { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LowQualityText As Integer
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText*
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Redirected
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Redirected
   id: Redirected
@@ -373,7 +408,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirected
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -404,7 +439,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gone
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 30
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -435,7 +470,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Disallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 31
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -466,7 +501,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Failed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 32
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -497,7 +532,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinksFound
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 33
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -528,7 +563,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedBanned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 34
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -559,7 +594,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedStale
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 35
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -590,7 +625,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Elapsed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 36
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -621,7 +656,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Processed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 39
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -652,7 +687,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Removed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStatsSnapshot.cs
-    startLine: 43
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -991,7 +1026,7 @@ references:
   name.vb: Object
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.#ctor
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot__ctor_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int64_System_Int32_System_Int32_System_TimeSpan_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot__ctor_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int64_System_Int32_System_Int32_System_TimeSpan_
   name: CrawlStatsSnapshot
   nameWithType: CrawlStatsSnapshot.CrawlStatsSnapshot
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.CrawlStatsSnapshot
@@ -1077,6 +1112,12 @@ references:
   name: SkippedSize
   nameWithType: CrawlStatsSnapshot.SkippedSize
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.SkippedSize
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_LowQualityText
+  name: LowQualityText
+  nameWithType: CrawlStatsSnapshot.LowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.LowQualityText
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Redirected*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.Redirected
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_Redirected

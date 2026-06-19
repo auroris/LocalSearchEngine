@@ -9,6 +9,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Indexed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.LowQualityText
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.NoIndex
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.SkippedSize
@@ -182,6 +183,34 @@ items:
     content: SkippedSize = 4
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.LowQualityText
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.LowQualityText
+  id: LowQualityText
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+  langs:
+  - csharp
+  - vb
+  name: LowQualityText
+  nameWithType: CrawlOutcome.LowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.LowQualityText
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LowQualityText
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: 'Fetched but not indexed: the extracted text was unusable (no text layer, or a broken font encoding).'
+  example: []
+  syntax:
+    content: LowQualityText = 5
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
   commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Redirected
   id: Redirected
@@ -200,14 +229,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirected
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
-    startLine: 25
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: 'Resolved to another URL: a redirect, a canonical alias, or duplicate content.'
   example: []
   syntax:
-    content: Redirected = 5
+    content: Redirected = 6
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Gone
@@ -228,14 +257,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gone
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
-    startLine: 28
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: 'Gone (HTTP 404/410): removed from the index.'
   example: []
   syntax:
-    content: Gone = 6
+    content: Gone = 7
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Disallowed
@@ -256,14 +285,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Disallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
-    startLine: 31
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: 'Not fetched: disallowed by robots.txt.'
   example: []
   syntax:
-    content: Disallowed = 7
+    content: Disallowed = 8
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.Failed
@@ -284,14 +313,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Failed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlOutcome.cs
-    startLine: 34
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A request error or non-success status; whatever was already indexed is kept.
   example: []
   syntax:
-    content: Failed = 8
+    content: Failed = 9
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
 references:

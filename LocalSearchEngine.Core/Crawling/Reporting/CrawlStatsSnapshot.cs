@@ -11,6 +11,7 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <param name="NoIndex">Pages fetched but left unindexed by a noindex directive.</param>
 /// <param name="SkippedType">Pages skipped for an unsupported content type or failed sniff.</param>
 /// <param name="SkippedSize">Pages skipped for exceeding the size limit.</param>
+/// <param name="LowQualityText">Pages (PDFs) left unindexed because their extracted text was unusable.</param>
 /// <param name="Redirected">URLs that resolved to a redirect, canonical alias, or duplicate.</param>
 /// <param name="Gone">Pages found gone (404/410) and removed from the index.</param>
 /// <param name="Disallowed">URLs not fetched because robots.txt disallowed them.</param>
@@ -27,6 +28,7 @@ public readonly record struct CrawlStatsSnapshot(
     int NoIndex,
     int SkippedType,
     int SkippedSize,
+    int LowQualityText,
     int Redirected,
     int Gone,
     int Disallowed,
@@ -38,7 +40,7 @@ public readonly record struct CrawlStatsSnapshot(
 {
     /// <summary>Pages this crawl has finished processing (every outcome counted).</summary>
     public int Processed =>
-        Indexed + Unchanged + NoIndex + SkippedType + SkippedSize + Redirected + Gone + Disallowed + Failed;
+        Indexed + Unchanged + NoIndex + SkippedType + SkippedSize + LowQualityText + Redirected + Gone + Disallowed + Failed;
 
     /// <summary>Index entries removed this crawl: gone pages plus banned and stale removals.</summary>
     public int Removed => Gone + RemovedBanned + RemovedStale;

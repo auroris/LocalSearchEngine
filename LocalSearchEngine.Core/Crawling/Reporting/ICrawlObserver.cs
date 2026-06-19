@@ -142,6 +142,14 @@ public interface ICrawlObserver
     /// <param name="finalUrl">The URL after redirects.</param>
     void OnPageNoIndex(string currentUrl, string finalUrl);
 
+    /// <summary>A PDF was fetched but its extracted text is unusable — no text layer, or a font encoding that
+    /// doesn't reverse to Unicode — so it is not indexed. A candidate for an OCR fallback.</summary>
+    /// <param name="currentUrl">The requested URL.</param>
+    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="mappableFraction">The share of drawn glyphs that mapped to Unicode, in [0,1]; 0 when there was no text layer.</param>
+    /// <param name="totalGlyphs">The number of visible glyphs drawn in the document.</param>
+    void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs);
+
     /// <summary>A page's content was indexed.</summary>
     /// <param name="currentUrl">The requested URL.</param>
     /// <param name="finalUrl">The URL after redirects.</param>

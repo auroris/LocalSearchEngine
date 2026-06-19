@@ -55,6 +55,7 @@ internal static class CrawlStatsWriter
         sb.AppendLine($"  Unchanged     {s.Unchanged}");
         sb.AppendLine($"  NoIndex       {s.NoIndex}");
         sb.AppendLine($"  Skipped       {s.SkippedType + s.SkippedSize}  (type {s.SkippedType}, size {s.SkippedSize})");
+        sb.AppendLine($"  Unreadable    {s.LowQualityText}  (no text layer or unmappable font)");
         sb.AppendLine($"  Redirected    {s.Redirected}");
         sb.AppendLine($"  Gone          {s.Gone}");
         sb.AppendLine($"  Disallowed    {s.Disallowed}");

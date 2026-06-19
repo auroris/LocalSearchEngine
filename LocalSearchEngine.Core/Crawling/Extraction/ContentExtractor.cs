@@ -1,6 +1,11 @@
 using HtmlAgilityPack;
 using System.Text;
 using LocalSearchEngine.Core.Crawling.Policies;
+using iText.Kernel.Font;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Data;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
 
 namespace LocalSearchEngine.Core.Crawling.Extraction;
 
@@ -299,22 +304,107 @@ public static class ContentExtractor
     }
 
     /// <summary>
-    /// Extracts document title and content text from a PDF document body.
+    /// The result of extracting a PDF: its metadata title, the concatenated page text, and a measure of
+    /// how much of that text is actually recoverable as Unicode rather than font-encoding garbage.
     /// </summary>
-    public static (string? Title, string Text) ExtractPdf(byte[] body)
+    /// <param name="Title">The cleaned document-metadata title, or <c>null</c> when absent.</param>
+    /// <param name="Text">The whitespace-collapsed text harvested from every page.</param>
+    /// <param name="TotalGlyphs">Visible (non-space) glyphs drawn across all pages.</param>
+    /// <param name="MappableGlyphs">How many of those glyphs were drawn with a font that can be reversed to Unicode.</param>
+    public readonly record struct PdfExtraction(string? Title, string Text, long TotalGlyphs, long MappableGlyphs)
+    {
+        // A PDF where most glyphs can't be reversed to Unicode extracts as cipher-like garbage (e.g.
+        // an XPS-printed form whose subset fonts carry no ToUnicode CMap); indexing it just poisons the
+        // index with junk tokens. 0.80 leaves headroom for documents that legitimately mix a little
+        // unmappable decoration into otherwise-clean text, while still catching the mostly-garbled ones.
+        private const double MinMappableFraction = 0.80;
+
+        /// <summary>The share of drawn glyphs that map to Unicode, in [0,1]; 0 when the PDF carries no text.</summary>
+        public double MappableFraction => TotalGlyphs == 0 ? 0.0 : (double)MappableGlyphs / TotalGlyphs;
+
+        /// <summary>
+        /// True when the extracted text isn't worth indexing: either the PDF has no text layer at all
+        /// (<see cref="TotalGlyphs"/> is 0 — typically a scanned image), or too few of its glyphs are
+        /// Unicode-mappable (a broken/subset font encoding). Both are candidates for an OCR fallback.
+        /// </summary>
+        public bool IsLowQualityText => TotalGlyphs == 0 || MappableFraction < MinMappableFraction;
+    }
+
+    /// <summary>
+    /// Extracts a PDF's title and page text, and measures how much of that text is genuinely recoverable
+    /// (see <see cref="PdfExtraction.IsLowQualityText"/>). The text is gathered exactly as before; the
+    /// quality measure rides along on the same single parse.
+    /// </summary>
+    public static PdfExtraction ExtractPdf(byte[] body)
     {
         using var stream = new MemoryStream(body);
-        using var pdfReader = new iText.Kernel.Pdf.PdfReader(stream);
-        using var pdfDoc = new iText.Kernel.Pdf.PdfDocument(pdfReader);
+        using var pdfReader = new PdfReader(stream);
+        using var pdfDoc = new PdfDocument(pdfReader);
         var title = CleanTitle(pdfDoc.GetDocumentInfo()?.GetTitle());
+
         var sb = new StringBuilder();
+        long totalGlyphs = 0, mappableGlyphs = 0;
         for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
         {
-            var page = pdfDoc.GetPage(i);
-            sb.Append(iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(page, new iText.Kernel.Pdf.Canvas.Parser.Listener.SimpleTextExtractionStrategy()));
+            // A fresh strategy per page: GetResultantText() accumulates, so reusing one would re-emit
+            // earlier pages. The tallies are summed across pages instead.
+            var strategy = new TextQualityExtractionStrategy();
+            sb.Append(PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i), strategy));
             sb.Append(' ');
+            totalGlyphs += strategy.TotalGlyphs;
+            mappableGlyphs += strategy.MappableGlyphs;
         }
-        return (title, CollapseWhitespace(sb.ToString()));
+        return new PdfExtraction(title, CollapseWhitespace(sb.ToString()), totalGlyphs, mappableGlyphs);
+    }
+
+    /// <summary>
+    /// A text-extraction strategy that returns the same text as <see cref="SimpleTextExtractionStrategy"/>
+    /// (to which it delegates) while also counting, per drawn glyph, whether the glyph's font can be
+    /// reversed to Unicode. That ratio is what tells a readable PDF apart from one that extracts as
+    /// garbage because its fonts lack the mapping iText needs.
+    /// </summary>
+    private sealed class TextQualityExtractionStrategy : ITextExtractionStrategy
+    {
+        private readonly SimpleTextExtractionStrategy _text = new();
+
+        /// <summary>Visible (non-space) glyphs seen so far.</summary>
+        public long TotalGlyphs { get; private set; }
+        /// <summary>How many of <see cref="TotalGlyphs"/> were drawn with a Unicode-mappable font.</summary>
+        public long MappableGlyphs { get; private set; }
+
+        public void EventOccurred(IEventData data, EventType type)
+        {
+            _text.EventOccurred(data, type);
+            if (type != EventType.RENDER_TEXT || data is not TextRenderInfo render) return;
+
+            bool mappable = IsFontUnicodeMappable(render.GetFont());
+            foreach (var glyph in render.GetCharacterRenderInfos())
+            {
+                // Skip spacing the font synthesizes between words: it isn't indexable text and would
+                // dilute the ratio. A glyph from a broken font draws a visible (non-space) character,
+                // so it still counts against the denominator.
+                if (string.IsNullOrWhiteSpace(glyph.GetText())) continue;
+                TotalGlyphs++;
+                if (mappable) MappableGlyphs++;
+            }
+        }
+
+        public ICollection<EventType> GetSupportedEvents() => _text.GetSupportedEvents();
+        public string GetResultantText() => _text.GetResultantText();
+
+        /// <summary>
+        /// Decides whether text drawn with <paramref name="font"/> can be recovered as Unicode. A
+        /// ToUnicode CMap is the authoritative answer when present. Without one, only simple fonts
+        /// (Type1/TrueType) still reverse reliably through their glyph-name encoding; composite (Type0)
+        /// and Type3 fonts then expose only glyph IDs or private encodings — the garbage case.
+        /// </summary>
+        private static bool IsFontUnicodeMappable(PdfFont font)
+        {
+            var dict = font.GetPdfObject();
+            if (dict.ContainsKey(PdfName.ToUnicode)) return true;
+            var subtype = dict.GetAsName(PdfName.Subtype);
+            return !PdfName.Type0.Equals(subtype) && !PdfName.Type3.Equals(subtype);
+        }
     }
 
     /// <summary>

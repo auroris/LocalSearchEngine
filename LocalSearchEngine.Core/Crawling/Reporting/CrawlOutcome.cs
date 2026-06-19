@@ -22,6 +22,9 @@ public enum CrawlOutcome
     /// <summary>Skipped before or during download: larger than the size limit.</summary>
     SkippedSize,
 
+    /// <summary>Fetched but not indexed: the extracted text was unusable (no text layer, or a broken font encoding).</summary>
+    LowQualityText,
+
     /// <summary>Resolved to another URL: a redirect, a canonical alias, or duplicate content.</summary>
     Redirected,
 

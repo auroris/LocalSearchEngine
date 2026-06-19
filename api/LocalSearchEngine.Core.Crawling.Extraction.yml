@@ -6,6 +6,8 @@ items:
   children:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
   langs:
   - csharp
   - vb
@@ -45,6 +47,51 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
     name: HtmlAnalysis
     href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor.PdfExtraction
+  nameWithType: ContentExtractor.PdfExtraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor.TextQualityExtractionStrategy
+  nameWithType: ContentExtractor.TextQualityExtractionStrategy
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+    name: TextQualityExtractionStrategy
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
+    name: TextQualityExtractionStrategy
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy.html
 - uid: LocalSearchEngine.Core.Crawling.Extraction
   commentId: N:LocalSearchEngine.Core.Crawling.Extraction
   href: LocalSearchEngine.html

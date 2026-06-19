@@ -189,6 +189,15 @@ internal sealed class CrawlObserver : ICrawlObserver
         ReportPage(currentUrl, CrawlOutcome.NoIndex);
     }
 
+    public void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs)
+    {
+        if (totalGlyphs == 0)
+            _logger.LogInformation("No extractable text layer in {Url} (likely a scanned image) — not indexing.", finalUrl);
+        else
+            _logger.LogInformation("Unreliable text extraction for {Url}: only {Mappable:P0} of glyphs map to Unicode — not indexing.", finalUrl, mappableFraction);
+        ReportPage(currentUrl, CrawlOutcome.LowQualityText);
+    }
+
     public void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
     {
         // The counterpart to the unchanged/duplicate/noindex outcome lines: without it an embedded

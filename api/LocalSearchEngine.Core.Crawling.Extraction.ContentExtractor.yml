@@ -33,7 +33,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ContentExtractor
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 14
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -81,7 +81,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WordSeparators
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 16
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -108,7 +108,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AnalyzeHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 59
+    startLine: 64
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -164,7 +164,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 117
+    startLine: 122
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -216,7 +216,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetHref
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 151
+    startLine: 156
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -258,7 +258,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 159
+    startLine: 164
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -305,7 +305,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ParseRobotsDirectives
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 204
+    startLine: 209
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -345,7 +345,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveCanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 277
+    startLine: 282
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -385,20 +385,25 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractPdf
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 303
+    startLine: 337
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
-  summary: Extracts document title and content text from a PDF document body.
+  summary: >-
+    Extracts a PDF's title and page text, and measures how much of that text is genuinely recoverable
+
+    (see <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText" data-throw-if-not-resolved="false"></xref>). The text is gathered exactly as before; the
+
+    quality measure rides along on the same single parse.
   example: []
   syntax:
-    content: public static (string? Title, string Text) ExtractPdf(byte[] body)
+    content: public static ContentExtractor.PdfExtraction ExtractPdf(byte[] body)
     parameters:
     - id: body
       type: System.Byte[]
     return:
-      type: System.ValueTuple{System.String,System.String}
-    content.vb: Public Shared Function ExtractPdf(body As Byte()) As (Title As String, Text As String)
+      type: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    content.vb: Public Shared Function ExtractPdf(body As Byte()) As ContentExtractor.PdfExtraction
   overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf*
   nameWithType.vb: ContentExtractor.ExtractPdf(Byte())
   fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf(Byte())
@@ -421,7 +426,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractDocx
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 322
+    startLine: 412
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -457,7 +462,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CleanTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 334
+    startLine: 424
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -493,7 +498,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 344
+    startLine: 434
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -526,7 +531,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractHeadings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 355
+    startLine: 445
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -559,7 +564,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollapseWhitespace
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 376
+    startLine: 466
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -595,7 +600,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveEncoding
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 382
+    startLine: 472
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -1283,12 +1288,47 @@ references:
   name: ResolveCanonicalAlias
   nameWithType: ContentExtractor.ResolveCanonicalAlias
   fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  commentId: P:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_PdfExtraction_IsLowQualityText
+  name: IsLowQualityText
+  nameWithType: ContentExtractor.PdfExtraction.IsLowQualityText
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.IsLowQualityText
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractPdf_System_Byte___
   name: ExtractPdf
   nameWithType: ContentExtractor.ExtractPdf
   fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  commentId: T:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  parent: LocalSearchEngine.Core.Crawling.Extraction
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  name: ContentExtractor.PdfExtraction
+  nameWithType: ContentExtractor.PdfExtraction
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+    name: ContentExtractor
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction
+    name: PdfExtraction
+    href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.PdfExtraction.html
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractDocx_System_Byte___
+  name: ExtractDocx
+  nameWithType: ContentExtractor.ExtractDocx
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
 - uid: System.ValueTuple{System.String,System.String}
   commentId: T:System.ValueTuple{System.String,System.String}
   parent: System
@@ -1346,12 +1386,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
-  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractDocx_System_Byte___
-  name: ExtractDocx
-  nameWithType: ContentExtractor.ExtractDocx
-  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_CleanTitle_System_String_

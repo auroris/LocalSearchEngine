@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Tests.FakeEmbedder
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   - LocalSearchEngine.Tests.NoIndexRulesTests
+  - LocalSearchEngine.Tests.PdfTextQualityTests
   - LocalSearchEngine.Tests.RobotsRulesTests
   - LocalSearchEngine.Tests.SearchQueryParserTests
   - LocalSearchEngine.Tests.SearchRankerTests
@@ -117,6 +118,12 @@ references:
   name: NoIndexRulesTests
   nameWithType: NoIndexRulesTests
   fullName: LocalSearchEngine.Tests.NoIndexRulesTests
+- uid: LocalSearchEngine.Tests.PdfTextQualityTests
+  commentId: T:LocalSearchEngine.Tests.PdfTextQualityTests
+  href: LocalSearchEngine.Tests.PdfTextQualityTests.html
+  name: PdfTextQualityTests
+  nameWithType: PdfTextQualityTests
+  fullName: LocalSearchEngine.Tests.PdfTextQualityTests
 - uid: LocalSearchEngine.Tests.RobotsRulesTests
   commentId: T:LocalSearchEngine.Tests.RobotsRulesTests
   href: LocalSearchEngine.Tests.RobotsRulesTests.html

@@ -27,7 +27,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HtmlAnalysis
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 28
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -63,7 +63,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 31
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Headings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 33
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -121,7 +121,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 35
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -150,7 +150,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoIndex
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 37
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -179,7 +179,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoFollow
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 39
+    startLine: 44
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -208,7 +208,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 41
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -237,7 +237,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Outlinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 43
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -266,7 +266,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OffsiteLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 45
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction

@@ -563,7 +563,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Elapsed
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 123
+    startLine: 124
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -596,7 +596,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Truncate
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 126
+    startLine: 127
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
