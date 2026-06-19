@@ -145,19 +145,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.className = 'result-card';
 
-        const title = result.title && result.title.trim();
+        // Web pages use their crawled <title> as the headline. PDFs and Word docs often carry a
+        // useless embedded title (e.g. "Microsoft Word - Document1"), so for those we show the
+        // file name parsed from the URL instead.
+        const headline = result.docKind === 'Html'
+            ? (result.title && result.title.trim())
+            : fileNameFromUrl(result.url);
 
-        // When a page title is known it becomes the clickable headline and the URL
+        // When a headline is known it becomes the clickable headline and the URL
         // drops to a small line beneath it; otherwise the URL is the headline.
         const link = document.createElement('a');
-        link.className = title ? 'result-title' : 'result-url';
+        link.className = headline ? 'result-title' : 'result-url';
         link.href = result.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.textContent = title || result.url;
+        link.textContent = headline || result.url;
 
         const parts = [link];
-        if (title) {
+        if (headline) {
             const urlLine = document.createElement('div');
             urlLine.className = 'result-link-url';
             urlLine.textContent = result.url;
@@ -212,6 +217,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function escapeRegex(value) {
         return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // The file name (with extension) from a URL's path, percent-decoded — e.g.
+    // ".../Documents/Annual%20Report.pdf" → "Annual Report.pdf". Returns '' for a path with no
+    // final segment or a malformed URL, in which case the card falls back to showing the URL.
+    function fileNameFromUrl(url) {
+        try {
+            const segment = new URL(url).pathname.split('/').filter(Boolean).pop();
+            return segment ? decodeURIComponent(segment) : '';
+        } catch {
+            return '';
+        }
     }
 
     // Quiet one-line index summary in the footer. Stats are decorative: any failure
