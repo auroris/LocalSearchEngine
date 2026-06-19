@@ -7,6 +7,7 @@ items:
   children:
   - LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
   - LocalSearchEngine.Tests.ContentExtractorTests.Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing
+  - LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
   - LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
   - LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
@@ -268,6 +269,42 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
+  id: Href_entities_are_decoded_before_the_url_is_parsed
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Href_entities_are_decoded_before_the_url_is_parsed()
+  nameWithType: ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Href_entities_are_decoded_before_the_url_is_parsed
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 99
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Href_entities_are_decoded_before_the_url_is_parsed()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Href_entities_are_decoded_before_the_url_is_parsed()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   id: Meta_robots_name_is_matched_case_insensitively
@@ -286,7 +323,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Meta_robots_name_is_matched_case_insensitively
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 99
+    startLine: 114
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -322,7 +359,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 110
+    startLine: 125
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -358,7 +395,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: XRobotsTag_directives_are_parsed_correctly
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 130
+    startLine: 145
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -793,6 +830,12 @@ references:
   name: Matching_meta_charset_does_not_break_utf8_pages
   nameWithType: ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   fullName: LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Href_entities_are_decoded_before_the_url_is_parsed
+  name: Href_entities_are_decoded_before_the_url_is_parsed
+  nameWithType: ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively*
   commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Meta_robots_name_is_matched_case_insensitively

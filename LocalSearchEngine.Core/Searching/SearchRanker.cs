@@ -1,3 +1,5 @@
+using LocalSearchEngine.Core.Crawling.Policies;
+
 namespace LocalSearchEngine.Core.Searching;
 
 /// <summary>
@@ -20,12 +22,13 @@ public readonly record struct KeywordCandidate(string Url, string Text, bool IsH
 
 /// <summary>
 /// Collapses the two candidate streams of a hybrid search — semantic vector hits and keyword (FTS5)
-/// hits — into a single ranked result list. Candidates are aggregated by URL: the semantic pass drops
-/// hits beyond the configured distance ceiling and seeds each URL's base score from its closest chunk,
-/// while the keyword pass records whether the URL matched as a verbatim phrase or a looser all-terms
-/// hit. A final pass layers on the configured boosts (phrase, all-terms, heading, title, filename, and
-/// literal-term-in-snippet) from <see cref="SearchSettings"/> and sorts by the combined score. Pure and
-/// stateless — the same candidates always rank the same way.
+/// hits — into a single ranked result list. Candidates are aggregated by URL, then ordered in three
+/// tiers: web pages rank ahead of every PDF/DOCX; within a doc-type group a verbatim-phrase keyword
+/// hit ranks ahead of a looser all-terms or semantic-only hit; and within a group the configured
+/// fine-grained boosts (heading, title, filename, literal-term-in-snippet) layered on the semantic
+/// similarity break the tie. The first two are hard tiers — no fine score lifts a PDF above a web
+/// page, or an all-terms hit above a phrase hit in the same group. Pure and stateless — the same
+/// candidates always rank the same way.
 /// </summary>
 public static class SearchRanker
 {
@@ -37,13 +40,15 @@ public static class SearchRanker
     /// <param name="query">The raw query string.</param>
     /// <param name="settings">The search relevance settings.</param>
     /// <param name="titles">Optional dictionary map of page URLs to titles.</param>
+    /// <param name="docKinds">Optional dictionary map of page URLs to their <see cref="DocKind"/>; URLs absent from it are treated as web pages.</param>
     /// <returns>A sorted list of ranked search result items.</returns>
     public static List<SearchResultItem> Rank(
         IEnumerable<VectorCandidate> vectorHits,
         IEnumerable<KeywordCandidate> keywordHits,
         string query,
         SearchSettings settings,
-        IReadOnlyDictionary<string, string?>? titles = null)
+        IReadOnlyDictionary<string, string?>? titles = null,
+        IReadOnlyDictionary<string, DocKind>? docKinds = null)
     {
         var byUrl = new Dictionary<string, Aggregate>(StringComparer.OrdinalIgnoreCase);
 
@@ -65,43 +70,57 @@ public static class SearchRanker
             agg.MatchedHeading |= hit.IsHeading;
         }
 
-        // Keyword pass: keyword matches are always relevant, threshold or not. A verbatim
-        // phrase hit outranks a looser all-terms (AND) hit for the same URL.
+        // Keyword pass: keyword matches are always relevant, threshold or not. Only a verbatim
+        // phrase hit promotes the URL into the exact-match tier; a looser all-terms hit leaves it
+        // in the same tier as a semantic-only hit, ordered by the fine score below.
         foreach (var hit in keywordHits)
         {
             var agg = GetOrCreate(byUrl, hit.Url);
             if (hit.ExactPhrase) agg.ExactPhrase = true;
-            else agg.AndTerms = true;
             agg.MatchedHeading |= hit.IsHeading;
             if (agg.Text.Length == 0) agg.Text = hit.Text; // only if no vector snippet chosen
         }
 
-        var results = new List<SearchResultItem>(byUrl.Count);
+        // Final pass: resolve each URL's title and doc kind, then compute the fine within-group
+        // score — the semantic similarity plus the configured term boosts (heading, filename,
+        // literal-term-in-snippet, title). The web-page and exact-phrase tiers are applied by the
+        // sort below, not folded into this score.
         foreach (var agg in byUrl.Values)
         {
             string? title = null;
             titles?.TryGetValue(agg.Url, out title);
+            agg.Title = title;
+
+            // Missing/NULL doc kind ⇒ treat as a web page: only PDFs/DOCX are ever demoted, and they
+            // always have their kind recorded at index time, so a gap here means an HTML page.
+            DocKind kind = DocKind.Html;
+            if (docKinds != null && docKinds.TryGetValue(agg.Url, out var k)) kind = k;
+            agg.Kind = kind;
 
             double score = agg.Similarity;
-            if (agg.ExactPhrase) score += settings.ExactPhraseBoost;
-            else if (agg.AndTerms) score += settings.AndTermsBoost;
             if (agg.MatchedHeading) score += settings.HeadingBoost;
             if (UrlFileNameContains(agg.Url, query)) score += settings.FilenameBoost;
             if (agg.Text.Contains(query, StringComparison.OrdinalIgnoreCase)) score += settings.TermInTextBoost;
             if (!string.IsNullOrEmpty(title) && title.Contains(query, StringComparison.OrdinalIgnoreCase)) score += settings.TitleBoost;
-
-            results.Add(new SearchResultItem
-            {
-                Url = agg.Url,
-                Title = title,
-                Text = agg.Text,
-                Similarity = agg.Similarity,
-                Score = score
-            });
+            agg.Score = score;
         }
 
-        results.Sort((a, b) => b.Score.CompareTo(a.Score));
-        return results;
+        // Lexicographic ordering: (1) web pages ahead of PDFs/DOCX, (2) exact-phrase hits ahead of
+        // the rest, (3) the fine within-group score. OrderByDescending on a bool puts true first.
+        return byUrl.Values
+            .OrderByDescending(a => a.Kind == DocKind.Html)
+            .ThenByDescending(a => a.ExactPhrase)
+            .ThenByDescending(a => a.Score)
+            .Select(a => new SearchResultItem
+            {
+                Url = a.Url,
+                Title = a.Title,
+                Text = a.Text,
+                Similarity = a.Similarity,
+                Score = a.Score,
+                DocKind = a.Kind
+            })
+            .ToList();
     }
 
     /// <summary>
@@ -153,16 +172,20 @@ public static class SearchRanker
     {
         /// <summary>The page URL.</summary>
         public string Url = string.Empty;
+        /// <summary>The resolved page title, if known (filled in the final pass).</summary>
+        public string? Title;
         /// <summary>The representative text snippet.</summary>
         public string Text = string.Empty;
         /// <summary>The highest semantic similarity score.</summary>
         public double Similarity;
-        /// <summary>Whether an exact phrase hit was matched.</summary>
+        /// <summary>Whether an exact phrase hit was matched (promotes the URL into the exact-match tier).</summary>
         public bool ExactPhrase;
-        /// <summary>Whether a word term AND hit was matched.</summary>
-        public bool AndTerms;
         /// <summary>Whether a heading chunk was matched.</summary>
         public bool MatchedHeading;
+        /// <summary>The classified document kind, resolved in the final pass.</summary>
+        public DocKind Kind;
+        /// <summary>The fine within-group relevance score, computed in the final pass.</summary>
+        public double Score;
     }
 }
 
@@ -179,8 +202,10 @@ public class SearchResultItem
     public string Text { get; set; } = string.Empty;
     /// <summary>Gets or sets the highest cosine similarity score.</summary>
     public double Similarity { get; set; }
-    /// <summary>Gets or sets the final calculated relevance score.</summary>
+    /// <summary>Gets or sets the fine within-group relevance score. Overall ordering also applies the web-page and exact-phrase tiers ahead of this score.</summary>
     public double Score { get; set; }
+    /// <summary>Gets or sets the document kind (web page, PDF, or DOCX) of the result.</summary>
+    public DocKind DocKind { get; set; }
 }
 
 /// <summary>

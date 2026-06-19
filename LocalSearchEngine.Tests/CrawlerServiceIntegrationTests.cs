@@ -151,6 +151,31 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Volatile_markup_with_unchanged_text_skips_reembedding()
+    {
+        await EnsureSchemaAsync();
+
+        // The server ignores conditional requests AND varies the raw bytes every response with a
+        // per-request comment (think a CSP nonce, CSRF token, or "generated at" timestamp). The
+        // extracted text never changes, so hashing the content we embed — not the raw body — must
+        // still recognize the page as unchanged and spare us the re-embed.
+        int request = 0;
+        _handler.Routes[Seed] = _ =>
+        {
+            request++;
+            return Html($"<title>Home</title><!-- nonce {request} --><p>stable content here</p>");
+        };
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+        int embedsAfterFirst = _embedder.EmbedCount;
+        Assert.True(embedsAfterFirst > 0);
+
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(request >= 2, "the server should have been re-fetched (no 304 path)");
+        Assert.Equal(embedsAfterFirst, _embedder.EmbedCount); // volatile bytes alone must not re-embed
+    }
+
+    [Fact]
     public async Task Non_html_content_is_not_indexed()
     {
         await EnsureSchemaAsync();

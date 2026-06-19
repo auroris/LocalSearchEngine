@@ -74,7 +74,7 @@ internal sealed class CrawlConsumer
                         {
                             await _vectorSearchService.IndexUrlChunksAsync(j.Url, j.Headings, isHeading: true);
                         }
-                        await CrawlStore.RecordCrawlStateAsync(_connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
+                        await CrawlStore.RecordCrawlStateAsync(_connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, j.DocKind, CancellationToken.None);
                         await CrawlStore.StoreLinksAsync(_connection, j.Url, j.Outlinks, j.OffsiteLinks, CancellationToken.None);
 
                         break;
@@ -82,7 +82,7 @@ internal sealed class CrawlConsumer
                     case NoIndexJob j:
                         await _vectorSearchService.DeleteUrlChunksAsync(j.Url);
                         await CrawlStore.StoreLinksAsync(_connection, j.Url, j.Outlinks, j.OffsiteLinks, CancellationToken.None);
-                        await CrawlStore.RecordCrawlStateAsync(_connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, CancellationToken.None);
+                        await CrawlStore.RecordCrawlStateAsync(_connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, j.DocKind, CancellationToken.None);
                         break;
 
                     case GoneJob j:

@@ -1446,7 +1446,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnStaleUrlsPruned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 196
+    startLine: 200
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1483,7 +1483,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPruneFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 205
+    startLine: 209
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1516,7 +1516,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnBannedUrlsRemoved
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 210
+    startLine: 214
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1553,7 +1553,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnRemoveBannedFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 219
+    startLine: 223
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1586,7 +1586,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinksVerified
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 224
+    startLine: 228
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1629,7 +1629,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinkProbeInconclusive
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 229
+    startLine: 233
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1667,7 +1667,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnAllowedServerIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 234
+    startLine: 238
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1704,7 +1704,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnNoIndexPatternIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 239
+    startLine: 243
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting

@@ -6,7 +6,7 @@ items:
   parent: LocalSearchEngine.Core.Searching
   children:
   - LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate(System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate},System.String)
-  - LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})
+  - LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   - LocalSearchEngine.Core.Searching.SearchRanker.Slugify(System.String)
   - LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(System.String,System.String)
   langs:
@@ -23,24 +23,26 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchRanker
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 29
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
     Collapses the two candidate streams of a hybrid search — semantic vector hits and keyword (FTS5)
 
-    hits — into a single ranked result list. Candidates are aggregated by URL: the semantic pass drops
+    hits — into a single ranked result list. Candidates are aggregated by URL, then ordered in three
 
-    hits beyond the configured distance ceiling and seeds each URL's base score from its closest chunk,
+    tiers: web pages rank ahead of every PDF/DOCX; within a doc-type group a verbatim-phrase keyword
 
-    while the keyword pass records whether the URL matched as a verbatim phrase or a looser all-terms
+    hit ranks ahead of a looser all-terms or semantic-only hit; and within a group the configured
 
-    hit. A final pass layers on the configured boosts (phrase, all-terms, heading, title, filename, and
+    fine-grained boosts (heading, title, filename, literal-term-in-snippet) layered on the semantic
 
-    literal-term-in-snippet) from <xref href="LocalSearchEngine.Core.Searching.SearchSettings" data-throw-if-not-resolved="false"></xref> and sorts by the combined score. Pure and
+    similarity break the tie. The first two are hard tiers — no fine score lifts a PDF above a web
 
-    stateless — the same candidates always rank the same way.
+    page, or an all-terms hit above a phrase hit in the same group. Pure and stateless — the same
+
+    candidates always rank the same way.
   example: []
   syntax:
     content: public static class SearchRanker
@@ -55,16 +57,16 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})
-  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})
-  id: Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
+  id: Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   parent: LocalSearchEngine.Core.Searching.SearchRanker
   langs:
   - csharp
   - vb
-  name: Rank(IEnumerable<VectorCandidate>, IEnumerable<KeywordCandidate>, string, SearchSettings, IReadOnlyDictionary<string, string?>?)
-  nameWithType: SearchRanker.Rank(IEnumerable<VectorCandidate>, IEnumerable<KeywordCandidate>, string, SearchSettings, IReadOnlyDictionary<string, string?>?)
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable<LocalSearchEngine.Core.Searching.VectorCandidate>, System.Collections.Generic.IEnumerable<LocalSearchEngine.Core.Searching.KeywordCandidate>, string, LocalSearchEngine.Core.Searching.SearchSettings, System.Collections.Generic.IReadOnlyDictionary<string, string?>?)
+  name: Rank(IEnumerable<VectorCandidate>, IEnumerable<KeywordCandidate>, string, SearchSettings, IReadOnlyDictionary<string, string?>?, IReadOnlyDictionary<string, DocKind>?)
+  nameWithType: SearchRanker.Rank(IEnumerable<VectorCandidate>, IEnumerable<KeywordCandidate>, string, SearchSettings, IReadOnlyDictionary<string, string?>?, IReadOnlyDictionary<string, DocKind>?)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable<LocalSearchEngine.Core.Searching.VectorCandidate>, System.Collections.Generic.IEnumerable<LocalSearchEngine.Core.Searching.KeywordCandidate>, string, LocalSearchEngine.Core.Searching.SearchSettings, System.Collections.Generic.IReadOnlyDictionary<string, string?>?, System.Collections.Generic.IReadOnlyDictionary<string, LocalSearchEngine.Core.Crawling.Policies.DocKind>?)
   type: Method
   source:
     remote:
@@ -73,14 +75,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Rank
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 40
+    startLine: 44
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: Ranks semantic and keyword candidates based on query similarity and search settings configuration.
   example: []
   syntax:
-    content: public static List<SearchResultItem> Rank(IEnumerable<VectorCandidate> vectorHits, IEnumerable<KeywordCandidate> keywordHits, string query, SearchSettings settings, IReadOnlyDictionary<string, string?>? titles = null)
+    content: public static List<SearchResultItem> Rank(IEnumerable<VectorCandidate> vectorHits, IEnumerable<KeywordCandidate> keywordHits, string query, SearchSettings settings, IReadOnlyDictionary<string, string?>? titles = null, IReadOnlyDictionary<string, DocKind>? docKinds = null)
     parameters:
     - id: vectorHits
       type: System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate}
@@ -97,14 +99,17 @@ items:
     - id: titles
       type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
       description: Optional dictionary map of page URLs to titles.
+    - id: docKinds
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+      description: Optional dictionary map of page URLs to their <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind" data-throw-if-not-resolved="false"></xref>; URLs absent from it are treated as web pages.
     return:
       type: System.Collections.Generic.List{LocalSearchEngine.Core.Searching.SearchResultItem}
       description: A sorted list of ranked search result items.
-    content.vb: Public Shared Function Rank(vectorHits As IEnumerable(Of VectorCandidate), keywordHits As IEnumerable(Of KeywordCandidate), query As String, settings As SearchSettings, titles As IReadOnlyDictionary(Of String, String) = Nothing) As List(Of SearchResultItem)
+    content.vb: Public Shared Function Rank(vectorHits As IEnumerable(Of VectorCandidate), keywordHits As IEnumerable(Of KeywordCandidate), query As String, settings As SearchSettings, titles As IReadOnlyDictionary(Of String, String) = Nothing, docKinds As IReadOnlyDictionary(Of String, DocKind) = Nothing) As List(Of SearchResultItem)
   overload: LocalSearchEngine.Core.Searching.SearchRanker.Rank*
-  nameWithType.vb: SearchRanker.Rank(IEnumerable(Of VectorCandidate), IEnumerable(Of KeywordCandidate), String, SearchSettings, IReadOnlyDictionary(Of String, String))
-  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable(Of LocalSearchEngine.Core.Searching.VectorCandidate), System.Collections.Generic.IEnumerable(Of LocalSearchEngine.Core.Searching.KeywordCandidate), String, LocalSearchEngine.Core.Searching.SearchSettings, System.Collections.Generic.IReadOnlyDictionary(Of String, String))
-  name.vb: Rank(IEnumerable(Of VectorCandidate), IEnumerable(Of KeywordCandidate), String, SearchSettings, IReadOnlyDictionary(Of String, String))
+  nameWithType.vb: SearchRanker.Rank(IEnumerable(Of VectorCandidate), IEnumerable(Of KeywordCandidate), String, SearchSettings, IReadOnlyDictionary(Of String, String), IReadOnlyDictionary(Of String, DocKind))
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable(Of LocalSearchEngine.Core.Searching.VectorCandidate), System.Collections.Generic.IEnumerable(Of LocalSearchEngine.Core.Searching.KeywordCandidate), String, LocalSearchEngine.Core.Searching.SearchSettings, System.Collections.Generic.IReadOnlyDictionary(Of String, String), System.Collections.Generic.IReadOnlyDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.DocKind))
+  name.vb: Rank(IEnumerable(Of VectorCandidate), IEnumerable(Of KeywordCandidate), String, SearchSettings, IReadOnlyDictionary(Of String, String), IReadOnlyDictionary(Of String, DocKind))
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate(System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate},System.String)
   commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate(System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate},System.String)
   id: GetOrCreate(System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate},System.String)
@@ -123,7 +128,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetOrCreate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 112
+    startLine: 131
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -164,7 +169,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlFileNameContains
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 128
+    startLine: 147
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -205,7 +210,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Slugify
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 146
+    startLine: 165
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -226,13 +231,6 @@ items:
   fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Slugify(String)
   name.vb: Slugify(String)
 references:
-- uid: LocalSearchEngine.Core.Searching.SearchSettings
-  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
-  parent: LocalSearchEngine.Core.Searching
-  href: LocalSearchEngine.Core.Searching.SearchSettings.html
-  name: SearchSettings
-  nameWithType: SearchSettings
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -500,9 +498,16 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Rank*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.Rank
-  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_Rank_System_Collections_Generic_IEnumerable_LocalSearchEngine_Core_Searching_VectorCandidate__System_Collections_Generic_IEnumerable_LocalSearchEngine_Core_Searching_KeywordCandidate__System_String_LocalSearchEngine_Core_Searching_SearchSettings_System_Collections_Generic_IReadOnlyDictionary_System_String_System_String__
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_Rank_System_Collections_Generic_IEnumerable_LocalSearchEngine_Core_Searching_VectorCandidate__System_Collections_Generic_IEnumerable_LocalSearchEngine_Core_Searching_KeywordCandidate__System_String_LocalSearchEngine_Core_Searching_SearchSettings_System_Collections_Generic_IReadOnlyDictionary_System_String_System_String__System_Collections_Generic_IReadOnlyDictionary_System_String_LocalSearchEngine_Core_Crawling_Policies_DocKind__
   name: Rank
   nameWithType: SearchRanker.Rank
   fullName: LocalSearchEngine.Core.Searching.SearchRanker.Rank
@@ -583,6 +588,13 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: LocalSearchEngine.Core.Searching.SearchSettings
+  commentId: T:LocalSearchEngine.Core.Searching.SearchSettings
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html
+  name: SearchSettings
+  nameWithType: SearchSettings
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings
 - uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
   commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
   parent: System.Collections.Generic
@@ -630,6 +642,51 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, DocKind>
+  nameWithType: IReadOnlyDictionary<string, DocKind>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, LocalSearchEngine.Core.Crawling.Policies.DocKind>
+  nameWithType.vb: IReadOnlyDictionary(Of String, DocKind)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name.vb: IReadOnlyDictionary(Of String, DocKind)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: )
 - uid: System.Collections.Generic.List{LocalSearchEngine.Core.Searching.SearchResultItem}
   commentId: T:System.Collections.Generic.List{LocalSearchEngine.Core.Searching.SearchResultItem}
   parent: System.Collections.Generic
@@ -663,6 +720,44 @@ references:
     name: SearchResultItem
     href: LocalSearchEngine.Core.Searching.SearchResultItem.html
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: System.Collections.Generic.IEnumerable`1
   commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true

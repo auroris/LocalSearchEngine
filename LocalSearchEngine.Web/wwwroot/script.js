@@ -5,11 +5,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let inFlight = null;
 
-    searchForm.addEventListener('submit', async (e) => {
+    searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = searchInput.value.trim();
         if (!query) return;
+        // Mirror the search into the URL so it's bookmarkable and Back/Forward replays it; skip the
+        // push on a re-submit of the same query to avoid stacking dead history entries.
+        if (query !== currentQuery()) {
+            history.pushState({ query }, '', `?query=${encodeURIComponent(query)}`);
+        }
+        performSearch(query);
+    });
 
+    // Back/Forward replays whatever ?query= the URL lands on (and clears when there's none). Reading
+    // the URL instead of history.state means bookmarked links and the initial entry behave the same.
+    window.addEventListener('popstate', () => applyQuery(currentQuery()));
+
+    // Runs a search for an already-trimmed, non-empty query and renders the outcome. Shared by the
+    // form submit and by applyQuery (deep-link load and Back/Forward).
+    async function performSearch(query) {
         // Cancel any still-running search so a slow earlier query can't land after a newer one.
         if (inFlight) inFlight.abort();
         const controller = new AbortController();
@@ -18,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsContainer.innerHTML = '<div class="results-status">Searching local vector database...</div>';
 
         try {
-            const response = await fetch(`/api/search/query?q=${encodeURIComponent(query)}`, { signal: controller.signal });
+            const response = await fetch(`api/search/query?q=${encodeURIComponent(query)}`, { signal: controller.signal });
             if (!response.ok) {
                 let message = 'Search failed';
                 try {
@@ -37,7 +51,27 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             if (inFlight === controller) inFlight = null;
         }
-    });
+    }
+
+    // The trimmed ?query= from the address bar, or '' when absent.
+    function currentQuery() {
+        return (new URLSearchParams(window.location.search).get('query') || '').trim();
+    }
+
+    // Drive the UI from a query string: fill the box and search, or clear results when it's empty.
+    // encodeURIComponent at the fetch call means spaces/punctuation round-trip cleanly through the URL.
+    function applyQuery(query) {
+        searchInput.value = query;
+        if (query) {
+            performSearch(query);
+        } else {
+            if (inFlight) inFlight.abort();
+            resultsContainer.innerHTML = '';
+        }
+    }
+
+    // Run the ?query= named in the URL on load, so a search can be linked or bookmarked.
+    applyQuery(currentQuery());
 
     function displayResults(responseObj, query) {
         const results = (responseObj && responseObj.items) || [];
@@ -49,52 +83,98 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const header = document.createElement('div');
-        header.className = 'results-header';
-        const total = responseObj.totalMatches || results.length;
-        header.textContent = `Found ${total} relevant ${total === 1 ? 'result' : 'results'}.`;
-        resultsContainer.appendChild(header);
-
         const stopWords = new Set(["the", "and", "a", "an", "of", "to", "in", "is", "for", "on", "at", "by", "this", "that", "with", "from", "as", "it", "its"]);
         const terms = query.toLowerCase().split(/\s+/).filter(t => t.length >= 2 && !stopWords.has(t));
 
+        // The ranker already orders web pages ahead of documents, so splitting the single ranked
+        // list into two tabs preserves each group's relevance order. "Documents" is everything that
+        // isn't an HTML page (PDF/DOCX).
+        const groups = [
+            { key: 'pages',     label: 'Pages',     items: results.filter(r => r.docKind === 'Html') },
+            { key: 'documents', label: 'Documents', items: results.filter(r => r.docKind !== 'Html') },
+        ];
 
-        results.forEach((result, index) => {
-            const card = document.createElement('div');
-            card.className = 'result-card';
-            card.style.animationDelay = `${Math.min(index, 10) * 0.05}s`;
+        // Default to Pages, but open on whichever tab has results so a documents-only query never
+        // lands on an empty tab.
+        const activeKey = groups[0].items.length > 0 ? 'pages' : 'documents';
 
-            const title = result.title && result.title.trim();
+        // Tab switching is CSS-only: a hidden radio per group drives both the active-tab styling and
+        // which panel is shown, through :checked sibling selectors in the stylesheet — there are no
+        // click handlers. JS just builds the nodes and seeds the initial checked/disabled state from
+        // the result counts. The radios must precede the label bar and panels so those selectors can
+        // reach them.
+        const wrap = document.createElement('div');
+        wrap.className = 'result-tabs-wrap';
 
-            // When a page title is known it becomes the clickable headline and the URL
-            // drops to a small line beneath it; otherwise the URL is the headline.
-            const link = document.createElement('a');
-            link.className = title ? 'result-title' : 'result-url';
-            link.href = result.url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = title || result.url;
+        const tabBar = document.createElement('div');
+        tabBar.className = 'result-tabs';
 
-            const parts = [link];
-            if (title) {
-                const urlLine = document.createElement('div');
-                urlLine.className = 'result-link-url';
-                urlLine.textContent = result.url;
-                parts.push(urlLine);
-            }
+        const panels = [];
+        for (const group of groups) {
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'resultTab';
+            radio.id = `tab-${group.key}`;
+            radio.className = 'result-tab-radio';
+            radio.checked = group.key === activeKey;
+            radio.disabled = group.items.length === 0; // empty group isn't selectable
 
-            const text = document.createElement('p');
-            text.className = 'result-text';
-            appendHighlighted(text, result.text || '', terms);
+            const label = document.createElement('label');
+            label.className = 'result-tab';
+            label.htmlFor = radio.id;
+            label.textContent = `${group.label} (${group.items.length})`;
 
-            const score = document.createElement('span');
-            score.className = 'result-score';
-            const similarity = typeof result.similarity === 'number' ? ` · similarity ${result.similarity.toFixed(3)}` : '';
-            score.textContent = `Relevance ${Number(result.score).toFixed(3)}${similarity}`;
+            const panel = document.createElement('div');
+            panel.className = 'results-list';
+            panel.id = `panel-${group.key}`;
+            group.items.forEach(result => panel.appendChild(buildResultCard(result, terms)));
 
-            card.append(...parts, text, score);
-            resultsContainer.appendChild(card);
-        });
+            wrap.appendChild(radio);
+            tabBar.appendChild(label);
+            panels.push(panel);
+        }
+
+        wrap.appendChild(tabBar);
+        panels.forEach(panel => wrap.appendChild(panel));
+        resultsContainer.appendChild(wrap);
+    }
+
+    // Builds one result card; shared by both tabs. The staggered fade-in delay is applied
+    // in CSS (per card position) rather than inline here.
+    function buildResultCard(result, terms) {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+
+        const title = result.title && result.title.trim();
+
+        // When a page title is known it becomes the clickable headline and the URL
+        // drops to a small line beneath it; otherwise the URL is the headline.
+        const link = document.createElement('a');
+        link.className = title ? 'result-title' : 'result-url';
+        link.href = result.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = title || result.url;
+
+        const parts = [link];
+        if (title) {
+            const urlLine = document.createElement('div');
+            urlLine.className = 'result-link-url';
+            urlLine.textContent = result.url;
+            parts.push(urlLine);
+        }
+
+        const text = document.createElement('p');
+        text.className = 'result-text';
+        appendHighlighted(text, result.text || '', terms);
+
+        const score = document.createElement('span');
+        score.className = 'result-score';
+        const similarity = typeof result.similarity === 'number' ? ` · similarity ${result.similarity.toFixed(3)}` : '';
+        score.textContent = `Relevance ${Number(result.score).toFixed(3)}${similarity}`;
+
+        card.append(...parts, text, score);
+        return card;
     }
 
     // Builds highlighted content using DOM nodes (textContent), so crawled
@@ -138,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // (no index yet, endpoint unavailable) just leaves the footer empty.
     (async function loadStats() {
         try {
-            const response = await fetch('/api/stats');
+            const response = await fetch('api/stats');
             if (!response.ok) return;
             const stats = await response.json();
 

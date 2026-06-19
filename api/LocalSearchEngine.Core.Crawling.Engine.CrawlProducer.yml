@@ -6,8 +6,10 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
@@ -35,7 +37,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlProducer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 27
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -88,7 +90,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DefaultRequestDelayMs
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 30
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -117,7 +119,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlDelaySeconds
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 32
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -146,7 +148,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 35
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -175,7 +177,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _writer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 37
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -204,7 +206,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _context
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 39
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -233,7 +235,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _robotsService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 41
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -262,7 +264,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _pageDownloader
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 43
+    startLine: 44
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -291,7 +293,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 45
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -320,7 +322,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 56
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -370,7 +372,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 79
+    startLine: 80
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -414,7 +416,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStaleUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 158
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -452,7 +454,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceJobAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 192
+    startLine: 193
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -493,7 +495,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessDownloadSuccessAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 312
+    startLine: 313
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -522,6 +524,143 @@ items:
   nameWithType.vb: CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), LocalSearchEngine.Core.Crawling.Engine.DownloadResult, System.Threading.CancellationToken)
   name.vb: ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  id: EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, CancellationToken)
+  nameWithType: CrawlProducer.EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmitIndexableAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 435
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    Finishes an extracted, indexable page: hashes the content that would be embedded and uses it to
+
+    short-circuit needless work — a <xref href="LocalSearchEngine.Core.Crawling.Engine.TouchJob" data-throw-if-not-resolved="false"></xref> when this URL's stored content is unchanged,
+
+    an <xref href="LocalSearchEngine.Core.Crawling.Engine.AliasJob" data-throw-if-not-resolved="false"></xref> when the same content is already indexed under another URL — otherwise an
+
+    <xref href="LocalSearchEngine.Core.Crawling.Engine.IndexJob" data-throw-if-not-resolved="false"></xref> that (re)embeds it. Shared by the HTML, PDF, and DOCX paths.
+  example: []
+  syntax:
+    content: private Task<CrawlJob> EmitIndexableAsync(string currentUrl, string finalUrl, string? redirectSourceUrl, int statusCode, (string? ETag, string? LastModified, string? ContentHash) finalState, string? title, string headings, string text, string? newETag, string? newLastModified, IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind, CancellationToken cancellationToken)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The requested URL.
+    - id: finalUrl
+      type: System.String
+      description: The URL after redirects/normalization.
+    - id: redirectSourceUrl
+      type: System.String
+      description: The dequeued URL when a redirect was followed; otherwise <code>null</code>.
+    - id: statusCode
+      type: System.Int32
+      description: The HTTP status code of the response.
+    - id: finalState
+      type: System.ValueTuple{System.String,System.String,System.String}
+      description: The crawl state previously recorded for <code class="paramref">finalUrl</code>.
+    - id: title
+      type: System.String
+      description: The extracted document/page title.
+    - id: headings
+      type: System.String
+      description: The extracted heading text.
+    - id: text
+      type: System.String
+      description: The extracted main text.
+    - id: newETag
+      type: System.String
+      description: The response ETag, if any.
+    - id: newLastModified
+      type: System.String
+      description: The response Last-Modified header, if any.
+    - id: outlinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: The in-scope outlinks discovered on the page.
+    - id: offsiteLinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: The off-site links discovered on the page.
+    - id: kind
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+      description: The classified document kind (Html/Pdf/Docx) of the page being indexed.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+      description: The crawl job to persist for this page.
+    content.vb: Private Function EmitIndexableAsync(currentUrl As String, finalUrl As String, redirectSourceUrl As String, statusCode As Integer, finalState As (ETag As String, LastModified As String, ContentHash As String), title As String, headings As String, text As String, newETag As String, newLastModified As String, outlinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), kind As DocKind, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync*
+  nameWithType.vb: CrawlProducer.EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
+  name.vb: EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
+  id: ComputeContentHash(System.String,System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ComputeContentHash(string?, string, string)
+  nameWithType: CrawlProducer.ComputeContentHash(string?, string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(string?, string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ComputeContentHash
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 491
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    Hashes the extracted, indexable fields of a page — what actually gets embedded — rather than the
+
+    raw response bytes. The fields are domain-separated so that moving text between the title,
+
+    headings, and body changes the hash. This is the basis for both the unchanged-page shortcut and
+
+    cross-URL duplicate detection, so two responses index to the same hash exactly when they would
+
+    produce the same index entry.
+  example: []
+  syntax:
+    content: private static string ComputeContentHash(string? title, string headings, string text)
+    parameters:
+    - id: title
+      type: System.String
+      description: The extracted title, if any.
+    - id: headings
+      type: System.String
+      description: The extracted heading text.
+    - id: text
+      type: System.String
+      description: The extracted main text.
+    return:
+      type: System.String
+      description: The uppercase hex SHA-256 of the combined fields.
+    content.vb: Private Shared Function ComputeContentHash(title As String, headings As String, text As String) As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash*
+  nameWithType.vb: CrawlProducer.ComputeContentHash(String, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(String, String, String)
+  name.vb: ComputeContentHash(String, String, String)
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
   id: EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
@@ -540,7 +679,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 447
+    startLine: 502
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -580,7 +719,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DelayForHostAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 474
+    startLine: 529
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -623,7 +762,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveRequestDelay
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 494
+    startLine: 549
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -1528,6 +1667,181 @@ references:
   - name: " "
   - name: T3
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html
+  name: TouchJob
+  nameWithType: TouchJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html
+  name: AliasJob
+  nameWithType: AliasJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html
+  name: IndexJob
+  nameWithType: IndexJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EmitIndexableAsync_System_String_System_String_System_String_System_Int32_System_ValueTuple_System_String_System_String_System_String__System_String_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_System_Threading_CancellationToken_
+  name: EmitIndexableAsync
+  nameWithType: CrawlProducer.EmitIndexableAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync
+- uid: System.Collections.Generic.IReadOnlyCollection{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<string>
+  nameWithType: IReadOnlyCollection<string>
+  fullName: System.Collections.Generic.IReadOnlyCollection<string>
+  nameWithType.vb: IReadOnlyCollection(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of String)
+  name.vb: IReadOnlyCollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ComputeContentHash_System_String_System_String_System_String_
+  name: ComputeContentHash
+  nameWithType: CrawlProducer.ComputeContentHash
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync
   href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EnqueueStoredOutlinksAsync_System_String_System_Threading_CancellationToken_
@@ -1569,41 +1883,3 @@ references:
   name: RobotsRules
   nameWithType: RobotsRules
   fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
-- uid: LocalSearchEngine.Core.Crawling.Policies
-  commentId: N:LocalSearchEngine.Core.Crawling.Policies
-  href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Crawling.Policies
-  nameWithType: LocalSearchEngine.Core.Crawling.Policies
-  fullName: LocalSearchEngine.Core.Crawling.Policies
-  spec.csharp:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Policies
-    name: Policies
-    href: LocalSearchEngine.Core.Crawling.Policies.html
-  spec.vb:
-  - uid: LocalSearchEngine
-    name: LocalSearchEngine
-    href: LocalSearchEngine.html
-  - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Policies
-    name: Policies
-    href: LocalSearchEngine.Core.Crawling.Policies.html

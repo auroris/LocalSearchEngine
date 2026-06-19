@@ -5,11 +5,13 @@ items:
   id: SearchRanker.Aggregate
   parent: LocalSearchEngine.Core.Searching
   children:
-  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.AndTerms
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.ExactPhrase
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Kind
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.MatchedHeading
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Score
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Similarity
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Text
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Title
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Url
   langs:
   - csharp
@@ -25,7 +27,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Aggregate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 151
+    startLine: 170
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -61,7 +63,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 154
+    startLine: 173
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -72,6 +74,35 @@ items:
     return:
       type: System.String
     content.vb: Public Url As String
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Title
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Title
+  id: Title
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: Title
+  nameWithType: SearchRanker.Aggregate.Title
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Title
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Title
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 175
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The resolved page title, if known (filled in the final pass).
+  example: []
+  syntax:
+    content: public string? Title
+    return:
+      type: System.String
+    content.vb: Public Title As String
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Text
   commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Text
   id: Text
@@ -90,7 +121,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 156
+    startLine: 177
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -119,7 +150,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 158
+    startLine: 179
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -148,46 +179,17 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExactPhrase
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 160
+    startLine: 181
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Whether an exact phrase hit was matched.
+  summary: Whether an exact phrase hit was matched (promotes the URL into the exact-match tier).
   example: []
   syntax:
     content: public bool ExactPhrase
     return:
       type: System.Boolean
     content.vb: Public ExactPhrase As Boolean
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.AndTerms
-  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.AndTerms
-  id: AndTerms
-  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-  langs:
-  - csharp
-  - vb
-  name: AndTerms
-  nameWithType: SearchRanker.Aggregate.AndTerms
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.AndTerms
-  type: Field
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: AndTerms
-    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 162
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Searching
-  summary: Whether a word term AND hit was matched.
-  example: []
-  syntax:
-    content: public bool AndTerms
-    return:
-      type: System.Boolean
-    content.vb: Public AndTerms As Boolean
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.MatchedHeading
   commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.MatchedHeading
   id: MatchedHeading
@@ -206,7 +208,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MatchedHeading
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 164
+    startLine: 183
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -217,6 +219,64 @@ items:
     return:
       type: System.Boolean
     content.vb: Public MatchedHeading As Boolean
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Kind
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Kind
+  id: Kind
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: Kind
+  nameWithType: SearchRanker.Aggregate.Kind
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Kind
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Kind
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 185
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The classified document kind, resolved in the final pass.
+  example: []
+  syntax:
+    content: public DocKind Kind
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    content.vb: Public Kind As DocKind
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Score
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Score
+  id: Score
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: Score
+  nameWithType: SearchRanker.Aggregate.Score
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Score
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Score
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 187
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The fine within-group relevance score, computed in the final pass.
+  example: []
+  syntax:
+    content: public double Score
+    return:
+      type: System.Double
+    content.vb: Public Score As Double
 references:
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
@@ -494,3 +554,48 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

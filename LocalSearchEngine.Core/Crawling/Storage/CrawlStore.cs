@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using LocalSearchEngine.Core.Crawling.Policies;
 
 namespace LocalSearchEngine.Core.Crawling.Storage;
 
@@ -49,7 +50,11 @@ public static class CrawlStore
                     ETag TEXT,
                     LastModified TEXT,
                     Title TEXT,
-                    ContentHash TEXT
+                    ContentHash TEXT,
+                    -- The DocKind enum value of the page's indexed content (Html/Pdf/Docx), so search
+                    -- ranking can group web pages ahead of PDFs/DOCX without re-sniffing. NULL for rows
+                    -- that were only visited, not indexed (redirects, 404s, unsupported types).
+                    DocKind INTEGER
                 );
 
                 -- Every link the crawler encounters: in-scope outlinks AND off-site links, each
@@ -152,7 +157,7 @@ public static class CrawlStore
     /// Searches for a duplicate URL containing identical content hash that has already been indexed.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
-    /// <param name="contentHash">The hash of the page body.</param>
+    /// <param name="contentHash">The content hash to match against indexed pages.</param>
     /// <param name="excludeUrl">The URL to exclude from the duplicate search.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The URL of the duplicate page, or <c>null</c> if not found.</returns>
@@ -178,22 +183,24 @@ public static class CrawlStore
     /// <param name="eTag">The ETag header value, if any.</param>
     /// <param name="lastModified">The Last-Modified header value, if any.</param>
     /// <param name="title">The page title, if any.</param>
-    /// <param name="contentHash">The SHA256 content hash of the page body.</param>
+    /// <param name="contentHash">The content hash of the page's extracted indexable content, if any.</param>
+    /// <param name="docKind">The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, CancellationToken cancellationToken)
+    public static async Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, CancellationToken cancellationToken)
     {
         using var command = connection.CreateCommand();
         command.CommandText = @"
-            INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ETag, LastModified, Title, ContentHash)
-            VALUES (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified, @Title, @ContentHash)
+            INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ETag, LastModified, Title, ContentHash, DocKind)
+            VALUES (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified, @Title, @ContentHash, @DocKind)
             ON CONFLICT(Url) DO UPDATE SET
                 LastCrawled = excluded.LastCrawled,
                 StatusCode = excluded.StatusCode,
                 ETag = excluded.ETag,
                 LastModified = excluded.LastModified,
                 Title = excluded.Title,
-                ContentHash = excluded.ContentHash;";
+                ContentHash = excluded.ContentHash,
+                DocKind = excluded.DocKind;";
 
         command.Parameters.AddWithValue("@Url", url);
         command.Parameters.AddWithValue("@LastCrawled", DateTime.UtcNow);
@@ -202,6 +209,7 @@ public static class CrawlStore
         command.Parameters.AddWithValue("@LastModified", lastModified ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@Title", title ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@ContentHash", contentHash ?? (object)DBNull.Value);
+        command.Parameters.AddWithValue("@DocKind", (int)docKind);
 
         await command.ExecuteNonQueryAsync(cancellationToken);
     }

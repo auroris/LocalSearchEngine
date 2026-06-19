@@ -19,4 +19,16 @@
     <LocalEmbeddingsVocabPath>$(MSBuildThisFileDirectory)LocalEmbeddingsModel\snowflake-arctic-embed-s\vocab.txt</LocalEmbeddingsVocabPath>
   </PropertyGroup>
 
+  <!--
+    Suppress NU1903 for GHSA-2m69-gcr7-jv3q: a memory-corruption bug in SQLite < 3.50.2 (a query
+    with more aggregate terms than columns), reached through the transitive native package
+    SQLitePCLRaw.lib.e_sqlite3 — which is deprecated and has no fixed version to upgrade to. It is
+    not reachable here: every SQL statement the app runs is fixed-shape and parameterized, and
+    crawled HTML/PDF/DOCX is stored as bound data, never executed as SQL, so no input can craft the
+    offending aggregate query. Drop this once a maintained e_sqlite3 bundle ships an unaffected build.
+  -->
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
+  </ItemGroup>
+
 </Project>

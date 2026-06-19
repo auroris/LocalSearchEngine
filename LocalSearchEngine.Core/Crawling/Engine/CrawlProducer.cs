@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -332,42 +333,12 @@ internal sealed class CrawlProducer
         int statusCode = (int)downloadResult.StatusCode;
         byte[] body = downloadResult.Body ?? Array.Empty<byte>();
 
-        string newHash = Convert.ToHexString(SHA256.HashData(body));
+        string? newETag = downloadResult.ETag;
+        string? newLastModified = downloadResult.LastModified;
+
         var finalState = string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase)
             ? state
             : await CrawlStore.GetCrawlStateAsync(_context.Read, finalUrl, cancellationToken);
-
-        // The unchanged-hash shortcut leaves a page's existing chunks in place; a rule-matched page
-        // must be re-parsed so any pre-rule index entry is removed, so skip the shortcut for it.
-        if (!userNoIndex && finalState.ContentHash is not null && finalState.ContentHash == newHash
-            && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl, cancellationToken))
-        {
-            _context.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
-            await EnqueueStoredOutlinksAsync(finalUrl, cancellationToken);
-            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
-        }
-
-        // Duplicate detection only spares us from indexing the same content twice; a rule-matched page
-        // isn't indexed anyway, and aliasing it would drop the links we want to follow.
-        if (!userNoIndex)
-        {
-            string? duplicateOf = null;
-            if (_context.IndexedContentHashes.TryGetValue(newHash, out var inRunUrl)
-                && !string.Equals(inRunUrl, finalUrl, StringComparison.OrdinalIgnoreCase))
-            {
-                duplicateOf = inRunUrl;
-            }
-            duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, newHash, finalUrl, cancellationToken);
-            if (duplicateOf != null)
-            {
-                _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
-                _context.EnqueueSingle(duplicateOf);
-                return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
-            }
-        }
-
-        string? newETag = downloadResult.ETag;
-        string? newLastModified = downloadResult.LastModified;
 
         var kind = CrawlPolicy.ClassifyContent(downloadResult.ContentType, body);
 
@@ -378,14 +349,13 @@ internal sealed class CrawlProducer
             if (userNoIndex)
             {
                 _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, newHash,
-                    Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
             }
             var (pdfTitle, pdfText) = ContentExtractor.ExtractPdf(body);
-            _context.IndexedContentHashes[newHash] = finalUrl;
-            _context.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
-            return new IndexJob(finalUrl, statusCode, pdfTitle, pdfTitle ?? string.Empty, pdfText,
-                newETag, newLastModified, newHash, Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+            return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+                pdfTitle, pdfTitle ?? string.Empty, pdfText, newETag, newLastModified,
+                Array.Empty<string>(), Array.Empty<string>(), kind, cancellationToken);
         }
 
         if (kind == DocKind.Docx)
@@ -393,14 +363,13 @@ internal sealed class CrawlProducer
             if (userNoIndex)
             {
                 _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, newHash,
-                    Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
             }
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
-            _context.IndexedContentHashes[newHash] = finalUrl;
-            _context.Observer.OnPageIndexed(currentUrl, finalUrl, 0);
-            return new IndexJob(finalUrl, statusCode, docxTitle, docxTitle ?? string.Empty, docxText,
-                newETag, newLastModified, newHash, Array.Empty<string>(), Array.Empty<string>(), redirectSourceUrl);
+            return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+                docxTitle, docxTitle ?? string.Empty, docxText, newETag, newLastModified,
+                Array.Empty<string>(), Array.Empty<string>(), kind, cancellationToken);
         }
 
         if (kind != DocKind.Html)
@@ -428,16 +397,102 @@ internal sealed class CrawlProducer
             _context.Discover(link);
         }
 
+        // The noindex decision is made before the unchanged/duplicate shortcuts below so that a page
+        // which newly declares noindex — even via an X-Robots-Tag header that leaves the body byte for
+        // byte identical — still drops any chunks indexed before the directive existed.
         if (userNoIndex || analysis.NoIndex)
         {
             _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-            return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, newHash, analysis.Outlinks, analysis.OffsiteLinks, redirectSourceUrl);
+            return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, null,
+                analysis.Outlinks, analysis.OffsiteLinks, kind, redirectSourceUrl);
         }
 
-        _context.IndexedContentHashes[newHash] = finalUrl;
-        _context.Observer.OnPageIndexed(currentUrl, finalUrl, analysis.Outlinks.Count);
-        return new IndexJob(finalUrl, statusCode, analysis.Title, analysis.Headings, analysis.Text,
-            newETag, newLastModified, newHash, analysis.Outlinks, analysis.OffsiteLinks, redirectSourceUrl);
+        return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+            analysis.Title, analysis.Headings, analysis.Text, newETag, newLastModified,
+            analysis.Outlinks, analysis.OffsiteLinks, kind, cancellationToken);
+    }
+
+    /// <summary>
+    /// Finishes an extracted, indexable page: hashes the content that would be embedded and uses it to
+    /// short-circuit needless work — a <see cref="TouchJob"/> when this URL's stored content is unchanged,
+    /// an <see cref="AliasJob"/> when the same content is already indexed under another URL — otherwise an
+    /// <see cref="IndexJob"/> that (re)embeds it. Shared by the HTML, PDF, and DOCX paths.
+    /// </summary>
+    /// <param name="currentUrl">The requested URL.</param>
+    /// <param name="finalUrl">The URL after redirects/normalization.</param>
+    /// <param name="redirectSourceUrl">The dequeued URL when a redirect was followed; otherwise <c>null</c>.</param>
+    /// <param name="statusCode">The HTTP status code of the response.</param>
+    /// <param name="finalState">The crawl state previously recorded for <paramref name="finalUrl"/>.</param>
+    /// <param name="title">The extracted document/page title.</param>
+    /// <param name="headings">The extracted heading text.</param>
+    /// <param name="text">The extracted main text.</param>
+    /// <param name="newETag">The response ETag, if any.</param>
+    /// <param name="newLastModified">The response Last-Modified header, if any.</param>
+    /// <param name="outlinks">The in-scope outlinks discovered on the page.</param>
+    /// <param name="offsiteLinks">The off-site links discovered on the page.</param>
+    /// <param name="kind">The classified document kind (Html/Pdf/Docx) of the page being indexed.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The crawl job to persist for this page.</returns>
+    private async Task<CrawlJob> EmitIndexableAsync(
+        string currentUrl, string finalUrl, string? redirectSourceUrl, int statusCode,
+        (string? ETag, string? LastModified, string? ContentHash) finalState,
+        string? title, string headings, string text,
+        string? newETag, string? newLastModified,
+        IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks,
+        DocKind kind, CancellationToken cancellationToken)
+    {
+        string contentHash = ComputeContentHash(title, headings, text);
+
+        // The fallback for servers that ignore ETag/If-Modified-Since and answer 200 with an unchanged
+        // page: if what we'd embed is identical to what's already indexed for this URL, skip the
+        // re-embed (the costly step) and just stamp the visit. Hashing the extracted text rather than
+        // the raw bytes is what makes this reliable — per-request markup noise (CSP nonces, CSRF
+        // tokens, timestamps) no longer forces a needless re-index. Outlinks were already discovered
+        // by the caller, so the frontier is unaffected by returning early here.
+        if (finalState.ContentHash == contentHash
+            && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl, cancellationToken))
+        {
+            _context.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
+            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+        }
+
+        // The same content is already indexed under a different URL: alias to it and crawl the
+        // original rather than embedding a second copy.
+        string? duplicateOf = null;
+        if (_context.IndexedContentHashes.TryGetValue(contentHash, out var inRunUrl)
+            && !string.Equals(inRunUrl, finalUrl, StringComparison.OrdinalIgnoreCase))
+        {
+            duplicateOf = inRunUrl;
+        }
+        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, contentHash, finalUrl, cancellationToken);
+        if (duplicateOf != null)
+        {
+            _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
+            _context.EnqueueSingle(duplicateOf);
+            return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
+        }
+
+        _context.IndexedContentHashes[contentHash] = finalUrl;
+        _context.Observer.OnPageIndexed(currentUrl, finalUrl, outlinks.Count);
+        return new IndexJob(finalUrl, statusCode, title, headings, text,
+            newETag, newLastModified, contentHash, outlinks, offsiteLinks, kind, redirectSourceUrl);
+    }
+
+    /// <summary>
+    /// Hashes the extracted, indexable fields of a page — what actually gets embedded — rather than the
+    /// raw response bytes. The fields are domain-separated so that moving text between the title,
+    /// headings, and body changes the hash. This is the basis for both the unchanged-page shortcut and
+    /// cross-URL duplicate detection, so two responses index to the same hash exactly when they would
+    /// produce the same index entry.
+    /// </summary>
+    /// <param name="title">The extracted title, if any.</param>
+    /// <param name="headings">The extracted heading text.</param>
+    /// <param name="text">The extracted main text.</param>
+    /// <returns>The uppercase hex SHA-256 of the combined fields.</returns>
+    private static string ComputeContentHash(string? title, string headings, string text)
+    {
+        var canonical = string.Concat(title, "\n", headings, "\n", text);
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(canonical)));
     }
 
     /// <summary>

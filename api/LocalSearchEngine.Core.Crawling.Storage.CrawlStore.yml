@@ -19,7 +19,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)
@@ -38,7 +38,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStore
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureSchemaAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -134,7 +134,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 119
+    startLine: 124
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -178,7 +178,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlHasChunksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 142
+    startLine: 147
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -222,7 +222,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FindIndexedDuplicateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 158
+    startLine: 163
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -236,7 +236,7 @@ items:
       description: The open database connection.
     - id: contentHash
       type: System.String
-      description: The hash of the page body.
+      description: The content hash to match against indexed pages.
     - id: excludeUrl
       type: System.String
       description: The URL to exclude from the duplicate search.
@@ -251,16 +251,16 @@ items:
   nameWithType.vb: CrawlStore.FindIndexedDuplicateAsync(SqliteConnection, String, String, CancellationToken)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, String, System.Threading.CancellationToken)
   name.vb: FindIndexedDuplicateAsync(SqliteConnection, String, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
-  id: RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  id: RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, CancellationToken)
-  nameWithType: CrawlStore.RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, string?, string?, string?, string?, System.Threading.CancellationToken)
+  name: RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, CancellationToken)
+  nameWithType: CrawlStore.RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, string?, string?, string?, string?, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
@@ -269,14 +269,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 183
+    startLine: 189
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Records crawl metadata (status code, headers, title, content hash) for a successfully crawled URL.
   example: []
   syntax:
-    content: public static Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, CancellationToken cancellationToken)
+    content: public static Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, CancellationToken cancellationToken)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -298,18 +298,21 @@ items:
       description: The page title, if any.
     - id: contentHash
       type: System.String
-      description: The SHA256 content hash of the page body.
+      description: The content hash of the page's extracted indexable content, if any.
+    - id: docKind
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+      description: The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.
     - id: cancellationToken
       type: System.Threading.CancellationToken
       description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function RecordCrawlStateAsync(connection As SqliteConnection, url As String, statusCode As Integer, eTag As String, lastModified As String, title As String, contentHash As String, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function RecordCrawlStateAsync(connection As SqliteConnection, url As String, statusCode As Integer, eTag As String, lastModified As String, title As String, contentHash As String, docKind As DocKind, cancellationToken As CancellationToken) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync*
-  nameWithType.vb: CrawlStore.RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, String, String, String, String, System.Threading.CancellationToken)
-  name.vb: RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, CancellationToken)
+  nameWithType.vb: CrawlStore.RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, String, String, String, String, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
+  name.vb: RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, CancellationToken)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
   id: RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
@@ -328,7 +331,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordVisitAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 217
+    startLine: 225
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -378,7 +381,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StoreLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 260
+    startLine: 268
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -435,7 +438,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 307
+    startLine: 315
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -479,7 +482,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 323
+    startLine: 331
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -526,7 +529,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UpdateLinkStatusByDestinationAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 348
+    startLine: 356
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -581,7 +584,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetLinksToVerifyAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 368
+    startLine: 376
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -630,7 +633,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetReportableLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 392
+    startLine: 400
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -679,7 +682,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetUrlsNotCrawledSinceAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 414
+    startLine: 422
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -726,7 +729,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawledUrlsWithPrefixAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 440
+    startLine: 448
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -779,7 +782,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EscapeLike
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 460
+    startLine: 468
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -820,7 +823,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 470
+    startLine: 478
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -864,7 +867,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCountsAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 485
+    startLine: 493
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -905,7 +908,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OptimizeDatabaseAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 510
+    startLine: 518
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -943,7 +946,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadPragmaLongAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 542
+    startLine: 550
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -1632,7 +1635,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_String_System_String_System_String_System_String_LocalSearchEngine_Core_Crawling_Policies_DocKind_System_Threading_CancellationToken_
   name: RecordCrawlStateAsync
   nameWithType: CrawlStore.RecordCrawlStateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync
@@ -1647,6 +1650,51 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync
   href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordVisitAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Boolean_System_Threading_CancellationToken_

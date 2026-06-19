@@ -24,7 +24,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TextChunkRecord
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 15
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Id
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 18
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -102,7 +102,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -143,7 +143,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 26
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -184,7 +184,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsHeading
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 30
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -225,7 +225,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Embedding
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

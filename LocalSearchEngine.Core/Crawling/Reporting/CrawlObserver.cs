@@ -191,6 +191,10 @@ internal sealed class CrawlObserver : ICrawlObserver
 
     public void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
     {
+        // The counterpart to the unchanged/duplicate/noindex outcome lines: without it an embedded
+        // page is the one outcome that leaves no trace in the log, making it impossible to tell from
+        // the log which pages were re-embedded versus skipped by the content-hash fallback on a re-crawl.
+        _logger.LogInformation("Indexed {Url} ({Outlinks} outlinks).", finalUrl, outlinksCount);
         ReportPage(currentUrl, CrawlOutcome.Indexed);
     }
 

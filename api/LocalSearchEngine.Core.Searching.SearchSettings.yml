@@ -5,9 +5,7 @@ items:
   id: SearchSettings
   parent: LocalSearchEngine.Core.Searching
   children:
-  - LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.CandidatePoolSize
-  - LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.FilenameBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
@@ -27,11 +25,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchSettings
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 5
+    startLine: 7
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Configures relevance tuning settings for search queries, including candidate pools, thresholds, and keyword boosts.
+  summary: >-
+    Configures relevance tuning settings for search queries, including candidate pools, thresholds, and keyword boosts.
+
+    These boosts only order results <em>within</em> a ranking group; the two top-level tiers — web pages ahead of
+
+    PDFs/DOCX, then exact-phrase hits ahead of looser ones — are structural in <xref href="LocalSearchEngine.Core.Searching.SearchRanker" data-throw-if-not-resolved="false"></xref> and not tunable here.
   example: []
   syntax:
     content: public class SearchSettings
@@ -64,7 +67,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CandidatePoolSize
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 11
+    startLine: 13
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -98,7 +101,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxDistance
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 21
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -122,68 +125,6 @@ items:
       type: System.Double
     content.vb: Public Property MaxDistance As Double
   overload: LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance*
-- uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
-  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
-  id: ExactPhraseBoost
-  parent: LocalSearchEngine.Core.Searching.SearchSettings
-  langs:
-  - csharp
-  - vb
-  name: ExactPhraseBoost
-  nameWithType: SearchSettings.ExactPhraseBoost
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
-  type: Property
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ExactPhraseBoost
-    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 26
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the relevance score boost added when the query phrase matches a verbatim full-text search phrase.
-  example: []
-  syntax:
-    content: public double ExactPhraseBoost { get; set; }
-    parameters: []
-    return:
-      type: System.Double
-    content.vb: Public Property ExactPhraseBoost As Double
-  overload: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost*
-- uid: LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
-  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
-  id: AndTermsBoost
-  parent: LocalSearchEngine.Core.Searching.SearchSettings
-  langs:
-  - csharp
-  - vb
-  name: AndTermsBoost
-  nameWithType: SearchSettings.AndTermsBoost
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
-  type: Property
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: AndTermsBoost
-    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 31
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the relevance score boost added when all terms in the query appear in a chunk, but not as a verbatim phrase.
-  example: []
-  syntax:
-    content: public double AndTermsBoost { get; set; }
-    parameters: []
-    return:
-      type: System.Double
-    content.vb: Public Property AndTermsBoost As Double
-  overload: LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost*
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   id: HeadingBoost
@@ -202,7 +143,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HeadingBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 36
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -233,7 +174,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TitleBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 41
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -264,7 +205,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FilenameBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 46
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -295,7 +236,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TermInTextBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 51
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -309,6 +250,12 @@ items:
     content.vb: Public Property TermInTextBoost As Double
   overload: LocalSearchEngine.Core.Searching.SearchSettings.TermInTextBoost*
 references:
+- uid: LocalSearchEngine.Core.Searching.SearchRanker
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker
+  nameWithType: SearchRanker
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -616,18 +563,6 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-- uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
-  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_ExactPhraseBoost
-  name: ExactPhraseBoost
-  nameWithType: SearchSettings.ExactPhraseBoost
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
-- uid: LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
-  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_AndTermsBoost
-  name: AndTermsBoost
-  nameWithType: SearchSettings.AndTermsBoost
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings.AndTermsBoost
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_HeadingBoost

@@ -2,6 +2,8 @@ namespace LocalSearchEngine.Core.Searching;
 
 /// <summary>
 /// Configures relevance tuning settings for search queries, including candidate pools, thresholds, and keyword boosts.
+/// These boosts only order results <em>within</em> a ranking group; the two top-level tiers — web pages ahead of
+/// PDFs/DOCX, then exact-phrase hits ahead of looser ones — are structural in <see cref="SearchRanker"/> and not tunable here.
 /// </summary>
 public class SearchSettings
 {
@@ -20,16 +22,6 @@ public class SearchSettings
     /// cosine similarity of at least ~0.4.
     /// </summary>
     public double MaxDistance { get; set; } = 0.6;
-
-    /// <summary>
-    /// Gets or sets the relevance score boost added when the query phrase matches a verbatim full-text search phrase.
-    /// </summary>
-    public double ExactPhraseBoost { get; set; } = 0.5;
-
-    /// <summary>
-    /// Gets or sets the relevance score boost added when all terms in the query appear in a chunk, but not as a verbatim phrase.
-    /// </summary>
-    public double AndTermsBoost { get; set; } = 0.25;
 
     /// <summary>
     /// Gets or sets the relevance score boost added when a match occurs in a page heading.

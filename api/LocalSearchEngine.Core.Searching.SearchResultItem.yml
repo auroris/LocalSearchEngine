@@ -5,6 +5,7 @@ items:
   id: SearchResultItem
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
   - LocalSearchEngine.Core.Searching.SearchResultItem.Score
   - LocalSearchEngine.Core.Searching.SearchResultItem.Similarity
   - LocalSearchEngine.Core.Searching.SearchResultItem.Text
@@ -24,7 +25,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResultItem
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 171
+    startLine: 194
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -61,7 +62,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 174
+    startLine: 197
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -92,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 176
+    startLine: 199
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -123,7 +124,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 178
+    startLine: 201
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -154,7 +155,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 180
+    startLine: 203
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -185,11 +186,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Score
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 182
+    startLine: 205
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the final calculated relevance score.
+  summary: Gets or sets the fine within-group relevance score. Overall ordering also applies the web-page and exact-phrase tiers ahead of this score.
   example: []
   syntax:
     content: public double Score { get; set; }
@@ -198,6 +199,37 @@ items:
       type: System.Double
     content.vb: Public Property Score As Double
   overload: LocalSearchEngine.Core.Searching.SearchResultItem.Score*
+- uid: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
+  commentId: P:LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
+  id: DocKind
+  parent: LocalSearchEngine.Core.Searching.SearchResultItem
+  langs:
+  - csharp
+  - vb
+  name: DocKind
+  nameWithType: SearchResultItem.DocKind
+  fullName: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DocKind
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 207
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the document kind (web page, PDF, or DOCX) of the result.
+  example: []
+  syntax:
+    content: public DocKind DocKind { get; set; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    content.vb: Public Property DocKind As DocKind
+  overload: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind*
 references:
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
@@ -518,3 +550,54 @@ references:
   name: Score
   nameWithType: SearchResultItem.Score
   fullName: LocalSearchEngine.Core.Searching.SearchResultItem.Score
+- uid: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
+  href: LocalSearchEngine.Core.Searching.SearchResultItem.html#LocalSearchEngine_Core_Searching_SearchResultItem_DocKind
+  name: DocKind
+  nameWithType: SearchResultItem.DocKind
+  fullName: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

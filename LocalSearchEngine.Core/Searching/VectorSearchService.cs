@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using LocalSearchEngine.Core.TextProcessing;
+using LocalSearchEngine.Core.Crawling.Policies;
 
 namespace LocalSearchEngine.Core.Searching;
 
@@ -187,10 +188,11 @@ public class VectorSearchService
             keywordHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
         }
 
-        // Titles for every candidate URL feed the title boost and the result list.
-        var titles = await LoadTitlesAsync(vectorHits, keywordHits);
+        // Per-URL metadata for every candidate: titles feed the title boost and the result list,
+        // doc kinds drive the web-page-first grouping in the ranker.
+        var (titles, docKinds) = await LoadPageMetadataAsync(vectorHits, keywordHits);
 
-        var items = SearchRanker.Rank(vectorHits, keywordHits, parsed.Text, _settings, titles);
+        var items = SearchRanker.Rank(vectorHits, keywordHits, parsed.Text, _settings, titles, docKinds);
         return new SearchResponse { Items = items, TotalMatches = items.Count };
     }
 
@@ -248,31 +250,33 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Loads titles from database for all candidate URLs gathered in semantic and keyword passes.
+    /// Loads per-URL metadata (title and document kind) from the database for all candidate URLs
+    /// gathered in the semantic and keyword passes.
     /// </summary>
     /// <param name="vectorHits">The collection of vector hits.</param>
     /// <param name="keywordHits">The collection of keyword hits.</param>
-    /// <returns>A dictionary map of URLs to their titles.</returns>
-    private async Task<Dictionary<string, string?>> LoadTitlesAsync(
+    /// <returns>A tuple of two dictionaries: URLs to their titles, and URLs to their <see cref="DocKind"/>.</returns>
+    private async Task<(Dictionary<string, string?> Titles, Dictionary<string, DocKind> DocKinds)> LoadPageMetadataAsync(
         IReadOnlyCollection<VectorCandidate> vectorHits, IReadOnlyCollection<KeywordCandidate> keywordHits)
     {
         var titles = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+        var docKinds = new Dictionary<string, DocKind>(StringComparer.OrdinalIgnoreCase);
         try
         {
             var urls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var v in vectorHits) urls.Add(v.Url);
             foreach (var k in keywordHits) urls.Add(k.Url);
-            if (urls.Count == 0) return titles;
+            if (urls.Count == 0) return (titles, docKinds);
 
             using var connection = new SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
-            await LoadTitlesAsync(connection, urls, titles);
+            await LoadPageMetadataAsync(connection, urls, titles, docKinds);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to fetch result titles from SQLite.");
+            _logger.LogWarning(ex, "Failed to fetch result metadata from SQLite.");
         }
-        return titles;
+        return (titles, docKinds);
     }
 
     /// <summary>
@@ -307,14 +311,18 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Queries the database in batches to resolve titles for the specified candidate URLs.
+    /// Queries the database in batches to resolve the title and document kind for the specified
+    /// candidate URLs. A URL whose stored <c>DocKind</c> is NULL (visited but not indexed) is left
+    /// out of <paramref name="docKinds"/>, so the ranker falls back to treating it as a web page.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
-    /// <param name="urls">The set of URLs to fetch titles for.</param>
-    /// <param name="into">The target dictionary to store the retrieved titles.</param>
+    /// <param name="urls">The set of URLs to fetch metadata for.</param>
+    /// <param name="titles">The target dictionary to store the retrieved titles.</param>
+    /// <param name="docKinds">The target dictionary to store the retrieved document kinds.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    private static async Task LoadTitlesAsync(
-        SqliteConnection connection, IReadOnlyCollection<string> urls, Dictionary<string, string?> into)
+    private static async Task LoadPageMetadataAsync(
+        SqliteConnection connection, IReadOnlyCollection<string> urls,
+        Dictionary<string, string?> titles, Dictionary<string, DocKind> docKinds)
     {
         if (urls.Count == 0) return;
 
@@ -325,7 +333,7 @@ public class VectorSearchService
         {
             int count = Math.Min(batchSize, list.Count - start);
             using var command = connection.CreateCommand();
-            var sb = new StringBuilder("SELECT Url, Title FROM CrawlState WHERE Url IN (");
+            var sb = new StringBuilder("SELECT Url, Title, DocKind FROM CrawlState WHERE Url IN (");
             for (int i = 0; i < count; i++)
             {
                 if (i > 0) sb.Append(',');
@@ -339,7 +347,9 @@ public class VectorSearchService
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
-                into[reader.GetString(0)] = reader.IsDBNull(1) ? null : reader.GetString(1);
+                var url = reader.GetString(0);
+                titles[url] = reader.IsDBNull(1) ? null : reader.GetString(1);
+                if (!reader.IsDBNull(2)) docKinds[url] = (DocKind)reader.GetInt32(2);
             }
         }
     }

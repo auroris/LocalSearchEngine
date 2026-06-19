@@ -158,7 +158,7 @@ items:
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
-  summary: Writes a titled, counted section of links, on-site first then off-site, grouped by the page each sits on.
+  summary: Writes a titled, counted section of links, grouped by status type (404, 410, 500, …), then by the page each was found on, then by destination — so all the broken links on a given page sit together.
   example: []
   syntax:
     content: private static void AppendLinkSection(StringBuilder sb, string title, IReadOnlyList<BrokenLink> links)

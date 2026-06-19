@@ -12,8 +12,8 @@ items:
   - LocalSearchEngine.Core.Searching.VectorSearchService.GetKeywordHitsAsync(System.String,System.Int32)
   - LocalSearchEngine.Core.Searching.VectorSearchService.GetVectorHitsAsync(System.String,System.Int32)
   - LocalSearchEngine.Core.Searching.VectorSearchService.IndexUrlChunksAsync(System.String,System.String,System.Boolean)
-  - LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String})
-  - LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
+  - LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
+  - LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
   - LocalSearchEngine.Core.Searching.VectorSearchService.SearchAsync(System.String)
   - LocalSearchEngine.Core.Searching.VectorSearchService._collection
   - LocalSearchEngine.Core.Searching.VectorSearchService._dbConfig
@@ -34,7 +34,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorSearchService
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -88,7 +88,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _embedder
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 51
+    startLine: 52
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -115,7 +115,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _collection
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 52
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -142,7 +142,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbConfig
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 53
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -169,7 +169,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _settings
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 54
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -196,7 +196,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 55
+    startLine: 56
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -223,7 +223,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 65
+    startLine: 66
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -270,7 +270,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureCreatedAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 78
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -301,7 +301,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteUrlChunksAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 93
+    startLine: 94
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -339,7 +339,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexUrlChunksAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 133
+    startLine: 134
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -383,7 +383,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 161
+    startLine: 162
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -424,7 +424,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetVectorHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 202
+    startLine: 204
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -465,7 +465,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetKeywordHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 223
+    startLine: 225
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -488,32 +488,35 @@ items:
   nameWithType.vb: VectorSearchService.GetKeywordHitsAsync(String, Integer)
   fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.GetKeywordHitsAsync(String, Integer)
   name.vb: GetKeywordHitsAsync(String, Integer)
-- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
-  commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
-  id: LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
+  commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
+  id: LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
   parent: LocalSearchEngine.Core.Searching.VectorSearchService
   langs:
   - csharp
   - vb
-  name: LoadTitlesAsync(IReadOnlyCollection<VectorCandidate>, IReadOnlyCollection<KeywordCandidate>)
-  nameWithType: VectorSearchService.LoadTitlesAsync(IReadOnlyCollection<VectorCandidate>, IReadOnlyCollection<KeywordCandidate>)
-  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Searching.VectorCandidate>, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Searching.KeywordCandidate>)
+  name: LoadPageMetadataAsync(IReadOnlyCollection<VectorCandidate>, IReadOnlyCollection<KeywordCandidate>)
+  nameWithType: VectorSearchService.LoadPageMetadataAsync(IReadOnlyCollection<VectorCandidate>, IReadOnlyCollection<KeywordCandidate>)
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Searching.VectorCandidate>, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Searching.KeywordCandidate>)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: LoadTitlesAsync
+    id: LoadPageMetadataAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 255
+    startLine: 258
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Loads titles from database for all candidate URLs gathered in semantic and keyword passes.
+  summary: >-
+    Loads per-URL metadata (title and document kind) from the database for all candidate URLs
+
+    gathered in the semantic and keyword passes.
   example: []
   syntax:
-    content: private Task<Dictionary<string, string?>> LoadTitlesAsync(IReadOnlyCollection<VectorCandidate> vectorHits, IReadOnlyCollection<KeywordCandidate> keywordHits)
+    content: private Task<(Dictionary<string, string?> Titles, Dictionary<string, DocKind> DocKinds)> LoadPageMetadataAsync(IReadOnlyCollection<VectorCandidate> vectorHits, IReadOnlyCollection<KeywordCandidate> keywordHits)
     parameters:
     - id: vectorHits
       type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate}
@@ -522,13 +525,13 @@ items:
       type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate}
       description: The collection of keyword hits.
     return:
-      type: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.String}}
-      description: A dictionary map of URLs to their titles.
-    content.vb: Private Function LoadTitlesAsync(vectorHits As IReadOnlyCollection(Of VectorCandidate), keywordHits As IReadOnlyCollection(Of KeywordCandidate)) As Task(Of Dictionary(Of String, String))
-  overload: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync*
-  nameWithType.vb: VectorSearchService.LoadTitlesAsync(IReadOnlyCollection(Of VectorCandidate), IReadOnlyCollection(Of KeywordCandidate))
-  fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Searching.VectorCandidate), System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Searching.KeywordCandidate))
-  name.vb: LoadTitlesAsync(IReadOnlyCollection(Of VectorCandidate), IReadOnlyCollection(Of KeywordCandidate))
+      type: System.Threading.Tasks.Task{System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}}
+      description: 'A tuple of two dictionaries: URLs to their titles, and URLs to their <xref href="LocalSearchEngine.Core.Crawling.Policies.DocKind" data-throw-if-not-resolved="false"></xref>.'
+    content.vb: Private Function LoadPageMetadataAsync(vectorHits As IReadOnlyCollection(Of VectorCandidate), keywordHits As IReadOnlyCollection(Of KeywordCandidate)) As Task(Of (Titles As Dictionary(Of String, String), DocKinds As Dictionary(Of String, DocKind)))
+  overload: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync*
+  nameWithType.vb: VectorSearchService.LoadPageMetadataAsync(IReadOnlyCollection(Of VectorCandidate), IReadOnlyCollection(Of KeywordCandidate))
+  fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Searching.VectorCandidate), System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Searching.KeywordCandidate))
+  name.vb: LoadPageMetadataAsync(IReadOnlyCollection(Of VectorCandidate), IReadOnlyCollection(Of KeywordCandidate))
 - uid: LocalSearchEngine.Core.Searching.VectorSearchService.CollectKeywordHitsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Boolean,System.Int32,System.Collections.Generic.List{LocalSearchEngine.Core.Searching.KeywordCandidate})
   commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.CollectKeywordHitsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Boolean,System.Int32,System.Collections.Generic.List{LocalSearchEngine.Core.Searching.KeywordCandidate})
   id: CollectKeywordHitsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Boolean,System.Int32,System.Collections.Generic.List{LocalSearchEngine.Core.Searching.KeywordCandidate})
@@ -547,7 +550,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollectKeywordHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 286
+    startLine: 290
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -579,50 +582,58 @@ items:
   nameWithType.vb: VectorSearchService.CollectKeywordHitsAsync(SqliteConnection, String, Boolean, Integer, List(Of KeywordCandidate))
   fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.CollectKeywordHitsAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Boolean, Integer, System.Collections.Generic.List(Of LocalSearchEngine.Core.Searching.KeywordCandidate))
   name.vb: CollectKeywordHitsAsync(SqliteConnection, String, Boolean, Integer, List(Of KeywordCandidate))
-- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String})
-  commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String})
-  id: LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String})
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
+  commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
+  id: LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   parent: LocalSearchEngine.Core.Searching.VectorSearchService
   langs:
   - csharp
   - vb
-  name: LoadTitlesAsync(SqliteConnection, IReadOnlyCollection<string>, Dictionary<string, string?>)
-  nameWithType: VectorSearchService.LoadTitlesAsync(SqliteConnection, IReadOnlyCollection<string>, Dictionary<string, string?>)
-  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.Dictionary<string, string?>)
+  name: LoadPageMetadataAsync(SqliteConnection, IReadOnlyCollection<string>, Dictionary<string, string?>, Dictionary<string, DocKind>)
+  nameWithType: VectorSearchService.LoadPageMetadataAsync(SqliteConnection, IReadOnlyCollection<string>, Dictionary<string, string?>, Dictionary<string, DocKind>)
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.Dictionary<string, string?>, System.Collections.Generic.Dictionary<string, LocalSearchEngine.Core.Crawling.Policies.DocKind>)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: LoadTitlesAsync
+    id: LoadPageMetadataAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 315
+    startLine: 322
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Queries the database in batches to resolve titles for the specified candidate URLs.
+  summary: >-
+    Queries the database in batches to resolve the title and document kind for the specified
+
+    candidate URLs. A URL whose stored <code>DocKind</code> is NULL (visited but not indexed) is left
+
+    out of <code class="paramref">docKinds</code>, so the ranker falls back to treating it as a web page.
   example: []
   syntax:
-    content: private static Task LoadTitlesAsync(SqliteConnection connection, IReadOnlyCollection<string> urls, Dictionary<string, string?> into)
+    content: private static Task LoadPageMetadataAsync(SqliteConnection connection, IReadOnlyCollection<string> urls, Dictionary<string, string?> titles, Dictionary<string, DocKind> docKinds)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
       description: The open database connection.
     - id: urls
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
-      description: The set of URLs to fetch titles for.
-    - id: into
+      description: The set of URLs to fetch metadata for.
+    - id: titles
       type: System.Collections.Generic.Dictionary{System.String,System.String}
       description: The target dictionary to store the retrieved titles.
+    - id: docKinds
+      type: System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+      description: The target dictionary to store the retrieved document kinds.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Private Shared Function LoadTitlesAsync(connection As SqliteConnection, urls As IReadOnlyCollection(Of String), into As Dictionary(Of String, String)) As Task
-  overload: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync*
-  nameWithType.vb: VectorSearchService.LoadTitlesAsync(SqliteConnection, IReadOnlyCollection(Of String), Dictionary(Of String, String))
-  fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.Dictionary(Of String, String))
-  name.vb: LoadTitlesAsync(SqliteConnection, IReadOnlyCollection(Of String), Dictionary(Of String, String))
+    content.vb: Private Shared Function LoadPageMetadataAsync(connection As SqliteConnection, urls As IReadOnlyCollection(Of String), titles As Dictionary(Of String, String), docKinds As Dictionary(Of String, DocKind)) As Task
+  overload: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync*
+  nameWithType.vb: VectorSearchService.LoadPageMetadataAsync(SqliteConnection, IReadOnlyCollection(Of String), Dictionary(Of String, String), Dictionary(Of String, DocKind))
+  fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.Dictionary(Of String, String), System.Collections.Generic.Dictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.DocKind))
+  name.vb: LoadPageMetadataAsync(SqliteConnection, IReadOnlyCollection(Of String), Dictionary(Of String, String), Dictionary(Of String, DocKind))
 references:
 - uid: LocalSearchEngine.Core.TextProcessing.TextChunker
   commentId: T:LocalSearchEngine.Core.TextProcessing.TextChunker
@@ -1586,12 +1597,19 @@ references:
     href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
   - name: )
   - name: )
-- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync*
-  commentId: Overload:LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync
-  href: LocalSearchEngine.Core.Searching.VectorSearchService.html#LocalSearchEngine_Core_Searching_VectorSearchService_LoadTitlesAsync_System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Searching_VectorCandidate__System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Searching_KeywordCandidate__
-  name: LoadTitlesAsync
-  nameWithType: VectorSearchService.LoadTitlesAsync
-  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadTitlesAsync
+- uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  name: DocKind
+  nameWithType: DocKind
+  fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync*
+  commentId: Overload:LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html#LocalSearchEngine_Core_Searching_VectorSearchService_LoadPageMetadataAsync_System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Searching_VectorCandidate__System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Searching_KeywordCandidate__
+  name: LoadPageMetadataAsync
+  nameWithType: VectorSearchService.LoadPageMetadataAsync
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync
 - uid: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate}
   commentId: T:System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate}
   parent: System.Collections.Generic
@@ -1658,23 +1676,24 @@ references:
     name: KeywordCandidate
     href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
   - name: )
-- uid: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.String}}
-  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.String}}
+- uid: System.Threading.Tasks.Task{System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}}
   parent: System.Threading.Tasks
   definition: System.Threading.Tasks.Task`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<Dictionary<string, string>>
-  nameWithType: Task<Dictionary<string, string>>
-  fullName: System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>>
-  nameWithType.vb: Task(Of Dictionary(Of String, String))
-  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.Dictionary(Of String, String))
-  name.vb: Task(Of Dictionary(Of String, String))
+  name: Task<(Dictionary<string, string> Titles, Dictionary<string, DocKind> DocKinds)>
+  nameWithType: Task<(Dictionary<string, string> Titles, Dictionary<string, DocKind> DocKinds)>
+  fullName: System.Threading.Tasks.Task<(System.Collections.Generic.Dictionary<string, string> Titles, System.Collections.Generic.Dictionary<string, LocalSearchEngine.Core.Crawling.Policies.DocKind> DocKinds)>
+  nameWithType.vb: Task(Of (Titles As Dictionary(Of String, String), DocKinds As Dictionary(Of String, DocKind)))
+  fullName.vb: System.Threading.Tasks.Task(Of (Titles As System.Collections.Generic.Dictionary(Of String, String), DocKinds As System.Collections.Generic.Dictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.DocKind)))
+  name.vb: Task(Of (Titles As Dictionary(Of String, String), DocKinds As Dictionary(Of String, DocKind)))
   spec.csharp:
   - uid: System.Threading.Tasks.Task`1
     name: Task
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
   - name: <
+  - name: (
   - uid: System.Collections.Generic.Dictionary`2
     name: Dictionary
     isExternal: true
@@ -1691,6 +1710,32 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}.Titles
+    name: Titles
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.collections.generic.dictionary-system.string,system.string-,system.collections.generic.dictionary-system.string,localsearchengine.core.crawling.policies.dockind--.titles
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: '>'
+  - name: " "
+  - uid: System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}.DocKinds
+    name: DocKinds
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.collections.generic.dictionary-system.string,system.string-,system.collections.generic.dictionary-system.string,localsearchengine.core.crawling.policies.dockind--.dockinds
+  - name: )
   - name: '>'
   spec.vb:
   - uid: System.Threading.Tasks.Task`1
@@ -1700,6 +1745,13 @@ references:
   - name: (
   - name: Of
   - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}.Titles
+    name: Titles
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.collections.generic.dictionary-system.string,system.string-,system.collections.generic.dictionary-system.string,localsearchengine.core.crawling.policies.dockind--.titles
+  - name: " "
+  - name: As
+  - name: " "
   - uid: System.Collections.Generic.Dictionary`2
     name: Dictionary
     isExternal: true
@@ -1718,7 +1770,71 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}}.DocKinds
+    name: DocKinds
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.collections.generic.dictionary-system.string,system.string-,system.collections.generic.dictionary-system.string,localsearchengine.core.crawling.policies.dockind--.dockinds
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
   - name: )
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: System.Collections.Generic.IReadOnlyCollection`1
   commentId: T:System.Collections.Generic.IReadOnlyCollection`1
   isExternal: true
@@ -1977,6 +2093,51 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, DocKind>
+  nameWithType: Dictionary<string, DocKind>
+  fullName: System.Collections.Generic.Dictionary<string, LocalSearchEngine.Core.Crawling.Policies.DocKind>
+  nameWithType.vb: Dictionary(Of String, DocKind)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name.vb: Dictionary(Of String, DocKind)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
   - name: )
 - uid: System.Collections.Generic.Dictionary`2
   commentId: T:System.Collections.Generic.Dictionary`2

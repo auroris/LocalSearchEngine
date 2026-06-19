@@ -7,11 +7,14 @@ using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.SemanticKernel;
 using Microsoft.Data.Sqlite;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+// Add services to the container. Serialize enums (e.g. SearchResultItem.DocKind) by name so the
+// frontend can switch on "Html"/"Pdf"/"Docx" instead of magic numbers.
+builder.Services.AddControllers().AddJsonOptions(options =>
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.Configure<SearchSettings>(builder.Configuration.GetSection("SearchSettings"));
 
 // Local embeddings run on the CPU via ONNX Runtime. The model (snowflake-arctic-embed-s,

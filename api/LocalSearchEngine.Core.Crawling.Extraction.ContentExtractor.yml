@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractPdf(System.Byte[])
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractTitle(HtmlAgilityPack.HtmlDocument)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref(HtmlAgilityPack.HtmlNode)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(System.Byte[],System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ParseRobotsDirectives(HtmlAgilityPack.HtmlDocument,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ResolveCanonicalAlias(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts)
@@ -197,6 +198,48 @@ items:
   nameWithType.vb: ContentExtractor.LoadHtml(Byte(), String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.LoadHtml(Byte(), String)
   name.vb: LoadHtml(Byte(), String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref(HtmlAgilityPack.HtmlNode)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref(HtmlAgilityPack.HtmlNode)
+  id: GetHref(HtmlAgilityPack.HtmlNode)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: GetHref(HtmlNode)
+  nameWithType: ContentExtractor.GetHref(HtmlNode)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref(HtmlAgilityPack.HtmlNode)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetHref
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 151
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Reads a node's href as a parseable URL string. HtmlAgilityPack's GetAttributeValue returns the
+
+    attribute's raw text, so an href that (correctly) HTML-escapes its ampersands — the only valid
+
+    way to write one in markup — arrives with the entities intact. They must be decoded before the
+
+    value is parsed as a URL, or the escaped ampersand travels into the stored URL and corrupts the
+
+    query string, 404ing the link.
+  example: []
+  syntax:
+    content: private static string GetHref(HtmlNode node)
+    parameters:
+    - id: node
+      type: HtmlAgilityPack.HtmlNode
+    return:
+      type: System.String
+    content.vb: Private Shared Function GetHref(node As HtmlNode) As String
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref*
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   id: ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
@@ -215,7 +258,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 149
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -262,7 +305,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ParseRobotsDirectives
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 194
+    startLine: 204
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -302,7 +345,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveCanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 267
+    startLine: 277
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -342,7 +385,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractPdf
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 293
+    startLine: 303
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -378,7 +421,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractDocx
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 312
+    startLine: 322
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -414,7 +457,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CleanTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 324
+    startLine: 334
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -450,7 +493,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 334
+    startLine: 344
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -483,7 +526,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractHeadings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 345
+    startLine: 355
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -516,7 +559,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollapseWhitespace
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 366
+    startLine: 376
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -552,7 +595,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveEncoding
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 372
+    startLine: 382
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -1120,6 +1163,20 @@ references:
   name: HtmlAgilityPack
   nameWithType: HtmlAgilityPack
   fullName: HtmlAgilityPack
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_GetHref_HtmlAgilityPack_HtmlNode_
+  name: GetHref
+  nameWithType: ContentExtractor.GetHref
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref
+- uid: HtmlAgilityPack.HtmlNode
+  commentId: T:HtmlAgilityPack.HtmlNode
+  parent: HtmlAgilityPack
+  isExternal: true
+  href: https://github.com/zzzprojects/html-agility-pack/blob/64a718a815a6a25e03a73d6c53dfc58a7ed692d3/src/HtmlAgilityPack.Shared/HtmlNode.Encapsulator.cs
+  name: HtmlNode
+  nameWithType: HtmlNode
+  fullName: HtmlAgilityPack.HtmlNode
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
   commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_Outlinks

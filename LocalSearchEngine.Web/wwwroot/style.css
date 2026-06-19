@@ -350,10 +350,101 @@ mark {
     color: var(--text-secondary);
 }
 
-.results-header {
-    margin-bottom: 1rem;
-    color: var(--text-secondary);
+/* Result type tabs (Pages vs Documents), with per-tab counts. Switching is CSS-only: a hidden
+   radio per group (built in script.js) drives both the active-tab styling and which panel shows,
+   via the :checked sibling selectors below — no JavaScript click handlers. */
+.result-tabs-wrap {
+    position: relative; /* contains the visually-hidden radios */
+    display: flex;
+    flex-direction: column;
 }
+
+/* Radios are hidden but kept focusable, so arrow keys still switch tabs. */
+.result-tab-radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+}
+
+.result-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--panel-border);
+    margin-bottom: 1.5rem;
+}
+
+.result-tab {
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.result-tabs .result-tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Active tab: the one whose radio is checked. This rule's higher specificity also keeps the
+   hover background off the active tab. */
+#tab-pages:checked ~ .result-tabs .result-tab[for="tab-pages"],
+#tab-documents:checked ~ .result-tabs .result-tab[for="tab-documents"] {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-primary);
+    background: transparent;
+}
+
+/* Empty group: its radio is disabled, so the tab is dimmed and inert. */
+#tab-pages:disabled ~ .result-tabs .result-tab[for="tab-pages"],
+#tab-documents:disabled ~ .result-tabs .result-tab[for="tab-documents"] {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Keyboard focus lands on the hidden radio; surface it on the matching tab. */
+#tab-pages:focus-visible ~ .result-tabs .result-tab[for="tab-pages"],
+#tab-documents:focus-visible ~ .result-tabs .result-tab[for="tab-documents"] {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+/* Card list for a group: hidden until its radio is checked. */
+.results-list {
+    display: none;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#tab-pages:checked ~ #panel-pages,
+#tab-documents:checked ~ #panel-documents {
+    display: flex;
+}
+
+/* Staggered fade-in for the first cards in a panel (replaces the per-card inline delay JS used
+   to set); cards past the tenth share the final delay. */
+.results-list .result-card:nth-child(1)  { animation-delay: 0s; }
+.results-list .result-card:nth-child(2)  { animation-delay: 0.05s; }
+.results-list .result-card:nth-child(3)  { animation-delay: 0.1s; }
+.results-list .result-card:nth-child(4)  { animation-delay: 0.15s; }
+.results-list .result-card:nth-child(5)  { animation-delay: 0.2s; }
+.results-list .result-card:nth-child(6)  { animation-delay: 0.25s; }
+.results-list .result-card:nth-child(7)  { animation-delay: 0.3s; }
+.results-list .result-card:nth-child(8)  { animation-delay: 0.35s; }
+.results-list .result-card:nth-child(9)  { animation-delay: 0.4s; }
+.results-list .result-card:nth-child(10) { animation-delay: 0.45s; }
+.results-list .result-card:nth-child(n+11) { animation-delay: 0.5s; }
 
 /* Quiet index summary at the bottom of the page */
 .stats-footer {
