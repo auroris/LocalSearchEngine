@@ -6,7 +6,7 @@ namespace LocalSearchEngine.Core.Crawling.Policies;
 /// Tracks, per host, whether a server has answered at all this run and whether it has been written
 /// off as unreachable. The rule is deliberately narrow: a host that has <em>never</em> returned an
 /// HTTP response and then hits a connection-level failure (a DNS failure, a refused/reset/unreachable
-/// socket, a TLS handshake failure, or a request timeout) is marked unreachable, after which the
+/// socket, a TLS handshake failure, or a per-request timeout) is marked unreachable, after which the
 /// crawler stops contacting it and skips its remaining URLs for the rest of the run. A host that has
 /// answered even once — any status code, a 404 or 503 included — can never be written off here; its
 /// later failures fall back to the normal retry-and-keep-the-index handling, because "the server
@@ -42,21 +42,19 @@ public sealed class HostHealthTracker
     /// <summary>
     /// Records that a request to <paramref name="host"/> threw <paramref name="ex"/>. If the
     /// exception is a connection-level failure and the host has never answered this run, the host is
-    /// written off as unreachable. Non-transport errors — and anything thrown because the crawl was
-    /// cancelled — leave the tracker untouched.
+    /// written off as unreachable. Non-transport errors leave the tracker untouched.
     /// </summary>
     /// <param name="host">The host whose request failed.</param>
     /// <param name="ex">The exception the request threw.</param>
-    /// <param name="cancellationToken">The crawl token; a cancelled request is never a write-off.</param>
     /// <returns>
     /// <c>true</c> only on the transition into the unreachable state (so the caller can log it once);
     /// <c>false</c> if the failure was not a transport failure, the host had already answered, or it
     /// was already written off.
     /// </returns>
-    public bool RecordFailure(string host, Exception ex, CancellationToken cancellationToken)
+    public bool RecordFailure(string host, Exception ex)
     {
         if (string.IsNullOrEmpty(host)) return false;
-        if (!IsTransportFailure(ex, cancellationToken)) return false;
+        if (!IsTransportFailure(ex)) return false;
         lock (_gate)
         {
             if (_reachable.Contains(host)) return false;
@@ -89,16 +87,14 @@ public sealed class HostHealthTracker
 
     /// <summary>
     /// Classifies whether <paramref name="ex"/> is a connection-level failure that means the host
-    /// could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A request aborted
-    /// because <paramref name="cancellationToken"/> fired is never treated as unreachable.
+    /// could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A per-request
+    /// timeout surfaces as a <see cref="TaskCanceledException"/>; with no crawl-wide cancellation in
+    /// play, that unambiguously means the request ran out of time, so it counts as unreachable.
     /// </summary>
     /// <param name="ex">The thrown exception to evaluate.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns><c>true</c> if the error represents an unreachable host; otherwise, <c>false</c>.</returns>
-    public static bool IsTransportFailure(Exception ex, CancellationToken cancellationToken)
+    public static bool IsTransportFailure(Exception ex)
     {
-        if (cancellationToken.IsCancellationRequested) return false;
-
         for (Exception? e = ex; e is not null; e = e.InnerException)
         {
             switch (e)

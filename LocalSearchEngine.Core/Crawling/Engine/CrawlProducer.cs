@@ -76,9 +76,8 @@ internal sealed class CrawlProducer
     /// </summary>
     /// <param name="maxPages">The maximum total pages to index.</param>
     /// <param name="maxPagesPerHost">The maximum pages allowed per individual host.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing the number of produced jobs and the number of successfully indexed pages.</returns>
-    public async Task<(int ProducedJobs, int IndexedCount)> ProduceAsync(int maxPages, int maxPagesPerHost, CancellationToken cancellationToken)
+    public async Task<(int ProducedJobs, int IndexedCount)> ProduceAsync(int maxPages, int maxPagesPerHost)
     {
         int indexedCount = 0;
         int producedJobs = 0;
@@ -86,12 +85,6 @@ internal sealed class CrawlProducer
         _context.Observer.OnPhaseChanged(CrawlPhase.Crawling);
         while (_context.Queue.Count > 0 && indexedCount < maxPages)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                _context.Observer.OnCrawlCancelled(indexedCount);
-                break;
-            }
-
             var currentUrl = _context.Queue.Dequeue();
 
             if (Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentHostUri)
@@ -113,12 +106,7 @@ internal sealed class CrawlProducer
             CrawlJob? job;
             try
             {
-                job = await ProduceJobAsync(currentUrl, cancellationToken);
-            }
-            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-            {
-                _context.Observer.OnFetchCancelled(currentUrl);
-                break;
+                job = await ProduceJobAsync(currentUrl);
             }
             catch (Exception ex)
             {
@@ -129,14 +117,7 @@ internal sealed class CrawlProducer
             if (job is not null)
             {
                 producedJobs++;
-                try
-                {
-                    await _writer.WriteAsync(job, cancellationToken);
-                }
-                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-                {
-                    break;
-                }
+                await _writer.WriteAsync(job);
                 if (job is IndexJob)
                 {
                     indexedCount++;
@@ -162,7 +143,7 @@ internal sealed class CrawlProducer
         int pruned = 0;
         try
         {
-            var candidates = await CrawlStore.GetUrlsNotCrawledSinceAsync(_context.Read, crawlStartUtc, CancellationToken.None);
+            var candidates = await CrawlStore.GetUrlsNotCrawledSinceAsync(_context.Read, crawlStartUtc);
             foreach (var url in candidates)
             {
                 if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
@@ -173,8 +154,8 @@ internal sealed class CrawlProducer
                 // NOTE: Writes directly to _context.Write are safe here because this post-crawl cleanup phase
                 // runs after the main crawl consumer task has fully completed.
                 await _vectorSearchService.DeleteUrlChunksAsync(url);
-                await CrawlStore.DeleteLinksAsync(_context.Write, url, CancellationToken.None);
-                await CrawlStore.DeleteCrawlStateAsync(_context.Write, url, CancellationToken.None);
+                await CrawlStore.DeleteLinksAsync(_context.Write, url);
+                await CrawlStore.DeleteCrawlStateAsync(_context.Write, url);
                 pruned++;
             }
         }
@@ -189,9 +170,8 @@ internal sealed class CrawlProducer
     /// Processes a single URL: checks robot rules, downloads the page, and constructs the appropriate crawl job.
     /// </summary>
     /// <param name="currentUrl">The URL to crawl.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="CrawlJob"/> representing the results of processing, or <c>null</c> if skipped.</returns>
-    private async Task<CrawlJob?> ProduceJobAsync(string currentUrl, CancellationToken cancellationToken)
+    private async Task<CrawlJob?> ProduceJobAsync(string currentUrl)
     {
         if (!Uri.TryCreate(currentUrl, UriKind.Absolute, out var currentUri)) return null;
         if (!_context.AllowedHosts.IsAllowed(currentUri))
@@ -200,7 +180,7 @@ internal sealed class CrawlProducer
             return null;
         }
 
-        var currentRobots = await _robotsService.GetOrFetchRobotsAsync(currentUri, _context, cancellationToken);
+        var currentRobots = await _robotsService.GetOrFetchRobotsAsync(currentUri, _context);
 
         if (_context.HostHealth.IsUnreachable(currentUri.Host))
         {
@@ -212,9 +192,9 @@ internal sealed class CrawlProducer
             _context.Observer.OnPageDisallowed(currentUrl);
             return null;
         }
-        await DelayForHostAsync(currentUri.Host, ResolveRequestDelay(currentRobots), cancellationToken);
+        await DelayForHostAsync(currentUri.Host, ResolveRequestDelay(currentRobots));
 
-        var state = await CrawlStore.GetCrawlStateAsync(_context.Read, currentUrl, cancellationToken);
+        var state = await CrawlStore.GetCrawlStateAsync(_context.Read, currentUrl);
 
         // Functional delegate to validate redirected URLs during streaming
         Func<Uri, Task<bool>> redirectValidator = async (finalUri) =>
@@ -235,7 +215,7 @@ internal sealed class CrawlProducer
                 }
             }
 
-            var finalRobots = await _robotsService.GetOrFetchRobotsAsync(finalUri, _context, cancellationToken);
+            var finalRobots = await _robotsService.GetOrFetchRobotsAsync(finalUri, _context);
             if (!CrawlPolicy.IsAllowedByRobots(normalizedFinal, finalRobots))
             {
                 _context.Observer.OnPageRedirectedDisallowed(currentUrl, normalizedFinal);
@@ -258,7 +238,7 @@ internal sealed class CrawlProducer
         bool suppressConditional = _context.NoIndexRules.Matches(currentUrl);
         var condETag = suppressConditional ? null : state.ETag;
         var condLastModified = suppressConditional ? null : state.LastModified;
-        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, condETag, condLastModified, _context.MaxCrawlSizeBytes, redirectValidator, cancellationToken);
+        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, condETag, condLastModified, _context.MaxCrawlSizeBytes, redirectValidator);
 
         // Reachability for this host was already recorded when its robots.txt was fetched above,
         // and an unreachable host would have been skipped before we got here. The tracker never
@@ -269,7 +249,7 @@ internal sealed class CrawlProducer
         {
             case DownloadStatus.NotModified:
                 _context.Observer.OnPageUnchanged(currentUrl);
-                await EnqueueStoredOutlinksAsync(currentUrl, cancellationToken);
+                await EnqueueStoredOutlinksAsync(currentUrl);
                 return new TouchJob(currentUrl, statusCode);
 
             case DownloadStatus.RedirectBlocked:
@@ -296,7 +276,7 @@ internal sealed class CrawlProducer
                 return new TouchJob(typeUrl, statusCode, string.Equals(typeUrl, currentUrl, StringComparison.OrdinalIgnoreCase) ? null : currentUrl);
 
             case DownloadStatus.Success:
-                return await ProcessDownloadSuccessAsync(currentUrl, state, downloadResult, cancellationToken);
+                return await ProcessDownloadSuccessAsync(currentUrl, state, downloadResult);
 
             default:
                 throw new InvalidOperationException($"Unhandled download status: {downloadResult.Status}");
@@ -309,13 +289,11 @@ internal sealed class CrawlProducer
     /// <param name="currentUrl">The request URL.</param>
     /// <param name="state">The previously recorded crawl state of the URL.</param>
     /// <param name="downloadResult">The result details of the successful download.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="CrawlJob"/> representing the classification of the download success.</returns>
     private async Task<CrawlJob?> ProcessDownloadSuccessAsync(
         string currentUrl,
         (string? ETag, string? LastModified, string? ContentHash) state,
-        DownloadResult downloadResult,
-        CancellationToken cancellationToken)
+        DownloadResult downloadResult)
     {
         var finalUrl = downloadResult.FinalRequestUri != null
             ? UrlNormalizer.Normalize(downloadResult.FinalRequestUri)
@@ -338,7 +316,7 @@ internal sealed class CrawlProducer
 
         var finalState = string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase)
             ? state
-            : await CrawlStore.GetCrawlStateAsync(_context.Read, finalUrl, cancellationToken);
+            : await CrawlStore.GetCrawlStateAsync(_context.Read, finalUrl);
 
         var kind = CrawlPolicy.ClassifyContent(downloadResult.ContentType, body);
 
@@ -364,7 +342,7 @@ internal sealed class CrawlProducer
             }
             return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
                 pdf.Title, pdf.Title ?? string.Empty, pdf.Text, newETag, newLastModified,
-                Array.Empty<string>(), Array.Empty<string>(), kind, cancellationToken);
+                Array.Empty<string>(), Array.Empty<string>(), kind);
         }
 
         if (kind == DocKind.Docx)
@@ -378,7 +356,7 @@ internal sealed class CrawlProducer
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
             return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
                 docxTitle, docxTitle ?? string.Empty, docxText, newETag, newLastModified,
-                Array.Empty<string>(), Array.Empty<string>(), kind, cancellationToken);
+                Array.Empty<string>(), Array.Empty<string>(), kind);
         }
 
         if (kind != DocKind.Html)
@@ -418,7 +396,7 @@ internal sealed class CrawlProducer
 
         return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
             analysis.Title, analysis.Headings, analysis.Text, newETag, newLastModified,
-            analysis.Outlinks, analysis.OffsiteLinks, kind, cancellationToken);
+            analysis.Outlinks, analysis.OffsiteLinks, kind);
     }
 
     /// <summary>
@@ -440,7 +418,6 @@ internal sealed class CrawlProducer
     /// <param name="outlinks">The in-scope outlinks discovered on the page.</param>
     /// <param name="offsiteLinks">The off-site links discovered on the page.</param>
     /// <param name="kind">The classified document kind (Html/Pdf/Docx) of the page being indexed.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The crawl job to persist for this page.</returns>
     private async Task<CrawlJob> EmitIndexableAsync(
         string currentUrl, string finalUrl, string? redirectSourceUrl, int statusCode,
@@ -448,7 +425,7 @@ internal sealed class CrawlProducer
         string? title, string headings, string text,
         string? newETag, string? newLastModified,
         IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks,
-        DocKind kind, CancellationToken cancellationToken)
+        DocKind kind)
     {
         string contentHash = ComputeContentHash(title, headings, text);
 
@@ -459,7 +436,7 @@ internal sealed class CrawlProducer
         // tokens, timestamps) no longer forces a needless re-index. Outlinks were already discovered
         // by the caller, so the frontier is unaffected by returning early here.
         if (finalState.ContentHash == contentHash
-            && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl, cancellationToken))
+            && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl))
         {
             _context.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
             return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
@@ -473,7 +450,7 @@ internal sealed class CrawlProducer
         {
             duplicateOf = inRunUrl;
         }
-        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, contentHash, finalUrl, cancellationToken);
+        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, contentHash, finalUrl);
         if (duplicateOf != null)
         {
             _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
@@ -508,12 +485,11 @@ internal sealed class CrawlProducer
     /// Reads outlinks stored in the database for an unchanged page and enqueues them for crawling.
     /// </summary>
     /// <param name="url">The URL of the unchanged page.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    private async Task EnqueueStoredOutlinksAsync(string url, CancellationToken cancellationToken)
+    private async Task EnqueueStoredOutlinksAsync(string url)
     {
         try
         {
-            var links = await CrawlStore.GetStoredOutlinksAsync(_context.Read, url, cancellationToken);
+            var links = await CrawlStore.GetStoredOutlinksAsync(_context.Read, url);
             int added = 0;
             foreach (var link in links)
             {
@@ -535,8 +511,7 @@ internal sealed class CrawlProducer
     /// </summary>
     /// <param name="host">The host name to check.</param>
     /// <param name="minGap">The minimum gap/duration between requests to this host.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    private async Task DelayForHostAsync(string host, TimeSpan minGap, CancellationToken cancellationToken)
+    private async Task DelayForHostAsync(string host, TimeSpan minGap)
     {
         _context.LastFetchUtc.TryGetValue(host, out var lastFetch);
 
@@ -545,7 +520,7 @@ internal sealed class CrawlProducer
         if (elapsed < minGap)
         {
             var delay = minGap - elapsed;
-            await Task.Delay(delay, cancellationToken);
+            await Task.Delay(delay);
         }
 
         _context.LastFetchUtc[host] = DateTime.UtcNow;

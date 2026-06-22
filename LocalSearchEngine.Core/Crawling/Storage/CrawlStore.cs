@@ -12,8 +12,9 @@ namespace LocalSearchEngine.Core.Crawling.Storage;
 /// that keep it in sync — created by <see cref="EnsureSchemaAsync"/> after the vector store has made
 /// its <c>text_chunks</c> table. The rest are focused reads and writes over those tables: record a
 /// visit, store or re-derive a page's links, find a duplicate by content hash, list URLs a crawl no
-/// longer reaches, and so on. Every method works on a connection the caller owns and opens, so callers
-/// control transactions and which connection (read vs. write) each runs on.
+/// longer reaches, and so on. Every method works on a connection the caller owns and opens; the write
+/// methods accept an optional <see cref="SqliteTransaction"/> so a caller can batch several of them
+/// into one atomic unit (the consumer applies each page's writes that way).
 /// </summary>
 public static class CrawlStore
 {
@@ -120,15 +121,14 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The URL whose crawl state to retrieve.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing the ETag, LastModified, and ContentHash, each null if not present.</returns>
-    public static async Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    public static async Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url)
     {
         using var cmd = connection.CreateCommand();
         cmd.CommandText = "SELECT ETag, LastModified, ContentHash FROM CrawlState WHERE Url = @Url";
         cmd.Parameters.AddWithValue("@Url", url);
-        using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
-        if (await reader.ReadAsync(cancellationToken))
+        using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
         {
             return (
                 reader.IsDBNull(0) ? null : reader.GetString(0),
@@ -143,14 +143,13 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The URL to verify.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns><c>true</c> if the URL has at least one chunk; otherwise, <c>false</c>.</returns>
-    public static async Task<bool> UrlHasChunksAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    public static async Task<bool> UrlHasChunksAsync(SqliteConnection connection, string url)
     {
         using var cmd = connection.CreateCommand();
         cmd.CommandText = "SELECT 1 FROM text_chunks WHERE Url = @Url LIMIT 1";
         cmd.Parameters.AddWithValue("@Url", url);
-        return await cmd.ExecuteScalarAsync(cancellationToken) is not null;
+        return await cmd.ExecuteScalarAsync() is not null;
     }
 
     /// <summary>
@@ -159,9 +158,8 @@ public static class CrawlStore
     /// <param name="connection">The open database connection.</param>
     /// <param name="contentHash">The content hash to match against indexed pages.</param>
     /// <param name="excludeUrl">The URL to exclude from the duplicate search.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The URL of the duplicate page, or <c>null</c> if not found.</returns>
-    public static async Task<string?> FindIndexedDuplicateAsync(SqliteConnection connection, string contentHash, string excludeUrl, CancellationToken cancellationToken)
+    public static async Task<string?> FindIndexedDuplicateAsync(SqliteConnection connection, string contentHash, string excludeUrl)
     {
         using var cmd = connection.CreateCommand();
         cmd.CommandText = @"
@@ -171,7 +169,7 @@ public static class CrawlStore
             LIMIT 1";
         cmd.Parameters.AddWithValue("@Hash", contentHash);
         cmd.Parameters.AddWithValue("@Url", excludeUrl);
-        return await cmd.ExecuteScalarAsync(cancellationToken) as string;
+        return await cmd.ExecuteScalarAsync() as string;
     }
 
     /// <summary>
@@ -185,11 +183,12 @@ public static class CrawlStore
     /// <param name="title">The page title, if any.</param>
     /// <param name="contentHash">The content hash of the page's extracted indexable content, if any.</param>
     /// <param name="docKind">The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, CancellationToken cancellationToken)
+    public static async Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, SqliteTransaction? transaction = null)
     {
         using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         command.CommandText = @"
             INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ETag, LastModified, Title, ContentHash, DocKind)
             VALUES (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified, @Title, @ContentHash, @DocKind)
@@ -211,7 +210,7 @@ public static class CrawlStore
         command.Parameters.AddWithValue("@ContentHash", contentHash ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@DocKind", (int)docKind);
 
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await command.ExecuteNonQueryAsync();
     }
 
     /// <summary>
@@ -221,11 +220,12 @@ public static class CrawlStore
     /// <param name="url">The URL of the page visited.</param>
     /// <param name="statusCode">The HTTP status code.</param>
     /// <param name="clearMetadata"><c>true</c> to reset headers and content hash (e.g. for redirects/deletions); otherwise, <c>false</c>.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task RecordVisitAsync(SqliteConnection connection, string url, int statusCode, bool clearMetadata, CancellationToken cancellationToken)
+    public static async Task RecordVisitAsync(SqliteConnection connection, string url, int statusCode, bool clearMetadata, SqliteTransaction? transaction = null)
     {
         using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         if (clearMetadata)
         {
             command.CommandText = @"
@@ -251,59 +251,74 @@ public static class CrawlStore
         command.Parameters.AddWithValue("@Url", url);
         command.Parameters.AddWithValue("@LastCrawled", DateTime.UtcNow);
         command.Parameters.AddWithValue("@StatusCode", statusCode);
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await command.ExecuteNonQueryAsync();
     }
 
     /// <summary>
     /// Stores every link discovered on a page — in-scope outlinks and off-site links alike —
-    /// replacing any existing links for that page in a transaction. New rows start
+    /// replacing any existing links for that page. New rows start
     /// <see cref="Reporting.LinkStatus.Unknown"/> with no <c>LastUpdated</c>; their status is
     /// filled in when the destination is visited this run, or by the end-of-crawl verification pass.
+    /// When <paramref name="transaction"/> is supplied the delete+insert enlist in it and the caller
+    /// commits; otherwise they run as their own atomic transaction.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="fromUrl">The source page URL.</param>
     /// <param name="inScopeLinks">Target URLs within the crawl scope (stored with <c>External=0</c>).</param>
     /// <param name="offsiteLinks">Off-site target URLs (stored with <c>External=1</c>).</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist these writes in, or <c>null</c> to run them as a standalone transaction.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, CancellationToken cancellationToken)
+    public static async Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, SqliteTransaction? transaction = null)
     {
-        using var transaction = connection.BeginTransaction();
-
-        using (var delete = connection.CreateCommand())
+        bool ownTransaction = transaction is null;
+        transaction ??= (SqliteTransaction)await connection.BeginTransactionAsync();
+        try
         {
-            delete.Transaction = transaction;
-            delete.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
-            delete.Parameters.AddWithValue("@From", fromUrl);
-            await delete.ExecuteNonQueryAsync(cancellationToken);
-        }
-
-        if (inScopeLinks.Count > 0 || offsiteLinks.Count > 0)
-        {
-            using var insert = connection.CreateCommand();
-            insert.Transaction = transaction;
-            insert.CommandText = "INSERT OR IGNORE INTO LinkIndex (FromUrl, ToUrl, External, Status, StatusCode, LastUpdated) VALUES (@From, @To, @External, 0, 0, NULL)";
-            var fromParam = insert.Parameters.Add("@From", SqliteType.Text);
-            var toParam = insert.Parameters.Add("@To", SqliteType.Text);
-            var externalParam = insert.Parameters.Add("@External", SqliteType.Integer);
-            fromParam.Value = fromUrl;
-
-            externalParam.Value = 0;
-            foreach (var to in inScopeLinks)
+            using (var delete = connection.CreateCommand())
             {
-                toParam.Value = to;
-                await insert.ExecuteNonQueryAsync(cancellationToken);
+                delete.Transaction = transaction;
+                delete.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
+                delete.Parameters.AddWithValue("@From", fromUrl);
+                await delete.ExecuteNonQueryAsync();
             }
 
-            externalParam.Value = 1;
-            foreach (var to in offsiteLinks)
+            if (inScopeLinks.Count > 0 || offsiteLinks.Count > 0)
             {
-                toParam.Value = to;
-                await insert.ExecuteNonQueryAsync(cancellationToken);
+                using var insert = connection.CreateCommand();
+                insert.Transaction = transaction;
+                insert.CommandText = "INSERT OR IGNORE INTO LinkIndex (FromUrl, ToUrl, External, Status, StatusCode, LastUpdated) VALUES (@From, @To, @External, 0, 0, NULL)";
+                var fromParam = insert.Parameters.Add("@From", SqliteType.Text);
+                var toParam = insert.Parameters.Add("@To", SqliteType.Text);
+                var externalParam = insert.Parameters.Add("@External", SqliteType.Integer);
+                fromParam.Value = fromUrl;
+
+                externalParam.Value = 0;
+                foreach (var to in inScopeLinks)
+                {
+                    toParam.Value = to;
+                    await insert.ExecuteNonQueryAsync();
+                }
+
+                externalParam.Value = 1;
+                foreach (var to in offsiteLinks)
+                {
+                    toParam.Value = to;
+                    await insert.ExecuteNonQueryAsync();
+                }
+            }
+
+            if (ownTransaction)
+            {
+                await transaction.CommitAsync();
             }
         }
-
-        await transaction.CommitAsync(cancellationToken);
+        finally
+        {
+            if (ownTransaction)
+            {
+                await transaction.DisposeAsync();
+            }
+        }
     }
 
     /// <summary>
@@ -311,14 +326,15 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="fromUrl">The source page URL.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task DeleteLinksAsync(SqliteConnection connection, string fromUrl, CancellationToken cancellationToken)
+    public static async Task DeleteLinksAsync(SqliteConnection connection, string fromUrl, SqliteTransaction? transaction = null)
     {
         using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         command.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
         command.Parameters.AddWithValue("@From", fromUrl);
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await command.ExecuteNonQueryAsync();
     }
 
     /// <summary>
@@ -327,16 +343,15 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The source page URL.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of in-scope outlink URL strings.</returns>
-    public static async Task<List<string>> GetStoredOutlinksAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    public static async Task<List<string>> GetStoredOutlinksAsync(SqliteConnection connection, string url)
     {
         var links = new List<string>();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT ToUrl FROM LinkIndex WHERE FromUrl = @From AND External = 0";
         command.Parameters.AddWithValue("@From", url);
-        using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
         {
             links.Add(reader.GetString(0));
         }
@@ -352,17 +367,18 @@ public static class CrawlStore
     /// <param name="toUrl">The destination URL whose inbound links to update.</param>
     /// <param name="status">The <see cref="Reporting.LinkStatus"/> integer value.</param>
     /// <param name="statusCode">The HTTP status observed (0 for a connection-level failure).</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task UpdateLinkStatusByDestinationAsync(SqliteConnection connection, string toUrl, int status, int statusCode, CancellationToken cancellationToken)
+    public static async Task UpdateLinkStatusByDestinationAsync(SqliteConnection connection, string toUrl, int status, int statusCode, SqliteTransaction? transaction = null)
     {
         using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         command.CommandText = "UPDATE LinkIndex SET Status = @Status, StatusCode = @StatusCode, LastUpdated = @Now WHERE ToUrl = @To";
         command.Parameters.AddWithValue("@Status", status);
         command.Parameters.AddWithValue("@StatusCode", statusCode);
         command.Parameters.AddWithValue("@Now", DateTime.UtcNow);
         command.Parameters.AddWithValue("@To", toUrl);
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await command.ExecuteNonQueryAsync();
     }
 
     /// <summary>
@@ -372,17 +388,16 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="crawlStartUtc">The crawl start; rows last updated before it are returned.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The (origin, destination, external) tuples awaiting verification.</returns>
-    public static async Task<List<(string FromUrl, string ToUrl, bool External)>> GetLinksToVerifyAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    public static async Task<List<(string FromUrl, string ToUrl, bool External)>> GetLinksToVerifyAsync(SqliteConnection connection, DateTime crawlStartUtc)
     {
         var rows = new List<(string, string, bool)>();
         using var command = connection.CreateCommand();
         // LastUpdated is stored as sortable ISO-8601 text, so the comparison below is sound.
         command.CommandText = "SELECT FromUrl, ToUrl, External FROM LinkIndex WHERE LastUpdated IS NULL OR LastUpdated < @Cutoff";
         command.Parameters.AddWithValue("@Cutoff", crawlStartUtc);
-        using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
         {
             rows.Add((reader.GetString(0), reader.GetString(1), reader.GetBoolean(2)));
         }
@@ -396,16 +411,15 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="crawlStartUtc">The crawl start; only rows updated at or after it are returned.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The (origin, destination, external, status, statusCode) tuples to report.</returns>
-    public static async Task<List<(string FromUrl, string ToUrl, bool External, int Status, int StatusCode)>> GetReportableLinksAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    public static async Task<List<(string FromUrl, string ToUrl, bool External, int Status, int StatusCode)>> GetReportableLinksAsync(SqliteConnection connection, DateTime crawlStartUtc)
     {
         var rows = new List<(string, string, bool, int, int)>();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT FromUrl, ToUrl, External, Status, StatusCode FROM LinkIndex WHERE Status IN (2, 3) AND LastUpdated >= @Cutoff";
         command.Parameters.AddWithValue("@Cutoff", crawlStartUtc);
-        using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
         {
             rows.Add((reader.GetString(0), reader.GetString(1), reader.GetBoolean(2), reader.GetInt32(3), reader.GetInt32(4)));
         }
@@ -418,17 +432,16 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="cutoffUtc">The crawl start time; rows last crawled before it are returned.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The list of URLs not visited since the cutoff.</returns>
-    public static async Task<List<string>> GetUrlsNotCrawledSinceAsync(SqliteConnection connection, DateTime cutoffUtc, CancellationToken cancellationToken)
+    public static async Task<List<string>> GetUrlsNotCrawledSinceAsync(SqliteConnection connection, DateTime cutoffUtc)
     {
         var urls = new List<string>();
         using var command = connection.CreateCommand();
         // LastCrawled is stored as sortable ISO-8601 text, so the comparison below is sound.
         command.CommandText = "SELECT Url FROM CrawlState WHERE LastCrawled IS NULL OR LastCrawled < @Cutoff";
         command.Parameters.AddWithValue("@Cutoff", cutoffUtc);
-        using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
         {
             urls.Add(reader.GetString(0));
         }
@@ -444,16 +457,15 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="urlPrefix">The literal URL prefix to match.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The list of crawl-state URLs starting with the prefix.</returns>
-    public static async Task<List<string>> GetCrawledUrlsWithPrefixAsync(SqliteConnection connection, string urlPrefix, CancellationToken cancellationToken)
+    public static async Task<List<string>> GetCrawledUrlsWithPrefixAsync(SqliteConnection connection, string urlPrefix)
     {
         var urls = new List<string>();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT Url FROM CrawlState WHERE Url LIKE @Pattern ESCAPE '\\'";
         command.Parameters.AddWithValue("@Pattern", EscapeLike(urlPrefix) + "%");
-        using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        while (await reader.ReadAsync(cancellationToken))
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
         {
             urls.Add(reader.GetString(0));
         }
@@ -474,14 +486,15 @@ public static class CrawlStore
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The URL whose row to delete.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task DeleteCrawlStateAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    public static async Task DeleteCrawlStateAsync(SqliteConnection connection, string url, SqliteTransaction? transaction = null)
     {
         using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         command.CommandText = "DELETE FROM CrawlState WHERE Url = @Url";
         command.Parameters.AddWithValue("@Url", url);
-        await command.ExecuteNonQueryAsync(cancellationToken);
+        await command.ExecuteNonQueryAsync();
     }
 
     /// <summary>
@@ -489,22 +502,21 @@ public static class CrawlStore
     /// crawl-state rows. Used for the end-of-run statistics.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple of the distinct indexed URL count and the crawl-state row count.</returns>
-    public static async Task<(long IndexedUrls, long CrawlStateRows)> GetCountsAsync(SqliteConnection connection, CancellationToken cancellationToken)
+    public static async Task<(long IndexedUrls, long CrawlStateRows)> GetCountsAsync(SqliteConnection connection)
     {
         long indexedUrls;
         using (var command = connection.CreateCommand())
         {
             command.CommandText = "SELECT COUNT(DISTINCT Url) FROM text_chunks";
-            indexedUrls = Convert.ToInt64(await command.ExecuteScalarAsync(cancellationToken) ?? 0L);
+            indexedUrls = Convert.ToInt64(await command.ExecuteScalarAsync() ?? 0L);
         }
 
         long crawlStateRows;
         using (var command = connection.CreateCommand())
         {
             command.CommandText = "SELECT COUNT(*) FROM CrawlState";
-            crawlStateRows = Convert.ToInt64(await command.ExecuteScalarAsync(cancellationToken) ?? 0L);
+            crawlStateRows = Convert.ToInt64(await command.ExecuteScalarAsync() ?? 0L);
         }
 
         return (indexedUrls, crawlStateRows);

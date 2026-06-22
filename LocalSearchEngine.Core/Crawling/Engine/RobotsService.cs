@@ -48,14 +48,13 @@ internal sealed class RobotsService
     /// </summary>
     /// <param name="uri">The target URL to retrieve robots.txt rules for.</param>
     /// <param name="context">The active crawl context.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="RobotsRules"/> object containing the rules for the given origin.</returns>
-    public async Task<RobotsRules> GetOrFetchRobotsAsync(Uri uri, CrawlContext context, CancellationToken cancellationToken)
+    public async Task<RobotsRules> GetOrFetchRobotsAsync(Uri uri, CrawlContext context)
     {
         var origin = UrlOrigin.Key(uri);
         if (context.RobotsCache.TryGetValue(origin, out var cached)) return cached;
 
-        var (rules, unavailable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), context, cancellationToken);
+        var (rules, unavailable) = await GetRobotsRulesAsync(UrlOrigin.BaseUri(uri), context);
 
         if (unavailable)
         {
@@ -82,7 +81,7 @@ internal sealed class RobotsService
                 if (context.HostHealth.IsUnreachable(originUri.Host)) continue;
 
                 var candidates = await CrawlStore.GetCrawledUrlsWithPrefixAsync(
-                    context.Read, originUri.GetLeftPart(UriPartial.Authority), CancellationToken.None);
+                    context.Read, originUri.GetLeftPart(UriPartial.Authority));
                 foreach (var url in candidates)
                 {
                     if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) continue;
@@ -92,8 +91,8 @@ internal sealed class RobotsService
                     // NOTE: Writes directly to context.Write are safe here because this post-crawl cleanup phase
                     // runs after the main crawl consumer task has fully completed.
                     await _vectorSearchService.DeleteUrlChunksAsync(url);
-                    await CrawlStore.DeleteLinksAsync(context.Write, url, CancellationToken.None);
-                    await CrawlStore.DeleteCrawlStateAsync(context.Write, url, CancellationToken.None);
+                    await CrawlStore.DeleteLinksAsync(context.Write, url);
+                    await CrawlStore.DeleteCrawlStateAsync(context.Write, url);
                     removed++;
                 }
             }
@@ -111,19 +110,19 @@ internal sealed class RobotsService
     /// </summary>
     /// <param name="baseUri">The base URI/origin host to request robots.txt from.</param>
     /// <param name="context">The active crawl context (supplies the size limit and host-health tracker).</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing the parsed rules and whether robots.txt was unavailable (5xx error).</returns>
-    private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, CrawlContext context, CancellationToken cancellationToken)
+    private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, CrawlContext context)
     {
+        using var timeout = HttpContentReader.NewRequestTimeout();
         try
         {
             var robotsUrl = new Uri(baseUri, "/robots.txt");
-            using var response = await _httpClient.GetAsync(robotsUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            using var response = await _httpClient.GetAsync(robotsUrl, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
             context.HostHealth.RecordResponse(baseUri.Host);
 
             if (response.IsSuccessStatusCode)
             {
-                var (body, truncated) = await HttpContentReader.ReadLimitedAsync(response, context.MaxCrawlSizeBytes, cancellationToken);
+                var (body, truncated) = await HttpContentReader.ReadLimitedAsync(response, context.MaxCrawlSizeBytes, timeout.Token);
                 if (truncated)
                 {
                     _logger.LogWarning("robots.txt for {Host} exceeds the {Limit}-byte limit; parsing the truncated prefix.", baseUri.Host, context.MaxCrawlSizeBytes);
@@ -141,7 +140,11 @@ internal sealed class RobotsService
         }
         catch (Exception ex)
         {
-            if (context.HostHealth.RecordFailure(baseUri.Host, ex, cancellationToken))
+            if (timeout.IsCancellationRequested)
+            {
+                _logger.LogWarning("robots.txt request for {Host} timed out after {Seconds}s.", baseUri.Host, (int)HttpContentReader.RequestTimeout.TotalSeconds);
+            }
+            if (context.HostHealth.RecordFailure(baseUri.Host, ex))
             {
                 _logger.LogWarning("Host {Host} is unreachable on first contact; writing it off and skipping its URLs for the rest of this run.", baseUri.Host);
             }

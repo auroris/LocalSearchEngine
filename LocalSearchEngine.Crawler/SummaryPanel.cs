@@ -20,8 +20,7 @@ internal static class SummaryPanel
     public static IRenderable Build(CrawlReport report, string statsJsonPath, string statsTextPath, string logPath, string brokenLinksPath)
     {
         var s = report.Stats;
-        string status = report.Cancelled ? "[bold red]cancelled[/]"
-            : report.CompletedNaturally ? "[bold green]completed[/]"
+        string status = report.CompletedNaturally ? "[bold green]completed[/]"
             : "[bold yellow]stopped (capped)[/]";
 
         var grid = new Grid();

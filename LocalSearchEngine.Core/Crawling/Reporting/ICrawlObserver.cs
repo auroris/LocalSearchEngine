@@ -37,10 +37,6 @@ public interface ICrawlObserver
     /// <summary>The seed URL itself is disallowed by robots.txt.</summary>
     void OnSeedDisallowed(string url);
 
-    /// <summary>Cancellation was observed in the main crawl loop.</summary>
-    /// <param name="dispatchedCount">Pages already dispatched for indexing when cancellation was seen.</param>
-    void OnCrawlCancelled(int dispatchedCount);
-
     /// <summary>A host reached its per-host page cap, so the current URL is skipped.</summary>
     /// <param name="cap">The configured per-host page limit.</param>
     /// <param name="host">The host that hit the cap.</param>
@@ -53,13 +49,10 @@ public interface ICrawlObserver
     /// <param name="url">The URL being fetched.</param>
     void OnPageFetching(int indexedCount, int discoveredCount, string url);
 
-    /// <summary>Cancellation interrupted the fetch of this URL.</summary>
-    void OnFetchCancelled(string url);
-
     /// <summary>An unexpected exception was thrown while fetching the URL; it is recorded as a failure.</summary>
     void OnFetchError(Exception ex, string url);
 
-    /// <summary>The crawl finished (whether it drained the frontier or was cancelled).</summary>
+    /// <summary>The crawl finished (whether it drained the frontier or stopped at a page cap).</summary>
     void OnCrawlCompleted(string seedUrl);
 
     // Redirections and scopes

@@ -72,7 +72,6 @@ public partial class CrawlerService
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
     /// <param name="checkExternalLinks">Whether to check external links after the crawl.</param>
     /// <param name="reporter">Receives live progress and phase changes.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="CrawlReport"/> summarizing what the crawl indexed, removed, and discovered.</returns>
     public async Task<CrawlReport> CrawlAsync(
         string seedUrl,
@@ -82,12 +81,12 @@ public partial class CrawlerService
         int maxPagesPerHost = int.MaxValue,
         long maxCrawlSizeBytes = 15 * 1024 * 1024,
         bool checkExternalLinks = false,
-        ICrawlReporter? reporter = null,
-        CancellationToken cancellationToken = default)
+        ICrawlReporter? reporter = null)
     {
         var crawlStartUtc = DateTime.UtcNow;
         reporter ??= NullCrawlReporter.Instance;
-        var observer = new CrawlObserver(_logger, reporter, crawlStartUtc);
+        var heartbeat = new CrawlHeartbeat();
+        var observer = new CrawlObserver(_logger, reporter, crawlStartUtc, heartbeat);
 
         if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
         {
@@ -104,6 +103,7 @@ public partial class CrawlerService
             MaxCrawlSizeBytes = maxCrawlSizeBytes,
             CheckExternalLinks = checkExternalLinks,
             Observer = observer,
+            Heartbeat = heartbeat,
             StartedUtc = crawlStartUtc,
         };
 
@@ -136,13 +136,18 @@ public partial class CrawlerService
         ctx.Observer.OnPhaseChanged(CrawlPhase.Starting);
 
         await using var readConnection = new SqliteConnection(_connectionString);
-        await readConnection.OpenAsync(cancellationToken);
+        await readConnection.OpenAsync();
         await using var writeConnection = new SqliteConnection(_connectionString);
-        await writeConnection.OpenAsync(cancellationToken);
+        await writeConnection.OpenAsync();
         ctx.Read = readConnection;
         ctx.Write = writeConnection;
 
-        var (indexedUrlsAtStart, _) = await CrawlStore.GetCountsAsync(ctx.Read, cancellationToken);
+        // Watchdog: logs a warning whenever the crawl has been on one activity too long, so a stall
+        // shows up in the log with the URL/phase that's stuck instead of looking like a frozen run.
+        using var watchdogTimer = new PeriodicTimer(WatchdogInterval);
+        var watchdogTask = RunStallWatchdogAsync(heartbeat, watchdogTimer);
+
+        var (indexedUrlsAtStart, _) = await CrawlStore.GetCountsAsync(ctx.Read);
 
         var channel = Channel.CreateBounded<CrawlJob>(new BoundedChannelOptions(16)
         {
@@ -151,28 +156,18 @@ public partial class CrawlerService
             FullMode = BoundedChannelFullMode.Wait,
         });
 
-        var consumer = new CrawlConsumer(ctx.Write, channel.Reader, _vectorSearchService, _logger);
+        // The consumer wraps every job in its own try/catch and only ends when the channel completes,
+        // so it never faults out of its loop — the producer's WriteAsync is always drained.
+        var consumer = new CrawlConsumer(ctx.Write, channel.Reader, _vectorSearchService, _logger, heartbeat);
         var consumerTask = consumer.ConsumeAsync();
-
-        using var consumerCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        _ = consumerTask.ContinueWith(t =>
-        {
-            try
-            {
-                consumerCts.Cancel();
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-        }, TaskContinuationOptions.ExecuteSynchronously);
 
         var robotsService = new RobotsService(_httpClient, _vectorSearchService, _logger);
         var sitemapService = new SitemapService(_httpClient, _logger);
-        var pageDownloader = new PageDownloader(_httpClient);
+        var pageDownloader = new PageDownloader(_httpClient, _logger);
         var linkVerifier = new LinkVerifier(_httpClient);
 
         var producer = new CrawlProducer(_vectorSearchService, channel.Writer, ctx, robotsService, pageDownloader, _logger);
-        var seedRobots = await robotsService.GetOrFetchRobotsAsync(baseUri, ctx, cancellationToken);
+        var seedRobots = await robotsService.GetOrFetchRobotsAsync(baseUri, ctx);
 
         int producedJobs = 0;
         int indexedCount = 0;
@@ -184,7 +179,7 @@ public partial class CrawlerService
         }
         else
         {
-            await sitemapService.EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, seedRobots, cancellationToken);
+            await sitemapService.EnqueueSitemapUrlsAsync(UrlOrigin.BaseUri(baseUri), ctx, seedRobots);
 
             var normalizedSeed = UrlNormalizer.Normalize(baseUri);
             ctx.SeedUrl = normalizedSeed;
@@ -200,12 +195,9 @@ public partial class CrawlerService
                 }
             }
 
-            // ProduceAsync returns gracefully on cancellation (user or consumer-fault). A consumer
-            // fault surfaces below at 'await consumerTask' once the channel is completed.
-            (producedJobs, indexedCount) = await producer.ProduceAsync(maxPages, maxPagesPerHost, consumerCts.Token);
+            (producedJobs, indexedCount) = await producer.ProduceAsync(maxPages, maxPagesPerHost);
 
             completedNaturally = ctx.Queue.Count == 0
-                && !cancellationToken.IsCancellationRequested
                 && !ctx.HostCapSkipped
                 && producedJobs > 0;
         }
@@ -232,15 +224,15 @@ public partial class CrawlerService
             try { await consumerTask; } catch { }
         }
 
-        if (!cancellationToken.IsCancellationRequested)
-        {
-            await linkVerifier.VerifyUndeterminedLinksAsync(ctx, crawlStartUtc, cancellationToken);
-        }
+        await linkVerifier.VerifyUndeterminedLinksAsync(ctx, crawlStartUtc);
 
-        bool cancelled = cancellationToken.IsCancellationRequested;
-        ctx.Observer.OnPhaseChanged(cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed);
+        // The crawl and all its post-crawl passes are done; stop the watchdog before the final tally.
+        watchdogTimer.Dispose();
+        await watchdogTask;
 
-        var (indexedUrlsInDb, crawlStateRowsInDb) = await CrawlStore.GetCountsAsync(ctx.Read, CancellationToken.None);
+        ctx.Observer.OnPhaseChanged(CrawlPhase.Completed);
+
+        var (indexedUrlsInDb, crawlStateRowsInDb) = await CrawlStore.GetCountsAsync(ctx.Read);
         long itemsDeleted = ctx.Observer.Stats.Gone + ctx.Observer.Stats.RemovedBanned + ctx.Observer.Stats.RemovedStale;
         long itemsAdded = Math.Max(0, indexedUrlsInDb - indexedUrlsAtStart + itemsDeleted);
 
@@ -254,8 +246,7 @@ public partial class CrawlerService
             crawlStartUtc,
             DateTime.UtcNow,
             completedNaturally,
-            cancelled,
-            ctx.Observer.Stats.Snapshot(cancelled ? CrawlPhase.Cancelled : CrawlPhase.Completed, ctx.Visited.Count, DateTime.UtcNow - crawlStartUtc),
+            ctx.Observer.Stats.Snapshot(CrawlPhase.Completed, ctx.Visited.Count, DateTime.UtcNow - crawlStartUtc),
             indexedUrlsInDb,
             crawlStateRowsInDb,
             itemsAdded,
@@ -272,7 +263,33 @@ public partial class CrawlerService
     /// <param name="startedUtc">The time the crawl was initiated.</param>
     /// <returns>An empty <see cref="CrawlReport"/>.</returns>
     private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
-        seedUrl, startedUtc, DateTime.UtcNow, false, false,
+        seedUrl, startedUtc, DateTime.UtcNow, false,
         new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,
         Array.Empty<BrokenLink>(), Array.Empty<BrokenLink>(), Array.Empty<string>());
+
+    /// <summary>How often the stall watchdog samples the heartbeat.</summary>
+    private static readonly TimeSpan WatchdogInterval = TimeSpan.FromSeconds(15);
+
+    /// <summary>How long one activity may run before the watchdog logs a possible stall.</summary>
+    private static readonly TimeSpan StallThreshold = TimeSpan.FromSeconds(60);
+
+    /// <summary>
+    /// Polls the heartbeat on a timer and logs a warning whenever the current activity has been in
+    /// flight past <see cref="StallThreshold"/>, naming the URL or phase that is stuck. The loop ends
+    /// when <paramref name="timer"/> is disposed.
+    /// </summary>
+    /// <param name="heartbeat">The shared activity marker the producer and consumer bump.</param>
+    /// <param name="timer">The periodic timer driving the poll; disposing it stops the loop.</param>
+    /// <returns>A <see cref="Task"/> that completes when the timer is disposed.</returns>
+    private async Task RunStallWatchdogAsync(CrawlHeartbeat heartbeat, PeriodicTimer timer)
+    {
+        while (await timer.WaitForNextTickAsync())
+        {
+            var (activity, elapsed) = heartbeat.Read();
+            if (elapsed >= StallThreshold)
+            {
+                _logger.LogWarning("Possible stall: '{Activity}' has been running for {Seconds}s.", activity, (int)elapsed.TotalSeconds);
+            }
+        }
+    }
 }

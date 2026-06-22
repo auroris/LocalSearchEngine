@@ -43,9 +43,8 @@ internal sealed class SitemapService
     /// <param name="originUri">The base URI of the origin seed.</param>
     /// <param name="context">The active crawl context.</param>
     /// <param name="robots">The robots.txt rules which may contain sitemap declarations.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public async Task EnqueueSitemapUrlsAsync(Uri originUri, CrawlContext context, RobotsRules robots, CancellationToken cancellationToken)
+    public async Task EnqueueSitemapUrlsAsync(Uri originUri, CrawlContext context, RobotsRules robots)
     {
         var originKey = UrlOrigin.Key(originUri);
 
@@ -66,7 +65,7 @@ internal sealed class SitemapService
                 continue;
             }
 
-            var (locations, nestedSitemaps) = await FetchSitemapAsync(sitemapUrl, context.MaxCrawlSizeBytes, cancellationToken);
+            var (locations, nestedSitemaps) = await FetchSitemapAsync(sitemapUrl, context.MaxCrawlSizeBytes);
 
             foreach (var nested in nestedSitemaps)
             {
@@ -99,15 +98,15 @@ internal sealed class SitemapService
     /// </summary>
     /// <param name="sitemapUrl">The target sitemap URL to fetch.</param>
     /// <param name="maxBytes">The maximum allowed download size in bytes.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing lists of parsed resource URLs (Locations) and nested sitemap URLs (NestedSitemaps).</returns>
-    private async Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, long maxBytes, CancellationToken cancellationToken)
+    private async Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, long maxBytes)
     {
         var locations = new List<string>();
         var nested = new List<string>();
+        using var timeout = HttpContentReader.NewRequestTimeout();
         try
         {
-            using var response = await _httpClient.GetAsync(sitemapUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            using var response = await _httpClient.GetAsync(sitemapUrl, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
             if (!response.IsSuccessStatusCode) return (locations, nested);
 
             if (response.Content.Headers.ContentLength is long declaredLength && declaredLength > maxBytes)
@@ -116,7 +115,7 @@ internal sealed class SitemapService
                 return (locations, nested);
             }
 
-            var (bytes, truncated) = await HttpContentReader.ReadLimitedAsync(response, maxBytes, cancellationToken);
+            var (bytes, truncated) = await HttpContentReader.ReadLimitedAsync(response, maxBytes, timeout.Token);
             if (truncated)
             {
                 _logger.LogWarning("Skipping sitemap {Url}: body exceeds the {Limit}-byte limit.", sitemapUrl, maxBytes);

@@ -69,6 +69,10 @@ internal sealed class CrawlContext
     /// <summary>Gets or sets the reporter that receives live progress and phase changes.</summary>
     public required ICrawlObserver Observer { get; init; }
 
+    /// <summary>Gets the shared activity marker the orchestrator's stall watchdog reads; the producer
+    /// and consumer bump it as they make progress.</summary>
+    public required CrawlHeartbeat Heartbeat { get; init; }
+
     /// <summary>Gets or sets the moment the crawl started, used to stamp elapsed time onto snapshots.</summary>
     public required DateTime StartedUtc { get; init; }
 

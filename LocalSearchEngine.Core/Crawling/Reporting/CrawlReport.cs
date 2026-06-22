@@ -7,8 +7,7 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <param name="SeedUrl">The URL the crawl started from.</param>
 /// <param name="StartedUtc">When the crawl began.</param>
 /// <param name="FinishedUtc">When the crawl finished.</param>
-/// <param name="CompletedNaturally">Whether the crawl drained its frontier (vs. capped or cancelled).</param>
-/// <param name="Cancelled">Whether cancellation was requested before the crawl finished.</param>
+/// <param name="CompletedNaturally">Whether the crawl drained its frontier (vs. stopping at a page cap).</param>
 /// <param name="Stats">The final running tallies.</param>
 /// <param name="IndexedUrlsInDb">Distinct indexed URLs in the database after the crawl.</param>
 /// <param name="CrawlStateRowsInDb">Crawl-state rows in the database after the crawl.</param>
@@ -22,7 +21,6 @@ public sealed record CrawlReport(
     DateTime StartedUtc,
     DateTime FinishedUtc,
     bool CompletedNaturally,
-    bool Cancelled,
     CrawlStatsSnapshot Stats,
     long IndexedUrlsInDb,
     long CrawlStateRowsInDb,

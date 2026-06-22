@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using LocalSearchEngine.Core.Crawling.Policies;
 
 namespace LocalSearchEngine.Core.Crawling.Engine;
@@ -71,14 +73,18 @@ internal sealed class PageDownloader
 {
     /// <summary>The HTTP client instance used to execute requests.</summary>
     private readonly HttpClient _httpClient;
+    /// <summary>The logger instance.</summary>
+    private readonly ILogger _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PageDownloader"/> class.
     /// </summary>
     /// <param name="httpClient">The HTTP client to send requests.</param>
-    public PageDownloader(HttpClient httpClient)
+    /// <param name="logger">The logger instance.</param>
+    public PageDownloader(HttpClient httpClient, ILogger logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 
     /// <summary>
@@ -89,15 +95,13 @@ internal sealed class PageDownloader
     /// <param name="lastModified">The cached Last-Modified string, if any, for conditional request validation.</param>
     /// <param name="maxBytes">The maximum allowed download size in bytes.</param>
     /// <param name="redirectValidator">The delegate to check if followed redirects are allowed.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="DownloadResult"/> object summarizing the download status and metadata.</returns>
     public async Task<DownloadResult> DownloadAsync(
         string url,
         string? etag,
         string? lastModified,
         long maxBytes,
-        Func<Uri, Task<bool>> redirectValidator,
-        CancellationToken cancellationToken)
+        Func<Uri, Task<bool>> redirectValidator)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         if (!string.IsNullOrEmpty(etag))
@@ -109,9 +113,15 @@ internal sealed class PageDownloader
             request.Headers.IfModifiedSince = lastModDate;
         }
 
+        // A per-request timeout that covers the streamed body too — HttpClient.Timeout stops at the
+        // headers under ResponseHeadersRead, so without this a server that goes quiet mid-body would
+        // hang the single producer task indefinitely.
+        using var timeout = HttpContentReader.NewRequestTimeout();
+        var startedAt = Stopwatch.GetTimestamp();
+
         try
         {
-            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
             int statusCode = (int)response.StatusCode;
 
             if (response.StatusCode == HttpStatusCode.NotModified)
@@ -187,7 +197,7 @@ internal sealed class PageDownloader
                 };
             }
 
-            var (body, truncated) = await ReadBodyAndValidatePrefixAsync(response, maxBytes, contentType, finalRequestUri?.ToString() ?? url, cancellationToken);
+            var (body, truncated) = await ReadBodyAndValidatePrefixAsync(response, maxBytes, contentType, finalRequestUri?.ToString() ?? url, timeout.Token);
             if (truncated)
             {
                 return new DownloadResult
@@ -216,6 +226,9 @@ internal sealed class PageDownloader
             response.Headers.TryGetValues("X-Robots-Tag", out var xRobotsValues);
             string? xRobotsTag = xRobotsValues != null ? string.Join(",", xRobotsValues) : null;
 
+            _logger.LogDebug("Downloaded {Url}: {Bytes} bytes in {Ms}ms.",
+                finalRequestUri?.ToString() ?? url, body.Length, (long)Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
+
             return new DownloadResult
             {
                 Status = DownloadStatus.Success,
@@ -229,16 +242,19 @@ internal sealed class PageDownloader
                 XRobotsTag = xRobotsTag
             };
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            throw;
-        }
         catch (Exception ex)
         {
+            // A fired timeout surfaces as an OperationCanceledException; surface it distinctly so a
+            // stalled host is visible in the log, then fall through to the transport-failure mapping
+            // (503) so the rest of the crawl treats it like any other unreachable response.
+            if (timeout.IsCancellationRequested)
+            {
+                _logger.LogWarning("Request to {Url} timed out after {Seconds}s.", url, (int)HttpContentReader.RequestTimeout.TotalSeconds);
+            }
             return new DownloadResult
             {
                 Status = DownloadStatus.Failed,
-                StatusCode = HostHealthTracker.IsTransportFailure(ex, cancellationToken) ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.InternalServerError
+                StatusCode = HostHealthTracker.IsTransportFailure(ex) ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.InternalServerError
             };
         }
     }

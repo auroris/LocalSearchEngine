@@ -252,12 +252,9 @@ try
     var crawlerService = serviceProvider.GetRequiredService<CrawlerService>();
     await crawlerService.EnsureCreatedAsync();
 
-    using var cts = new CancellationTokenSource();
-    Console.CancelKeyPress += (_, e) =>
-    {
-        e.Cancel = true; // let the crawler stop gracefully and flush
-        cts.Cancel();
-    };
+    // CTRL+C is left to its default: it terminates the process. The crawler no longer tries to stop
+    // gracefully — every page's database writes are applied in a single transaction, so a hard kill
+    // mid-crawl can't leave a torn write, and a stalled fetch is bounded by its own request timeout.
 
     // Banner, printed before the live display takes over the console. The database and log paths
     // lead, so a user (or someone inspecting a scheduled run) sees where output is being written
@@ -300,14 +297,14 @@ try
             .StartAsync(async live =>
             {
                 var reporter = new SpectreCrawlReporter(live);
-                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
+                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter);
             });
         report = captured!;
     }
     else
     {
         var reporter = new PlainCrawlReporter(AnsiConsole.Console);
-        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, cts.Token);
+        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter);
     }
 
     // Channel 3: write the end-of-run stats to disk (JSON + text), then print a summary.

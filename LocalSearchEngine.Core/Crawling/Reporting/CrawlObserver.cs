@@ -16,7 +16,8 @@ internal sealed class CrawlObserver : ICrawlObserver
     private readonly ILogger _logger;
     private readonly ICrawlReporter _reporter;
     private readonly DateTime _startedUtc;
-    
+    private readonly CrawlHeartbeat _heartbeat;
+
     private CrawlPhase _currentPhase;
 
     public CrawlStats Stats { get; } = new CrawlStats();
@@ -27,11 +28,12 @@ internal sealed class CrawlObserver : ICrawlObserver
     /// </summary>
     public Func<int> DiscoveredCount { get; set; } = () => 0;
 
-    public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc)
+    public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc, CrawlHeartbeat heartbeat)
     {
         _logger = logger;
         _reporter = reporter;
         _startedUtc = startedUtc;
+        _heartbeat = heartbeat;
         _currentPhase = CrawlPhase.Starting;
     }
 
@@ -47,6 +49,7 @@ internal sealed class CrawlObserver : ICrawlObserver
     public void OnPhaseChanged(CrawlPhase phase)
     {
         _currentPhase = phase;
+        _heartbeat.Mark(phase.ToString());
         _reporter.PhaseChanged(phase, Snapshot());
     }
 
@@ -70,11 +73,6 @@ internal sealed class CrawlObserver : ICrawlObserver
         _logger.LogWarning("Seed URL is disallowed by robots.txt: {Url}", url);
     }
 
-    public void OnCrawlCancelled(int dispatchedCount)
-    {
-        _logger.LogInformation("Crawl cancelled after dispatching {Indexed} pages.", dispatchedCount);
-    }
-
     public void OnHostCapReached(int cap, string host, string url)
     {
         _logger.LogInformation("Per-host cap ({Cap}) reached for {Host}; skipping {Url}", cap, host, url);
@@ -82,12 +80,8 @@ internal sealed class CrawlObserver : ICrawlObserver
 
     public void OnPageFetching(int indexedCount, int discoveredCount, string url)
     {
+        _heartbeat.Mark($"fetching {url}");
         _logger.LogInformation("Crawling ({Indexed} indexed / {Discovered} discovered): {Url}", indexedCount, discoveredCount, url);
-    }
-
-    public void OnFetchCancelled(string url)
-    {
-        _logger.LogInformation("Crawl cancelled while fetching {Url}.", url);
     }
 
     public void OnFetchError(Exception ex, string url)

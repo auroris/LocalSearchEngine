@@ -27,7 +27,4 @@ public enum CrawlPhase
 
     /// <summary>The crawl drained its frontier and finished on its own.</summary>
     Completed,
-
-    /// <summary>The crawl stopped early because cancellation was requested.</summary>
-    Cancelled,
 }

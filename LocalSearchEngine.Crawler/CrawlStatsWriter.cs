@@ -39,7 +39,7 @@ internal static class CrawlStatsWriter
     private static string BuildText(CrawlReport r)
     {
         var s = r.Stats;
-        string status = r.Cancelled ? "cancelled" : r.CompletedNaturally ? "completed" : "stopped (capped)";
+        string status = r.CompletedNaturally ? "completed" : "stopped (capped)";
 
         var sb = new StringBuilder();
         sb.AppendLine("LocalSearchEngine crawl report");

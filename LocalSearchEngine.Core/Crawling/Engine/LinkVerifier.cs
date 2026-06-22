@@ -46,11 +46,10 @@ internal sealed class LinkVerifier
     /// </summary>
     /// <param name="context">The active crawl context.</param>
     /// <param name="crawlStartUtc">The UTC timestamp indicating when the crawl started.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous verification process.</returns>
-    public async Task VerifyUndeterminedLinksAsync(CrawlContext context, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    public async Task VerifyUndeterminedLinksAsync(CrawlContext context, DateTime crawlStartUtc)
     {
-        var rows = await CrawlStore.GetLinksToVerifyAsync(context.Read, crawlStartUtc, CancellationToken.None);
+        var rows = await CrawlStore.GetLinksToVerifyAsync(context.Read, crawlStartUtc);
 
         var destinations = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var (fromUrl, toUrl, external) in rows)
@@ -72,32 +71,26 @@ internal sealed class LinkVerifier
              .ToList();
 
         var results = new ConcurrentBag<(string Target, LinkStatus Status, int StatusCode)>();
-        try
-        {
-            await Parallel.ForEachAsync(
-                byHost,
-                new ParallelOptions { MaxDegreeOfParallelism = LinkCheckConcurrency, CancellationToken = cancellationToken },
-                async (group, token) =>
+        await Parallel.ForEachAsync(
+            byHost,
+            new ParallelOptions { MaxDegreeOfParallelism = LinkCheckConcurrency },
+            async (group, _) =>
+            {
+                bool first = true;
+                foreach (var (target, _) in group)
                 {
-                    bool first = true;
-                    foreach (var (target, _) in group)
-                    {
-                        if (!first) await Task.Delay(LinkCheckPerHostGap, token);
-                        first = false;
+                    if (!first) await Task.Delay(LinkCheckPerHostGap);
+                    first = false;
 
-                        var (status, statusCode) = await ProbeLinkAsync(target, context, token);
-                        results.Add((target, status, statusCode));
-                    }
-                });
-        }
-        catch (OperationCanceledException)
-        {
-        }
+                    var (status, statusCode) = await ProbeLinkAsync(target, context);
+                    results.Add((target, status, statusCode));
+                }
+            });
 
         int broken = 0, redirected = 0;
         foreach (var (target, status, statusCode) in results)
         {
-            await CrawlStore.UpdateLinkStatusByDestinationAsync(context.Write, target, (int)status, statusCode, CancellationToken.None);
+            await CrawlStore.UpdateLinkStatusByDestinationAsync(context.Write, target, (int)status, statusCode);
             if (status == LinkStatus.Error) broken++;
             else if (status == LinkStatus.Redirect) redirected++;
         }
@@ -113,7 +106,7 @@ internal sealed class LinkVerifier
     /// <returns>A tuple containing lists of broken and redirected <see cref="BrokenLink"/> objects.</returns>
     public async Task<(List<BrokenLink> Broken, List<BrokenLink> Redirected)> BuildLinkReportAsync(CrawlContext context, DateTime crawlStartUtc)
     {
-        var rows = await CrawlStore.GetReportableLinksAsync(context.Read, crawlStartUtc, CancellationToken.None);
+        var rows = await CrawlStore.GetReportableLinksAsync(context.Read, crawlStartUtc);
         var broken = new List<BrokenLink>();
         var redirected = new List<BrokenLink>();
 
@@ -141,13 +134,13 @@ internal sealed class LinkVerifier
     /// </summary>
     /// <param name="url">The link URL to probe.</param>
     /// <param name="context">The active crawl context.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing the link's classified <see cref="LinkStatus"/> and actual HTTP status code.</returns>
-    private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, CrawlContext context, CancellationToken cancellationToken)
+    private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, CrawlContext context)
     {
+        using var timeout = HttpContentReader.NewRequestTimeout();
         try
         {
-            using var response = await SendProbeAsync(url, cancellationToken);
+            using var response = await SendProbeAsync(url, timeout.Token);
             context.HostHealth.RecordResponse(response.RequestMessage?.RequestUri?.Host ?? "");
 
             var finalUri = response.RequestMessage?.RequestUri;
@@ -171,11 +164,11 @@ internal sealed class LinkVerifier
             // are short-circuited. Any other exception proves nothing about the link itself
             // (a malformed response, an odd redirect, a client-side quirk), so don't condemn a
             // link on that evidence — treat it as resolved.
-            if (HostHealthTracker.IsTransportFailure(ex, cancellationToken))
+            if (HostHealthTracker.IsTransportFailure(ex))
             {
                 if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
-                    context.HostHealth.RecordFailure(uri.Host, ex, cancellationToken);
+                    context.HostHealth.RecordFailure(uri.Host, ex);
                 }
                 return (LinkStatus.Error, 503);
             }
