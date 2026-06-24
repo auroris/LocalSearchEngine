@@ -28,6 +28,7 @@ internal static class SummaryPanel
         grid.AddRow("[grey]Status[/]", status);
         grid.AddRow("[grey]Duration[/]", $"{report.Duration:hh\\:mm\\:ss}");
         grid.AddRow("[grey]Indexed[/]", $"[green]{s.Indexed}[/]  ([grey]added[/] {report.ItemsAdded})");
+        grid.AddRow("[grey]Embedded[/]", $"[aqua]{report.EmbedProcessed}[/] / {report.EmbedQueued} queued");
         grid.AddRow("[grey]Unchanged[/]", s.Unchanged.ToString());
         grid.AddRow("[grey]Skipped / NoIndex[/]", $"{s.SkippedType + s.SkippedSize} / {s.NoIndex}");
         grid.AddRow("[grey]Unreadable PDFs[/]", s.LowQualityText.ToString());

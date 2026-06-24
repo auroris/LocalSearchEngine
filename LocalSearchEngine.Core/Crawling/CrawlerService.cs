@@ -17,8 +17,9 @@ using LocalSearchEngine.Core.Crawling.Engine;
 namespace LocalSearchEngine.Core.Crawling;
 
 /// <summary>
-/// Orchestrates a crawl: initializes the shared context, sets up connections, and coordinates
-/// a concurrent producer (CrawlProducer) and consumer (CrawlConsumer).
+/// Orchestrates a crawl: initializes the shared context, sets up connections, and coordinates a concurrent
+/// crawler (CrawlProducer, which fetches and writes crawl state) and embedder (CrawlEmbedder, which embeds
+/// and writes chunks off an unbounded queue), their writes serialized by a single DbWriteGate.
 /// </summary>
 public partial class CrawlerService
 {
@@ -149,24 +150,31 @@ public partial class CrawlerService
 
         var (indexedUrlsAtStart, _) = await CrawlStore.GetCountsAsync(ctx.Read);
 
-        var channel = Channel.CreateBounded<CrawlJob>(new BoundedChannelOptions(16)
+        // The crawl runs two threads. The crawler writes crawl-state/link rows and drops each page's chunk
+        // work onto this unbounded queue; the embedder grinds through the queue, embedding text and writing
+        // text_chunks. The queue is unbounded so the crawler never blocks on the (far slower) embedder and
+        // finishes first; a single write gate serializes the two — SQLite permits one writer at a time.
+        using var writeGate = new DbWriteGate();
+        var embeddingChannel = Channel.CreateUnbounded<EmbeddingJob>(new UnboundedChannelOptions
         {
             SingleReader = true,
             SingleWriter = true,
-            FullMode = BoundedChannelFullMode.Wait,
         });
 
-        // The consumer wraps every job in its own try/catch and only ends when the channel completes,
-        // so it never faults out of its loop — the producer's WriteAsync is always drained.
-        var consumer = new CrawlConsumer(ctx.Write, channel.Reader, _vectorSearchService, _logger, heartbeat);
-        var consumerTask = consumer.ConsumeAsync();
+        // The embedder wraps every item in its own try/catch and only ends when the queue completes, so it
+        // never faults out of its loop — every item the crawler enqueues is drained.
+        var backlog = new EmbeddingBacklog();
+        var embedder = new CrawlEmbedder(embeddingChannel.Reader, _vectorSearchService, writeGate, _logger, heartbeat, backlog, reporter);
+        var embedderTask = embedder.ConsumeAsync();
+
+        var crawlStateWriter = new CrawlStateWriter(ctx.Write, writeGate, _logger);
 
         var robotsService = new RobotsService(_httpClient, _vectorSearchService, _logger);
         var sitemapService = new SitemapService(_httpClient, _logger);
         var pageDownloader = new PageDownloader(_httpClient, _logger);
         var linkVerifier = new LinkVerifier(_httpClient);
 
-        var producer = new CrawlProducer(_vectorSearchService, channel.Writer, ctx, robotsService, pageDownloader, _logger);
+        var producer = new CrawlProducer(_vectorSearchService, crawlStateWriter, embeddingChannel.Writer, backlog, ctx, robotsService, pageDownloader, _logger);
         var seedRobots = await robotsService.GetOrFetchRobotsAsync(baseUri, ctx);
 
         int producedJobs = 0;
@@ -202,12 +210,17 @@ public partial class CrawlerService
                 && producedJobs > 0;
         }
 
+        // The crawler is done fetching; park its lane so the watchdog doesn't read its last fetch as a
+        // stall while the embedder drains its backlog (which can outlast the crawl itself many times over).
+        heartbeat.MarkCrawler(CrawlHeartbeat.Idle);
+
         try
         {
-            channel.Writer.Complete();
-            await consumerTask;
+            embeddingChannel.Writer.Complete();
+            await embedderTask;
 
-            // NOTE: The main crawl consumer task has finished, so the orchestrator now drives post-crawl cleanup writes.
+            // NOTE: Both halves have now drained, so the orchestrator is the only writer from here — the
+            // post-crawl passes touch crawl state and chunks without contention and so need no gate.
             ctx.Observer.OnPhaseChanged(CrawlPhase.RemovingBanned);
             ctx.Observer.OnBannedUrlsRemoved(await robotsService.RemoveRobotsBannedUrlsAsync(ctx));
             if (completedNaturally)
@@ -220,8 +233,8 @@ public partial class CrawlerService
         }
         finally
         {
-            channel.Writer.TryComplete();
-            try { await consumerTask; } catch { }
+            embeddingChannel.Writer.TryComplete();
+            try { await embedderTask; } catch { }
         }
 
         await linkVerifier.VerifyUndeterminedLinksAsync(ctx, crawlStartUtc);
@@ -253,7 +266,9 @@ public partial class CrawlerService
             itemsDeleted,
             brokenLinks,
             redirectedLinks,
-            ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray());
+            ctx.HostHealth.UnreachableHosts.OrderBy(h => h, StringComparer.OrdinalIgnoreCase).ToArray(),
+            backlog.Processed,
+            backlog.Queued);
     }
 
     /// <summary>
@@ -265,7 +280,7 @@ public partial class CrawlerService
     private static CrawlReport EmptyReport(string seedUrl, DateTime startedUtc) => new(
         seedUrl, startedUtc, DateTime.UtcNow, false,
         new CrawlStats().Snapshot(CrawlPhase.Completed, 0, TimeSpan.Zero), 0, 0, 0, 0,
-        Array.Empty<BrokenLink>(), Array.Empty<BrokenLink>(), Array.Empty<string>());
+        Array.Empty<BrokenLink>(), Array.Empty<BrokenLink>(), Array.Empty<string>(), 0, 0);
 
     /// <summary>How often the stall watchdog samples the heartbeat.</summary>
     private static readonly TimeSpan WatchdogInterval = TimeSpan.FromSeconds(15);
@@ -285,11 +300,24 @@ public partial class CrawlerService
     {
         while (await timer.WaitForNextTickAsync())
         {
-            var (activity, elapsed) = heartbeat.Read();
-            if (elapsed >= StallThreshold)
-            {
-                _logger.LogWarning("Possible stall: '{Activity}' has been running for {Seconds}s.", activity, (int)elapsed.TotalSeconds);
-            }
+            WarnIfStalled("crawler", heartbeat.ReadCrawler());
+            WarnIfStalled("embedder", heartbeat.ReadEmbedder());
+        }
+    }
+
+    /// <summary>
+    /// Logs a possible-stall warning for one heartbeat lane, naming which half of the pipeline is stuck so
+    /// the log points at the real culprit instead of whichever thread happened to mark last. An idle lane
+    /// (its thread parked with no work) is never a stall, so it is skipped.
+    /// </summary>
+    /// <param name="lane">The lane label, "crawler" or "embedder".</param>
+    /// <param name="state">The lane's current activity and how long it has been running.</param>
+    private void WarnIfStalled(string lane, (string Activity, TimeSpan Elapsed) state)
+    {
+        if (state.Activity != CrawlHeartbeat.Idle && state.Elapsed >= StallThreshold)
+        {
+            _logger.LogWarning("Possible stall: {Lane} '{Activity}' has been running for {Seconds}s.",
+                lane, state.Activity, (int)state.Elapsed.TotalSeconds);
         }
     }
 }

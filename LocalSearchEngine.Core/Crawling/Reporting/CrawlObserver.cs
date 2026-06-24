@@ -49,7 +49,7 @@ internal sealed class CrawlObserver : ICrawlObserver
     public void OnPhaseChanged(CrawlPhase phase)
     {
         _currentPhase = phase;
-        _heartbeat.Mark(phase.ToString());
+        _heartbeat.MarkCrawler(phase.ToString());
         _reporter.PhaseChanged(phase, Snapshot());
     }
 
@@ -80,7 +80,7 @@ internal sealed class CrawlObserver : ICrawlObserver
 
     public void OnPageFetching(int indexedCount, int discoveredCount, string url)
     {
-        _heartbeat.Mark($"fetching {url}");
+        _heartbeat.MarkCrawler($"fetching {url}");
         _logger.LogInformation("Crawling ({Indexed} indexed / {Discovered} discovered): {Url}", indexedCount, discoveredCount, url);
     }
 

@@ -126,13 +126,16 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Splits page text into chunks, embeds each, and inserts them into the vector database.
+    /// Splits text into chunks and embeds each locally on the CPU, returning records ready to upsert. This
+    /// is the expensive, purely in-memory half of indexing — it touches no database — so the crawl runs it
+    /// off the write path (outside its single-writer gate), keeping the minutes of embedding CPU from
+    /// blocking the other writer. Pair with <see cref="UpsertChunkRecordsAsync"/>.
     /// </summary>
-    /// <param name="url">The source page URL.</param>
-    /// <param name="fullText">The text content to be chunked and indexed.</param>
+    /// <param name="url">The source page URL stamped onto every chunk.</param>
+    /// <param name="fullText">The text content to be chunked and embedded.</param>
     /// <param name="isHeading"><c>true</c> if the text consists of page headings; otherwise, <c>false</c>.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public async Task IndexUrlChunksAsync(string url, string fullText, bool isHeading = false)
+    /// <returns>The embedded chunk records, ready for <see cref="UpsertChunkRecordsAsync"/>.</returns>
+    public IReadOnlyList<TextChunkRecord> BuildChunkRecords(string url, string fullText, bool isHeading = false)
     {
         var records = new List<TextChunkRecord>();
         foreach (var chunkText in TextChunker.Chunk(fullText))
@@ -146,13 +149,35 @@ public class VectorSearchService
                 Embedding = _embedder.Embed(chunkText) // generated locally on the CPU
             });
         }
+        return records;
+    }
 
-        // One batched upsert (a single transaction) per page instead of one per chunk.
+    /// <summary>
+    /// Upserts already-embedded chunk records in one batched transaction (a single transaction per page
+    /// instead of one per chunk), whose triggers keep the FTS5 mirror in step. The database-touching half
+    /// of indexing; the embedding is done by <see cref="BuildChunkRecords"/>.
+    /// </summary>
+    /// <param name="records">The embedded records produced by <see cref="BuildChunkRecords"/>.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public async Task UpsertChunkRecordsAsync(IReadOnlyList<TextChunkRecord> records)
+    {
         if (records.Count > 0)
         {
             await _collection.UpsertAsync(records);
         }
     }
+
+    /// <summary>
+    /// Splits page text into chunks, embeds each, and inserts them into the vector database. A convenience
+    /// wrapper over <see cref="BuildChunkRecords"/> and <see cref="UpsertChunkRecordsAsync"/> for callers
+    /// that embed and write on the same thread.
+    /// </summary>
+    /// <param name="url">The source page URL.</param>
+    /// <param name="fullText">The text content to be chunked and indexed.</param>
+    /// <param name="isHeading"><c>true</c> if the text consists of page headings; otherwise, <c>false</c>.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public Task IndexUrlChunksAsync(string url, string fullText, bool isHeading = false)
+        => UpsertChunkRecordsAsync(BuildChunkRecords(url, fullText, isHeading));
 
     /// <summary>
     /// Performs a hybrid search (semantic vector + FTS5 keyword) for the specified query and ranks the results.

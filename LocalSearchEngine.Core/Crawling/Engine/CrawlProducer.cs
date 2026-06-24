@@ -16,15 +16,16 @@ using LocalSearchEngine.Core.Crawling.Storage;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
-/// The producer half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
+/// The crawler half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
 /// checks — scope, robots.txt, the per-host cap, host reachability, and a politeness delay — before
 /// downloading the page with <see cref="PageDownloader"/> and classifying the outcome. Successful HTML
 /// is run through <see cref="Extraction.ContentExtractor"/>, deduplicated by content hash, and has its
-/// outlinks fed back into the frontier; every URL becomes a <see cref="CrawlJob"/> describing what
-/// should be persisted, written to the shared channel for the consumer to apply. Index writes are
-/// deliberately left to the consumer — the producer only reads existing crawl state, for conditional
-/// requests and duplicate detection — apart from the post-crawl pruning pass, which runs after the
-/// consumer has drained and so can write safely.
+/// outlinks fed back into the frontier; every URL becomes a <see cref="CrawlJob"/>. The crawler writes
+/// that job's crawl-state and link rows itself through <see cref="CrawlStateWriter"/>, then drops any
+/// chunk work onto the embedder's unbounded queue and moves on — it never blocks on embedding, so the
+/// crawl finishes well before the embedder. It reads existing crawl state (for conditional requests and
+/// duplicate detection) and, in the post-crawl pruning pass that runs after both halves have drained,
+/// deletes stale entries.
 /// </summary>
 internal sealed class CrawlProducer
 {
@@ -33,10 +34,14 @@ internal sealed class CrawlProducer
     /// <summary>The maximum allowed crawl delay in seconds to prevent excessive waiting.</summary>
     private const int MaxCrawlDelaySeconds = 30;
 
-    /// <summary>The vector search service to record and update vector index chunks.</summary>
+    /// <summary>The vector search service, used by the post-crawl prune to delete stale chunks.</summary>
     private readonly VectorSearchService _vectorSearchService;
-    /// <summary>The channel writer used to send finished jobs to the consumer.</summary>
-    private readonly ChannelWriter<CrawlJob> _writer;
+    /// <summary>Applies each job's crawl-state and link rows on the crawler thread (under the write gate).</summary>
+    private readonly CrawlStateWriter _crawlStateWriter;
+    /// <summary>The unbounded queue the crawler hands chunk work to for the embedder to grind through.</summary>
+    private readonly ChannelWriter<EmbeddingJob> _embeddingWriter;
+    /// <summary>The shared backlog counter, incremented as chunk work is queued for the embedder.</summary>
+    private readonly EmbeddingBacklog _backlog;
     /// <summary>The shared crawl context holding queue and visited state.</summary>
     private readonly CrawlContext _context;
     /// <summary>Service to fetch and evaluate robots.txt rules.</summary>
@@ -49,22 +54,28 @@ internal sealed class CrawlProducer
     /// <summary>
     /// Initializes a new instance of the <see cref="CrawlProducer"/> class.
     /// </summary>
-    /// <param name="vectorSearchService">The vector search service provider.</param>
-    /// <param name="writer">The channel writer to submit crawl jobs.</param>
+    /// <param name="vectorSearchService">The vector search service provider (used by the post-crawl prune).</param>
+    /// <param name="crawlStateWriter">Writes each job's crawl-state and link rows.</param>
+    /// <param name="embeddingWriter">The writer of the unbounded embedding queue.</param>
+    /// <param name="backlog">The shared backlog counter, incremented as chunk work is queued.</param>
     /// <param name="context">The active crawl context.</param>
     /// <param name="robotsService">The robots.txt service handler.</param>
     /// <param name="pageDownloader">The page downloader service.</param>
     /// <param name="logger">The logger instance.</param>
     public CrawlProducer(
         VectorSearchService vectorSearchService,
-        ChannelWriter<CrawlJob> writer,
+        CrawlStateWriter crawlStateWriter,
+        ChannelWriter<EmbeddingJob> embeddingWriter,
+        EmbeddingBacklog backlog,
         CrawlContext context,
         RobotsService robotsService,
         PageDownloader pageDownloader,
         ILogger logger)
     {
         _vectorSearchService = vectorSearchService;
-        _writer = writer;
+        _crawlStateWriter = crawlStateWriter;
+        _embeddingWriter = embeddingWriter;
+        _backlog = backlog;
         _context = context;
         _robotsService = robotsService;
         _pageDownloader = pageDownloader;
@@ -117,7 +128,16 @@ internal sealed class CrawlProducer
             if (job is not null)
             {
                 producedJobs++;
-                await _writer.WriteAsync(job);
+                // Write the crawl-state row here on the crawler thread, then hand any chunk work to the
+                // embedder's unbounded queue. WriteAsync never blocks (the queue is unbounded), so the
+                // crawler keeps moving even while the embedder is minutes behind on a large document.
+                await _crawlStateWriter.ApplyAsync(job);
+                var embeddingJob = EmbeddingJob.From(job);
+                if (embeddingJob is not null)
+                {
+                    _backlog.RecordQueued();
+                    await _embeddingWriter.WriteAsync(embeddingJob);
+                }
                 if (job is IndexJob)
                 {
                     indexedCount++;

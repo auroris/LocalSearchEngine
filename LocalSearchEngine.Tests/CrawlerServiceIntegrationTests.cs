@@ -56,6 +56,15 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     private CrawlerService NewCrawler() =>
         new(_httpClient, _search, NullLogger<CrawlerService>.Instance, new DatabaseConfig(_connectionString));
 
+    /// <summary>Builds a crawler backed by a custom embedder (e.g. slow or failing) over the same database.</summary>
+    private CrawlerService NewCrawlerWith(IEmbedder embedder)
+    {
+        var store = _provider.GetRequiredService<VectorStore>();
+        var settings = Options.Create(new SearchSettings { MaxDistance = 1.0, CandidatePoolSize = 100 });
+        var search = new VectorSearchService(embedder, store, new DatabaseConfig(_connectionString), settings, NullLogger<VectorSearchService>.Instance);
+        return new CrawlerService(_httpClient, search, NullLogger<CrawlerService>.Instance, new DatabaseConfig(_connectionString));
+    }
+
     private async Task EnsureSchemaAsync()
     {
         await _search.EnsureCreatedAsync();
@@ -1046,6 +1055,73 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         Assert.Equal(0, ChunkCount("http://test.local/data.zip")); // skipped because it's zip magic but extension is not docx
     }
 
+    [Fact]
+    public async Task Slow_embedder_does_not_stall_the_crawl_and_every_page_is_indexed()
+    {
+        await EnsureSchemaAsync();
+
+        // A small link graph, every page indexable.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/p2\">2</a> <a href=\"/p3\">3</a> <a href=\"/p4\">4</a>");
+        _handler.Routes["http://test.local/p2"] = _ => Html("<title>P2</title><p>two two two</p>");
+        _handler.Routes["http://test.local/p3"] = _ => Html("<title>P3</title><p>three three three</p>");
+        _handler.Routes["http://test.local/p4"] = _ => Html("<title>P4</title><p>four four four</p>");
+
+        // The embedder sleeps on every chunk, so the crawler races far ahead and writes crawl-state for
+        // later pages while the embedder is still writing chunks for earlier ones. The shared write gate
+        // must keep those concurrent writers collision-free, and CrawlAsync must not return until the
+        // embedder has drained — so every page ends up with its chunks.
+        var slow = new DelayEmbedder(TimeSpan.FromMilliseconds(40));
+        await NewCrawlerWith(slow).CrawlAsync(Seed, maxPages: 50);
+
+        Assert.True(ChunkCount(Seed) > 0);
+        Assert.True(ChunkCount("http://test.local/p2") > 0);
+        Assert.True(ChunkCount("http://test.local/p3") > 0);
+        Assert.True(ChunkCount("http://test.local/p4") > 0);
+    }
+
+    [Fact]
+    public async Task Missing_chunks_are_re_embedded_on_the_next_crawl()
+    {
+        await EnsureSchemaAsync();
+
+        // No validators, so a re-crawl always re-fetches a full 200 body: the hash/has-chunks check, not
+        // a 304, is what decides whether to re-embed.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><p>stable body text</p>");
+
+        // First crawl with an embedder that always throws: the crawler still records the page's crawl-state
+        // row (embedding is decoupled and the failure is isolated), but no chunks are written.
+        await NewCrawlerWith(new FailingEmbedder()).CrawlAsync(Seed, maxPages: 5);
+        Assert.True(HasCrawlState(Seed)); // crawl-state row written by the crawler thread...
+        Assert.Equal(0, ChunkCount(Seed)); // ...but the embed failed, so the URL is left torn: state, no chunks
+
+        // Second crawl with a healthy embedder. The page is byte-for-byte unchanged, so the only thing that
+        // can trigger a re-embed is the has-chunks reconciliation that heals that torn prior write.
+        await NewCrawlerWith(new FakeEmbedder()).CrawlAsync(Seed, maxPages: 5);
+        Assert.True(ChunkCount(Seed) > 0);
+    }
+
+    [Fact]
+    public async Task Embedder_progress_is_reported_and_totalled_in_the_report()
+    {
+        await EnsureSchemaAsync();
+
+        // A few indexable pages, so the embedder has real chunk work to queue and drain.
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/p2\">2</a> <a href=\"/p3\">3</a>");
+        _handler.Routes["http://test.local/p2"] = _ => Html("<title>P2</title><p>two two</p>");
+        _handler.Routes["http://test.local/p3"] = _ => Html("<title>P3</title><p>three three</p>");
+
+        var reporter = new RecordingReporter();
+        var report = await NewCrawler().CrawlAsync(Seed, maxPages: 50, reporter: reporter);
+
+        // The embedder drains fully before CrawlAsync returns, so the run's totals are complete and equal.
+        Assert.True(report.EmbedQueued > 0);
+        Assert.Equal(report.EmbedQueued, report.EmbedProcessed);
+
+        // The reporter was driven from the embedder thread and ended on the final processed == queued tick.
+        Assert.Equal(report.EmbedQueued, reporter.LastEmbedQueued);
+        Assert.Equal(report.EmbedProcessed, reporter.LastEmbedProcessed);
+    }
+
     public void Dispose()
     {
         _provider.Dispose();
@@ -1099,6 +1175,38 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
 
             response.RequestMessage ??= request; // crawler reads RequestMessage.RequestUri for redirects
             return Task.FromResult(response);
+        }
+    }
+
+    /// <summary>A FakeEmbedder that sleeps on every embed, so the crawler outruns the embedder.</summary>
+    private sealed class DelayEmbedder : FakeEmbedder
+    {
+        private readonly TimeSpan _delay;
+        public DelayEmbedder(TimeSpan delay) => _delay = delay;
+        public override ReadOnlyMemory<float> Embed(string text)
+        {
+            Thread.Sleep(_delay);
+            return base.Embed(text);
+        }
+    }
+
+    /// <summary>A FakeEmbedder that always throws, to simulate an embed that never produced chunks.</summary>
+    private sealed class FailingEmbedder : FakeEmbedder
+    {
+        public override ReadOnlyMemory<float> Embed(string text) => throw new InvalidOperationException("embed failed");
+    }
+
+    /// <summary>Captures the last embedder-progress callback so a test can assert it was driven to completion.</summary>
+    private sealed class RecordingReporter : ICrawlReporter
+    {
+        public int LastEmbedProcessed { get; private set; }
+        public int LastEmbedQueued { get; private set; }
+        public void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats) { }
+        public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats) { }
+        public void EmbedProgress(int processed, int queued)
+        {
+            LastEmbedProcessed = processed;
+            LastEmbedQueued = queued;
         }
     }
 }

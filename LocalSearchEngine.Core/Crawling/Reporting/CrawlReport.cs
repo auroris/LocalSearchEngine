@@ -16,6 +16,8 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <param name="BrokenLinks">Links the crawl found leading nowhere this run: a destination that returned an error (4xx/5xx) or could not be reached. Off-site links are included only when external link checking was enabled.</param>
 /// <param name="RedirectedLinks">Links whose destination redirected this run: they still resolve, but the source page should be updated to point at the new location. Off-site links are included only when external link checking was enabled.</param>
 /// <param name="UnreachableHosts">Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.</param>
+/// <param name="EmbedProcessed">Chunk-work items the embedder finished this run (it drains fully before the crawl returns, so this equals <paramref name="EmbedQueued"/>).</param>
+/// <param name="EmbedQueued">Chunk-work items the crawler queued for the embedder this run (every page whose chunks were (re)written or cleared).</param>
 public sealed record CrawlReport(
     string SeedUrl,
     DateTime StartedUtc,
@@ -28,7 +30,9 @@ public sealed record CrawlReport(
     long ItemsDeleted,
     IReadOnlyList<BrokenLink> BrokenLinks,
     IReadOnlyList<BrokenLink> RedirectedLinks,
-    IReadOnlyList<string> UnreachableHosts)
+    IReadOnlyList<string> UnreachableHosts,
+    long EmbedProcessed,
+    long EmbedQueued)
 {
     /// <summary>Wall-clock duration of the crawl.</summary>
     public TimeSpan Duration => FinishedUtc - StartedUtc;

@@ -2,9 +2,10 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 
 /// <summary>
 /// Receives crawl progress so a host (CLI, web, tests) can present it however it likes. The crawler
-/// invokes these as work happens; for a single crawl every call arrives on the crawler's own
-/// producer thread, so implementations need not be thread-safe — but they must be cheap and must
-/// never throw, as the crawl does not guard against a misbehaving reporter.
+/// invokes these as work happens; they must be cheap and must never throw, as the crawl does not guard
+/// against a misbehaving reporter. <see cref="PhaseChanged"/> and <see cref="PageProcessed"/> arrive on
+/// the crawler thread, but <see cref="EmbedProgress"/> arrives on the separate embedder thread and can
+/// overlap them — so an implementation that keeps shared display state must guard it.
 /// </summary>
 public interface ICrawlReporter
 {
@@ -18,4 +19,12 @@ public interface ICrawlReporter
     /// <param name="outcome">How the crawler resolved it.</param>
     /// <param name="stats">The running tally, including this page.</param>
     void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats);
+
+    /// <summary>
+    /// The embedder finished an item. Called from the embedder thread, including while the crawler is
+    /// idle and the queued backlog drains, so the embedding bar keeps moving after the crawl itself ends.
+    /// </summary>
+    /// <param name="processed">Items the embedder has finished so far.</param>
+    /// <param name="queued">Items queued for embedding so far (the bar's denominator; still growing mid-crawl).</param>
+    void EmbedProgress(int processed, int queued);
 }

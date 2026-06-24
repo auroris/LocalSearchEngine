@@ -4,39 +4,41 @@
 // options (CLI flags and appsettings.json), wiring up dependency injection, and running the crawl
 // behind a live or plain progress reporter. The crawl itself lives in CrawlerService.
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
 using LocalSearchEngine.Crawler;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Spectre.Console;
+using System.Configuration;
 using System.Net;
 
 var config = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
+var crawlSettings = config.GetSection("CrawlSettings").Get<CrawlSettings>() ?? new CrawlSettings();
 
 string url = "";
 string dbPath = !string.IsNullOrWhiteSpace(config["db"]) ? config["db"]! : "search.db";
-int maxPages = config.GetValue<int?>("max-pages") ?? int.MaxValue;
-int maxPagesPerHost = config.GetValue<int?>("max-pages-per-host") ?? int.MaxValue;
-long maxCrawlSizeBytes = config.GetValue<long?>("max-crawl-size-bytes") ?? 15 * 1024 * 1024;
-var allowedServers = config.GetSection("allowed-servers").Get<string[]>() ?? Array.Empty<string>();
-var noIndexPatterns = config.GetSection("noindex-patterns").Get<string[]>() ?? Array.Empty<string>();
-string logFile = !string.IsNullOrWhiteSpace(config["log-file"]) ? config["log-file"]! : "crawl.log";
-string statsFile = !string.IsNullOrWhiteSpace(config["stats-file"]) ? config["stats-file"]! : "crawl-stats";
-string brokenLinksFile = !string.IsNullOrWhiteSpace(config["broken-links-file"]) ? config["broken-links-file"]! : "broken-links";
-bool checkExternalLinks = config.GetValue<bool?>("check-external-links") ?? false;
-bool noLive = config.GetValue<bool?>("no-live") ?? false;
+int maxPages = crawlSettings.MaxPages;
+int maxPagesPerHost = crawlSettings.MaxPagesPerHost;
+long maxCrawlSizeBytes = crawlSettings.MaxCrawlSizeBytes;
+var allowedServers = crawlSettings.AllowedServers ?? Array.Empty<string>();
+var noIndexPatterns = crawlSettings.NoIndexPatterns ?? Array.Empty<string>();
+string logFile = crawlSettings.LogFile;
+string statsFile = crawlSettings.StatsFile;
+string brokenLinksFile = crawlSettings.BrokenLinksFile;
+bool checkExternalLinks = crawlSettings.CheckExternalLinks;
+bool noLive = crawlSettings.NoLiveStats;
 
 bool showHelp = false;
 
@@ -316,4 +318,137 @@ try
 finally
 {
     Log.CloseAndFlush();
+}
+
+internal class CrawlSettings : System.Configuration.ConfigurationSection
+{
+    [ConfigurationProperty("max-pages", DefaultValue = int.MaxValue, IsRequired = false, IsKey = true)]
+    public int MaxPages
+    {
+        get
+        {
+            return (int)this["max-pages"];
+        }
+        set
+        {
+            this["max-pages"] = value;
+        }
+    }
+
+    [ConfigurationProperty("max-pages-per-host", DefaultValue = int.MaxValue, IsRequired = false, IsKey = true)]
+    public int MaxPagesPerHost
+    {
+        get
+        {
+            return (int)this["max-pages-per-host"];
+        }
+        set
+        {
+            this["max-pages-per-host"] = value;
+        }
+    }
+
+    [ConfigurationProperty("max-crawl-size-bytes", DefaultValue = (long)15728640, IsRequired = false, IsKey = true)]
+    public long MaxCrawlSizeBytes
+    {
+        get
+        {
+            return (long)this["max-crawl-size-bytes"];
+        }
+        set
+        {
+            this["max-crawl-size-bytes"] = value;
+        }
+    }
+
+    [ConfigurationProperty("allowed-servers", DefaultValue = null, IsRequired = false, IsKey = true)]
+    public string[] AllowedServers
+    {
+        get
+        {
+            return (string[])this["allowed-servers"];
+        }
+        set
+        {
+            this["allowed-servers"] = value;
+        }
+    }
+
+    [ConfigurationProperty("noindex-patterns", DefaultValue = null, IsRequired = false, IsKey = true)]
+    public string[] NoIndexPatterns
+    {
+        get
+        {
+            return (string[])this["noindex-patterns"];
+        }
+        set
+        {
+            this["noindex-patterns"] = value;
+        }
+    }
+
+    [ConfigurationProperty("check-external-links", DefaultValue = false, IsRequired = false, IsKey = true)]
+    public bool CheckExternalLinks
+    {
+        get
+        {
+            return (bool)this["check-external-links"];
+        }
+        set
+        {
+            this["check-external-links"] = value;
+        }
+    }
+
+    [ConfigurationProperty("no-live-stats", DefaultValue = false, IsRequired = false, IsKey = true)]
+    public bool NoLiveStats
+    {
+        get
+        {
+            return (bool)this["no-live-stats"];
+        }
+        set
+        {
+            this["no-live-stats"] = value;
+        }
+    }
+
+    [ConfigurationProperty("log-file", DefaultValue = "crawl.log", IsRequired = false, IsKey = true)]
+    public string LogFile
+    {
+        get
+        {
+            return (string)this["log-file"];
+        }
+        set
+        {
+            this["log-file"] = value;
+        }
+    }
+
+    [ConfigurationProperty("stats-file", DefaultValue = "crawl-stats.log", IsRequired = false, IsKey = true)]
+    public string StatsFile
+    {
+        get
+        {
+            return (string)this["stats-file"];
+        }
+        set
+        {
+            this["stats-file"] = value;
+        }
+    }
+
+    [ConfigurationProperty("broken-links-file", DefaultValue = "crawl-broken-links.log", IsRequired = false, IsKey = true)]
+    public string BrokenLinksFile
+    {
+        get
+        {
+            return (string)this["broken-links-file"];
+        }
+        set
+        {
+            this["broken-links-file"] = value;
+        }
+    }
 }

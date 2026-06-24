@@ -16,4 +16,7 @@ public sealed class NullCrawlReporter : ICrawlReporter
 
     /// <inheritdoc/>
     public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats) { }
+
+    /// <inheritdoc/>
+    public void EmbedProgress(int processed, int queued) { }
 }

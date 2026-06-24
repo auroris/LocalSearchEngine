@@ -13,8 +13,9 @@ namespace LocalSearchEngine.Core.Crawling.Engine;
 /// in-scope host rules and the per-origin robots.txt cache, the read and write database connections,
 /// and the run's bookkeeping: per-host fetch timestamps and page counts, the content-hash → URL map
 /// that catches duplicates, the origins whose robots.txt was unavailable, the host-health tracker, and
-/// the observer that progress flows to. The crawl mutates this from the single producer task; the
-/// post-crawl cleanup phases run only after the consumer has drained, so they too can touch it safely.
+/// the observer that progress flows to. The crawl mutates this from the single crawler task; the
+/// post-crawl cleanup phases run only after both the crawler and embedder have drained, so they too can
+/// touch it safely.
 /// </summary>
 internal sealed class CrawlContext
 {
@@ -69,8 +70,8 @@ internal sealed class CrawlContext
     /// <summary>Gets or sets the reporter that receives live progress and phase changes.</summary>
     public required ICrawlObserver Observer { get; init; }
 
-    /// <summary>Gets the shared activity marker the orchestrator's stall watchdog reads; the producer
-    /// and consumer bump it as they make progress.</summary>
+    /// <summary>Gets the shared activity marker the orchestrator's stall watchdog reads; the crawler and
+    /// embedder threads bump their own lanes on it as they make progress.</summary>
     public required CrawlHeartbeat Heartbeat { get; init; }
 
     /// <summary>Gets or sets the moment the crawl started, used to stamp elapsed time onto snapshots.</summary>

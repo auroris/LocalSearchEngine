@@ -5,23 +5,28 @@ using Spectre.Console.Rendering;
 namespace LocalSearchEngine.Crawler;
 
 /// <summary>
-/// Renders live crawl progress to an interactive terminal: a progress bar (processed / discovered,
-/// the denominator growing as the crawl finds links), a panel of running totals, and a rolling list
-/// of the most recent URLs with how each resolved. Every callback arrives on the crawler's single
-/// producer thread, so no locking is needed; updates are lightly throttled to keep redraws cheap.
+/// Renders live crawl progress to an interactive terminal: a crawl progress bar (processed / discovered,
+/// the denominator growing as the crawl finds links), a second embedding bar (embedded / queued, which
+/// keeps moving after the crawl itself finishes while the backlog drains), a panel of running totals, and
+/// a rolling list of the most recent URLs with how each resolved. The page and phase callbacks arrive on
+/// the crawler thread while the embedding callback arrives on the embedder thread, so a single lock guards
+/// the shared state and every redraw; updates are lightly throttled to keep redraws cheap.
 /// </summary>
 internal sealed class SpectreCrawlReporter : ICrawlReporter
 {
     /// <summary>Maximum number of recent URL outcomes to display in the rolling list.</summary>
     private const int RecentCapacity = 10;
-    /// <summary>Width in characters of the progress bar.</summary>
+    /// <summary>Width in characters of the progress bars.</summary>
     private const int BarWidth = 40;
     /// <summary>Minimum time between consecutive redraws to avoid excessive CPU usage.</summary>
     private static readonly TimeSpan MinRedrawGap = TimeSpan.FromMilliseconds(50);
 
     private readonly LiveDisplayContext _live;
+    private readonly object _gate = new();
     private readonly Queue<(string Url, CrawlOutcome Outcome)> _recent = new();
     private CrawlStatsSnapshot _stats;
+    private int _embedProcessed;
+    private int _embedQueued;
     private DateTime _lastRenderUtc = DateTime.MinValue;
 
     /// <summary>Initializes the reporter to drive the given live display.</summary>
@@ -31,20 +36,40 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
     /// <inheritdoc/>
     public void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats)
     {
-        _stats = stats;
-        Render(force: true); // phase transitions are infrequent and worth showing immediately
+        lock (_gate)
+        {
+            _stats = stats;
+            Render(force: true); // phase transitions are infrequent and worth showing immediately
+        }
     }
 
     /// <inheritdoc/>
     public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats)
     {
-        _stats = stats;
-        _recent.Enqueue((url, outcome));
-        while (_recent.Count > RecentCapacity) _recent.Dequeue();
-        Render(force: false);
+        lock (_gate)
+        {
+            _stats = stats;
+            _recent.Enqueue((url, outcome));
+            while (_recent.Count > RecentCapacity) _recent.Dequeue();
+            Render(force: false);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void EmbedProgress(int processed, int queued)
+    {
+        lock (_gate)
+        {
+            _embedProcessed = processed;
+            _embedQueued = queued;
+            // Force the final tick (the backlog reaching the queue total) so the bar lands on 100%, since
+            // no further callback would otherwise un-throttle it.
+            Render(force: processed >= queued);
+        }
     }
 
     /// <summary>Renders the current state to the display if the minimum redraw gap has elapsed or if forced.</summary>
+    /// <remarks>Callers must hold <see cref="_gate"/>.</remarks>
     /// <param name="force">If true, bypasses the throttle and renders immediately.</param>
     private void Render(bool force)
     {
@@ -60,14 +85,17 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
     {
         var s = _stats;
 
-        // Progress bar: processed / discovered. The denominator grows as links are found, so the bar
-        // can dip when a page yields many new links and climbs back as they're crawled.
+        // Crawl bar: processed / discovered. The denominator grows as links are found, so the bar can dip
+        // when a page yields many new links and climbs back as they're crawled.
         double ratio = s.Discovered > 0 ? Math.Clamp((double)s.Processed / s.Discovered, 0, 1) : 0;
-        int filled = (int)Math.Round(ratio * BarWidth);
-        string bar = $"[green]{new string('█', filled)}[/][grey37]{new string('░', BarWidth - filled)}[/]";
-        string pct = s.Discovered > 0 ? $"{ratio * 100:0.0}%" : "—";
         var header = new Markup(
-            $"[bold]{PhaseText(s.Phase)}[/]  {bar}  [bold]{s.Processed}[/]/[bold]{s.Discovered}[/] ({pct})  [grey]{Elapsed(s.Elapsed)}[/]");
+            $"[bold]{PhaseText(s.Phase)}[/]  {Bar(ratio, "green")}  [bold]{s.Processed}[/]/[bold]{s.Discovered}[/] ({Pct(ratio, s.Discovered)})  [grey]{Elapsed(s.Elapsed)}[/]");
+
+        // Embedding bar: embedded / queued. The crawler races ahead, so this trails the crawl bar and then
+        // catches up — continuing to advance after the crawl finishes, while the queued backlog drains.
+        double embedRatio = _embedQueued > 0 ? Math.Clamp((double)_embedProcessed / _embedQueued, 0, 1) : 0;
+        var embedHeader = new Markup(
+            $"[bold aqua]Embedding[/]  {Bar(embedRatio, "aqua")}  [bold]{_embedProcessed}[/]/[bold]{_embedQueued}[/] ({Pct(embedRatio, _embedQueued)})");
 
         var grid = new Grid();
         grid.AddColumn().AddColumn().AddColumn().AddColumn();
@@ -84,8 +112,18 @@ internal sealed class SpectreCrawlReporter : ICrawlReporter
             table.AddRow(new Markup($"[{color}]{label}[/]"), new Markup(Markup.Escape(Truncate(url, 100))));
         }
 
-        return new Rows(header, new Markup(" "), grid, table);
+        return new Rows(header, embedHeader, new Markup(" "), grid, table);
     }
+
+    /// <summary>Renders a fixed-width progress bar at the given fill ratio and color.</summary>
+    private static string Bar(double ratio, string color)
+    {
+        int filled = (int)Math.Round(Math.Clamp(ratio, 0, 1) * BarWidth);
+        return $"[{color}]{new string('█', filled)}[/][grey37]{new string('░', BarWidth - filled)}[/]";
+    }
+
+    /// <summary>Formats a percentage, or an em dash when there is nothing to measure against yet.</summary>
+    private static string Pct(double ratio, long denominator) => denominator > 0 ? $"{ratio * 100:0.0}%" : "—";
 
     /// <summary>Formats a single statistic value with a label and color.</summary>
     private static IRenderable Stat(string label, long value, string color) =>

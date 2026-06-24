@@ -69,6 +69,7 @@ internal static class CrawlStatsWriter
         sb.AppendLine("Index");
         sb.AppendLine($"  Items added   {r.ItemsAdded}");
         sb.AppendLine($"  Items deleted {r.ItemsDeleted}  (gone {s.Gone}, banned {s.RemovedBanned}, stale {s.RemovedStale})");
+        sb.AppendLine($"  Embedded      {r.EmbedProcessed} / {r.EmbedQueued} queued");
         sb.AppendLine($"  Indexed URLs in DB   {r.IndexedUrlsInDb}");
         sb.AppendLine($"  Crawl-state rows     {r.CrawlStateRowsInDb}");
         return sb.ToString();
