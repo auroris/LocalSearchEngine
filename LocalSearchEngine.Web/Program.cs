@@ -11,6 +11,13 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.Sources.Insert(0, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource
+{
+    Path = "../appsettings.json",
+    Optional = true,
+    ReloadOnChange = true
+});
+
 // Add services to the container. Serialize enums (e.g. SearchResultItem.DocKind) by name so the
 // frontend can switch on "Html"/"Pdf"/"Docx" instead of magic numbers.
 builder.Services.AddControllers().AddJsonOptions(options =>

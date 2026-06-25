@@ -1,10 +1,22 @@
 # Configuration Guide
 
-**LocalSearchEngine** is highly configurable through the `appsettings.json` files located in the `LocalSearchEngine.Crawler` and `LocalSearchEngine.Web` projects, as well as command-line arguments.
+**LocalSearchEngine** is highly configurable through the shared `appsettings.json` file located in the solution root, as well as command-line arguments.
+
+## Shared Configuration (`appsettings.json`)
+
+To avoid duplicating settings, both the Crawler and Web projects share a single `appsettings.json` file at the root of the repository.
+
+### Configuration Load Order (Hierarchy & Overrides)
+
+Both projects resolve configurations in the following priority order, with later sources overriding earlier ones:
+1. **`../appsettings.json`** (Lowest priority): The shared root configuration file.
+2. **`./appsettings.json`** (Medium priority): Project-specific configuration files in the executing directory, useful for project-specific overrides.
+3. **`appsettings.{Environment}.json`** (Medium-High priority): Environment-specific files (e.g. `appsettings.Development.json` for Web).
+4. **Environment Variables & Command-Line Arguments** (Highest priority).
 
 ---
 
-## Crawler Configuration (`LocalSearchEngine.Crawler/appsettings.json`)
+## Crawler Settings
 
 The crawler's behaviors, bounds, and scope restrictions can be set in JSON format:
 
@@ -82,7 +94,7 @@ Patterns are matched (case-insensitively) against the **whole normalized URL**, 
 
 ---
 
-## Web Search Settings (`LocalSearchEngine.Web/appsettings.json`)
+## Web Search Settings
 
 The web app configures the hybrid vector and keyword search ranker using the `SearchSettings` block:
 
