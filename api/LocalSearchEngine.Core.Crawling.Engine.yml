@@ -5,12 +5,18 @@ items:
   id: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.AliasJob
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
+  - LocalSearchEngine.Core.Crawling.Engine.ChunkAction
   - LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  - LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+  - LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
   - LocalSearchEngine.Core.Crawling.Engine.DownloadResult
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+  - LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+  - LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
   - LocalSearchEngine.Core.Crawling.Engine.GoneJob
   - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob
@@ -30,12 +36,6 @@ items:
   assemblies:
   - LocalSearchEngine.Core
 references:
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer.html
-  name: CrawlConsumer
-  nameWithType: CrawlConsumer
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
   parent: LocalSearchEngine.Core.Crawling.Engine
@@ -43,6 +43,12 @@ references:
   name: CrawlContext
   nameWithType: CrawlContext
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder.html
+  name: CrawlEmbedder
+  nameWithType: CrawlEmbedder
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   parent: LocalSearchEngine.Core.Crawling.Engine
@@ -86,6 +92,63 @@ references:
   name: CrawlProducer
   nameWithType: CrawlProducer
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html
+  name: CrawlStateWriter
+  nameWithType: CrawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+- uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
+  name: DbWriteGate
+  nameWithType: DbWriteGate
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+- uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+  href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
+  name: DbWriteGate.Releaser
+  nameWithType: DbWriteGate.Releaser
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+    name: DbWriteGate
+    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+    name: DbWriteGate
+    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog.html
+  name: EmbeddingBacklog
+  nameWithType: EmbeddingBacklog
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.html
+  name: ChunkAction
+  nameWithType: ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html
+  name: EmbeddingJob
+  nameWithType: EmbeddingJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
 - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html

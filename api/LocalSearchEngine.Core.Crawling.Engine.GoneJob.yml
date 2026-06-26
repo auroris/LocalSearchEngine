@@ -5,7 +5,7 @@ items:
   id: GoneJob
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32,System.String)
+  - LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32)
   langs:
   - csharp
   - vb
@@ -20,7 +20,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GoneJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 59
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -38,23 +38,22 @@ items:
   inheritedMembers:
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32,System.String)
-  id: '#ctor(System.String,System.Int32,System.String)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor(System.String,System.Int32)
+  id: '#ctor(System.String,System.Int32)'
   parent: LocalSearchEngine.Core.Crawling.Engine.GoneJob
   langs:
   - csharp
   - vb
-  name: GoneJob(string, int, string?)
-  nameWithType: GoneJob.GoneJob(string, int, string?)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.GoneJob.GoneJob(string, int, string?)
+  name: GoneJob(string, int)
+  nameWithType: GoneJob.GoneJob(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.GoneJob.GoneJob(string, int)
   type: Constructor
   source:
     remote:
@@ -63,14 +62,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 59
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Represents a job classification for pages that returned 404 or 410 Gone status.
   example: []
   syntax:
-    content: public GoneJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
+    content: public GoneJob(string Url, int StatusCode)
     parameters:
     - id: Url
       type: System.String
@@ -78,14 +77,11 @@ items:
     - id: StatusCode
       type: System.Int32
       description: The response HTTP status code.
-    - id: RedirectSourceUrl
-      type: System.String
-      description: The source URL if reached via a redirect.
-    content.vb: Public Sub New(Url As String, StatusCode As Integer, RedirectSourceUrl As String = Nothing)
+    content.vb: Public Sub New(Url As String, StatusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor*
-  nameWithType.vb: GoneJob.New(String, Integer, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.GoneJob.New(String, Integer, String)
-  name.vb: New(String, Integer, String)
+  nameWithType.vb: GoneJob.New(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.GoneJob.New(String, Integer)
+  name.vb: New(String, Integer)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
@@ -223,13 +219,6 @@ references:
   name: StatusCode
   nameWithType: CrawlJob.StatusCode
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_RedirectSourceUrl
-  name: RedirectSourceUrl
-  nameWithType: CrawlJob.RedirectSourceUrl
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -462,7 +451,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.GoneJob.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.GoneJob.html#LocalSearchEngine_Core_Crawling_Engine_GoneJob__ctor_System_String_System_Int32_System_String_
+  href: LocalSearchEngine.Core.Crawling.Engine.GoneJob.html#LocalSearchEngine_Core_Crawling_Engine_GoneJob__ctor_System_String_System_Int32_
   name: GoneJob
   nameWithType: GoneJob.GoneJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.GoneJob.GoneJob

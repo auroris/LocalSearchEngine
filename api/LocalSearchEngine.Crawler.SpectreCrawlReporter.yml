@@ -6,18 +6,24 @@ items:
   parent: LocalSearchEngine.Crawler
   children:
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.#ctor(Spectre.Console.LiveDisplayContext)
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar(System.Double,System.String)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.BarWidth
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.Build
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.Elapsed(System.TimeSpan)
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress(System.Int32,System.Int32)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.MinRedrawGap
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.OutcomeStyle(LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct(System.Double,System.Int64)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.PhaseText(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.RecentCapacity
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.Render(System.Boolean)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat(System.String,System.Int64,System.String)
   - LocalSearchEngine.Crawler.SpectreCrawlReporter.Truncate(System.String,System.Int32)
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter._embedProcessed
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter._embedQueued
+  - LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
   - LocalSearchEngine.Crawler.SpectreCrawlReporter._lastRenderUtc
   - LocalSearchEngine.Crawler.SpectreCrawlReporter._live
   - LocalSearchEngine.Crawler.SpectreCrawlReporter._recent
@@ -36,18 +42,22 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SpectreCrawlReporter
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 12
+    startLine: 14
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
   summary: >-
-    Renders live crawl progress to an interactive terminal: a progress bar (processed / discovered,
+    Renders live crawl progress to an interactive terminal: a crawl progress bar (processed / discovered,
 
-    the denominator growing as the crawl finds links), a panel of running totals, and a rolling list
+    the denominator growing as the crawl finds links), a second embedding bar (embedded / queued, which
 
-    of the most recent URLs with how each resolved. Every callback arrives on the crawler's single
+    keeps moving after the crawl itself finishes while the backlog drains), a panel of running totals, and
 
-    producer thread, so no locking is needed; updates are lightly throttled to keep redraws cheap.
+    a rolling list of the most recent URLs with how each resolved. The page and phase callbacks arrive on
+
+    the crawler thread while the embedding callback arrives on the embedder thread, so a single lock guards
+
+    the shared state and every redraw; updates are lightly throttled to keep redraws cheap.
   example: []
   syntax:
     content: 'internal sealed class SpectreCrawlReporter : ICrawlReporter'
@@ -81,7 +91,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecentCapacity
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 15
+    startLine: 17
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -110,11 +120,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BarWidth
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 17
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
-  summary: Width in characters of the progress bar.
+  summary: Width in characters of the progress bars.
   example: []
   syntax:
     content: private const int BarWidth = 40
@@ -139,7 +149,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MinRedrawGap
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 19
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -168,7 +178,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _live
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 21
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -177,6 +187,33 @@ items:
     return:
       type: Spectre.Console.LiveDisplayContext
     content.vb: Private ReadOnly _live As LiveDisplayContext
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
+  commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
+  id: _gate
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: SpectreCrawlReporter._gate
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._recent
   commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._recent
   id: _recent
@@ -195,7 +232,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _recent
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 22
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -222,7 +259,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _stats
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 23
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -231,6 +268,60 @@ items:
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
     content.vb: Private _stats As CrawlStatsSnapshot
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._embedProcessed
+  commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._embedProcessed
+  id: _embedProcessed
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: _embedProcessed
+  nameWithType: SpectreCrawlReporter._embedProcessed
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter._embedProcessed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embedProcessed
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private int _embedProcessed
+    return:
+      type: System.Int32
+    content.vb: Private _embedProcessed As Integer
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._embedQueued
+  commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._embedQueued
+  id: _embedQueued
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: _embedQueued
+  nameWithType: SpectreCrawlReporter._embedQueued
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter._embedQueued
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embedQueued
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private int _embedQueued
+    return:
+      type: System.Int32
+    content.vb: Private _embedQueued As Integer
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._lastRenderUtc
   commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._lastRenderUtc
   id: _lastRenderUtc
@@ -249,7 +340,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _lastRenderUtc
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 24
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -276,7 +367,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 28
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -311,7 +402,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 31
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -348,7 +439,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 38
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -373,6 +464,49 @@ items:
   nameWithType.vb: SpectreCrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
   fullName.vb: LocalSearchEngine.Crawler.SpectreCrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  id: EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: EmbedProgress(int, int)
+  nameWithType: SpectreCrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress(int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedProgress
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 58
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: >-
+    The embedder finished an item. Called from the embedder thread, including while the crawler is
+
+    idle and the queued backlog drains, so the embedding bar keeps moving after the crawl itself ends.
+  example: []
+  syntax:
+    content: public void EmbedProgress(int processed, int queued)
+    parameters:
+    - id: processed
+      type: System.Int32
+      description: Items the embedder has finished so far.
+    - id: queued
+      type: System.Int32
+      description: Items queued for embedding so far (the bar's denominator; still growing mid-crawl).
+    content.vb: Public Sub EmbedProgress(processed As Integer, queued As Integer)
+  overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  nameWithType.vb: SpectreCrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Render(System.Boolean)
   commentId: M:LocalSearchEngine.Crawler.SpectreCrawlReporter.Render(System.Boolean)
   id: Render(System.Boolean)
@@ -391,11 +525,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Render
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 48
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
   summary: Renders the current state to the display if the minimum redraw gap has elapsed or if forced.
+  remarks: Callers must hold <xref href="LocalSearchEngine.Crawler.SpectreCrawlReporter._gate" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: private void Render(bool force)
@@ -426,7 +561,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Build
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 58
+    startLine: 83
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -439,6 +574,82 @@ items:
       description: A renderable Spectre.Console element.
     content.vb: Private Function Build() As IRenderable
   overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.Build*
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar(System.Double,System.String)
+  commentId: M:LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar(System.Double,System.String)
+  id: Bar(System.Double,System.String)
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: Bar(double, string)
+  nameWithType: SpectreCrawlReporter.Bar(double, string)
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar(double, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Bar
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 118
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Renders a fixed-width progress bar at the given fill ratio and color.
+  example: []
+  syntax:
+    content: private static string Bar(double ratio, string color)
+    parameters:
+    - id: ratio
+      type: System.Double
+    - id: color
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Private Shared Function Bar(ratio As Double, color As String) As String
+  overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar*
+  nameWithType.vb: SpectreCrawlReporter.Bar(Double, String)
+  fullName.vb: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar(Double, String)
+  name.vb: Bar(Double, String)
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct(System.Double,System.Int64)
+  commentId: M:LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct(System.Double,System.Int64)
+  id: Pct(System.Double,System.Int64)
+  parent: LocalSearchEngine.Crawler.SpectreCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: Pct(double, long)
+  nameWithType: SpectreCrawlReporter.Pct(double, long)
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct(double, long)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Pct
+    path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
+    startLine: 125
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: Formats a percentage, or an em dash when there is nothing to measure against yet.
+  example: []
+  syntax:
+    content: private static string Pct(double ratio, long denominator)
+    parameters:
+    - id: ratio
+      type: System.Double
+    - id: denominator
+      type: System.Int64
+    return:
+      type: System.String
+    content.vb: Private Shared Function Pct(ratio As Double, denominator As Long) As String
+  overload: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct*
+  nameWithType.vb: SpectreCrawlReporter.Pct(Double, Long)
+  fullName.vb: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct(Double, Long)
+  name.vb: Pct(Double, Long)
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat(System.String,System.Int64,System.String)
   commentId: M:LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat(System.String,System.Int64,System.String)
   id: Stat(System.String,System.Int64,System.String)
@@ -457,7 +668,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stat
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 90
+    startLine: 128
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -497,7 +708,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseText
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 94
+    startLine: 132
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -530,7 +741,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OutcomeStyle
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 108
+    startLine: 145
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -563,7 +774,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Elapsed
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 124
+    startLine: 161
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -596,7 +807,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Truncate
     path: LocalSearchEngine.Crawler/SpectreCrawlReporter.cs
-    startLine: 127
+    startLine: 164
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -1227,6 +1438,61 @@ references:
   name: CrawlOutcome
   nameWithType: CrawlOutcome
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress*
+  commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress
+  nameWithType: SpectreCrawlReporter.EmbedProgress
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.EmbedProgress
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress(int, int)
+  nameWithType: ICrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(int, int)
+  nameWithType.vb: ICrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
+  commentId: F:LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter__gate
+  name: _gate
+  nameWithType: SpectreCrawlReporter._gate
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter._gate
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Render*
   commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.Render
   href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_Render_System_Boolean_
@@ -1287,12 +1553,29 @@ references:
   - uid: Spectre.Console.Rendering
     name: Rendering
     isExternal: true
-- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat*
-  commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat
-  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_Stat_System_String_System_Int64_System_String_
-  name: Stat
-  nameWithType: SpectreCrawlReporter.Stat
-  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar*
+  commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_Bar_System_Double_System_String_
+  name: Bar
+  nameWithType: SpectreCrawlReporter.Bar
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Bar
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct*
+  commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_Pct_System_Double_System_Int64_
+  name: Pct
+  nameWithType: SpectreCrawlReporter.Pct
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Pct
 - uid: System.Int64
   commentId: T:System.Int64
   parent: System
@@ -1304,6 +1587,12 @@ references:
   nameWithType.vb: Long
   fullName.vb: Long
   name.vb: Long
+- uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat*
+  commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat
+  href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_Stat_System_String_System_Int64_System_String_
+  name: Stat
+  nameWithType: SpectreCrawlReporter.Stat
+  fullName: LocalSearchEngine.Crawler.SpectreCrawlReporter.Stat
 - uid: LocalSearchEngine.Crawler.SpectreCrawlReporter.PhaseText*
   commentId: Overload:LocalSearchEngine.Crawler.SpectreCrawlReporter.PhaseText
   href: LocalSearchEngine.Crawler.SpectreCrawlReporter.html#LocalSearchEngine_Crawler_SpectreCrawlReporter_PhaseText_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_

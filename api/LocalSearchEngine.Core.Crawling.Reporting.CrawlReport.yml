@@ -5,12 +5,13 @@ items:
   id: CrawlReport
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String},System.Int64,System.Int64)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.BrokenLinks
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlStateRowsInDb
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.FinishedUtc
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.IndexedUrlsInDb
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.ItemsAdded
@@ -34,7 +35,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlReport
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 19
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -57,16 +58,16 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})
-  id: '#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String})'
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String},System.Int64,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String},System.Int64,System.Int64)
+  id: '#ctor(System.String,System.DateTime,System.DateTime,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot,System.Int64,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Reporting.BrokenLink},System.Collections.Generic.IReadOnlyList{System.String},System.Int64,System.Int64)'
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
   langs:
   - csharp
   - vb
-  name: CrawlReport(string, DateTime, DateTime, bool, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>)
-  nameWithType: CrawlReport.CrawlReport(string, DateTime, DateTime, bool, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlReport(string, System.DateTime, System.DateTime, bool, bool, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, long, long, long, long, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<string>)
+  name: CrawlReport(string, DateTime, DateTime, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>, long, long)
+  nameWithType: CrawlReport.CrawlReport(string, DateTime, DateTime, bool, CrawlStatsSnapshot, long, long, long, long, IReadOnlyList<BrokenLink>, IReadOnlyList<BrokenLink>, IReadOnlyList<string>, long, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlReport(string, System.DateTime, System.DateTime, bool, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, long, long, long, long, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Reporting.BrokenLink>, System.Collections.Generic.IReadOnlyList<string>, long, long)
   type: Constructor
   source:
     remote:
@@ -75,7 +76,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 19
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -85,7 +86,7 @@ items:
     database totals, ready to be written to a stats file or printed as a summary.
   example: []
   syntax:
-    content: public CrawlReport(string SeedUrl, DateTime StartedUtc, DateTime FinishedUtc, bool CompletedNaturally, bool Cancelled, CrawlStatsSnapshot Stats, long IndexedUrlsInDb, long CrawlStateRowsInDb, long ItemsAdded, long ItemsDeleted, IReadOnlyList<BrokenLink> BrokenLinks, IReadOnlyList<BrokenLink> RedirectedLinks, IReadOnlyList<string> UnreachableHosts)
+    content: public CrawlReport(string SeedUrl, DateTime StartedUtc, DateTime FinishedUtc, bool CompletedNaturally, CrawlStatsSnapshot Stats, long IndexedUrlsInDb, long CrawlStateRowsInDb, long ItemsAdded, long ItemsDeleted, IReadOnlyList<BrokenLink> BrokenLinks, IReadOnlyList<BrokenLink> RedirectedLinks, IReadOnlyList<string> UnreachableHosts, long EmbedProcessed, long EmbedQueued)
     parameters:
     - id: SeedUrl
       type: System.String
@@ -98,10 +99,7 @@ items:
       description: When the crawl finished.
     - id: CompletedNaturally
       type: System.Boolean
-      description: Whether the crawl drained its frontier (vs. capped or cancelled).
-    - id: Cancelled
-      type: System.Boolean
-      description: Whether cancellation was requested before the crawl finished.
+      description: Whether the crawl drained its frontier (vs. stopping at a page cap).
     - id: Stats
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
       description: The final running tallies.
@@ -126,11 +124,17 @@ items:
     - id: UnreachableHosts
       type: System.Collections.Generic.IReadOnlyList{System.String}
       description: Hosts written off as unreachable this run (a connection-level failure with no prior response); their URLs were skipped.
-    content.vb: Public Sub New(SeedUrl As String, StartedUtc As Date, FinishedUtc As Date, CompletedNaturally As Boolean, Cancelled As Boolean, Stats As CrawlStatsSnapshot, IndexedUrlsInDb As Long, CrawlStateRowsInDb As Long, ItemsAdded As Long, ItemsDeleted As Long, BrokenLinks As IReadOnlyList(Of BrokenLink), RedirectedLinks As IReadOnlyList(Of BrokenLink), UnreachableHosts As IReadOnlyList(Of String))
+    - id: EmbedProcessed
+      type: System.Int64
+      description: Chunk-work items the embedder finished this run (it drains fully before the crawl returns, so this equals <code class="paramref">EmbedQueued</code>).
+    - id: EmbedQueued
+      type: System.Int64
+      description: Chunk-work items the crawler queued for the embedder this run (every page whose chunks were (re)written or cleared).
+    content.vb: Public Sub New(SeedUrl As String, StartedUtc As Date, FinishedUtc As Date, CompletedNaturally As Boolean, Stats As CrawlStatsSnapshot, IndexedUrlsInDb As Long, CrawlStateRowsInDb As Long, ItemsAdded As Long, ItemsDeleted As Long, BrokenLinks As IReadOnlyList(Of BrokenLink), RedirectedLinks As IReadOnlyList(Of BrokenLink), UnreachableHosts As IReadOnlyList(Of String), EmbedProcessed As Long, EmbedQueued As Long)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor*
-  nameWithType.vb: CrawlReport.New(String, Date, Date, Boolean, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String))
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.New(String, Date, Date, Boolean, Boolean, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, Long, Long, Long, Long, System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of String))
-  name.vb: New(String, Date, Date, Boolean, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String))
+  nameWithType.vb: CrawlReport.New(String, Date, Date, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String), Long, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.New(String, Date, Date, Boolean, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot, Long, Long, Long, Long, System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Reporting.BrokenLink), System.Collections.Generic.IReadOnlyList(Of String), Long, Long)
+  name.vb: New(String, Date, Date, Boolean, CrawlStatsSnapshot, Long, Long, Long, Long, IReadOnlyList(Of BrokenLink), IReadOnlyList(Of BrokenLink), IReadOnlyList(Of String), Long, Long)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.SeedUrl
   id: SeedUrl
@@ -149,7 +153,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedUrl
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -180,7 +184,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StartedUtc
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -211,7 +215,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FinishedUtc
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -242,11 +246,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CompletedNaturally
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 23
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Whether the crawl drained its frontier (vs. capped or cancelled).
+  summary: Whether the crawl drained its frontier (vs. stopping at a page cap).
   example: []
   syntax:
     content: public bool CompletedNaturally { get; init; }
@@ -255,37 +259,6 @@ items:
       type: System.Boolean
     content.vb: Public Property CompletedNaturally As Boolean
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally*
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
-  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
-  id: Cancelled
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
-  langs:
-  - csharp
-  - vb
-  name: Cancelled
-  nameWithType: CrawlReport.Cancelled
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
-  type: Property
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Cancelled
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 24
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Whether cancellation was requested before the crawl finished.
-  example: []
-  syntax:
-    content: public bool Cancelled { get; init; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property Cancelled As Boolean
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled*
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
   id: Stats
@@ -534,6 +507,68 @@ items:
       type: System.Collections.Generic.IReadOnlyList{System.String}
     content.vb: Public Property UnreachableHosts As IReadOnlyList(Of String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+  id: EmbedProcessed
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: EmbedProcessed
+  nameWithType: CrawlReport.EmbedProcessed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedProcessed
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Chunk-work items the embedder finished this run (it drains fully before the crawl returns, so this equals <code class="paramref">EmbedQueued</code>).
+  example: []
+  syntax:
+    content: public long EmbedProcessed { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property EmbedProcessed As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
+  commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
+  id: EmbedQueued
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
+  langs:
+  - csharp
+  - vb
+  name: EmbedQueued
+  nameWithType: CrawlReport.EmbedQueued
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedQueued
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Chunk-work items the crawler queued for the embedder this run (every page whose chunks were (re)written or cleared).
+  example: []
+  syntax:
+    content: public long EmbedQueued { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property EmbedQueued As Long
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued*
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
   id: Duration
@@ -552,7 +587,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Duration
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlReport.cs
-    startLine: 35
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -880,7 +915,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.#ctor
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport__ctor_System_String_System_DateTime_System_DateTime_System_Boolean_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_System_Int64_System_Int64_System_Int64_System_Int64_System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_System_String__
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport__ctor_System_String_System_DateTime_System_DateTime_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_System_Int64_System_Int64_System_Int64_System_Int64_System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink__System_Collections_Generic_IReadOnlyList_System_String__System_Int64_System_Int64_
   name: CrawlReport
   nameWithType: CrawlReport.CrawlReport
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CrawlReport
@@ -1095,12 +1130,6 @@ references:
   name: CompletedNaturally
   nameWithType: CrawlReport.CompletedNaturally
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.CompletedNaturally
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Cancelled
-  name: Cancelled
-  nameWithType: CrawlReport.Cancelled
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Cancelled
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Stats
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Stats
@@ -1149,6 +1178,18 @@ references:
   name: UnreachableHosts
   nameWithType: CrawlReport.UnreachableHosts
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.UnreachableHosts
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_EmbedProcessed
+  name: EmbedProcessed
+  nameWithType: CrawlReport.EmbedProcessed
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedProcessed
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_EmbedQueued
+  name: EmbedQueued
+  nameWithType: CrawlReport.EmbedQueued
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.EmbedQueued
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.Duration
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlReport_Duration

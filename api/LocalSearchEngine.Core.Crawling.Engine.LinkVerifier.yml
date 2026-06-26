@@ -10,10 +10,10 @@ items:
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.CompareLinks(LocalSearchEngine.Core.Crawling.Reporting.BrokenLink,LocalSearchEngine.Core.Crawling.Reporting.BrokenLink)
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.LinkCheckConcurrency
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.LinkCheckPerHostGap
-  - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ReasonFor(LocalSearchEngine.Core.Crawling.Reporting.LinkStatus,System.Int32)
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.SendProbeAsync(System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier._httpClient
   langs:
   - csharp
@@ -182,16 +182,16 @@ items:
   nameWithType.vb: LinkVerifier.New(HttpClient)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.New(System.Net.Http.HttpClient)
   name.vb: New(HttpClient)
-- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime,System.Threading.CancellationToken)
-  id: VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
+  id: VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
   parent: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
   langs:
   - csharp
   - vb
-  name: VerifyUndeterminedLinksAsync(CrawlContext, DateTime, CancellationToken)
-  nameWithType: LinkVerifier.VerifyUndeterminedLinksAsync(CrawlContext, DateTime, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.DateTime, System.Threading.CancellationToken)
+  name: VerifyUndeterminedLinksAsync(CrawlContext, DateTime)
+  nameWithType: LinkVerifier.VerifyUndeterminedLinksAsync(CrawlContext, DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.DateTime)
   type: Method
   source:
     remote:
@@ -200,7 +200,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VerifyUndeterminedLinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 50
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -210,7 +210,7 @@ items:
     in-scope links the crawl didn't reach.
   example: []
   syntax:
-    content: public Task VerifyUndeterminedLinksAsync(CrawlContext context, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    content: public Task VerifyUndeterminedLinksAsync(CrawlContext context, DateTime crawlStartUtc)
     parameters:
     - id: context
       type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
@@ -218,17 +218,14 @@ items:
     - id: crawlStartUtc
       type: System.DateTime
       description: The UTC timestamp indicating when the crawl started.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous verification process.
-    content.vb: Public Function VerifyUndeterminedLinksAsync(context As CrawlContext, crawlStartUtc As Date, cancellationToken As CancellationToken) As Task
+    content.vb: Public Function VerifyUndeterminedLinksAsync(context As CrawlContext, crawlStartUtc As Date) As Task
   overload: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync*
-  nameWithType.vb: LinkVerifier.VerifyUndeterminedLinksAsync(CrawlContext, Date, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext, Date, System.Threading.CancellationToken)
-  name.vb: VerifyUndeterminedLinksAsync(CrawlContext, Date, CancellationToken)
+  nameWithType.vb: LinkVerifier.VerifyUndeterminedLinksAsync(CrawlContext, Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext, Date)
+  name.vb: VerifyUndeterminedLinksAsync(CrawlContext, Date)
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.BuildLinkReportAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.BuildLinkReportAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
   id: BuildLinkReportAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.DateTime)
@@ -247,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BuildLinkReportAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 113
+    startLine: 106
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -270,16 +267,16 @@ items:
   nameWithType.vb: LinkVerifier.BuildLinkReportAsync(CrawlContext, Date)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.BuildLinkReportAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext, Date)
   name.vb: BuildLinkReportAsync(CrawlContext, Date)
-- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  id: ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  id: ProbeLinkAsync(System.String,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   parent: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
   langs:
   - csharp
   - vb
-  name: ProbeLinkAsync(string, CrawlContext, CancellationToken)
-  nameWithType: LinkVerifier.ProbeLinkAsync(string, CrawlContext, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(string, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.Threading.CancellationToken)
+  name: ProbeLinkAsync(string, CrawlContext)
+  nameWithType: LinkVerifier.ProbeLinkAsync(string, CrawlContext)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(string, LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   type: Method
   source:
     remote:
@@ -288,14 +285,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProbeLinkAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 145
+    startLine: 137
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Probes a single link to determine if it is OK, redirected, or broken.
   example: []
   syntax:
-    content: private Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, CrawlContext context, CancellationToken cancellationToken)
+    content: private Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, CrawlContext context)
     parameters:
     - id: url
       type: System.String
@@ -303,17 +300,14 @@ items:
     - id: context
       type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
       description: The active crawl context.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Reporting.LinkStatus,System.Int32}}
       description: A tuple containing the link's classified <xref href="LocalSearchEngine.Core.Crawling.Reporting.LinkStatus" data-throw-if-not-resolved="false"></xref> and actual HTTP status code.
-    content.vb: Private Function ProbeLinkAsync(url As String, context As CrawlContext, cancellationToken As CancellationToken) As Task(Of (Status As LinkStatus, StatusCode As Integer))
+    content.vb: Private Function ProbeLinkAsync(url As String, context As CrawlContext) As Task(Of (Status As LinkStatus, StatusCode As Integer))
   overload: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync*
-  nameWithType.vb: LinkVerifier.ProbeLinkAsync(String, CrawlContext, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(String, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.Threading.CancellationToken)
-  name.vb: ProbeLinkAsync(String, CrawlContext, CancellationToken)
+  nameWithType.vb: LinkVerifier.ProbeLinkAsync(String, CrawlContext)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync(String, LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  name.vb: ProbeLinkAsync(String, CrawlContext)
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.SendProbeAsync(System.String,System.Threading.CancellationToken)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.SendProbeAsync(System.String,System.Threading.CancellationToken)
   id: SendProbeAsync(System.String,System.Threading.CancellationToken)
@@ -332,7 +326,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendProbeAsync
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 191
+    startLine: 184
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -373,7 +367,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CompareLinks
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 221
+    startLine: 214
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -411,7 +405,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReasonFor
     path: LocalSearchEngine.Core/Crawling/Engine/LinkVerifier.cs
-    startLine: 234
+    startLine: 227
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -775,7 +769,7 @@ references:
   fullName: System.Threading.Tasks.Task
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html#LocalSearchEngine_Core_Crawling_Engine_LinkVerifier_VerifyUndeterminedLinksAsync_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_DateTime_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html#LocalSearchEngine_Core_Crawling_Engine_LinkVerifier_VerifyUndeterminedLinksAsync_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_DateTime_
   name: VerifyUndeterminedLinksAsync
   nameWithType: LinkVerifier.VerifyUndeterminedLinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.VerifyUndeterminedLinksAsync
@@ -797,14 +791,6 @@ references:
   nameWithType.vb: Date
   fullName.vb: Date
   name.vb: Date
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks
   commentId: N:System.Threading.Tasks
   isExternal: true
@@ -842,33 +828,6 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -1052,7 +1011,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html#LocalSearchEngine_Core_Crawling_Engine_LinkVerifier_ProbeLinkAsync_System_String_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html#LocalSearchEngine_Core_Crawling_Engine_LinkVerifier_ProbeLinkAsync_System_String_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_
   name: ProbeLinkAsync
   nameWithType: LinkVerifier.ProbeLinkAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.ProbeLinkAsync
@@ -1142,6 +1101,14 @@ references:
   name: SendProbeAsync
   nameWithType: LinkVerifier.SendProbeAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.SendProbeAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task{System.Net.Http.HttpResponseMessage}
   commentId: T:System.Threading.Tasks.Task{System.Net.Http.HttpResponseMessage}
   parent: System.Threading.Tasks
@@ -1177,6 +1144,33 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
   - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.CompareLinks*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.CompareLinks
   href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html#LocalSearchEngine_Core_Crawling_Engine_LinkVerifier_CompareLinks_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink_LocalSearchEngine_Core_Crawling_Reporting_BrokenLink_

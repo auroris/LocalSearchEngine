@@ -6,8 +6,8 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.SitemapService.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
-  - LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  - LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64)
   - LocalSearchEngine.Core.Crawling.Engine.SitemapService._httpClient
   - LocalSearchEngine.Core.Crawling.Engine.SitemapService._logger
   langs:
@@ -151,16 +151,16 @@ items:
   nameWithType.vb: SitemapService.New(HttpClient, ILogger)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.SitemapService.New(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
   name.vb: New(HttpClient, ILogger)
-- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Threading.CancellationToken)
-  id: EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  id: EnqueueSitemapUrlsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
   parent: LocalSearchEngine.Core.Crawling.Engine.SitemapService
   langs:
   - csharp
   - vb
-  name: EnqueueSitemapUrlsAsync(Uri, CrawlContext, RobotsRules, CancellationToken)
-  nameWithType: SitemapService.EnqueueSitemapUrlsAsync(Uri, CrawlContext, RobotsRules, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Policies.RobotsRules, System.Threading.CancellationToken)
+  name: EnqueueSitemapUrlsAsync(Uri, CrawlContext, RobotsRules)
+  nameWithType: SitemapService.EnqueueSitemapUrlsAsync(Uri, CrawlContext, RobotsRules)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
   type: Method
   source:
     remote:
@@ -169,14 +169,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueSitemapUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 47
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Discovers sitemaps for the seed's origin and enqueues the entries that live on that origin.
   example: []
   syntax:
-    content: public Task EnqueueSitemapUrlsAsync(Uri originUri, CrawlContext context, RobotsRules robots, CancellationToken cancellationToken)
+    content: public Task EnqueueSitemapUrlsAsync(Uri originUri, CrawlContext context, RobotsRules robots)
     parameters:
     - id: originUri
       type: System.Uri
@@ -187,24 +187,21 @@ items:
     - id: robots
       type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
       description: The robots.txt rules which may contain sitemap declarations.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Function EnqueueSitemapUrlsAsync(originUri As Uri, context As CrawlContext, robots As RobotsRules, cancellationToken As CancellationToken) As Task
+    content.vb: Public Function EnqueueSitemapUrlsAsync(originUri As Uri, context As CrawlContext, robots As RobotsRules) As Task
   overload: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync*
-- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64,System.Threading.CancellationToken)
-  id: FetchSitemapAsync(System.String,System.Int64,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(System.String,System.Int64)
+  id: FetchSitemapAsync(System.String,System.Int64)
   parent: LocalSearchEngine.Core.Crawling.Engine.SitemapService
   langs:
   - csharp
   - vb
-  name: FetchSitemapAsync(string, long, CancellationToken)
-  nameWithType: SitemapService.FetchSitemapAsync(string, long, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(string, long, System.Threading.CancellationToken)
+  name: FetchSitemapAsync(string, long)
+  nameWithType: SitemapService.FetchSitemapAsync(string, long)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(string, long)
   type: Method
   source:
     remote:
@@ -213,14 +210,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FetchSitemapAsync
     path: LocalSearchEngine.Core/Crawling/Engine/SitemapService.cs
-    startLine: 103
+    startLine: 101
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Fetches a sitemap XML document and parses its loc entries (including handling sitemap indexes recursively).
   example: []
   syntax:
-    content: private Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, long maxBytes, CancellationToken cancellationToken)
+    content: private Task<(List<string> Locations, List<string> NestedSitemaps)> FetchSitemapAsync(string sitemapUrl, long maxBytes)
     parameters:
     - id: sitemapUrl
       type: System.String
@@ -228,17 +225,14 @@ items:
     - id: maxBytes
       type: System.Int64
       description: The maximum allowed download size in bytes.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String}}}
       description: A tuple containing lists of parsed resource URLs (Locations) and nested sitemap URLs (NestedSitemaps).
-    content.vb: Private Function FetchSitemapAsync(sitemapUrl As String, maxBytes As Long, cancellationToken As CancellationToken) As Task(Of (Locations As List(Of String), NestedSitemaps As List(Of String)))
+    content.vb: Private Function FetchSitemapAsync(sitemapUrl As String, maxBytes As Long) As Task(Of (Locations As List(Of String), NestedSitemaps As List(Of String)))
   overload: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync*
-  nameWithType.vb: SitemapService.FetchSitemapAsync(String, Long, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(String, Long, System.Threading.CancellationToken)
-  name.vb: FetchSitemapAsync(String, Long, CancellationToken)
+  nameWithType.vb: SitemapService.FetchSitemapAsync(String, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync(String, Long)
+  name.vb: FetchSitemapAsync(String, Long)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlContext.Discover(System.String)
@@ -636,7 +630,7 @@ references:
   fullName: System.Threading.Tasks.Task
 - uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html#LocalSearchEngine_Core_Crawling_Engine_SitemapService_EnqueueSitemapUrlsAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html#LocalSearchEngine_Core_Crawling_Engine_SitemapService_EnqueueSitemapUrlsAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_
   name: EnqueueSitemapUrlsAsync
   nameWithType: SitemapService.EnqueueSitemapUrlsAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.EnqueueSitemapUrlsAsync
@@ -662,14 +656,6 @@ references:
   name: RobotsRules
   nameWithType: RobotsRules
   fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks
   commentId: N:System.Threading.Tasks
   isExternal: true
@@ -745,36 +731,9 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Policies
     name: Policies
     href: LocalSearchEngine.Core.Crawling.Policies.html
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html#LocalSearchEngine_Core_Crawling_Engine_SitemapService_FetchSitemapAsync_System_String_System_Int64_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html#LocalSearchEngine_Core_Crawling_Engine_SitemapService_FetchSitemapAsync_System_String_System_Int64_
   name: FetchSitemapAsync
   nameWithType: SitemapService.FetchSitemapAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService.FetchSitemapAsync

@@ -1,150 +1,135 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Tests.FakeEmbedder
-  commentId: T:LocalSearchEngine.Tests.FakeEmbedder
-  id: FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+  id: CrawlerServiceIntegrationTests.DelayEmbedder
   parent: LocalSearchEngine.Tests
   children:
-  - LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
-  - LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-  - LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
-  - LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor(System.TimeSpan)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed(System.String)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder._delay
   langs:
   - csharp
   - vb
-  name: FakeEmbedder
-  nameWithType: FakeEmbedder
-  fullName: LocalSearchEngine.Tests.FakeEmbedder
+  name: CrawlerServiceIntegrationTests.DelayEmbedder
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   type: Class
   source:
     remote:
-      path: LocalSearchEngine.Tests/FakeEmbedder.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: FakeEmbedder
-    path: LocalSearchEngine.Tests/FakeEmbedder.cs
-    startLine: 9
+    id: DelayEmbedder
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1200
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
-  summary: >-
-    Deterministic, model-free embedder for tests: identical text yields an identical vector.
-
-    Eliminates the need to download the real model or run ONNX runtime in tests, and tracks embed counts.
+  summary: A FakeEmbedder that sleeps on every embed, so the crawler outruns the embedder.
   example: []
   syntax:
-    content: 'public class FakeEmbedder : IEmbedder'
-    content.vb: Public Class FakeEmbedder Implements IEmbedder
+    content: 'private sealed class CrawlerServiceIntegrationTests.DelayEmbedder : FakeEmbedder, IEmbedder'
+    content.vb: Private NotInheritable Class CrawlerServiceIntegrationTests.DelayEmbedder Inherits FakeEmbedder Implements IEmbedder
   inheritance:
   - System.Object
-  derivedClasses:
-  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
-  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+  - LocalSearchEngine.Tests.FakeEmbedder
   implements:
   - LocalSearchEngine.Core.TextProcessing.IEmbedder
   inheritedMembers:
+  - LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
+  - LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
   - System.Object.GetType
-  - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-  commentId: P:LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-  id: EmbedCount
-  parent: LocalSearchEngine.Tests.FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder._delay
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder._delay
+  id: _delay
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   langs:
   - csharp
   - vb
-  name: EmbedCount
-  nameWithType: FakeEmbedder.EmbedCount
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-  type: Property
+  name: _delay
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder._delay
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder._delay
+  type: Field
   source:
     remote:
-      path: LocalSearchEngine.Tests/FakeEmbedder.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: EmbedCount
-    path: LocalSearchEngine.Tests/FakeEmbedder.cs
-    startLine: 11
+    id: _delay
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1202
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: public int EmbedCount { get; private set; }
-    parameters: []
+    content: private readonly TimeSpan _delay
     return:
-      type: System.Int32
-    content.vb: Public Property EmbedCount As Integer
-  overload: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount*
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
-  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
-  id: EmbedQuery(System.String)
-  parent: LocalSearchEngine.Tests.FakeEmbedder
+      type: System.TimeSpan
+    content.vb: Private ReadOnly _delay As TimeSpan
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor(System.TimeSpan)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor(System.TimeSpan)
+  id: '#ctor(System.TimeSpan)'
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   langs:
   - csharp
   - vb
-  name: EmbedQuery(string)
-  nameWithType: FakeEmbedder.EmbedQuery(string)
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(string)
-  type: Method
+  name: DelayEmbedder(TimeSpan)
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder.DelayEmbedder(TimeSpan)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.DelayEmbedder(System.TimeSpan)
+  type: Constructor
   source:
     remote:
-      path: LocalSearchEngine.Tests/FakeEmbedder.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: EmbedQuery
-    path: LocalSearchEngine.Tests/FakeEmbedder.cs
-    startLine: 15
+    id: .ctor
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1203
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
-  summary: Generates a vector embedding for a search query.
-  example: []
   syntax:
-    content: public virtual ReadOnlyMemory<float> EmbedQuery(string text)
+    content: public DelayEmbedder(TimeSpan delay)
     parameters:
-    - id: text
-      type: System.String
-      description: The query text to embed.
-    return:
-      type: System.ReadOnlyMemory{System.Single}
-      description: A read-only memory block containing the embedding vector components.
-    content.vb: Public Overridable Function EmbedQuery(text As String) As ReadOnlyMemory(Of Single)
-  overload: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery*
-  implements:
-  - LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
-  nameWithType.vb: FakeEmbedder.EmbedQuery(String)
-  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(String)
-  name.vb: EmbedQuery(String)
-- uid: LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
-  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+    - id: delay
+      type: System.TimeSpan
+    content.vb: Public Sub New(delay As TimeSpan)
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor*
+  nameWithType.vb: CrawlerServiceIntegrationTests.DelayEmbedder.New(TimeSpan)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.New(System.TimeSpan)
+  name.vb: New(TimeSpan)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed(System.String)
   id: Embed(System.String)
-  parent: LocalSearchEngine.Tests.FakeEmbedder
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   langs:
   - csharp
   - vb
   name: Embed(string)
-  nameWithType: FakeEmbedder.Embed(string)
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.Embed(string)
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder.Embed(string)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed(string)
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/FakeEmbedder.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Embed
-    path: LocalSearchEngine.Tests/FakeEmbedder.cs
-    startLine: 17
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1204
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   summary: Generates a vector embedding for a passage or document text block.
   example: []
   syntax:
-    content: public virtual ReadOnlyMemory<float> Embed(string text)
+    content: public override ReadOnlyMemory<float> Embed(string text)
     parameters:
     - id: text
       type: System.String
@@ -152,47 +137,12 @@ items:
     return:
       type: System.ReadOnlyMemory{System.Single}
       description: A read-only memory block containing the embedding vector components.
-    content.vb: Public Overridable Function Embed(text As String) As ReadOnlyMemory(Of Single)
-  overload: LocalSearchEngine.Tests.FakeEmbedder.Embed*
-  implements:
-  - LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
-  nameWithType.vb: FakeEmbedder.Embed(String)
-  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.Embed(String)
+    content.vb: Public Overrides Function Embed(text As String) As ReadOnlyMemory(Of Single)
+  overridden: LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed*
+  nameWithType.vb: CrawlerServiceIntegrationTests.DelayEmbedder.Embed(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed(String)
   name.vb: Embed(String)
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
-  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(System.String)
-  id: EmbedInternal(System.String)
-  parent: LocalSearchEngine.Tests.FakeEmbedder
-  langs:
-  - csharp
-  - vb
-  name: EmbedInternal(string)
-  nameWithType: FakeEmbedder.EmbedInternal(string)
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Tests/FakeEmbedder.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: EmbedInternal
-    path: LocalSearchEngine.Tests/FakeEmbedder.cs
-    startLine: 23
-  assemblies:
-  - LocalSearchEngine.Tests
-  namespace: LocalSearchEngine.Tests
-  syntax:
-    content: private static ReadOnlyMemory<float> EmbedInternal(string text)
-    parameters:
-    - id: text
-      type: System.String
-    return:
-      type: System.ReadOnlyMemory{System.Single}
-    content.vb: Private Shared Function EmbedInternal(text As String) As ReadOnlyMemory(Of Single)
-  overload: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal*
-  nameWithType.vb: FakeEmbedder.EmbedInternal(String)
-  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal(String)
-  name.vb: EmbedInternal(String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -227,6 +177,13 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
+- uid: LocalSearchEngine.Tests.FakeEmbedder
+  commentId: T:LocalSearchEngine.Tests.FakeEmbedder
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.FakeEmbedder.html
+  name: FakeEmbedder
+  nameWithType: FakeEmbedder
+  fullName: LocalSearchEngine.Tests.FakeEmbedder
 - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder
   commentId: T:LocalSearchEngine.Core.TextProcessing.IEmbedder
   parent: LocalSearchEngine.Core.TextProcessing
@@ -234,6 +191,44 @@ references:
   name: IEmbedder
   nameWithType: IEmbedder
   fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder
+- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
+  commentId: P:LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
+  parent: LocalSearchEngine.Tests.FakeEmbedder
+  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedCount
+  name: EmbedCount
+  nameWithType: FakeEmbedder.EmbedCount
+  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
+- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
+  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
+  parent: LocalSearchEngine.Tests.FakeEmbedder
+  isExternal: true
+  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedQuery_System_String_
+  name: EmbedQuery(string)
+  nameWithType: FakeEmbedder.EmbedQuery(string)
+  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(string)
+  nameWithType.vb: FakeEmbedder.EmbedQuery(String)
+  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(String)
+  name.vb: EmbedQuery(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
+    name: EmbedQuery
+    href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedQuery_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery(System.String)
+    name: EmbedQuery
+    href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedQuery_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -360,30 +355,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.gettype
   - name: (
   - name: )
-- uid: System.Object.MemberwiseClone
-  commentId: M:System.Object.MemberwiseClone
-  parent: System.Object
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
-  name: MemberwiseClone()
-  nameWithType: object.MemberwiseClone()
-  fullName: object.MemberwiseClone()
-  nameWithType.vb: Object.MemberwiseClone()
-  fullName.vb: Object.MemberwiseClone()
-  spec.csharp:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: System.Object.MemberwiseClone
-    name: MemberwiseClone
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
-  - name: (
-  - name: )
 - uid: System.Object.ReferenceEquals(System.Object,System.Object)
   commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
   parent: System.Object
@@ -490,44 +461,38 @@ references:
   - uid: LocalSearchEngine.Core.TextProcessing
     name: TextProcessing
     href: LocalSearchEngine.Core.TextProcessing.html
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount*
-  commentId: Overload:LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedCount
-  name: EmbedCount
-  nameWithType: FakeEmbedder.EmbedCount
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedCount
-- uid: System.Int32
-  commentId: T:System.Int32
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery*
-  commentId: Overload:LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery
-  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedQuery_System_String_
-  name: EmbedQuery
-  nameWithType: FakeEmbedder.EmbedQuery
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedQuery
-- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
-  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
-  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.#ctor
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_DelayEmbedder__ctor_System_TimeSpan_
+  name: DelayEmbedder
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder.DelayEmbedder
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.DelayEmbedder
+  nameWithType.vb: CrawlerServiceIntegrationTests.DelayEmbedder.New
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.New
+  name.vb: New
+- uid: LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+  commentId: M:LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+  parent: LocalSearchEngine.Tests.FakeEmbedder
   isExternal: true
-  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
-  name: EmbedQuery(string)
-  nameWithType: IEmbedder.EmbedQuery(string)
-  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(string)
-  nameWithType.vb: IEmbedder.EmbedQuery(String)
-  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(String)
-  name.vb: EmbedQuery(String)
+  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_Embed_System_String_
+  name: Embed(string)
+  nameWithType: FakeEmbedder.Embed(string)
+  fullName: LocalSearchEngine.Tests.FakeEmbedder.Embed(string)
+  nameWithType.vb: FakeEmbedder.Embed(String)
+  fullName.vb: LocalSearchEngine.Tests.FakeEmbedder.Embed(String)
+  name.vb: Embed(String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
-    name: EmbedQuery
-    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  - uid: LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+    name: Embed
+    href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_Embed_System_String_
   - name: (
   - uid: System.String
     name: string
@@ -535,15 +500,21 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.EmbedQuery(System.String)
-    name: EmbedQuery
-    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_EmbedQuery_System_String_
+  - uid: LocalSearchEngine.Tests.FakeEmbedder.Embed(System.String)
+    name: Embed
+    href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_Embed_System_String_
   - name: (
   - uid: System.String
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_DelayEmbedder_Embed_System_String_
+  name: Embed
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder.Embed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.Embed
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -618,46 +589,3 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: LocalSearchEngine.Tests.FakeEmbedder.Embed*
-  commentId: Overload:LocalSearchEngine.Tests.FakeEmbedder.Embed
-  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_Embed_System_String_
-  name: Embed
-  nameWithType: FakeEmbedder.Embed
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.Embed
-- uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
-  commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
-  parent: LocalSearchEngine.Core.TextProcessing.IEmbedder
-  isExternal: true
-  href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
-  name: Embed(string)
-  nameWithType: IEmbedder.Embed(string)
-  fullName: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(string)
-  nameWithType.vb: IEmbedder.Embed(String)
-  fullName.vb: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(String)
-  name.vb: Embed(String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
-    name: Embed
-    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
-    name: Embed
-    href: LocalSearchEngine.Core.TextProcessing.IEmbedder.html#LocalSearchEngine_Core_TextProcessing_IEmbedder_Embed_System_String_
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal*
-  commentId: Overload:LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal
-  href: LocalSearchEngine.Tests.FakeEmbedder.html#LocalSearchEngine_Tests_FakeEmbedder_EmbedInternal_System_String_
-  name: EmbedInternal
-  nameWithType: FakeEmbedder.EmbedInternal
-  fullName: LocalSearchEngine.Tests.FakeEmbedder.EmbedInternal

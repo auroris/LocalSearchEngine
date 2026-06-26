@@ -8,8 +8,10 @@ items:
   - LocalSearchEngine.Tests.ContentExtractorTests
   - LocalSearchEngine.Tests.CrawlPolicyTests
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
-  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   - LocalSearchEngine.Tests.FakeEmbedder
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   - LocalSearchEngine.Tests.NoIndexRulesTests
@@ -71,28 +73,72 @@ references:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
     name: FakeHandler
     href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler.html
-- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
-  name: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-  nameWithType: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  name: CrawlerServiceIntegrationTests.DelayEmbedder
+  nameWithType: CrawlerServiceIntegrationTests.DelayEmbedder
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   spec.csharp:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
     name: CrawlerServiceIntegrationTests
     href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
   - name: .
-  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-    name: CancelOnFirstPageReporter
-    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter.html
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+    name: DelayEmbedder
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.html
   spec.vb:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
     name: CrawlerServiceIntegrationTests
     href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
   - name: .
-  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-    name: CancelOnFirstPageReporter
-    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter.html
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+    name: DelayEmbedder
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder.html
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  name: CrawlerServiceIntegrationTests.FailingEmbedder
+  nameWithType: CrawlerServiceIntegrationTests.FailingEmbedder
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+    name: FailingEmbedder
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+    name: FailingEmbedder
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder.html
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  name: CrawlerServiceIntegrationTests.RecordingReporter
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+    name: RecordingReporter
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
+    name: CrawlerServiceIntegrationTests
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+    name: RecordingReporter
+    href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html
 - uid: LocalSearchEngine.Tests.CrawlPolicyTests
   commentId: T:LocalSearchEngine.Tests.CrawlPolicyTests
   href: LocalSearchEngine.Tests.CrawlPolicyTests.html

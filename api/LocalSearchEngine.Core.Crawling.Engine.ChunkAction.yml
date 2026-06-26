@@ -1,0 +1,182 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  id: ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Delete
+  - LocalSearchEngine.Core.Crawling.Engine.ChunkAction.None
+  - LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Replace
+  langs:
+  - csharp
+  - vb
+  name: ChunkAction
+  nameWithType: ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ChunkAction
+    path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+    startLine: 3
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: What an <xref href="LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob" data-throw-if-not-resolved="false"></xref> does to a URL's own indexed chunks.
+  example: []
+  syntax:
+    content: internal enum ChunkAction
+    content.vb: Friend Enum ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.None
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.ChunkAction.None
+  id: None
+  parent: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: ChunkAction.None
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.None
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: None
+    path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+    startLine: 6
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Leave this URL's chunks as they are (an unchanged page).
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Delete
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Delete
+  id: Delete
+  parent: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: Delete
+  nameWithType: ChunkAction.Delete
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Delete
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Delete
+    path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: "Remove this URL's chunks (the page is no longer indexed: noindex, gone, a redirect source, or a canonical alias)."
+  example: []
+  syntax:
+    content: Delete = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Replace
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Replace
+  id: Replace
+  parent: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: Replace
+  nameWithType: ChunkAction.Replace
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.Replace
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Replace
+    path: LocalSearchEngine.Core/Crawling/Engine/EmbeddingJob.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: "Replace this URL's chunks: delete the old, then embed <xref href=\"LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Text\" data-throw-if-not-resolved=\"false\"></xref>/<xref href=\"LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Headings\" data-throw-if-not-resolved=\"false\"></xref> and upsert."
+  example: []
+  syntax:
+    content: Replace = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html
+  name: EmbeddingJob
+  nameWithType: EmbeddingJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.html
+  name: ChunkAction
+  nameWithType: ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Text
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Text
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html#LocalSearchEngine_Core_Crawling_Engine_EmbeddingJob_Text
+  name: Text
+  nameWithType: EmbeddingJob.Text
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Text
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Headings
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Headings
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html#LocalSearchEngine_Core_Crawling_Engine_EmbeddingJob_Headings
+  name: Headings
+  nameWithType: EmbeddingJob.Headings
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.Headings

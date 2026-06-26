@@ -1,0 +1,836 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  id: CrawlHeartbeat
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  children:
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
+  langs:
+  - csharp
+  - vb
+  name: CrawlHeartbeat
+  nameWithType: CrawlHeartbeat
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlHeartbeat
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    Two independent "what is this half of the crawl doing right now" markers — one for the crawler thread
+
+    (fetch plus crawl-state writes) and one for the embedder thread (CPU embedding plus chunk writes). Each
+
+    thread bumps its own lane before every unit of work, and the orchestrator's watchdog reads both on a
+
+    timer and warns per lane when one has been in flight too long. Two lanes rather than one because the
+
+    halves run concurrently: a single shared marker only ever showed whichever thread wrote last, so a stuck
+
+    embedder was routinely masked by the crawler's next fetch mark (and a slow fetch by the embedder's), and
+
+    the log named the wrong half. <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)" data-throw-if-not-resolved="false"></xref>/<xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)" data-throw-if-not-resolved="false"></xref> and the reads are all
+
+    safe to call from the two threads at once.
+  example: []
+  syntax:
+    content: internal sealed class CrawlHeartbeat
+    content.vb: Friend NotInheritable Class CrawlHeartbeat
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  id: Idle
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: Idle
+  nameWithType: CrawlHeartbeat.Idle
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Idle
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 17
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: The sentinel a lane carries when its thread is parked with no work; the watchdog ignores it.
+  example: []
+  syntax:
+    content: public const string Idle = "idle"
+    return:
+      type: System.String
+    content.vb: Public Const Idle As String = "idle"
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
+  id: _gate
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: CrawlHeartbeat._gate
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
+  id: _crawler
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: _crawler
+  nameWithType: CrawlHeartbeat._crawler
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _crawler
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private CrawlHeartbeat.Lane _crawler
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    content.vb: Private _crawler As CrawlHeartbeat.Lane
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
+  id: _embedder
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: _embedder
+  nameWithType: CrawlHeartbeat._embedder
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embedder
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private CrawlHeartbeat.Lane _embedder
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    content.vb: Private _embedder As CrawlHeartbeat.Lane
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+  id: MarkCrawler(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: MarkCrawler(string)
+  nameWithType: CrawlHeartbeat.MarkCrawler(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MarkCrawler
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Records what the crawler thread is now doing, resetting its clock.
+  example: []
+  syntax:
+    content: public void MarkCrawler(string activity)
+    parameters:
+    - id: activity
+      type: System.String
+      description: A short description (e.g. "fetching {url}"), or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
+    content.vb: Public Sub MarkCrawler(activity As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler*
+  nameWithType.vb: CrawlHeartbeat.MarkCrawler(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(String)
+  name.vb: MarkCrawler(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+  id: MarkEmbedder(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: MarkEmbedder(string)
+  nameWithType: CrawlHeartbeat.MarkEmbedder(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MarkEmbedder
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Records what the embedder thread is now doing, resetting its clock.
+  example: []
+  syntax:
+    content: public void MarkEmbedder(string activity)
+    parameters:
+    - id: activity
+      type: System.String
+      description: A short description (e.g. "embedding {url} (backlog N)"), or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
+    content.vb: Public Sub MarkEmbedder(activity As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder*
+  nameWithType.vb: CrawlHeartbeat.MarkEmbedder(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(String)
+  name.vb: MarkEmbedder(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
+  id: ReadCrawler
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: ReadCrawler()
+  nameWithType: CrawlHeartbeat.ReadCrawler()
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReadCrawler
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Reads the crawler lane's current activity and how long it has been running.
+  example: []
+  syntax:
+    content: public (string Activity, TimeSpan Elapsed) ReadCrawler()
+    return:
+      type: System.ValueTuple{System.String,System.TimeSpan}
+    content.vb: Public Function ReadCrawler() As (Activity As String, Elapsed As TimeSpan)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
+  id: ReadEmbedder
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: ReadEmbedder()
+  nameWithType: CrawlHeartbeat.ReadEmbedder()
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReadEmbedder
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Reads the embedder lane's current activity and how long it has been running.
+  example: []
+  syntax:
+    content: public (string Activity, TimeSpan Elapsed) ReadEmbedder()
+    return:
+      type: System.ValueTuple{System.String,System.TimeSpan}
+    content.vb: Public Function ReadEmbedder() As (Activity As String, Elapsed As TimeSpan)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
+  id: Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: Set(ref Lane, string)
+  nameWithType: CrawlHeartbeat.Set(ref CrawlHeartbeat.Lane, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(ref LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Set
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private void Set(ref CrawlHeartbeat.Lane lane, string activity)
+    parameters:
+    - id: lane
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    - id: activity
+      type: System.String
+    content.vb: Private Sub [Set](lane As CrawlHeartbeat.Lane, activity As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set*
+  nameWithType.vb: CrawlHeartbeat.Set(CrawlHeartbeat.Lane, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane, String)
+  name.vb: Set(Lane, String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
+  id: Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: Get(ref Lane)
+  nameWithType: CrawlHeartbeat.Get(ref CrawlHeartbeat.Lane)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(ref LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Get
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private (string Activity, TimeSpan Elapsed) Get(ref CrawlHeartbeat.Lane lane)
+    parameters:
+    - id: lane
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    return:
+      type: System.ValueTuple{System.String,System.TimeSpan}
+    content.vb: Private Function [Get](lane As CrawlHeartbeat.Lane) As (Activity As String, Elapsed As TimeSpan)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get*
+  nameWithType.vb: CrawlHeartbeat.Get(CrawlHeartbeat.Lane)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane)
+  name.vb: Get(Lane)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
+  name: MarkCrawler(string)
+  nameWithType: CrawlHeartbeat.MarkCrawler(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(string)
+  nameWithType.vb: CrawlHeartbeat.MarkCrawler(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(String)
+  name.vb: MarkCrawler(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+    name: MarkCrawler
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
+    name: MarkCrawler
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
+  name: MarkEmbedder(string)
+  nameWithType: CrawlHeartbeat.MarkEmbedder(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(string)
+  nameWithType.vb: CrawlHeartbeat.MarkEmbedder(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(String)
+  name.vb: MarkEmbedder(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+    name: MarkEmbedder
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
+    name: MarkEmbedder
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  name: CrawlHeartbeat.Lane
+  nameWithType: CrawlHeartbeat.Lane
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Idle
+  name: Idle
+  nameWithType: CrawlHeartbeat.Idle
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
+  name: MarkCrawler
+  nameWithType: CrawlHeartbeat.MarkCrawler
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
+  name: MarkEmbedder
+  nameWithType: CrawlHeartbeat.MarkEmbedder
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_ReadCrawler
+  name: ReadCrawler
+  nameWithType: CrawlHeartbeat.ReadCrawler
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
+- uid: System.ValueTuple{System.String,System.TimeSpan}
+  commentId: T:System.ValueTuple{System.String,System.TimeSpan}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: (string Activity, TimeSpan Elapsed)
+  nameWithType: (string Activity, TimeSpan Elapsed)
+  fullName: (string Activity, System.TimeSpan Elapsed)
+  nameWithType.vb: (Activity As String, Elapsed As TimeSpan)
+  fullName.vb: (Activity As String, Elapsed As System.TimeSpan)
+  name.vb: (Activity As String, Elapsed As TimeSpan)
+  spec.csharp:
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
+    name: Activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+    name: Elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
+    name: Activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+    name: Elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_ReadEmbedder
+  name: ReadEmbedder
+  nameWithType: CrawlHeartbeat.ReadEmbedder
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Set_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Lane__System_String_
+  name: Set
+  nameWithType: CrawlHeartbeat.Set
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Get_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Lane__
+  name: Get
+  nameWithType: CrawlHeartbeat.Get
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get

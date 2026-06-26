@@ -5,9 +5,9 @@ items:
   id: HostHealthTracker
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
-  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
-  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker._gate
@@ -38,7 +38,7 @@ items:
 
     HTTP response and then hits a connection-level failure (a DNS failure, a refused/reset/unreachable
 
-    socket, a TLS handshake failure, or a request timeout) is marked unreachable, after which the
+    socket, a TLS handshake failure, or a per-request timeout) is marked unreachable, after which the
 
     crawler stops contacting it and skips its remaining URLs for the rest of the run. A host that has
 
@@ -53,7 +53,7 @@ items:
 
     fetch, page download, end-of-crawl link check) feeds outcomes here through <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)" data-throw-if-not-resolved="false"></xref>
 
-    and <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String%2cSystem.Exception%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>. All members are safe to call concurrently, because the link check
+    and <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String%2cSystem.Exception)" data-throw-if-not-resolved="false"></xref>. All members are safe to call concurrently, because the link check
 
     probes many hosts in parallel.
   example: []
@@ -190,16 +190,16 @@ items:
   nameWithType.vb: HostHealthTracker.RecordResponse(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(String)
   name.vb: RecordResponse(String)
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
-  id: RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
+  id: RecordFailure(System.String,System.Exception)
   parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
   langs:
   - csharp
   - vb
-  name: RecordFailure(string, Exception, CancellationToken)
-  nameWithType: HostHealthTracker.RecordFailure(string, Exception, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception, System.Threading.CancellationToken)
+  name: RecordFailure(string, Exception)
+  nameWithType: HostHealthTracker.RecordFailure(string, Exception)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception)
   type: Method
   source:
     remote:
@@ -208,7 +208,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordFailure
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 55
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -217,12 +217,10 @@ items:
 
     exception is a connection-level failure and the host has never answered this run, the host is
 
-    written off as unreachable. Non-transport errors — and anything thrown because the crawl was
-
-    cancelled — leave the tracker untouched.
+    written off as unreachable. Non-transport errors leave the tracker untouched.
   example: []
   syntax:
-    content: public bool RecordFailure(string host, Exception ex, CancellationToken cancellationToken)
+    content: public bool RecordFailure(string host, Exception ex)
     parameters:
     - id: host
       type: System.String
@@ -230,9 +228,6 @@ items:
     - id: ex
       type: System.Exception
       description: The exception the request threw.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The crawl token; a cancelled request is never a write-off.
     return:
       type: System.Boolean
       description: >-
@@ -241,11 +236,11 @@ items:
         <code>false</code> if the failure was not a transport failure, the host had already answered, or it
 
         was already written off.
-    content.vb: Public Function RecordFailure(host As String, ex As Exception, cancellationToken As CancellationToken) As Boolean
+    content.vb: Public Function RecordFailure(host As String, ex As Exception) As Boolean
   overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure*
-  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception, System.Threading.CancellationToken)
-  name.vb: RecordFailure(String, Exception, CancellationToken)
+  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception)
+  name.vb: RecordFailure(String, Exception)
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
   id: IsUnreachable(System.String)
@@ -264,7 +259,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsUnreachable
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 69
+    startLine: 67
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -302,7 +297,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UnreachableHosts
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 78
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -315,16 +310,16 @@ items:
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
     content.vb: Public ReadOnly Property UnreachableHosts As IReadOnlyCollection(Of String)
   overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts*
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception,System.Threading.CancellationToken)
-  id: IsTransportFailure(System.Exception,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+  id: IsTransportFailure(System.Exception)
   parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
   langs:
   - csharp
   - vb
-  name: IsTransportFailure(Exception, CancellationToken)
-  nameWithType: HostHealthTracker.IsTransportFailure(Exception, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception, System.Threading.CancellationToken)
+  name: IsTransportFailure(Exception)
+  nameWithType: HostHealthTracker.IsTransportFailure(Exception)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
   type: Method
   source:
     remote:
@@ -333,30 +328,29 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsTransportFailure
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 97
+    startLine: 95
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
   summary: >-
     Classifies whether <code class="paramref">ex</code> is a connection-level failure that means the host
 
-    could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A request aborted
+    could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A per-request
 
-    because <code class="paramref">cancellationToken</code> fired is never treated as unreachable.
+    timeout surfaces as a <xref href="System.Threading.Tasks.TaskCanceledException" data-throw-if-not-resolved="false"></xref>; with no crawl-wide cancellation in
+
+    play, that unambiguously means the request ran out of time, so it counts as unreachable.
   example: []
   syntax:
-    content: public static bool IsTransportFailure(Exception ex, CancellationToken cancellationToken)
+    content: public static bool IsTransportFailure(Exception ex)
     parameters:
     - id: ex
       type: System.Exception
       description: The thrown exception to evaluate.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Boolean
       description: <code>true</code> if the error represents an unreachable host; otherwise, <code>false</code>.
-    content.vb: Public Shared Function IsTransportFailure(ex As Exception, cancellationToken As CancellationToken) As Boolean
+    content.vb: Public Shared Function IsTransportFailure(ex As Exception) As Boolean
   overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure*
 references:
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordResponse(System.String)
@@ -389,20 +383,20 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
-  name: RecordFailure(string, Exception, CancellationToken)
-  nameWithType: HostHealthTracker.RecordFailure(string, Exception, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception, System.Threading.CancellationToken)
-  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception, System.Threading.CancellationToken)
-  name.vb: RecordFailure(String, Exception, CancellationToken)
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_
+  name: RecordFailure(string, Exception)
+  nameWithType: HostHealthTracker.RecordFailure(string, Exception)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(string, System.Exception)
+  nameWithType.vb: HostHealthTracker.RecordFailure(String, Exception)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(String, System.Exception)
+  name.vb: RecordFailure(String, Exception)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
     name: RecordFailure
-    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_
   - name: (
   - uid: System.String
     name: string
@@ -414,17 +408,11 @@ references:
     name: Exception
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.exception
-  - name: ','
-  - name: " "
-  - uid: System.Threading.CancellationToken
-    name: CancellationToken
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception,System.Threading.CancellationToken)
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
     name: RecordFailure
-    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_
   - name: (
   - uid: System.String
     name: String
@@ -436,12 +424,6 @@ references:
     name: Exception
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.exception
-  - name: ','
-  - name: " "
-  - uid: System.Threading.CancellationToken
-    name: CancellationToken
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
@@ -813,7 +795,7 @@ references:
   name.vb: String
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure
-  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_RecordFailure_System_String_System_Exception_
   name: RecordFailure
   nameWithType: HostHealthTracker.RecordFailure
   fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure
@@ -825,14 +807,6 @@ references:
   name: Exception
   nameWithType: Exception
   fullName: System.Exception
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -844,33 +818,6 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable
   href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsUnreachable_System_String_
@@ -946,9 +893,16 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: System.Threading.Tasks.TaskCanceledException
+  commentId: T:System.Threading.Tasks.TaskCanceledException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcanceledexception
+  name: TaskCanceledException
+  nameWithType: TaskCanceledException
+  fullName: System.Threading.Tasks.TaskCanceledException
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure
-  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_
   name: IsTransportFailure
   nameWithType: HostHealthTracker.IsTransportFailure
   fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure

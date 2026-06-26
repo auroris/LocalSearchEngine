@@ -5,6 +5,8 @@ items:
   id: LocalSearchEngine.Core.Crawling.Reporting
   children:
   - LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
@@ -32,6 +34,36 @@ references:
   name: BrokenLink
   nameWithType: BrokenLink
   fullName: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  name: CrawlHeartbeat
+  nameWithType: CrawlHeartbeat
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  name: CrawlHeartbeat.Lane
+  nameWithType: CrawlHeartbeat.Lane
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html

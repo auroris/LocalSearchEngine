@@ -5,7 +5,6 @@ items:
   id: CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.CheckingLinks
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Completed
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Crawling
@@ -235,34 +234,6 @@ items:
   example: []
   syntax:
     content: Completed = 6
-    return:
-      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
-  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
-  id: Cancelled
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
-  langs:
-  - csharp
-  - vb
-  name: Cancelled
-  nameWithType: CrawlPhase.Cancelled
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.Cancelled
-  type: Field
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Cancelled
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlPhase.cs
-    startLine: 31
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: The crawl stopped early because cancellation was requested.
-  example: []
-  syntax:
-    content: Cancelled = 7
     return:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
 references:

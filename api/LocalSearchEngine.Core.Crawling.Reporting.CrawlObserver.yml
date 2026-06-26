@@ -5,13 +5,11 @@ items:
   id: CrawlObserver
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.DiscoveredCount
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnAllowedServerIgnored(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnBannedUrlsRemoved(System.Int32)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled(System.Int32)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCompleted(System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchError(System.Exception,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnHostCapReached(System.Int32,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnLinkProbeInconclusive(System.Exception,System.String)
@@ -19,22 +17,21 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnNoIndexPatternIgnored(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnOutScopeUrlReached(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnOutlinksAdded(System.Int32)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDisallowed(System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.Int32)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFetching(System.Int32,System.Int32,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.String,System.Int32)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedOutScope(System.String,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchanged(System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPruneFailed(System.Exception)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnRemoveBannedFailed(System.Exception)
@@ -47,6 +44,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.Snapshot
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.Stats
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._currentPhase
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._heartbeat
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._logger
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._reporter
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._startedUtc
@@ -174,6 +172,33 @@ items:
     return:
       type: System.DateTime
     content.vb: Private ReadOnly _startedUtc As Date
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._heartbeat
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._heartbeat
+  id: _heartbeat
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
+  langs:
+  - csharp
+  - vb
+  name: _heartbeat
+  nameWithType: CrawlObserver._heartbeat
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._heartbeat
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _heartbeat
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private readonly CrawlHeartbeat _heartbeat
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    content.vb: Private ReadOnly _heartbeat As CrawlHeartbeat
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._currentPhase
   commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver._currentPhase
   id: _currentPhase
@@ -192,7 +217,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _currentPhase
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 19
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -219,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stats
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -252,7 +277,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DiscoveredCount
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 27
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -268,16 +293,16 @@ items:
       type: System.Func{System.Int32}
     content.vb: Public Property DiscoveredCount As Func(Of Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.DiscoveredCount*
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime)
-  id: '#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime)'
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.DateTime,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)'
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: CrawlObserver(ILogger, ICrawlReporter, DateTime)
-  nameWithType: CrawlObserver.CrawlObserver(ILogger, ICrawlReporter, DateTime)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.CrawlObserver(Microsoft.Extensions.Logging.ILogger, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.DateTime)
+  name: CrawlObserver(ILogger, ICrawlReporter, DateTime, CrawlHeartbeat)
+  nameWithType: CrawlObserver.CrawlObserver(ILogger, ICrawlReporter, DateTime, CrawlHeartbeat)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.CrawlObserver(Microsoft.Extensions.Logging.ILogger, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.DateTime, LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)
   type: Constructor
   source:
     remote:
@@ -286,12 +311,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   syntax:
-    content: public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc)
+    content: public CrawlObserver(ILogger logger, ICrawlReporter reporter, DateTime startedUtc, CrawlHeartbeat heartbeat)
     parameters:
     - id: logger
       type: Microsoft.Extensions.Logging.ILogger
@@ -299,11 +324,13 @@ items:
       type: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
     - id: startedUtc
       type: System.DateTime
-    content.vb: Public Sub New(logger As ILogger, reporter As ICrawlReporter, startedUtc As Date)
+    - id: heartbeat
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    content.vb: Public Sub New(logger As ILogger, reporter As ICrawlReporter, startedUtc As Date, heartbeat As CrawlHeartbeat)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor*
-  nameWithType.vb: CrawlObserver.New(ILogger, ICrawlReporter, Date)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.New(Microsoft.Extensions.Logging.ILogger, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Date)
-  name.vb: New(ILogger, ICrawlReporter, Date)
+  nameWithType.vb: CrawlObserver.New(ILogger, ICrawlReporter, Date, CrawlHeartbeat)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.New(Microsoft.Extensions.Logging.ILogger, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Date, LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat)
+  name.vb: New(ILogger, ICrawlReporter, Date, CrawlHeartbeat)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.Snapshot
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.Snapshot
   id: Snapshot
@@ -322,7 +349,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Snapshot
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 37
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -350,7 +377,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReportPage
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 40
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -384,7 +411,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPhaseChanged
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 46
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -417,7 +444,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutlinksAdded
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 52
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -454,7 +481,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedInvalid
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 57
+    startLine: 60
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -490,7 +517,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedUnreachable
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 62
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -526,7 +553,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 67
+    startLine: 70
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -544,43 +571,6 @@ items:
   nameWithType.vb: CrawlObserver.OnSeedDisallowed(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnSeedDisallowed(String)
   name.vb: OnSeedDisallowed(String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled(System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled(System.Int32)
-  id: OnCrawlCancelled(System.Int32)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
-  langs:
-  - csharp
-  - vb
-  name: OnCrawlCancelled(int)
-  nameWithType: CrawlObserver.OnCrawlCancelled(int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled(int)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: OnCrawlCancelled
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 72
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Cancellation was observed in the main crawl loop.
-  example: []
-  syntax:
-    content: public void OnCrawlCancelled(int dispatchedCount)
-    parameters:
-    - id: dispatchedCount
-      type: System.Int32
-      description: Pages already dispatched for indexing when cancellation was seen.
-    content.vb: Public Sub OnCrawlCancelled(dispatchedCount As Integer)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled*
-  implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(System.Int32)
-  nameWithType.vb: CrawlObserver.OnCrawlCancelled(Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled(Integer)
-  name.vb: OnCrawlCancelled(Integer)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnHostCapReached(System.Int32,System.String,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnHostCapReached(System.Int32,System.String,System.String)
   id: OnHostCapReached(System.Int32,System.String,System.String)
@@ -599,7 +589,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnHostCapReached
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 77
+    startLine: 75
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -642,7 +632,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFetching
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 82
+    startLine: 80
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -667,42 +657,6 @@ items:
   nameWithType.vb: CrawlObserver.OnPageFetching(Integer, Integer, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFetching(Integer, Integer, String)
   name.vb: OnPageFetching(Integer, Integer, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled(System.String)
-  id: OnFetchCancelled(System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
-  langs:
-  - csharp
-  - vb
-  name: OnFetchCancelled(string)
-  nameWithType: CrawlObserver.OnFetchCancelled(string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled(string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: OnFetchCancelled
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 87
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Cancellation interrupted the fetch of this URL.
-  example: []
-  syntax:
-    content: public void OnFetchCancelled(string url)
-    parameters:
-    - id: url
-      type: System.String
-    content.vb: Public Sub OnFetchCancelled(url As String)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled*
-  implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(System.String)
-  nameWithType.vb: CrawlObserver.OnFetchCancelled(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled(String)
-  name.vb: OnFetchCancelled(String)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchError(System.Exception,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchError(System.Exception,System.String)
   id: OnFetchError(System.Exception,System.String)
@@ -721,7 +675,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnFetchError
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 92
+    startLine: 86
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -759,11 +713,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnCrawlCompleted
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 98
+    startLine: 92
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: The crawl finished (whether it drained the frontier or was cancelled).
+  summary: The crawl finished (whether it drained the frontier or stopped at a page cap).
   example: []
   syntax:
     content: public void OnCrawlCompleted(string seedUrl)
@@ -795,7 +749,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutScopeUrlReached
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 103
+    startLine: 97
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -813,6 +767,46 @@ items:
   nameWithType.vb: CrawlObserver.OnOutScopeUrlReached(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnOutScopeUrlReached(String)
   name.vb: OnOutScopeUrlReached(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected(System.String,System.String)
+  id: OnPageRedirected(System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
+  langs:
+  - csharp
+  - vb
+  name: OnPageRedirected(string, string)
+  nameWithType: CrawlObserver.OnPageRedirected(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OnPageRedirected
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
+    startLine: 102
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: A page redirected to an in-scope URL; the target is enqueued like a discovered link (and deduplicated there), and this URL is recorded as a redirect.
+  example: []
+  syntax:
+    content: public void OnPageRedirected(string currentUrl, string targetUrl)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The URL that redirected.
+    - id: targetUrl
+      type: System.String
+      description: The in-scope redirect target now queued.
+    content.vb: Public Sub OnPageRedirected(currentUrl As String, targetUrl As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(System.String,System.String)
+  nameWithType.vb: CrawlObserver.OnPageRedirected(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected(String, String)
+  name.vb: OnPageRedirected(String, String)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnSeedRedirectedToNewOrigin(System.String,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnSeedRedirectedToNewOrigin(System.String,System.String)
   id: OnSeedRedirectedToNewOrigin(System.String,System.String)
@@ -871,7 +865,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirectedOutScope
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 113
+    startLine: 114
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -893,96 +887,16 @@ items:
   nameWithType.vb: CrawlObserver.OnPageRedirectedOutScope(String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedOutScope(String, String)
   name.vb: OnPageRedirectedOutScope(String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-  id: OnPageRedirectedDisallowed(System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.Int32)
+  id: OnPageGone(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageRedirectedDisallowed(string, string)
-  nameWithType: CrawlObserver.OnPageRedirectedDisallowed(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed(string, string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: OnPageRedirectedDisallowed
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 119
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: A redirect target is disallowed by robots.txt, so it is not followed.
-  example: []
-  syntax:
-    content: public void OnPageRedirectedDisallowed(string currentUrl, string newUrl)
-    parameters:
-    - id: currentUrl
-      type: System.String
-      description: The requested URL.
-    - id: newUrl
-      type: System.String
-      description: The disallowed redirect target.
-    content.vb: Public Sub OnPageRedirectedDisallowed(currentUrl As String, newUrl As String)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed*
-  implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageRedirectedDisallowed(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed(String, String)
-  name.vb: OnPageRedirectedDisallowed(String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  id: OnPageRedirectedAlreadySeen(System.String,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
-  langs:
-  - csharp
-  - vb
-  name: OnPageRedirectedAlreadySeen(string, string)
-  nameWithType: CrawlObserver.OnPageRedirectedAlreadySeen(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen(string, string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: OnPageRedirectedAlreadySeen
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 125
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: A redirect resolved to a URL already seen this run, so it is not re-crawled.
-  example: []
-  syntax:
-    content: public void OnPageRedirectedAlreadySeen(string currentUrl, string newUrl)
-    parameters:
-    - id: currentUrl
-      type: System.String
-      description: The requested URL.
-    - id: newUrl
-      type: System.String
-      description: The already-seen redirect target.
-    content.vb: Public Sub OnPageRedirectedAlreadySeen(currentUrl As String, newUrl As String)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen*
-  implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageRedirectedAlreadySeen(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen(String, String)
-  name.vb: OnPageRedirectedAlreadySeen(String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(System.String,System.String,System.Int32)
-  id: OnPageGone(System.String,System.String,System.Int32)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
-  langs:
-  - csharp
-  - vb
-  name: OnPageGone(string, string, int)
-  nameWithType: CrawlObserver.OnPageGone(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(string, string, int)
+  name: OnPageGone(string, int)
+  nameWithType: CrawlObserver.OnPageGone(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(string, int)
   type: Method
   source:
     remote:
@@ -991,41 +905,38 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageGone
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 131
+    startLine: 120
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page returned 404/410 and is removed from the index.
   example: []
   syntax:
-    content: public void OnPageGone(string currentUrl, string finalUrl, int statusCode)
+    content: public void OnPageGone(string url, int statusCode)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: statusCode
       type: System.Int32
       description: The HTTP status returned.
-    content.vb: Public Sub OnPageGone(currentUrl As String, finalUrl As String, statusCode As Integer)
+    content.vb: Public Sub OnPageGone(url As String, statusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
-  nameWithType.vb: CrawlObserver.OnPageGone(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(String, String, Integer)
-  name.vb: OnPageGone(String, String, Integer)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
-  id: OnPageFailed(System.String,System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.Int32)
+  nameWithType.vb: CrawlObserver.OnPageGone(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone(String, Integer)
+  name.vb: OnPageGone(String, Integer)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(System.String,System.Int32)
+  id: OnPageFailed(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageFailed(string, string, int)
-  nameWithType: CrawlObserver.OnPageFailed(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(string, string, int)
+  name: OnPageFailed(string, int)
+  nameWithType: CrawlObserver.OnPageFailed(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(string, int)
   type: Method
   source:
     remote:
@@ -1034,41 +945,38 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 137
+    startLine: 126
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page returned an error or non-success status; any existing index entry is kept.
   example: []
   syntax:
-    content: public void OnPageFailed(string currentUrl, string finalUrl, int statusCode)
+    content: public void OnPageFailed(string url, int statusCode)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: statusCode
       type: System.Int32
       description: The HTTP status returned.
-    content.vb: Public Sub OnPageFailed(currentUrl As String, finalUrl As String, statusCode As Integer)
+    content.vb: Public Sub OnPageFailed(url As String, statusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
-  nameWithType.vb: CrawlObserver.OnPageFailed(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(String, String, Integer)
-  name.vb: OnPageFailed(String, String, Integer)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
-  id: OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.Int32)
+  nameWithType.vb: CrawlObserver.OnPageFailed(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed(String, Integer)
+  name.vb: OnPageFailed(String, Integer)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
+  id: OnPageSkippedSize(System.String,System.Int64,System.Int64)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageSkippedSize(string, string, long, long)
-  nameWithType: CrawlObserver.OnPageSkippedSize(string, string, long, long)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(string, string, long, long)
+  name: OnPageSkippedSize(string, long, long)
+  nameWithType: CrawlObserver.OnPageSkippedSize(string, long, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(string, long, long)
   type: Method
   source:
     remote:
@@ -1077,44 +985,41 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedSize
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 143
+    startLine: 132
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page or file was skipped for exceeding the size limit.
   example: []
   syntax:
-    content: public void OnPageSkippedSize(string currentUrl, string finalUrl, long contentLength, long limit)
+    content: public void OnPageSkippedSize(string url, long contentLength, long limit)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: contentLength
       type: System.Int64
       description: The size seen, in bytes.
     - id: limit
       type: System.Int64
       description: The configured maximum size, in bytes.
-    content.vb: Public Sub OnPageSkippedSize(currentUrl As String, finalUrl As String, contentLength As Long, limit As Long)
+    content.vb: Public Sub OnPageSkippedSize(url As String, contentLength As Long, limit As Long)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
-  nameWithType.vb: CrawlObserver.OnPageSkippedSize(String, String, Long, Long)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(String, String, Long, Long)
-  name.vb: OnPageSkippedSize(String, String, Long, Long)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
-  id: OnPageSkippedType(System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
+  nameWithType.vb: CrawlObserver.OnPageSkippedSize(String, Long, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize(String, Long, Long)
+  name.vb: OnPageSkippedSize(String, Long, Long)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(System.String,System.String)
+  id: OnPageSkippedType(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageSkippedType(string, string, string?)
-  nameWithType: CrawlObserver.OnPageSkippedType(string, string, string?)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(string, string, string?)
+  name: OnPageSkippedType(string, string?)
+  nameWithType: CrawlObserver.OnPageSkippedType(string, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(string, string?)
   type: Method
   source:
     remote:
@@ -1123,31 +1028,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedType
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 149
+    startLine: 138
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page or file was skipped for an unsupported content type or a failed sniff.
   example: []
   syntax:
-    content: public void OnPageSkippedType(string currentUrl, string finalUrl, string? contentType)
+    content: public void OnPageSkippedType(string url, string? contentType)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: contentType
       type: System.String
       description: The Content-Type that was rejected, if any.
-    content.vb: Public Sub OnPageSkippedType(currentUrl As String, finalUrl As String, contentType As String)
+    content.vb: Public Sub OnPageSkippedType(url As String, contentType As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageSkippedType(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(String, String, String)
-  name.vb: OnPageSkippedType(String, String, String)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String)
+  nameWithType.vb: CrawlObserver.OnPageSkippedType(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType(String, String)
+  name.vb: OnPageSkippedType(String, String)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchanged(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchanged(System.String)
   id: OnPageUnchanged(System.String)
@@ -1166,34 +1068,34 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchanged
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 155
+    startLine: 144
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page was unchanged since the last crawl (server returned HTTP 304).
   example: []
   syntax:
-    content: public void OnPageUnchanged(string currentUrl)
+    content: public void OnPageUnchanged(string url)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-    content.vb: Public Sub OnPageUnchanged(currentUrl As String)
+    content.vb: Public Sub OnPageUnchanged(url As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchanged*
   implements:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchanged(System.String)
   nameWithType.vb: CrawlObserver.OnPageUnchanged(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchanged(String)
   name.vb: OnPageUnchanged(String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String,System.String)
-  id: OnPageUnchangedHash(System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(System.String)
+  id: OnPageUnchangedHash(System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageUnchangedHash(string, string)
-  nameWithType: CrawlObserver.OnPageUnchangedHash(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(string, string)
+  name: OnPageUnchangedHash(string)
+  nameWithType: CrawlObserver.OnPageUnchangedHash(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(string)
   type: Method
   source:
     remote:
@@ -1202,38 +1104,35 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchangedHash
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 161
+    startLine: 150
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page's content hash matched the stored copy, so it was not re-indexed.
   example: []
   syntax:
-    content: public void OnPageUnchangedHash(string currentUrl, string finalUrl)
+    content: public void OnPageUnchangedHash(string url)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
-    content.vb: Public Sub OnPageUnchangedHash(currentUrl As String, finalUrl As String)
+      description: The page URL.
+    content.vb: Public Sub OnPageUnchangedHash(url As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageUnchangedHash(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(String, String)
-  name.vb: OnPageUnchangedHash(String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
-  id: OnPageDuplicateContent(System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String)
+  nameWithType.vb: CrawlObserver.OnPageUnchangedHash(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash(String)
+  name.vb: OnPageUnchangedHash(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(System.String,System.String)
+  id: OnPageDuplicateContent(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageDuplicateContent(string, string, string)
-  nameWithType: CrawlObserver.OnPageDuplicateContent(string, string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(string, string, string)
+  name: OnPageDuplicateContent(string, string)
+  nameWithType: CrawlObserver.OnPageDuplicateContent(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(string, string)
   type: Method
   source:
     remote:
@@ -1242,41 +1141,38 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDuplicateContent
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 167
+    startLine: 156
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page's content duplicates an already-indexed URL; the original is enqueued instead of indexing a copy.
   example: []
   syntax:
-    content: public void OnPageDuplicateContent(string currentUrl, string finalUrl, string canonicalUrl)
+    content: public void OnPageDuplicateContent(string url, string canonicalUrl)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: canonicalUrl
       type: System.String
       description: The already-indexed URL with identical content.
-    content.vb: Public Sub OnPageDuplicateContent(currentUrl As String, finalUrl As String, canonicalUrl As String)
+    content.vb: Public Sub OnPageDuplicateContent(url As String, canonicalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageDuplicateContent(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(String, String, String)
-  name.vb: OnPageDuplicateContent(String, String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String,System.String)
-  id: OnPageAlias(System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String)
+  nameWithType.vb: CrawlObserver.OnPageDuplicateContent(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent(String, String)
+  name.vb: OnPageDuplicateContent(String, String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(System.String,System.String)
+  id: OnPageAlias(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageAlias(string, string, string)
-  nameWithType: CrawlObserver.OnPageAlias(string, string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(string, string, string)
+  name: OnPageAlias(string, string)
+  nameWithType: CrawlObserver.OnPageAlias(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(string, string)
   type: Method
   source:
     remote:
@@ -1285,31 +1181,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageAlias
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 173
+    startLine: 162
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page declares a <code>rel="canonical"</code> pointing elsewhere in scope; the canonical is enqueued.
   example: []
   syntax:
-    content: public void OnPageAlias(string currentUrl, string finalUrl, string canonicalUrl)
+    content: public void OnPageAlias(string url, string canonicalUrl)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: canonicalUrl
       type: System.String
       description: The canonical URL the page points at.
-    content.vb: Public Sub OnPageAlias(currentUrl As String, finalUrl As String, canonicalUrl As String)
+    content.vb: Public Sub OnPageAlias(url As String, canonicalUrl As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageAlias(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(String, String, String)
-  name.vb: OnPageAlias(String, String, String)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String)
+  nameWithType.vb: CrawlObserver.OnPageAlias(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias(String, String)
+  name.vb: OnPageAlias(String, String)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDisallowed(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDisallowed(System.String)
   id: OnPageDisallowed(System.String)
@@ -1328,7 +1221,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 179
+    startLine: 168
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1346,16 +1239,16 @@ items:
   nameWithType.vb: CrawlObserver.OnPageDisallowed(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDisallowed(String)
   name.vb: OnPageDisallowed(String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String,System.String)
-  id: OnPageNoIndex(System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(System.String)
+  id: OnPageNoIndex(System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageNoIndex(string, string)
-  nameWithType: CrawlObserver.OnPageNoIndex(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(string, string)
+  name: OnPageNoIndex(string)
+  nameWithType: CrawlObserver.OnPageNoIndex(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(string)
   type: Method
   source:
     remote:
@@ -1364,38 +1257,35 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageNoIndex
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 185
+    startLine: 174
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: 'A page carries a noindex directive: its content is not indexed, though its links are still followed.'
   example: []
   syntax:
-    content: public void OnPageNoIndex(string currentUrl, string finalUrl)
+    content: public void OnPageNoIndex(string url)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
-    content.vb: Public Sub OnPageNoIndex(currentUrl As String, finalUrl As String)
+      description: The page URL.
+    content.vb: Public Sub OnPageNoIndex(url As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
-  nameWithType.vb: CrawlObserver.OnPageNoIndex(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(String, String)
-  name.vb: OnPageNoIndex(String, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
-  id: OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String)
+  nameWithType.vb: CrawlObserver.OnPageNoIndex(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex(String)
+  name.vb: OnPageNoIndex(String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
+  id: OnPageLowQualityText(System.String,System.Double,System.Int64)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageLowQualityText(string, string, double, long)
-  nameWithType: CrawlObserver.OnPageLowQualityText(string, string, double, long)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(string, string, double, long)
+  name: OnPageLowQualityText(string, double, long)
+  nameWithType: CrawlObserver.OnPageLowQualityText(string, double, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(string, double, long)
   type: Method
   source:
     remote:
@@ -1404,7 +1294,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageLowQualityText
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 191
+    startLine: 180
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1413,37 +1303,34 @@ items:
         doesn't reverse to Unicode — so it is not indexed. A candidate for an OCR fallback.
   example: []
   syntax:
-    content: public void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs)
+    content: public void OnPageLowQualityText(string url, double mappableFraction, long totalGlyphs)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: mappableFraction
       type: System.Double
       description: The share of drawn glyphs that mapped to Unicode, in [0,1]; 0 when there was no text layer.
     - id: totalGlyphs
       type: System.Int64
       description: The number of visible glyphs drawn in the document.
-    content.vb: Public Sub OnPageLowQualityText(currentUrl As String, finalUrl As String, mappableFraction As Double, totalGlyphs As Long)
+    content.vb: Public Sub OnPageLowQualityText(url As String, mappableFraction As Double, totalGlyphs As Long)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
-  nameWithType.vb: CrawlObserver.OnPageLowQualityText(String, String, Double, Long)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(String, String, Double, Long)
-  name.vb: OnPageLowQualityText(String, String, Double, Long)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
-  id: OnPageIndexed(System.String,System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
+  nameWithType.vb: CrawlObserver.OnPageLowQualityText(String, Double, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText(String, Double, Long)
+  name.vb: OnPageLowQualityText(String, Double, Long)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(System.String,System.Int32)
+  id: OnPageIndexed(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
   langs:
   - csharp
   - vb
-  name: OnPageIndexed(string, string, int)
-  nameWithType: CrawlObserver.OnPageIndexed(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(string, string, int)
+  name: OnPageIndexed(string, int)
+  nameWithType: CrawlObserver.OnPageIndexed(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(string, int)
   type: Method
   source:
     remote:
@@ -1452,31 +1339,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageIndexed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 200
+    startLine: 189
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: A page's content was indexed.
   example: []
   syntax:
-    content: public void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
+    content: public void OnPageIndexed(string url, int outlinksCount)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects.
+      description: The page URL.
     - id: outlinksCount
       type: System.Int32
       description: The number of in-scope outlinks found on the page.
-    content.vb: Public Sub OnPageIndexed(currentUrl As String, finalUrl As String, outlinksCount As Integer)
+    content.vb: Public Sub OnPageIndexed(url As String, outlinksCount As Integer)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed*
   implements:
-  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
-  nameWithType.vb: CrawlObserver.OnPageIndexed(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(String, String, Integer)
-  name.vb: OnPageIndexed(String, String, Integer)
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.Int32)
+  nameWithType.vb: CrawlObserver.OnPageIndexed(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed(String, Integer)
+  name.vb: OnPageIndexed(String, Integer)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnStaleUrlsPruned(System.Int32)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnStaleUrlsPruned(System.Int32)
   id: OnStaleUrlsPruned(System.Int32)
@@ -1495,7 +1379,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnStaleUrlsPruned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 209
+    startLine: 198
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1532,7 +1416,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPruneFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 218
+    startLine: 207
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1565,7 +1449,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnBannedUrlsRemoved
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 223
+    startLine: 212
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1602,7 +1486,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnRemoveBannedFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 232
+    startLine: 221
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1635,7 +1519,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinksVerified
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 237
+    startLine: 226
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1678,7 +1562,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinkProbeInconclusive
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 242
+    startLine: 231
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1716,7 +1600,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnAllowedServerIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 247
+    startLine: 236
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1753,7 +1637,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnNoIndexPatternIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlObserver.cs
-    startLine: 252
+    startLine: 241
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -2101,6 +1985,13 @@ references:
   nameWithType.vb: Date
   fullName.vb: Date
   name.vb: Date
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  name: CrawlHeartbeat
+  nameWithType: CrawlHeartbeat
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -2192,7 +2083,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.#ctor
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver__ctor_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_DateTime_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver__ctor_Microsoft_Extensions_Logging_ILogger_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_DateTime_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_
   name: CrawlObserver
   nameWithType: CrawlObserver.CrawlObserver
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.CrawlObserver
@@ -2426,43 +2317,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnCrawlCancelled_System_Int32_
-  name: OnCrawlCancelled
-  nameWithType: CrawlObserver.OnCrawlCancelled
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnCrawlCancelled
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(System.Int32)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnCrawlCancelled_System_Int32_
-  name: OnCrawlCancelled(int)
-  nameWithType: ICrawlObserver.OnCrawlCancelled(int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(int)
-  nameWithType.vb: ICrawlObserver.OnCrawlCancelled(Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(Integer)
-  name.vb: OnCrawlCancelled(Integer)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(System.Int32)
-    name: OnCrawlCancelled
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnCrawlCancelled_System_Int32_
-  - name: (
-  - uid: System.Int32
-    name: int
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnCrawlCancelled(System.Int32)
-    name: OnCrawlCancelled
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnCrawlCancelled_System_Int32_
-  - name: (
-  - uid: System.Int32
-    name: Integer
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.int32
-  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnHostCapReached*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnHostCapReached
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnHostCapReached_System_Int32_System_String_System_String_
@@ -2580,43 +2434,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: ','
   - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnFetchCancelled_System_String_
-  name: OnFetchCancelled
-  nameWithType: CrawlObserver.OnFetchCancelled
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnFetchCancelled
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnFetchCancelled_System_String_
-  name: OnFetchCancelled(string)
-  nameWithType: ICrawlObserver.OnFetchCancelled(string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(string)
-  nameWithType.vb: ICrawlObserver.OnFetchCancelled(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(String)
-  name.vb: OnFetchCancelled(String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(System.String)
-    name: OnFetchCancelled
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnFetchCancelled_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnFetchCancelled(System.String)
-    name: OnFetchCancelled
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnFetchCancelled_System_String_
-  - name: (
   - uid: System.String
     name: String
     isExternal: true
@@ -2753,6 +2570,55 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageRedirected_System_String_System_String_
+  name: OnPageRedirected
+  nameWithType: CrawlObserver.OnPageRedirected
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirected
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirected_System_String_System_String_
+  name: OnPageRedirected(string, string)
+  nameWithType: ICrawlObserver.OnPageRedirected(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(string, string)
+  nameWithType.vb: ICrawlObserver.OnPageRedirected(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(String, String)
+  name.vb: OnPageRedirected(String, String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(System.String,System.String)
+    name: OnPageRedirected
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirected_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirected(System.String,System.String)
+    name: OnPageRedirected
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirected_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnSeedRedirectedToNewOrigin*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnSeedRedirectedToNewOrigin
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnSeedRedirectedToNewOrigin_System_String_System_String_
@@ -2851,132 +2717,28 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageRedirectedDisallowed_System_String_System_String_
-  name: OnPageRedirectedDisallowed
-  nameWithType: CrawlObserver.OnPageRedirectedDisallowed
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedDisallowed
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedDisallowed_System_String_System_String_
-  name: OnPageRedirectedDisallowed(string, string)
-  nameWithType: ICrawlObserver.OnPageRedirectedDisallowed(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(string, string)
-  nameWithType.vb: ICrawlObserver.OnPageRedirectedDisallowed(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(String, String)
-  name.vb: OnPageRedirectedDisallowed(String, String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-    name: OnPageRedirectedDisallowed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedDisallowed_System_String_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedDisallowed(System.String,System.String)
-    name: OnPageRedirectedDisallowed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedDisallowed_System_String_System_String_
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageRedirectedAlreadySeen_System_String_System_String_
-  name: OnPageRedirectedAlreadySeen
-  nameWithType: CrawlObserver.OnPageRedirectedAlreadySeen
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageRedirectedAlreadySeen
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedAlreadySeen_System_String_System_String_
-  name: OnPageRedirectedAlreadySeen(string, string)
-  nameWithType: ICrawlObserver.OnPageRedirectedAlreadySeen(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(string, string)
-  nameWithType.vb: ICrawlObserver.OnPageRedirectedAlreadySeen(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(String, String)
-  name.vb: OnPageRedirectedAlreadySeen(String, String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-    name: OnPageRedirectedAlreadySeen
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedAlreadySeen_System_String_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageRedirectedAlreadySeen(System.String,System.String)
-    name: OnPageRedirectedAlreadySeen
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageRedirectedAlreadySeen_System_String_System_String_
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageGone_System_String_System_String_System_Int32_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageGone_System_String_System_Int32_
   name: OnPageGone
   nameWithType: CrawlObserver.OnPageGone
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageGone
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_String_System_Int32_
-  name: OnPageGone(string, string, int)
-  nameWithType: ICrawlObserver.OnPageGone(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(string, string, int)
-  nameWithType.vb: ICrawlObserver.OnPageGone(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(String, String, Integer)
-  name.vb: OnPageGone(String, String, Integer)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_Int32_
+  name: OnPageGone(string, int)
+  nameWithType: ICrawlObserver.OnPageGone(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(string, int)
+  nameWithType.vb: ICrawlObserver.OnPageGone(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(String, Integer)
+  name.vb: OnPageGone(String, Integer)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.Int32)
     name: OnPageGone
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -2989,16 +2751,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageGone(System.String,System.Int32)
     name: OnPageGone
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageGone_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3012,32 +2768,26 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageFailed_System_String_System_String_System_Int32_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageFailed_System_String_System_Int32_
   name: OnPageFailed
   nameWithType: CrawlObserver.OnPageFailed
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageFailed
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_String_System_Int32_
-  name: OnPageFailed(string, string, int)
-  nameWithType: ICrawlObserver.OnPageFailed(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(string, string, int)
-  nameWithType.vb: ICrawlObserver.OnPageFailed(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(String, String, Integer)
-  name.vb: OnPageFailed(String, String, Integer)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_Int32_
+  name: OnPageFailed(string, int)
+  nameWithType: ICrawlObserver.OnPageFailed(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(string, int)
+  nameWithType.vb: ICrawlObserver.OnPageFailed(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(String, Integer)
+  name.vb: OnPageFailed(String, Integer)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.Int32)
     name: OnPageFailed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3050,16 +2800,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageFailed(System.String,System.Int32)
     name: OnPageFailed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageFailed_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3073,32 +2817,26 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageSkippedSize_System_String_System_String_System_Int64_System_Int64_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageSkippedSize_System_String_System_Int64_System_Int64_
   name: OnPageSkippedSize
   nameWithType: CrawlObserver.OnPageSkippedSize
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedSize
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_String_System_Int64_System_Int64_
-  name: OnPageSkippedSize(string, string, long, long)
-  nameWithType: ICrawlObserver.OnPageSkippedSize(string, string, long, long)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(string, string, long, long)
-  nameWithType.vb: ICrawlObserver.OnPageSkippedSize(String, String, Long, Long)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(String, String, Long, Long)
-  name.vb: OnPageSkippedSize(String, String, Long, Long)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_Int64_System_Int64_
+  name: OnPageSkippedSize(string, long, long)
+  nameWithType: ICrawlObserver.OnPageSkippedSize(string, long, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(string, long, long)
+  nameWithType.vb: ICrawlObserver.OnPageSkippedSize(String, Long, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(String, Long, Long)
+  name.vb: OnPageSkippedSize(String, Long, Long)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
     name: OnPageSkippedSize
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_String_System_Int64_System_Int64_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_Int64_System_Int64_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3117,16 +2855,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int64
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.String,System.Int64,System.Int64)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedSize(System.String,System.Int64,System.Int64)
     name: OnPageSkippedSize
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_String_System_Int64_System_Int64_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedSize_System_String_System_Int64_System_Int64_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3157,32 +2889,26 @@ references:
   name.vb: Long
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageSkippedType_System_String_System_String_System_String_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageSkippedType_System_String_System_String_
   name: OnPageSkippedType
   nameWithType: CrawlObserver.OnPageSkippedType
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageSkippedType
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_System_String_
-  name: OnPageSkippedType(string, string, string)
-  nameWithType: ICrawlObserver.OnPageSkippedType(string, string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(string, string, string)
-  nameWithType.vb: ICrawlObserver.OnPageSkippedType(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(String, String, String)
-  name.vb: OnPageSkippedType(String, String, String)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_
+  name: OnPageSkippedType(string, string)
+  nameWithType: ICrawlObserver.OnPageSkippedType(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(string, string)
+  nameWithType.vb: ICrawlObserver.OnPageSkippedType(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(String, String)
+  name.vb: OnPageSkippedType(String, String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String)
     name: OnPageSkippedType
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3195,16 +2921,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageSkippedType(System.String,System.String)
     name: OnPageSkippedType
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageSkippedType_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3255,48 +2975,36 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageUnchangedHash_System_String_System_String_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageUnchangedHash_System_String_
   name: OnPageUnchangedHash
   nameWithType: CrawlObserver.OnPageUnchangedHash
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageUnchangedHash
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_System_String_
-  name: OnPageUnchangedHash(string, string)
-  nameWithType: ICrawlObserver.OnPageUnchangedHash(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(string, string)
-  nameWithType.vb: ICrawlObserver.OnPageUnchangedHash(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(String, String)
-  name.vb: OnPageUnchangedHash(String, String)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_
+  name: OnPageUnchangedHash(string)
+  nameWithType: ICrawlObserver.OnPageUnchangedHash(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(string)
+  nameWithType.vb: ICrawlObserver.OnPageUnchangedHash(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(String)
+  name.vb: OnPageUnchangedHash(String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String)
     name: OnPageUnchangedHash
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageUnchangedHash(System.String)
     name: OnPageUnchangedHash
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageUnchangedHash_System_String_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3304,32 +3012,26 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageDuplicateContent_System_String_System_String_System_String_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageDuplicateContent_System_String_System_String_
   name: OnPageDuplicateContent
   nameWithType: CrawlObserver.OnPageDuplicateContent
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageDuplicateContent
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_System_String_
-  name: OnPageDuplicateContent(string, string, string)
-  nameWithType: ICrawlObserver.OnPageDuplicateContent(string, string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(string, string, string)
-  nameWithType.vb: ICrawlObserver.OnPageDuplicateContent(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(String, String, String)
-  name.vb: OnPageDuplicateContent(String, String, String)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_
+  name: OnPageDuplicateContent(string, string)
+  nameWithType: ICrawlObserver.OnPageDuplicateContent(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(string, string)
+  nameWithType.vb: ICrawlObserver.OnPageDuplicateContent(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(String, String)
+  name.vb: OnPageDuplicateContent(String, String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String)
     name: OnPageDuplicateContent
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3342,16 +3044,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageDuplicateContent(System.String,System.String)
     name: OnPageDuplicateContent
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageDuplicateContent_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3365,32 +3061,26 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageAlias_System_String_System_String_System_String_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageAlias_System_String_System_String_
   name: OnPageAlias
   nameWithType: CrawlObserver.OnPageAlias
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageAlias
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_System_String_
-  name: OnPageAlias(string, string, string)
-  nameWithType: ICrawlObserver.OnPageAlias(string, string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(string, string, string)
-  nameWithType.vb: ICrawlObserver.OnPageAlias(String, String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(String, String, String)
-  name.vb: OnPageAlias(String, String, String)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_
+  name: OnPageAlias(string, string)
+  nameWithType: ICrawlObserver.OnPageAlias(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(string, string)
+  nameWithType.vb: ICrawlObserver.OnPageAlias(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(String, String)
+  name.vb: OnPageAlias(String, String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String)
     name: OnPageAlias
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3403,16 +3093,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageAlias(System.String,System.String)
     name: OnPageAlias
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageAlias_System_String_System_String_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3463,48 +3147,36 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageNoIndex_System_String_System_String_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageNoIndex_System_String_
   name: OnPageNoIndex
   nameWithType: CrawlObserver.OnPageNoIndex
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageNoIndex
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_System_String_
-  name: OnPageNoIndex(string, string)
-  nameWithType: ICrawlObserver.OnPageNoIndex(string, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(string, string)
-  nameWithType.vb: ICrawlObserver.OnPageNoIndex(String, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(String, String)
-  name.vb: OnPageNoIndex(String, String)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_
+  name: OnPageNoIndex(string)
+  nameWithType: ICrawlObserver.OnPageNoIndex(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(string)
+  nameWithType.vb: ICrawlObserver.OnPageNoIndex(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(String)
+  name.vb: OnPageNoIndex(String)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String)
     name: OnPageNoIndex
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String,System.String)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageNoIndex(System.String)
     name: OnPageNoIndex
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_System_String_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageNoIndex_System_String_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3512,32 +3184,26 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageLowQualityText_System_String_System_String_System_Double_System_Int64_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageLowQualityText_System_String_System_Double_System_Int64_
   name: OnPageLowQualityText
   nameWithType: CrawlObserver.OnPageLowQualityText
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageLowQualityText
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_String_System_Double_System_Int64_
-  name: OnPageLowQualityText(string, string, double, long)
-  nameWithType: ICrawlObserver.OnPageLowQualityText(string, string, double, long)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(string, string, double, long)
-  nameWithType.vb: ICrawlObserver.OnPageLowQualityText(String, String, Double, Long)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(String, String, Double, Long)
-  name.vb: OnPageLowQualityText(String, String, Double, Long)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_Double_System_Int64_
+  name: OnPageLowQualityText(string, double, long)
+  nameWithType: ICrawlObserver.OnPageLowQualityText(string, double, long)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(string, double, long)
+  nameWithType.vb: ICrawlObserver.OnPageLowQualityText(String, Double, Long)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(String, Double, Long)
+  name.vb: OnPageLowQualityText(String, Double, Long)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
     name: OnPageLowQualityText
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_String_System_Double_System_Int64_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_Double_System_Int64_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3556,16 +3222,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int64
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.String,System.Double,System.Int64)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageLowQualityText(System.String,System.Double,System.Int64)
     name: OnPageLowQualityText
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_String_System_Double_System_Int64_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageLowQualityText_System_String_System_Double_System_Int64_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true
@@ -3596,32 +3256,26 @@ references:
   name.vb: Double
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageIndexed_System_String_System_String_System_Int32_
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlObserver_OnPageIndexed_System_String_System_Int32_
   name: OnPageIndexed
   nameWithType: CrawlObserver.OnPageIndexed
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver.OnPageIndexed
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
   isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_String_System_Int32_
-  name: OnPageIndexed(string, string, int)
-  nameWithType: ICrawlObserver.OnPageIndexed(string, string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(string, string, int)
-  nameWithType.vb: ICrawlObserver.OnPageIndexed(String, String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(String, String, Integer)
-  name.vb: OnPageIndexed(String, String, Integer)
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_Int32_
+  name: OnPageIndexed(string, int)
+  nameWithType: ICrawlObserver.OnPageIndexed(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(string, int)
+  nameWithType.vb: ICrawlObserver.OnPageIndexed(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(String, Integer)
+  name.vb: OnPageIndexed(String, Integer)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.Int32)
     name: OnPageIndexed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: string
     isExternal: true
@@ -3634,16 +3288,10 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.String,System.Int32)
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.OnPageIndexed(System.String,System.Int32)
     name: OnPageIndexed
-    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_String_System_Int32_
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_OnPageIndexed_System_String_System_Int32_
   - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.String
     name: String
     isExternal: true

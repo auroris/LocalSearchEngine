@@ -6,8 +6,8 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.RobotsService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger)
-  - LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  - LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   - LocalSearchEngine.Core.Crawling.Engine.RobotsService.RemoveRobotsBannedUrlsAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   - LocalSearchEngine.Core.Crawling.Engine.RobotsService._httpClient
   - LocalSearchEngine.Core.Crawling.Engine.RobotsService._logger
@@ -185,16 +185,16 @@ items:
   nameWithType.vb: RobotsService.New(HttpClient, VectorSearchService, ILogger)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.RobotsService.New(System.Net.Http.HttpClient, LocalSearchEngine.Core.Searching.VectorSearchService, Microsoft.Extensions.Logging.ILogger)
   name.vb: New(HttpClient, VectorSearchService, ILogger)
-- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  id: GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  id: GetOrFetchRobotsAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   parent: LocalSearchEngine.Core.Crawling.Engine.RobotsService
   langs:
   - csharp
   - vb
-  name: GetOrFetchRobotsAsync(Uri, CrawlContext, CancellationToken)
-  nameWithType: RobotsService.GetOrFetchRobotsAsync(Uri, CrawlContext, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.Threading.CancellationToken)
+  name: GetOrFetchRobotsAsync(Uri, CrawlContext)
+  nameWithType: RobotsService.GetOrFetchRobotsAsync(Uri, CrawlContext)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   type: Method
   source:
     remote:
@@ -203,7 +203,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetOrFetchRobotsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 52
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -213,7 +213,7 @@ items:
     first contact.
   example: []
   syntax:
-    content: public Task<RobotsRules> GetOrFetchRobotsAsync(Uri uri, CrawlContext context, CancellationToken cancellationToken)
+    content: public Task<RobotsRules> GetOrFetchRobotsAsync(Uri uri, CrawlContext context)
     parameters:
     - id: uri
       type: System.Uri
@@ -221,13 +221,10 @@ items:
     - id: context
       type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
       description: The active crawl context.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Policies.RobotsRules" data-throw-if-not-resolved="false"></xref> object containing the rules for the given origin.
-    content.vb: Public Function GetOrFetchRobotsAsync(uri As Uri, context As CrawlContext, cancellationToken As CancellationToken) As Task(Of RobotsRules)
+    content.vb: Public Function GetOrFetchRobotsAsync(uri As Uri, context As CrawlContext) As Task(Of RobotsRules)
   overload: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync*
 - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.RemoveRobotsBannedUrlsAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.RobotsService.RemoveRobotsBannedUrlsAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
@@ -247,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemoveRobotsBannedUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 72
+    startLine: 71
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -264,16 +261,16 @@ items:
       description: The number of banned URLs successfully removed from index and storage.
     content.vb: Public Function RemoveRobotsBannedUrlsAsync(context As CrawlContext) As Task(Of Integer)
   overload: LocalSearchEngine.Core.Crawling.Engine.RobotsService.RemoveRobotsBannedUrlsAsync*
-- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
-  id: GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
+  id: GetRobotsRulesAsync(System.Uri,LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   parent: LocalSearchEngine.Core.Crawling.Engine.RobotsService
   langs:
   - csharp
   - vb
-  name: GetRobotsRulesAsync(Uri, CrawlContext, CancellationToken)
-  nameWithType: RobotsService.GetRobotsRulesAsync(Uri, CrawlContext, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, System.Threading.CancellationToken)
+  name: GetRobotsRulesAsync(Uri, CrawlContext)
+  nameWithType: RobotsService.GetRobotsRulesAsync(Uri, CrawlContext)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync(System.Uri, LocalSearchEngine.Core.Crawling.Engine.CrawlContext)
   type: Method
   source:
     remote:
@@ -282,7 +279,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetRobotsRulesAsync
     path: LocalSearchEngine.Core/Crawling/Engine/RobotsService.cs
-    startLine: 115
+    startLine: 113
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -292,7 +289,7 @@ items:
     returning parse results or policy fallbacks.
   example: []
   syntax:
-    content: private Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, CrawlContext context, CancellationToken cancellationToken)
+    content: private Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri, CrawlContext context)
     parameters:
     - id: baseUri
       type: System.Uri
@@ -300,13 +297,10 @@ items:
     - id: context
       type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
       description: The active crawl context (supplies the size limit and host-health tracker).
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}}
       description: A tuple containing the parsed rules and whether robots.txt was unavailable (5xx error).
-    content.vb: Private Function GetRobotsRulesAsync(baseUri As Uri, context As CrawlContext, cancellationToken As CancellationToken) As Task(Of (Rules As RobotsRules, Unavailable As Boolean))
+    content.vb: Private Function GetRobotsRulesAsync(baseUri As Uri, context As CrawlContext) As Task(Of (Rules As RobotsRules, Unavailable As Boolean))
   overload: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync*
 references:
 - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
@@ -757,7 +751,7 @@ references:
   name.vb: New
 - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html#LocalSearchEngine_Core_Crawling_Engine_RobotsService_GetOrFetchRobotsAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html#LocalSearchEngine_Core_Crawling_Engine_RobotsService_GetOrFetchRobotsAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_
   name: GetOrFetchRobotsAsync
   nameWithType: RobotsService.GetOrFetchRobotsAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetOrFetchRobotsAsync
@@ -769,14 +763,6 @@ references:
   name: Uri
   nameWithType: Uri
   fullName: System.Uri
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
   commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
   parent: System.Threading.Tasks
@@ -810,33 +796,6 @@ references:
     name: RobotsRules
     href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
   - name: )
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true
@@ -945,7 +904,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html#LocalSearchEngine_Core_Crawling_Engine_RobotsService_GetRobotsRulesAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html#LocalSearchEngine_Core_Crawling_Engine_RobotsService_GetRobotsRulesAsync_System_Uri_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_
   name: GetRobotsRulesAsync
   nameWithType: RobotsService.GetRobotsRulesAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService.GetRobotsRulesAsync

@@ -29,7 +29,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DownloadResult
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 34
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -65,7 +65,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Status
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 37
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -96,7 +96,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StatusCode
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 39
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -127,7 +127,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Body
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 41
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -158,7 +158,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ETag
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 43
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -189,7 +189,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastModified
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 45
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -220,7 +220,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ContentType
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 47
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -251,7 +251,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CharSet
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 49
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -282,7 +282,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: XRobotsTag
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 51
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -313,7 +313,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FinalRequestUri
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 53
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -344,7 +344,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SizeRead
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 55
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

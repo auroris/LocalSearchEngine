@@ -1,0 +1,740 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  id: CrawlStateWriter
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor(Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Engine.DbWriteGate,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._connection
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._gate
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._logger
+  langs:
+  - csharp
+  - vb
+  name: CrawlStateWriter
+  nameWithType: CrawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlStateWriter
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    Applies the crawl-state half of a finished <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> — the CrawlState row, the LinkIndex
+
+    rows, and the destination link-status stamp — as one atomic transaction on the crawl's single write
+
+    connection. This is the crawler thread's only writer; the page's chunk writes are handed to the
+
+    <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder" data-throw-if-not-resolved="false"></xref> instead, which is what lets the crawl finish without waiting on embedding.
+
+    Every write takes the shared <xref href="LocalSearchEngine.Core.Crawling.Engine.DbWriteGate" data-throw-if-not-resolved="false"></xref> so it never overlaps the embedder's chunk writes
+
+    (SQLite allows a single writer at a time). Each job is wrapped in its own try/catch so one bad page
+
+    can't halt the crawl.
+  example: []
+  syntax:
+    content: internal sealed class CrawlStateWriter
+    content.vb: Friend NotInheritable Class CrawlStateWriter
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._connection
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._connection
+  id: _connection
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: _connection
+  nameWithType: CrawlStateWriter._connection
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._connection
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connection
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The SQLite connection used to write crawl state and links; used only by the crawler thread.
+  example: []
+  syntax:
+    content: private readonly SqliteConnection _connection
+    return:
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    content.vb: Private ReadOnly _connection As SqliteConnection
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._gate
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._gate
+  id: _gate
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: CrawlStateWriter._gate
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The shared gate that serializes this writer against the embedder's chunk writes.
+  example: []
+  syntax:
+    content: private readonly DbWriteGate _gate
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+    content.vb: Private ReadOnly _gate As DbWriteGate
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._logger
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._logger
+  id: _logger
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: CrawlStateWriter._logger
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The logger instance.
+  example: []
+  syntax:
+    content: private readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Private ReadOnly _logger As ILogger
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor(Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Engine.DbWriteGate,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor(Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Engine.DbWriteGate,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Engine.DbWriteGate,Microsoft.Extensions.Logging.ILogger)'
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: CrawlStateWriter(SqliteConnection, DbWriteGate, ILogger)
+  nameWithType: CrawlStateWriter.CrawlStateWriter(SqliteConnection, DbWriteGate, ILogger)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.CrawlStateWriter(Microsoft.Data.Sqlite.SqliteConnection, LocalSearchEngine.Core.Crawling.Engine.DbWriteGate, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public CrawlStateWriter(SqliteConnection connection, DbWriteGate gate, ILogger logger)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: 'The SQLite write connection (single-threaded: the crawler thread only).'
+    - id: gate
+      type: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+      description: The shared write gate serializing against the embedder.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The logger instance.
+    content.vb: Public Sub New(connection As SqliteConnection, gate As DbWriteGate, logger As ILogger)
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor*
+  nameWithType.vb: CrawlStateWriter.New(SqliteConnection, DbWriteGate, ILogger)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.New(Microsoft.Data.Sqlite.SqliteConnection, LocalSearchEngine.Core.Crawling.Engine.DbWriteGate, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(SqliteConnection, DbWriteGate, ILogger)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  id: ApplyAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: ApplyAsync(CrawlJob)
+  nameWithType: CrawlStateWriter.ApplyAsync(CrawlJob)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ApplyAsync
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 46
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    Persists the crawl-state and link-index rows implied by <code class="paramref">job</code> in one transaction —
+
+    recorded against this URL's inbound links too, so even links on pages not re-parsed this run reflect
+
+    its current status.
+  example: []
+  syntax:
+    content: public Task ApplyAsync(CrawlJob job)
+    parameters:
+    - id: job
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+      description: The classified job to apply.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ApplyAsync(job As CrawlJob) As Task
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync*
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  id: ClassifyLinkStatus(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  langs:
+  - csharp
+  - vb
+  name: ClassifyLinkStatus(CrawlJob)
+  nameWithType: CrawlStateWriter.ClassifyLinkStatus(CrawlJob)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ClassifyLinkStatus
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
+    startLine: 97
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Classifies a crawl job into a <xref href="LocalSearchEngine.Core.Crawling.Reporting.LinkStatus" data-throw-if-not-resolved="false"></xref> based on status code and redirect context.
+  example: []
+  syntax:
+    content: private static LinkStatus ClassifyLinkStatus(CrawlJob job)
+    parameters:
+    - id: job
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+      description: The crawl job to classify.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+      description: The classified <xref href="LocalSearchEngine.Core.Crawling.Reporting.LinkStatus" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Private Shared Function ClassifyLinkStatus(job As CrawlJob) As LinkStatus
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  name: CrawlJob
+  nameWithType: CrawlJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder.html
+  name: CrawlEmbedder
+  nameWithType: CrawlEmbedder
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+- uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
+  name: DbWriteGate
+  nameWithType: DbWriteGate
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html
+  name: CrawlStateWriter
+  nameWithType: CrawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.#ctor
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html#LocalSearchEngine_Core_Crawling_Engine_CrawlStateWriter__ctor_Microsoft_Data_Sqlite_SqliteConnection_LocalSearchEngine_Core_Crawling_Engine_DbWriteGate_Microsoft_Extensions_Logging_ILogger_
+  name: CrawlStateWriter
+  nameWithType: CrawlStateWriter.CrawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.CrawlStateWriter
+  nameWithType.vb: CrawlStateWriter.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html#LocalSearchEngine_Core_Crawling_Engine_CrawlStateWriter_ApplyAsync_LocalSearchEngine_Core_Crawling_Engine_CrawlJob_
+  name: ApplyAsync
+  nameWithType: CrawlStateWriter.ApplyAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ApplyAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.html
+  name: LinkStatus
+  nameWithType: LinkStatus
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html#LocalSearchEngine_Core_Crawling_Engine_CrawlStateWriter_ClassifyLinkStatus_LocalSearchEngine_Core_Crawling_Engine_CrawlJob_
+  name: ClassifyLinkStatus
+  nameWithType: CrawlStateWriter.ClassifyLinkStatus
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.ClassifyLinkStatus
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html

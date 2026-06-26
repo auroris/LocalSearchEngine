@@ -1,41 +1,38 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-  id: NullCrawlReporter
-  parent: LocalSearchEngine.Core.Crawling.Reporting
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  commentId: T:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  id: CrawlerServiceIntegrationTests.RecordingReporter
+  parent: LocalSearchEngine.Tests
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
-  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress(System.Int32,System.Int32)
-  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.Instance
-  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(System.Int32,System.Int32)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   langs:
   - csharp
   - vb
-  name: NullCrawlReporter
-  nameWithType: NullCrawlReporter
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  name: CrawlerServiceIntegrationTests.RecordingReporter
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   type: Class
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: NullCrawlReporter
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 6
+    id: RecordingReporter
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1218
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: >-
-    An <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter" data-throw-if-not-resolved="false"></xref> that ignores every callback. Used when a crawl runs without a
-
-    reporter (the web app, the tests), so the crawler never has to null-check.
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Captures the last embedder-progress callback so a test can assert it was driven to completion.
   example: []
   syntax:
-    content: 'public sealed class NullCrawlReporter : ICrawlReporter'
-    content.vb: Public NotInheritable Class NullCrawlReporter Implements ICrawlReporter
+    content: 'private sealed class CrawlerServiceIntegrationTests.RecordingReporter : ICrawlReporter'
+    content.vb: Private NotInheritable Class CrawlerServiceIntegrationTests.RecordingReporter Implements ICrawlReporter
   inheritance:
   - System.Object
   implements:
@@ -47,86 +44,86 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.Instance
-  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.Instance
-  id: Instance
-  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  commentId: P:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  id: LastEmbedProcessed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   langs:
   - csharp
   - vb
-  name: Instance
-  nameWithType: NullCrawlReporter.Instance
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.Instance
-  type: Field
+  name: LastEmbedProcessed
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  type: Property
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Instance
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 9
+    id: LastEmbedProcessed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1220
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: The shared, stateless instance.
-  example: []
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
   syntax:
-    content: public static readonly NullCrawlReporter Instance
+    content: public int LastEmbedProcessed { get; private set; }
+    parameters: []
     return:
-      type: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-    content.vb: Public Shared ReadOnly Instance As NullCrawlReporter
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
-  id: '#ctor'
-  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+      type: System.Int32
+    content.vb: Public Property LastEmbedProcessed As Integer
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed*
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  commentId: P:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  id: LastEmbedQueued
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   langs:
   - csharp
   - vb
-  name: NullCrawlReporter()
-  nameWithType: NullCrawlReporter.NullCrawlReporter()
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.NullCrawlReporter()
-  type: Constructor
+  name: LastEmbedQueued
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  type: Property
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: .ctor
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 11
+    id: LastEmbedQueued
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1221
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
   syntax:
-    content: private NullCrawlReporter()
-    content.vb: Private Sub New()
-  overload: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor*
-  nameWithType.vb: NullCrawlReporter.New()
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.New()
-  name.vb: New()
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    content: public int LastEmbedQueued { get; private set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property LastEmbedQueued As Integer
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued*
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   langs:
   - csharp
   - vb
   name: PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
-  nameWithType: NullCrawlReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 14
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1222
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
   summary: The crawl moved into a new high-level <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
@@ -139,31 +136,31 @@ items:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
       description: The running tally at this moment.
     content.vb: Public Sub PhaseChanged(phase As CrawlPhase, stats As CrawlStatsSnapshot)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged*
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged*
   implements:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   id: PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   langs:
   - csharp
   - vb
   name: PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
-  nameWithType: NullCrawlReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 17
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1223
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
   summary: A dequeued URL was resolved to an outcome.
   example: []
   syntax:
@@ -179,34 +176,34 @@ items:
       type: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
       description: The running tally, including this page.
     content.vb: Public Sub PageProcessed(url As String, outcome As CrawlOutcome, stats As CrawlStatsSnapshot)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed*
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed*
   implements:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
-  nameWithType.vb: NullCrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType.vb: CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress(System.Int32,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress(System.Int32,System.Int32)
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(System.Int32,System.Int32)
   id: EmbedProgress(System.Int32,System.Int32)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
   langs:
   - csharp
   - vb
   name: EmbedProgress(int, int)
-  nameWithType: NullCrawlReporter.EmbedProgress(int, int)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress(int, int)
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(int, int)
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmbedProgress
-    path: LocalSearchEngine.Core/Crawling/Reporting/NullCrawlReporter.cs
-    startLine: 20
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1224
   assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
   summary: >-
     The embedder finished an item. Called from the embedder thread, including while the crawler is
 
@@ -222,58 +219,35 @@ items:
       type: System.Int32
       description: Items queued for embedding so far (the bar's denominator; still growing mid-crawl).
     content.vb: Public Sub EmbedProgress(processed As Integer, queued As Integer)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress*
+  overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress*
   implements:
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
-  nameWithType.vb: NullCrawlReporter.EmbedProgress(Integer, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress(Integer, Integer)
+  nameWithType.vb: CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress(Integer, Integer)
   name.vb: EmbedProgress(Integer, Integer)
 references:
-- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
-  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
-  parent: LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html
-  name: ICrawlReporter
-  nameWithType: ICrawlReporter
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
-- uid: LocalSearchEngine.Core.Crawling.Reporting
-  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
   href: LocalSearchEngine.html
-  name: LocalSearchEngine.Core.Crawling.Reporting
-  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
-  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
   spec.csharp:
   - uid: LocalSearchEngine
     name: LocalSearchEngine
     href: LocalSearchEngine.html
   - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
   spec.vb:
   - uid: LocalSearchEngine
     name: LocalSearchEngine
     href: LocalSearchEngine.html
   - name: .
-  - uid: LocalSearchEngine.Core
-    name: Core
-    href: LocalSearchEngine.Core.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling
-    name: Crawling
-    href: LocalSearchEngine.Core.Crawling.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting
-    name: Reporting
-    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
 - uid: System.Object
   commentId: T:System.Object
   parent: System
@@ -285,6 +259,13 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html
+  name: ICrawlReporter
+  nameWithType: ICrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -487,22 +468,67 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-  parent: LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html
-  name: NullCrawlReporter
-  nameWithType: NullCrawlReporter
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.#ctor
-  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_NullCrawlReporter__ctor
-  name: NullCrawlReporter
-  nameWithType: NullCrawlReporter.NullCrawlReporter
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.NullCrawlReporter
-  nameWithType.vb: NullCrawlReporter.New
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.New
-  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_LastEmbedProcessed
+  name: LastEmbedProcessed
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_LastEmbedQueued
+  name: LastEmbedQueued
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -510,12 +536,12 @@ references:
   name: CrawlPhase
   nameWithType: CrawlPhase
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged
-  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_NullCrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
   name: PhaseChanged
-  nameWithType: NullCrawlReporter.PhaseChanged
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PhaseChanged
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
@@ -558,12 +584,12 @@ references:
   name: CrawlStatsSnapshot
   nameWithType: CrawlStatsSnapshot
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed
-  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_NullCrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
   name: PageProcessed
-  nameWithType: NullCrawlReporter.PageProcessed
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.PageProcessed
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
@@ -633,12 +659,12 @@ references:
   name: CrawlOutcome
   nameWithType: CrawlOutcome
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
-- uid: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress
-  href: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_NullCrawlReporter_EmbedProgress_System_Int32_System_Int32_
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_EmbedProgress_System_Int32_System_Int32_
   name: EmbedProgress
-  nameWithType: NullCrawlReporter.EmbedProgress
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter.EmbedProgress
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.EmbedProgress
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
@@ -682,14 +708,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer

@@ -5,8 +5,7 @@ items:
   id: CrawlJob
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32,System.String)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
   langs:
@@ -23,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -50,16 +49,16 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32,System.String)
-  id: '#ctor(System.String,System.Int32,System.String)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor(System.String,System.Int32)
+  id: '#ctor(System.String,System.Int32)'
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   langs:
   - csharp
   - vb
-  name: CrawlJob(string, int, string?)
-  nameWithType: CrawlJob.CrawlJob(string, int, string?)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.CrawlJob(string, int, string?)
+  name: CrawlJob(string, int)
+  nameWithType: CrawlJob.CrawlJob(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.CrawlJob(string, int)
   type: Constructor
   source:
     remote:
@@ -68,14 +67,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Represents the base crawl job result class containing URL and HTTP status information.
   example: []
   syntax:
-    content: protected CrawlJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
+    content: protected CrawlJob(string Url, int StatusCode)
     parameters:
     - id: Url
       type: System.String
@@ -83,14 +82,11 @@ items:
     - id: StatusCode
       type: System.Int32
       description: The response HTTP status code.
-    - id: RedirectSourceUrl
-      type: System.String
-      description: The source URL if this job was reached via redirect.
-    content.vb: Protected Sub New(Url As String, StatusCode As Integer, RedirectSourceUrl As String = Nothing)
+    content.vb: Protected Sub New(Url As String, StatusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor*
-  nameWithType.vb: CrawlJob.New(String, Integer, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.New(String, Integer, String)
-  name.vb: New(String, Integer, String)
+  nameWithType.vb: CrawlJob.New(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.New(String, Integer)
+  name.vb: New(String, Integer)
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
   commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
   id: Url
@@ -109,7 +105,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -140,7 +136,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StatusCode
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -153,37 +149,6 @@ items:
       type: System.Int32
     content.vb: Public Property StatusCode As Integer
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode*
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  id: RedirectSourceUrl
-  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  langs:
-  - csharp
-  - vb
-  name: RedirectSourceUrl
-  nameWithType: CrawlJob.RedirectSourceUrl
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  type: Property
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: RedirectSourceUrl
-    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 11
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: The source URL if this job was reached via redirect.
-  example: []
-  syntax:
-    content: public string? RedirectSourceUrl { get; init; }
-    parameters: []
-    return:
-      type: System.String
-    content.vb: Public Property RedirectSourceUrl As String
-  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl*
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
@@ -523,7 +488,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob__ctor_System_String_System_Int32_System_String_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob__ctor_System_String_System_Int32_
   name: CrawlJob
   nameWithType: CrawlJob.CrawlJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.CrawlJob
@@ -564,9 +529,3 @@ references:
   name: StatusCode
   nameWithType: CrawlJob.StatusCode
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_RedirectSourceUrl
-  name: RedirectSourceUrl
-  nameWithType: CrawlJob.RedirectSourceUrl
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl

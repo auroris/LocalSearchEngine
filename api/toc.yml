@@ -21,11 +21,14 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
     name: AliasJob
     type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlConsumer
-    name: CrawlConsumer
-    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
+    name: ChunkAction
+    type: Enum
   - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
     name: CrawlContext
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
+    name: CrawlEmbedder
     type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
     name: CrawlJob
@@ -33,12 +36,27 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
     name: CrawlProducer
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+    name: CrawlStateWriter
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
+    name: DbWriteGate
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
+    name: DbWriteGate.Releaser
+    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
     name: DownloadResult
     type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
     name: DownloadStatus
     type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+    name: EmbeddingBacklog
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+    name: EmbeddingJob
+    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob
     name: GoneJob
     type: Class
@@ -120,6 +138,12 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Reporting.BrokenLink
     name: BrokenLink
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: CrawlHeartbeat.Lane
+    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlObserver
     name: CrawlObserver
     type: Class
@@ -248,11 +272,17 @@ items:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
     name: CrawlerServiceIntegrationTests
     type: Class
-  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
-    name: CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+    name: CrawlerServiceIntegrationTests.DelayEmbedder
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
+    name: CrawlerServiceIntegrationTests.FailingEmbedder
     type: Class
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
     name: CrawlerServiceIntegrationTests.FakeHandler
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+    name: CrawlerServiceIntegrationTests.RecordingReporter
     type: Class
   - uid: LocalSearchEngine.Tests.FakeEmbedder
     name: FakeEmbedder

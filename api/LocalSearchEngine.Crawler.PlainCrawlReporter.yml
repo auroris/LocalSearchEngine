@@ -6,10 +6,12 @@ items:
   parent: LocalSearchEngine.Crawler
   children:
   - LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
+  - LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress(System.Int32,System.Int32)
   - LocalSearchEngine.Crawler.PlainCrawlReporter.PageInterval
   - LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Crawler.PlainCrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Crawler.PlainCrawlReporter._console
+  - LocalSearchEngine.Crawler.PlainCrawlReporter._gate
   langs:
   - csharp
   - vb
@@ -24,7 +26,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PlainCrawlReporter
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 10
+    startLine: 12
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -33,7 +35,11 @@ items:
 
     <code>--no-live</code> is set), where a live-updating display would just emit control-code noise.
 
-    Prints a line on every phase change and a periodic progress line so the run is still followable.
+    Prints a line on every phase change and periodic crawl and embedding progress lines so the run is
+
+    still followable. The page/phase lines come from the crawler thread and the embedding lines from the
+
+    embedder thread, so a lock keeps the two from interleaving mid-line.
   example: []
   syntax:
     content: 'internal sealed class PlainCrawlReporter : ICrawlReporter'
@@ -67,12 +73,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageInterval
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 16
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
   summary: >-
-    The number of pages to process before emitting a progress line.
+    The number of items to process before emitting a progress line.
 
     Reduces log noise while still providing regular updates.
   example: []
@@ -99,7 +105,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _console
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 18
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -108,6 +114,33 @@ items:
     return:
       type: Spectre.Console.IAnsiConsole
     content.vb: Private ReadOnly _console As IAnsiConsole
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter._gate
+  commentId: F:LocalSearchEngine.Crawler.PlainCrawlReporter._gate
+  id: _gate
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: PlainCrawlReporter._gate
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
 - uid: LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
   commentId: M:LocalSearchEngine.Crawler.PlainCrawlReporter.#ctor(Spectre.Console.IAnsiConsole)
   id: '#ctor(Spectre.Console.IAnsiConsole)'
@@ -126,7 +159,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 22
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -161,7 +194,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 25
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -198,7 +231,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
-    startLine: 29
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Crawler
   namespace: LocalSearchEngine.Crawler
@@ -223,6 +256,49 @@ items:
   nameWithType.vb: PlainCrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
   fullName.vb: LocalSearchEngine.Crawler.PlainCrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  id: EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Crawler.PlainCrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: EmbedProgress(int, int)
+  nameWithType: PlainCrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress(int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedProgress
+    path: LocalSearchEngine.Crawler/PlainCrawlReporter.cs
+    startLine: 49
+  assemblies:
+  - LocalSearchEngine.Crawler
+  namespace: LocalSearchEngine.Crawler
+  summary: >-
+    The embedder finished an item. Called from the embedder thread, including while the crawler is
+
+    idle and the queued backlog drains, so the embedding bar keeps moving after the crawl itself ends.
+  example: []
+  syntax:
+    content: public void EmbedProgress(int processed, int queued)
+    parameters:
+    - id: processed
+      type: System.Int32
+      description: Items the embedder has finished so far.
+    - id: queued
+      type: System.Int32
+      description: Items queued for embedding so far (the bar's denominator; still growing mid-crawl).
+    content.vb: Public Sub EmbedProgress(processed As Integer, queued As Integer)
+  overload: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  nameWithType.vb: PlainCrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
 references:
 - uid: LocalSearchEngine.Crawler
   commentId: N:LocalSearchEngine.Crawler
@@ -683,3 +759,52 @@ references:
   name: CrawlOutcome
   nameWithType: CrawlOutcome
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+- uid: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress*
+  commentId: Overload:LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress
+  href: LocalSearchEngine.Crawler.PlainCrawlReporter.html#LocalSearchEngine_Crawler_PlainCrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress
+  nameWithType: PlainCrawlReporter.EmbedProgress
+  fullName: LocalSearchEngine.Crawler.PlainCrawlReporter.EmbedProgress
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress(int, int)
+  nameWithType: ICrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(int, int)
+  nameWithType.vb: ICrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )

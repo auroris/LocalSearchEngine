@@ -32,6 +32,8 @@ items:
     content.vb: Public Interface IEmbedder
   derivedClasses:
   - LocalSearchEngine.Core.TextProcessing.LocalEmbedderAdapter
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
   - LocalSearchEngine.Tests.FakeEmbedder
 - uid: LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)
   commentId: M:LocalSearchEngine.Core.TextProcessing.IEmbedder.Embed(System.String)

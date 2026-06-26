@@ -5,6 +5,7 @@ items:
   id: ICrawlReporter
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
+  - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   langs:
@@ -21,18 +22,20 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ICrawlReporter
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 8
+    startLine: 9
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: >-
     Receives crawl progress so a host (CLI, web, tests) can present it however it likes. The crawler
 
-    invokes these as work happens; for a single crawl every call arrives on the crawler's own
+    invokes these as work happens; they must be cheap and must never throw, as the crawl does not guard
 
-    producer thread, so implementations need not be thread-safe — but they must be cheap and must
+    against a misbehaving reporter. <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> arrive on
 
-    never throw, as the crawl does not guard against a misbehaving reporter.
+    the crawler thread, but <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref> arrives on the separate embedder thread and can
+
+    overlap them — so an implementation that keeps shared display state must guard it.
   example: []
   syntax:
     content: public interface ICrawlReporter
@@ -41,7 +44,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.NullCrawlReporter
   - LocalSearchEngine.Crawler.PlainCrawlReporter
   - LocalSearchEngine.Crawler.SpectreCrawlReporter
-  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.CancelOnFirstPageReporter
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
 - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   id: PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
@@ -60,7 +63,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 13
+    startLine: 14
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -95,7 +98,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 19
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -118,7 +121,177 @@ items:
   nameWithType.vb: ICrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  id: EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  langs:
+  - csharp
+  - vb
+  name: EmbedProgress(int, int)
+  nameWithType: ICrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EmbedProgress
+    path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    The embedder finished an item. Called from the embedder thread, including while the crawler is
+
+    idle and the queued backlog drains, so the embedding bar keeps moving after the crawl itself ends.
+  example: []
+  syntax:
+    content: void EmbedProgress(int processed, int queued)
+    parameters:
+    - id: processed
+      type: System.Int32
+      description: Items the embedder has finished so far.
+    - id: queued
+      type: System.Int32
+      description: Items queued for embedding so far (the bar's denominator; still growing mid-crawl).
+    content.vb: Sub EmbedProgress(processed As Integer, queued As Integer)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress*
+  nameWithType.vb: ICrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PhaseChanged(CrawlPhase, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PhaseChanged
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PhaseChanged
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PhaseChanged_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  name: PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  nameWithType: ICrawlReporter.PageProcessed(string, CrawlOutcome, CrawlStatsSnapshot)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(string, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  nameWithType.vb: ICrawlReporter.PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(String, LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome, LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  name.vb: PageProcessed(String, CrawlOutcome, CrawlStatsSnapshot)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PageProcessed
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+    name: CrawlOutcome
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+    name: PageProcessed
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_PageProcessed_System_String_LocalSearchEngine_Core_Crawling_Reporting_CrawlOutcome_LocalSearchEngine_Core_Crawling_Reporting_CrawlStatsSnapshot_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome
+    name: CrawlOutcome
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot
+    name: CrawlStatsSnapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress(int, int)
+  nameWithType: ICrawlReporter.EmbedProgress(int, int)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(int, int)
+  nameWithType.vb: ICrawlReporter.EmbedProgress(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(Integer, Integer)
+  name.vb: EmbedProgress(Integer, Integer)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32,System.Int32)
+    name: EmbedProgress
+    href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting
   commentId: N:LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.html
@@ -157,6 +330,13 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Reporting
     name: Reporting
     href: LocalSearchEngine.Core.Crawling.Reporting.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html
+  name: ICrawlReporter
+  nameWithType: ICrawlReporter
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
   parent: LocalSearchEngine.Core.Crawling.Reporting
@@ -208,3 +388,20 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.html#LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_EmbedProgress_System_Int32_System_Int32_
+  name: EmbedProgress
+  nameWithType: ICrawlReporter.EmbedProgress
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

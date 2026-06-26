@@ -8,7 +8,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Failed
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.NotModified
-  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Redirected
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.SizeLimitExceeded
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Success
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.UnsupportedType
@@ -26,7 +26,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DownloadStatus
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 13
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -53,7 +53,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Success
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 16
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -81,7 +81,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NotModified
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 18
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -91,32 +91,32 @@ items:
     content: NotModified = 1
     return:
       type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
-- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
-  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
-  id: RedirectBlocked
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Redirected
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Redirected
+  id: Redirected
   parent: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
   langs:
   - csharp
   - vb
-  name: RedirectBlocked
-  nameWithType: DownloadStatus.RedirectBlocked
-  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.RedirectBlocked
+  name: Redirected
+  nameWithType: DownloadStatus.Redirected
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Redirected
   type: Field
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: RedirectBlocked
+    id: Redirected
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 20
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: The redirect chain led out-of-scope or was disallowed by policy, so the download was blocked.
+  summary: The request was redirected to a different URL (carried in <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri" data-throw-if-not-resolved="false"></xref>); the body was not read so the caller can treat the target like a discovered link.
   example: []
   syntax:
-    content: RedirectBlocked = 2
+    content: Redirected = 2
     return:
       type: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
 - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus.Gone
@@ -137,7 +137,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gone
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 22
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -165,7 +165,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Failed
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 24
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -193,7 +193,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SizeLimitExceeded
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 26
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -221,7 +221,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UnsupportedType
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 28
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -277,3 +277,9 @@ references:
   name: DownloadStatus
   nameWithType: DownloadStatus
   fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html#LocalSearchEngine_Core_Crawling_Engine_DownloadResult_FinalRequestUri
+  name: FinalRequestUri
+  nameWithType: DownloadResult.FinalRequestUri
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.FinalRequestUri

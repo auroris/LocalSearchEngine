@@ -5,7 +5,7 @@ items:
   id: AliasJob
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32,System.String)
+  - LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32)
   langs:
   - csharp
   - vb
@@ -20,11 +20,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AliasJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 68
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Represents a job classification for canonical page aliases.
+  summary: >-
+    Represents a job classification for a URL that is no longer a page of its own — a redirect source,
+
+    a canonical alias, or duplicate content. Its content, links, and chunks are dropped; whatever it
+
+    points at is enqueued separately.
   example: []
   syntax:
     content: 'internal sealed record AliasJob : CrawlJob, IEquatable<CrawlJob>, IEquatable<AliasJob>'
@@ -38,23 +43,22 @@ items:
   inheritedMembers:
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.Url
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32,System.String)
-  id: '#ctor(System.String,System.Int32,System.String)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor(System.String,System.Int32)
+  id: '#ctor(System.String,System.Int32)'
   parent: LocalSearchEngine.Core.Crawling.Engine.AliasJob
   langs:
   - csharp
   - vb
-  name: AliasJob(string, int, string?)
-  nameWithType: AliasJob.AliasJob(string, int, string?)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob.AliasJob(string, int, string?)
+  name: AliasJob(string, int)
+  nameWithType: AliasJob.AliasJob(string, int)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob.AliasJob(string, int)
   type: Constructor
   source:
     remote:
@@ -63,29 +67,31 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 68
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Represents a job classification for canonical page aliases.
+  summary: >-
+    Represents a job classification for a URL that is no longer a page of its own — a redirect source,
+
+    a canonical alias, or duplicate content. Its content, links, and chunks are dropped; whatever it
+
+    points at is enqueued separately.
   example: []
   syntax:
-    content: public AliasJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
+    content: public AliasJob(string Url, int StatusCode)
     parameters:
     - id: Url
       type: System.String
       description: The target page URL.
     - id: StatusCode
       type: System.Int32
-      description: The response HTTP status code.
-    - id: RedirectSourceUrl
-      type: System.String
-      description: The source URL if reached via a redirect.
-    content.vb: Public Sub New(Url As String, StatusCode As Integer, RedirectSourceUrl As String = Nothing)
+      description: The response HTTP status code (302 for a redirect source).
+    content.vb: Public Sub New(Url As String, StatusCode As Integer)
   overload: LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor*
-  nameWithType.vb: AliasJob.New(String, Integer, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.AliasJob.New(String, Integer, String)
-  name.vb: New(String, Integer, String)
+  nameWithType.vb: AliasJob.New(String, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.AliasJob.New(String, Integer)
+  name.vb: New(String, Integer)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
@@ -223,13 +229,6 @@ references:
   name: StatusCode
   nameWithType: CrawlJob.StatusCode
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.StatusCode
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  commentId: P:LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
-  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html#LocalSearchEngine_Core_Crawling_Engine_CrawlJob_RedirectSourceUrl
-  name: RedirectSourceUrl
-  nameWithType: CrawlJob.RedirectSourceUrl
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.RedirectSourceUrl
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -462,7 +461,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.AliasJob.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html#LocalSearchEngine_Core_Crawling_Engine_AliasJob__ctor_System_String_System_Int32_System_String_
+  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html#LocalSearchEngine_Core_Crawling_Engine_AliasJob__ctor_System_String_System_Int32_
   name: AliasJob
   nameWithType: AliasJob.AliasJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob.AliasJob

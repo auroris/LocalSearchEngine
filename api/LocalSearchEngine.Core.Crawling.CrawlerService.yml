@@ -6,10 +6,14 @@ items:
   parent: LocalSearchEngine.Core.Crawling
   children:
   - LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
-  - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat,System.Threading.PeriodicTimer)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
   - LocalSearchEngine.Core.Crawling.CrawlerService.UserAgent
+  - LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled(System.String,System.ValueTuple{System.String,System.TimeSpan})
+  - LocalSearchEngine.Core.Crawling.CrawlerService.WatchdogInterval
   - LocalSearchEngine.Core.Crawling.CrawlerService._connectionString
   - LocalSearchEngine.Core.Crawling.CrawlerService._httpClient
   - LocalSearchEngine.Core.Crawling.CrawlerService._logger
@@ -28,14 +32,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlerService
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
   summary: >-
-    Orchestrates a crawl: initializes the shared context, sets up connections, and coordinates
+    Orchestrates a crawl: initializes the shared context, sets up connections, and coordinates a concurrent
 
-    a concurrent producer (CrawlProducer) and consumer (CrawlConsumer).
+    crawler (CrawlProducer, which fetches and writes crawl state) and embedder (CrawlEmbedder, which embeds
+
+    and writes chunks off an unbounded queue), their writes serialized by a single DbWriteGate.
   example: []
   syntax:
     content: public class CrawlerService
@@ -68,7 +74,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UserAgent
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -97,7 +103,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -124,7 +130,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 36
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -153,7 +159,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -182,7 +188,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connectionString
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 40
+    startLine: 41
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -211,7 +217,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -255,7 +261,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureCreatedAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 61
+    startLine: 62
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -268,16 +274,16 @@ items:
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous schema creation.
     content.vb: Public Function EnsureCreatedAsync() As Task
   overload: LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync*
-- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
-  id: CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32)
+  id: CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.CrawlerService
   langs:
   - csharp
   - vb
-  name: CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
-  nameWithType: CrawlerService.CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(string, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, System.Threading.CancellationToken)
+  name: CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int)
+  nameWithType: CrawlerService.CrawlAsync(string, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(string, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, int)
   type: Method
   source:
     remote:
@@ -293,7 +299,7 @@ items:
   summary: Orchestrates the crawl loop starting from a seed URL.
   example: []
   syntax:
-    content: public Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = 2147483647, IEnumerable<string>? allowedServers = null, IEnumerable<string>? noIndexPatterns = null, int maxPagesPerHost = 2147483647, long maxCrawlSizeBytes = 15728640, bool checkExternalLinks = false, ICrawlReporter? reporter = null, CancellationToken cancellationToken = default)
+    content: public Task<CrawlReport> CrawlAsync(string seedUrl, int maxPages = 2147483647, IEnumerable<string>? allowedServers = null, IEnumerable<string>? noIndexPatterns = null, int maxPagesPerHost = 2147483647, long maxCrawlSizeBytes = 15728640, bool checkExternalLinks = false, ICrawlReporter? reporter = null, int requestDelayMs = 250)
     parameters:
     - id: seedUrl
       type: System.String
@@ -319,17 +325,16 @@ items:
     - id: reporter
       type: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
       description: Receives live progress and phase changes.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: requestDelayMs
+      type: System.Int32
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref> summarizing what the crawl indexed, removed, and discovered.
-    content.vb: Public Function CrawlAsync(seedUrl As String, maxPages As Integer = 2147483647, allowedServers As IEnumerable(Of String) = Nothing, noIndexPatterns As IEnumerable(Of String) = Nothing, maxPagesPerHost As Integer = 2147483647, maxCrawlSizeBytes As Long = 15728640, checkExternalLinks As Boolean = False, reporter As ICrawlReporter = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of CrawlReport)
+    content.vb: Public Function CrawlAsync(seedUrl As String, maxPages As Integer = 2147483647, allowedServers As IEnumerable(Of String) = Nothing, noIndexPatterns As IEnumerable(Of String) = Nothing, maxPagesPerHost As Integer = 2147483647, maxCrawlSizeBytes As Long = 15728640, checkExternalLinks As Boolean = False, reporter As ICrawlReporter = Nothing, requestDelayMs As Integer = 250) As Task(Of CrawlReport)
   overload: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync*
-  nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, System.Threading.CancellationToken)
-  name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, CancellationToken)
+  nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer)
+  name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer)
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   id: EmptyReport(System.String,System.DateTime)
@@ -348,7 +353,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmptyReport
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 273
+    startLine: 281
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -371,6 +376,150 @@ items:
   nameWithType.vb: CrawlerService.EmptyReport(String, Date)
   fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(String, Date)
   name.vb: EmptyReport(String, Date)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.WatchdogInterval
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.WatchdogInterval
+  id: WatchdogInterval
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: WatchdogInterval
+  nameWithType: CrawlerService.WatchdogInterval
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.WatchdogInterval
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WatchdogInterval
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 287
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: How often the stall watchdog samples the heartbeat.
+  example: []
+  syntax:
+    content: private static readonly TimeSpan WatchdogInterval
+    return:
+      type: System.TimeSpan
+    content.vb: Private Shared ReadOnly WatchdogInterval As TimeSpan
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+  id: StallThreshold
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: StallThreshold
+  nameWithType: CrawlerService.StallThreshold
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StallThreshold
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 290
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: How long one activity may run before the watchdog logs a possible stall.
+  example: []
+  syntax:
+    content: private static readonly TimeSpan StallThreshold
+    return:
+      type: System.TimeSpan
+    content.vb: Private Shared ReadOnly StallThreshold As TimeSpan
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat,System.Threading.PeriodicTimer)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat,System.Threading.PeriodicTimer)
+  id: RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat,System.Threading.PeriodicTimer)
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: RunStallWatchdogAsync(CrawlHeartbeat, PeriodicTimer)
+  nameWithType: CrawlerService.RunStallWatchdogAsync(CrawlHeartbeat, PeriodicTimer)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat, System.Threading.PeriodicTimer)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RunStallWatchdogAsync
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 300
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: >-
+    Polls the heartbeat on a timer and logs a warning whenever the current activity has been in
+
+    flight past <xref href="LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold" data-throw-if-not-resolved="false"></xref>, naming the URL or phase that is stuck. The loop ends
+
+    when <code class="paramref">timer</code> is disposed.
+  example: []
+  syntax:
+    content: private Task RunStallWatchdogAsync(CrawlHeartbeat heartbeat, PeriodicTimer timer)
+    parameters:
+    - id: heartbeat
+      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+      description: The shared activity marker the producer and consumer bump.
+    - id: timer
+      type: System.Threading.PeriodicTimer
+      description: The periodic timer driving the poll; disposing it stops the loop.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> that completes when the timer is disposed.
+    content.vb: Private Function RunStallWatchdogAsync(heartbeat As CrawlHeartbeat, timer As PeriodicTimer) As Task
+  overload: LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync*
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled(System.String,System.ValueTuple{System.String,System.TimeSpan})
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled(System.String,System.ValueTuple{System.String,System.TimeSpan})
+  id: WarnIfStalled(System.String,System.ValueTuple{System.String,System.TimeSpan})
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: WarnIfStalled(string, (string Activity, TimeSpan Elapsed))
+  nameWithType: CrawlerService.WarnIfStalled(string, (string Activity, TimeSpan Elapsed))
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled(string, (string Activity, System.TimeSpan Elapsed))
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WarnIfStalled
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 316
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: >-
+    Logs a possible-stall warning for one heartbeat lane, naming which half of the pipeline is stuck so
+
+    the log points at the real culprit instead of whichever thread happened to mark last. An idle lane
+
+    (its thread parked with no work) is never a stall, so it is skipped.
+  example: []
+  syntax:
+    content: private void WarnIfStalled(string lane, (string Activity, TimeSpan Elapsed) state)
+    parameters:
+    - id: lane
+      type: System.String
+      description: The lane label, "crawler" or "embedder".
+    - id: state
+      type: System.ValueTuple{System.String,System.TimeSpan}
+      description: The lane's current activity and how long it has been running.
+    content.vb: Private Sub WarnIfStalled(lane As String, state As (Activity As String, Elapsed As TimeSpan))
+  overload: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled*
+  nameWithType.vb: CrawlerService.WarnIfStalled(String, (Activity As String, Elapsed As TimeSpan))
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled(String, (Activity As String, Elapsed As System.TimeSpan))
+  name.vb: WarnIfStalled(String, (Activity As String, Elapsed As TimeSpan))
 references:
 - uid: LocalSearchEngine.Core.Crawling
   commentId: N:LocalSearchEngine.Core.Crawling
@@ -935,7 +1084,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlReport
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync
-  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_CrawlAsync_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_CrawlAsync_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Int32_
   name: CrawlAsync
   nameWithType: CrawlerService.CrawlAsync
   fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync
@@ -1014,14 +1163,6 @@ references:
   name: ICrawlReporter
   nameWithType: ICrawlReporter
   fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
   commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
   parent: System.Threading.Tasks
@@ -1158,33 +1299,6 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true
@@ -1230,3 +1344,147 @@ references:
   nameWithType.vb: Date
   fullName.vb: Date
   name.vb: Date
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_StallThreshold
+  name: StallThreshold
+  nameWithType: CrawlerService.StallThreshold
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_RunStallWatchdogAsync_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_System_Threading_PeriodicTimer_
+  name: RunStallWatchdogAsync
+  nameWithType: CrawlerService.RunStallWatchdogAsync
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  name: CrawlHeartbeat
+  nameWithType: CrawlHeartbeat
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+- uid: System.Threading.PeriodicTimer
+  commentId: T:System.Threading.PeriodicTimer
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.periodictimer
+  name: PeriodicTimer
+  nameWithType: PeriodicTimer
+  fullName: System.Threading.PeriodicTimer
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_WarnIfStalled_System_String_System_ValueTuple_System_String_System_TimeSpan__
+  name: WarnIfStalled
+  nameWithType: CrawlerService.WarnIfStalled
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.WarnIfStalled
+- uid: System.ValueTuple{System.String,System.TimeSpan}
+  commentId: T:System.ValueTuple{System.String,System.TimeSpan}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: (string Activity, TimeSpan Elapsed)
+  nameWithType: (string Activity, TimeSpan Elapsed)
+  fullName: (string Activity, System.TimeSpan Elapsed)
+  nameWithType.vb: (Activity As String, Elapsed As TimeSpan)
+  fullName.vb: (Activity As String, Elapsed As System.TimeSpan)
+  name.vb: (Activity As String, Elapsed As TimeSpan)
+  spec.csharp:
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
+    name: Activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+    name: Elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
+    name: Activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+    name: Elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )

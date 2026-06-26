@@ -5,24 +5,27 @@ items:
   id: CrawlProducer
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob},LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect(System.String,System.Uri)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String)
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.RedirectStatusCode
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._backlog
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._crawlStateWriter
+  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._embeddingWriter
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._logger
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._pageDownloader
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._robotsService
   - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._vectorSearchService
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
   langs:
   - csharp
   - vb
@@ -37,12 +40,12 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlProducer
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: >-
-    The producer half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
+    The crawler half of the crawl. It drains the frontier and, for each URL, runs the gauntlet of
 
     checks — scope, robots.txt, the per-host cap, host reachability, and a politeness delay — before
 
@@ -50,15 +53,17 @@ items:
 
     is run through <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor" data-throw-if-not-resolved="false"></xref>, deduplicated by content hash, and has its
 
-    outlinks fed back into the frontier; every URL becomes a <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> describing what
+    outlinks fed back into the frontier; every URL becomes a <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref>. The crawler writes
 
-    should be persisted, written to the shared channel for the consumer to apply. Index writes are
+    that job's crawl-state and link rows itself through <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter" data-throw-if-not-resolved="false"></xref>, then drops any
 
-    deliberately left to the consumer — the producer only reads existing crawl state, for conditional
+    chunk work onto the embedder's unbounded queue and moves on — it never blocks on embedding, so the
 
-    requests and duplicate detection — apart from the post-crawl pruning pass, which runs after the
+    crawl finishes well before the embedder. It reads existing crawl state (for conditional requests and
 
-    consumer has drained and so can write safely.
+    duplicate detection) and, in the post-crawl pruning pass that runs after both halves have drained,
+
+    deletes stale entries.
   example: []
   syntax:
     content: internal sealed class CrawlProducer
@@ -72,35 +77,6 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
-  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
-  id: DefaultRequestDelayMs
-  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-  langs:
-  - csharp
-  - vb
-  name: DefaultRequestDelayMs
-  nameWithType: CrawlProducer.DefaultRequestDelayMs
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DefaultRequestDelayMs
-  type: Field
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: DefaultRequestDelayMs
-    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 31
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: The default request delay in milliseconds when robots.txt does not specify one.
-  example: []
-  syntax:
-    content: private const int DefaultRequestDelayMs = 250
-    return:
-      type: System.Int32
-    content.vb: Private Const DefaultRequestDelayMs As Integer = 250
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
   commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.MaxCrawlDelaySeconds
   id: MaxCrawlDelaySeconds
@@ -119,7 +95,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlDelaySeconds
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 33
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -148,46 +124,104 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _vectorSearchService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 36
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: The vector search service to record and update vector index chunks.
+  summary: The vector search service, used by the post-crawl prune to delete stale chunks.
   example: []
   syntax:
     content: private readonly VectorSearchService _vectorSearchService
     return:
       type: LocalSearchEngine.Core.Searching.VectorSearchService
     content.vb: Private ReadOnly _vectorSearchService As VectorSearchService
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
-  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
-  id: _writer
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._crawlStateWriter
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._crawlStateWriter
+  id: _crawlStateWriter
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: _writer
-  nameWithType: CrawlProducer._writer
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._writer
+  name: _crawlStateWriter
+  nameWithType: CrawlProducer._crawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._crawlStateWriter
   type: Field
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: _writer
+    id: _crawlStateWriter
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 38
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: The channel writer used to send finished jobs to the consumer.
+  summary: Applies each job's crawl-state and link rows on the crawler thread (under the write gate).
   example: []
   syntax:
-    content: private readonly ChannelWriter<CrawlJob> _writer
+    content: private readonly CrawlStateWriter _crawlStateWriter
     return:
-      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
-    content.vb: Private ReadOnly _writer As ChannelWriter(Of CrawlJob)
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+    content.vb: Private ReadOnly _crawlStateWriter As CrawlStateWriter
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._embeddingWriter
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._embeddingWriter
+  id: _embeddingWriter
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _embeddingWriter
+  nameWithType: CrawlProducer._embeddingWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._embeddingWriter
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embeddingWriter
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The unbounded queue the crawler hands chunk work to for the embedder to grind through.
+  example: []
+  syntax:
+    content: private readonly ChannelWriter<EmbeddingJob> _embeddingWriter
+    return:
+      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob}
+    content.vb: Private ReadOnly _embeddingWriter As ChannelWriter(Of EmbeddingJob)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._backlog
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._backlog
+  id: _backlog
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: _backlog
+  nameWithType: CrawlProducer._backlog
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._backlog
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _backlog
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 41
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The shared backlog counter, incremented as chunk work is queued for the embedder.
+  example: []
+  syntax:
+    content: private readonly EmbeddingBacklog _backlog
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+    content.vb: Private ReadOnly _backlog As EmbeddingBacklog
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
   commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer._context
   id: _context
@@ -206,7 +240,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _context
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 40
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -235,7 +269,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _robotsService
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 42
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -264,7 +298,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _pageDownloader
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 44
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -293,7 +327,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _logger
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 46
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -304,16 +338,16 @@ items:
     return:
       type: Microsoft.Extensions.Logging.ILogger
     content.vb: Private ReadOnly _logger As ILogger
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
-  id: '#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob},LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob},LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob},LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter,System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob},LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog,LocalSearchEngine.Core.Crawling.Engine.CrawlContext,LocalSearchEngine.Core.Crawling.Engine.RobotsService,LocalSearchEngine.Core.Crawling.Engine.PageDownloader,Microsoft.Extensions.Logging.ILogger)'
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: CrawlProducer(VectorSearchService, ChannelWriter<CrawlJob>, CrawlContext, RobotsService, PageDownloader, ILogger)
-  nameWithType: CrawlProducer.CrawlProducer(VectorSearchService, ChannelWriter<CrawlJob>, CrawlContext, RobotsService, PageDownloader, ILogger)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.CrawlProducer(LocalSearchEngine.Core.Searching.VectorSearchService, System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
+  name: CrawlProducer(VectorSearchService, CrawlStateWriter, ChannelWriter<EmbeddingJob>, EmbeddingBacklog, CrawlContext, RobotsService, PageDownloader, ILogger)
+  nameWithType: CrawlProducer.CrawlProducer(VectorSearchService, CrawlStateWriter, ChannelWriter<EmbeddingJob>, EmbeddingBacklog, CrawlContext, RobotsService, PageDownloader, ILogger)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.CrawlProducer(LocalSearchEngine.Core.Searching.VectorSearchService, LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter, System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob>, LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
   type: Constructor
   source:
     remote:
@@ -322,21 +356,27 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 57
+    startLine: 62
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Initializes a new instance of the <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlProducer" data-throw-if-not-resolved="false"></xref> class.
   example: []
   syntax:
-    content: public CrawlProducer(VectorSearchService vectorSearchService, ChannelWriter<CrawlJob> writer, CrawlContext context, RobotsService robotsService, PageDownloader pageDownloader, ILogger logger)
+    content: public CrawlProducer(VectorSearchService vectorSearchService, CrawlStateWriter crawlStateWriter, ChannelWriter<EmbeddingJob> embeddingWriter, EmbeddingBacklog backlog, CrawlContext context, RobotsService robotsService, PageDownloader pageDownloader, ILogger logger)
     parameters:
     - id: vectorSearchService
       type: LocalSearchEngine.Core.Searching.VectorSearchService
-      description: The vector search service provider.
-    - id: writer
-      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
-      description: The channel writer to submit crawl jobs.
+      description: The vector search service provider (used by the post-crawl prune).
+    - id: crawlStateWriter
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+      description: Writes each job's crawl-state and link rows.
+    - id: embeddingWriter
+      type: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob}
+      description: The writer of the unbounded embedding queue.
+    - id: backlog
+      type: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+      description: The shared backlog counter, incremented as chunk work is queued.
     - id: context
       type: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
       description: The active crawl context.
@@ -349,21 +389,21 @@ items:
     - id: logger
       type: Microsoft.Extensions.Logging.ILogger
       description: The logger instance.
-    content.vb: Public Sub New(vectorSearchService As VectorSearchService, writer As ChannelWriter(Of CrawlJob), context As CrawlContext, robotsService As RobotsService, pageDownloader As PageDownloader, logger As ILogger)
+    content.vb: Public Sub New(vectorSearchService As VectorSearchService, crawlStateWriter As CrawlStateWriter, embeddingWriter As ChannelWriter(Of EmbeddingJob), backlog As EmbeddingBacklog, context As CrawlContext, robotsService As RobotsService, pageDownloader As PageDownloader, logger As ILogger)
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor*
-  nameWithType.vb: CrawlProducer.New(VectorSearchService, ChannelWriter(Of CrawlJob), CrawlContext, RobotsService, PageDownloader, ILogger)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.New(LocalSearchEngine.Core.Searching.VectorSearchService, System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob), LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
-  name.vb: New(VectorSearchService, ChannelWriter(Of CrawlJob), CrawlContext, RobotsService, PageDownloader, ILogger)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
-  id: ProduceAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlProducer.New(VectorSearchService, CrawlStateWriter, ChannelWriter(Of EmbeddingJob), EmbeddingBacklog, CrawlContext, RobotsService, PageDownloader, ILogger)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.New(LocalSearchEngine.Core.Searching.VectorSearchService, LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter, System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob), LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog, LocalSearchEngine.Core.Crawling.Engine.CrawlContext, LocalSearchEngine.Core.Crawling.Engine.RobotsService, LocalSearchEngine.Core.Crawling.Engine.PageDownloader, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(VectorSearchService, CrawlStateWriter, ChannelWriter(Of EmbeddingJob), EmbeddingBacklog, CrawlContext, RobotsService, PageDownloader, ILogger)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(System.Int32,System.Int32)
+  id: ProduceAsync(System.Int32,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: ProduceAsync(int, int, CancellationToken)
-  nameWithType: CrawlProducer.ProduceAsync(int, int, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(int, int, System.Threading.CancellationToken)
+  name: ProduceAsync(int, int)
+  nameWithType: CrawlProducer.ProduceAsync(int, int)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(int, int)
   type: Method
   source:
     remote:
@@ -372,14 +412,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 80
+    startLine: 88
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Executes the main crawl loop, fetching pages from the queue and producing crawl jobs.
   example: []
   syntax:
-    content: public Task<(int ProducedJobs, int IndexedCount)> ProduceAsync(int maxPages, int maxPagesPerHost, CancellationToken cancellationToken)
+    content: public Task<(int ProducedJobs, int IndexedCount)> ProduceAsync(int maxPages, int maxPagesPerHost)
     parameters:
     - id: maxPages
       type: System.Int32
@@ -387,17 +427,14 @@ items:
     - id: maxPagesPerHost
       type: System.Int32
       description: The maximum pages allowed per individual host.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
       description: A tuple containing the number of produced jobs and the number of successfully indexed pages.
-    content.vb: Public Function ProduceAsync(maxPages As Integer, maxPagesPerHost As Integer, cancellationToken As CancellationToken) As Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
+    content.vb: Public Function ProduceAsync(maxPages As Integer, maxPagesPerHost As Integer) As Task(Of (ProducedJobs As Integer, IndexedCount As Integer))
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync*
-  nameWithType.vb: CrawlProducer.ProduceAsync(Integer, Integer, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(Integer, Integer, System.Threading.CancellationToken)
-  name.vb: ProduceAsync(Integer, Integer, CancellationToken)
+  nameWithType.vb: CrawlProducer.ProduceAsync(Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync(Integer, Integer)
+  name.vb: ProduceAsync(Integer, Integer)
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(System.DateTime)
   id: PruneStaleUrlsAsync(System.DateTime)
@@ -416,7 +453,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStaleUrlsAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 159
+    startLine: 158
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -436,16 +473,16 @@ items:
   nameWithType.vb: CrawlProducer.PruneStaleUrlsAsync(Date)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.PruneStaleUrlsAsync(Date)
   name.vb: PruneStaleUrlsAsync(Date)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String,System.Threading.CancellationToken)
-  id: ProduceJobAsync(System.String,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(System.String)
+  id: ProduceJobAsync(System.String)
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: ProduceJobAsync(string, CancellationToken)
-  nameWithType: CrawlProducer.ProduceJobAsync(string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(string, System.Threading.CancellationToken)
+  name: ProduceJobAsync(string)
+  nameWithType: CrawlProducer.ProduceJobAsync(string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(string)
   type: Method
   source:
     remote:
@@ -454,39 +491,119 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProduceJobAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 193
+    startLine: 191
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: 'Processes a single URL: checks robot rules, downloads the page, and constructs the appropriate crawl job.'
   example: []
   syntax:
-    content: private Task<CrawlJob?> ProduceJobAsync(string currentUrl, CancellationToken cancellationToken)
+    content: private Task<CrawlJob?> ProduceJobAsync(string currentUrl)
     parameters:
     - id: currentUrl
       type: System.String
       description: The URL to crawl.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> representing the results of processing, or <code>null</code> if skipped.
-    content.vb: Private Function ProduceJobAsync(currentUrl As String, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+    content.vb: Private Function ProduceJobAsync(currentUrl As String) As Task(Of CrawlJob)
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync*
-  nameWithType.vb: CrawlProducer.ProduceJobAsync(String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(String, System.Threading.CancellationToken)
-  name.vb: ProduceJobAsync(String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
-  id: ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlProducer.ProduceJobAsync(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync(String)
+  name.vb: ProduceJobAsync(String)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.RedirectStatusCode
+  commentId: F:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.RedirectStatusCode
+  id: RedirectStatusCode
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult, CancellationToken)
-  nameWithType: CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), LocalSearchEngine.Core.Crawling.Engine.DownloadResult, System.Threading.CancellationToken)
+  name: RedirectStatusCode
+  nameWithType: CrawlProducer.RedirectStatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.RedirectStatusCode
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RedirectStatusCode
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 267
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    The synthetic status stamped on a redirect source's crawl-state row. The real 3xx code
+        isn't visible once the client has followed the chain, so all redirect sources record a plain 302.
+  example: []
+  syntax:
+    content: private const int RedirectStatusCode = 302
+    return:
+      type: System.Int32
+    content.vb: Private Const RedirectStatusCode As Integer = 302
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect(System.String,System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect(System.String,System.Uri)
+  id: HandleRedirect(System.String,System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: HandleRedirect(string, Uri?)
+  nameWithType: CrawlProducer.HandleRedirect(string, Uri?)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect(string, System.Uri?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HandleRedirect
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
+    startLine: 280
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: >-
+    Handles a request that redirected: the target is treated exactly like a link discovered on a page —
+
+    handed to the frontier (which deduplicates it and subjects it to the same scope/robots gauntlet when
+
+    it is dequeued) — and the dequeued URL itself is recorded as a redirect, dropping any content, links,
+
+    and chunks it used to have. An off-scope target is reported but not followed; the seed redirecting
+
+    off its origin is the one case that widens the scope, so the destination (a vanity domain pointing at
+
+    the real site) is adopted and crawled.
+  example: []
+  syntax:
+    content: private CrawlJob HandleRedirect(string currentUrl, Uri? finalUri)
+    parameters:
+    - id: currentUrl
+      type: System.String
+      description: The dequeued URL that redirected.
+    - id: finalUri
+      type: System.Uri
+      description: The redirect target reported by the downloader.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+      description: An <xref href="LocalSearchEngine.Core.Crawling.Engine.AliasJob" data-throw-if-not-resolved="false"></xref> recording <code class="paramref">currentUrl</code> as a redirect source.
+    content.vb: Private Function HandleRedirect(currentUrl As String, finalUri As Uri) As CrawlJob
+  overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect*
+  nameWithType.vb: CrawlProducer.HandleRedirect(String, Uri)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect(String, System.Uri)
+  name.vb: HandleRedirect(String, Uri)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  id: ProcessDownloadSuccessAsync(System.String,System.ValueTuple{System.String,System.String,System.String},LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
+  langs:
+  - csharp
+  - vb
+  name: ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult)
+  nameWithType: CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), DownloadResult)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(string, (string? ETag, string? LastModified, string? ContentHash), LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
   type: Method
   source:
     remote:
@@ -495,14 +612,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessDownloadSuccessAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 313
+    startLine: 316
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Processes a successfully downloaded page or file, verifying duplicate content, extracting content/metadata, and scheduling the appropriate indexing job.
   example: []
   syntax:
-    content: private Task<CrawlJob?> ProcessDownloadSuccessAsync(string currentUrl, (string? ETag, string? LastModified, string? ContentHash) state, DownloadResult downloadResult, CancellationToken cancellationToken)
+    content: private Task<CrawlJob?> ProcessDownloadSuccessAsync(string currentUrl, (string? ETag, string? LastModified, string? ContentHash) state, DownloadResult downloadResult)
     parameters:
     - id: currentUrl
       type: System.String
@@ -513,27 +630,24 @@ items:
     - id: downloadResult
       type: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
       description: The result details of the successful download.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.CrawlJob" data-throw-if-not-resolved="false"></xref> representing the classification of the download success.
-    content.vb: Private Function ProcessDownloadSuccessAsync(currentUrl As String, state As (ETag As String, LastModified As String, ContentHash As String), downloadResult As DownloadResult, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+    content.vb: Private Function ProcessDownloadSuccessAsync(currentUrl As String, state As (ETag As String, LastModified As String, ContentHash As String), downloadResult As DownloadResult) As Task(Of CrawlJob)
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync*
-  nameWithType.vb: CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), LocalSearchEngine.Core.Crawling.Engine.DownloadResult, System.Threading.CancellationToken)
-  name.vb: ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  id: EmitIndexableAsync(System.String,System.String,System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), LocalSearchEngine.Core.Crawling.Engine.DownloadResult)
+  name.vb: ProcessDownloadSuccessAsync(String, (ETag As String, LastModified As String, ContentHash As String), DownloadResult)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  id: EmitIndexableAsync(System.String,System.Int32,System.ValueTuple{System.String,System.String,System.String},System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, CancellationToken)
-  nameWithType: CrawlProducer.EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(string, string, string?, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
+  name: EmitIndexableAsync(string, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
+  nameWithType: CrawlProducer.EmitIndexableAsync(string, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(string, int, (string? ETag, string? LastModified, string? ContentHash), string?, string, string, string?, string?, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind)
   type: Method
   source:
     remote:
@@ -542,7 +656,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmitIndexableAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 444
+    startLine: 431
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -556,23 +670,17 @@ items:
     <xref href="LocalSearchEngine.Core.Crawling.Engine.IndexJob" data-throw-if-not-resolved="false"></xref> that (re)embeds it. Shared by the HTML, PDF, and DOCX paths.
   example: []
   syntax:
-    content: private Task<CrawlJob> EmitIndexableAsync(string currentUrl, string finalUrl, string? redirectSourceUrl, int statusCode, (string? ETag, string? LastModified, string? ContentHash) finalState, string? title, string headings, string text, string? newETag, string? newLastModified, IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind, CancellationToken cancellationToken)
+    content: private Task<CrawlJob> EmitIndexableAsync(string url, int statusCode, (string? ETag, string? LastModified, string? ContentHash) state, string? title, string headings, string text, string? newETag, string? newLastModified, IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind)
     parameters:
-    - id: currentUrl
+    - id: url
       type: System.String
-      description: The requested URL.
-    - id: finalUrl
-      type: System.String
-      description: The URL after redirects/normalization.
-    - id: redirectSourceUrl
-      type: System.String
-      description: The dequeued URL when a redirect was followed; otherwise <code>null</code>.
+      description: The page URL.
     - id: statusCode
       type: System.Int32
       description: The HTTP status code of the response.
-    - id: finalState
+    - id: state
       type: System.ValueTuple{System.String,System.String,System.String}
-      description: The crawl state previously recorded for <code class="paramref">finalUrl</code>.
+      description: The crawl state previously recorded for <code class="paramref">url</code>.
     - id: title
       type: System.String
       description: The extracted document/page title.
@@ -597,17 +705,14 @@ items:
     - id: kind
       type: LocalSearchEngine.Core.Crawling.Policies.DocKind
       description: The classified document kind (Html/Pdf/Docx) of the page being indexed.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
       description: The crawl job to persist for this page.
-    content.vb: Private Function EmitIndexableAsync(currentUrl As String, finalUrl As String, redirectSourceUrl As String, statusCode As Integer, finalState As (ETag As String, LastModified As String, ContentHash As String), title As String, headings As String, text As String, newETag As String, newLastModified As String, outlinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), kind As DocKind, cancellationToken As CancellationToken) As Task(Of CrawlJob)
+    content.vb: Private Function EmitIndexableAsync(url As String, statusCode As Integer, state As (ETag As String, LastModified As String, ContentHash As String), title As String, headings As String, text As String, newETag As String, newLastModified As String, outlinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), kind As DocKind) As Task(Of CrawlJob)
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync*
-  nameWithType.vb: CrawlProducer.EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
-  name.vb: EmitIndexableAsync(String, String, String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, CancellationToken)
+  nameWithType.vb: CrawlProducer.EmitIndexableAsync(String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync(String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name.vb: EmitIndexableAsync(String, Integer, (ETag As String, LastModified As String, ContentHash As String), String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(System.String,System.String,System.String)
   id: ComputeContentHash(System.String,System.String,System.String)
@@ -626,7 +731,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ComputeContentHash
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 500
+    startLine: 487
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -661,16 +766,16 @@ items:
   nameWithType.vb: CrawlProducer.ComputeContentHash(String, String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash(String, String, String)
   name.vb: ComputeContentHash(String, String, String)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
-  id: EnqueueStoredOutlinksAsync(System.String,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(System.String)
+  id: EnqueueStoredOutlinksAsync(System.String)
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: EnqueueStoredOutlinksAsync(string, CancellationToken)
-  nameWithType: CrawlProducer.EnqueueStoredOutlinksAsync(string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(string, System.Threading.CancellationToken)
+  name: EnqueueStoredOutlinksAsync(string)
+  nameWithType: CrawlProducer.EnqueueStoredOutlinksAsync(string)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(string)
   type: Method
   source:
     remote:
@@ -679,38 +784,35 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 511
+    startLine: 497
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Reads outlinks stored in the database for an unchanged page and enqueues them for crawling.
   example: []
   syntax:
-    content: private Task EnqueueStoredOutlinksAsync(string url, CancellationToken cancellationToken)
+    content: private Task EnqueueStoredOutlinksAsync(string url)
     parameters:
     - id: url
       type: System.String
       description: The URL of the unchanged page.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Private Function EnqueueStoredOutlinksAsync(url As String, cancellationToken As CancellationToken) As Task
+    content.vb: Private Function EnqueueStoredOutlinksAsync(url As String) As Task
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync*
-  nameWithType.vb: CrawlProducer.EnqueueStoredOutlinksAsync(String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(String, System.Threading.CancellationToken)
-  name.vb: EnqueueStoredOutlinksAsync(String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
-  id: DelayForHostAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlProducer.EnqueueStoredOutlinksAsync(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync(String)
+  name.vb: EnqueueStoredOutlinksAsync(String)
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(System.String,System.TimeSpan)
+  id: DelayForHostAsync(System.String,System.TimeSpan)
   parent: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
   langs:
   - csharp
   - vb
-  name: DelayForHostAsync(string, TimeSpan, CancellationToken)
-  nameWithType: CrawlProducer.DelayForHostAsync(string, TimeSpan, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(string, System.TimeSpan, System.Threading.CancellationToken)
+  name: DelayForHostAsync(string, TimeSpan)
+  nameWithType: CrawlProducer.DelayForHostAsync(string, TimeSpan)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(string, System.TimeSpan)
   type: Method
   source:
     remote:
@@ -719,14 +821,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DelayForHostAsync
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 538
+    startLine: 523
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Enforces host crawl delay politely by delaying execution if the last contact was too recent.
   example: []
   syntax:
-    content: private Task DelayForHostAsync(string host, TimeSpan minGap, CancellationToken cancellationToken)
+    content: private Task DelayForHostAsync(string host, TimeSpan minGap)
     parameters:
     - id: host
       type: System.String
@@ -734,16 +836,13 @@ items:
     - id: minGap
       type: System.TimeSpan
       description: The minimum gap/duration between requests to this host.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Private Function DelayForHostAsync(host As String, minGap As TimeSpan, cancellationToken As CancellationToken) As Task
+    content.vb: Private Function DelayForHostAsync(host As String, minGap As TimeSpan) As Task
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync*
-  nameWithType.vb: CrawlProducer.DelayForHostAsync(String, TimeSpan, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(String, System.TimeSpan, System.Threading.CancellationToken)
-  name.vb: DelayForHostAsync(String, TimeSpan, CancellationToken)
+  nameWithType.vb: CrawlProducer.DelayForHostAsync(String, TimeSpan)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync(String, System.TimeSpan)
+  name.vb: DelayForHostAsync(String, TimeSpan)
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
   id: ResolveRequestDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
@@ -762,14 +861,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveRequestDelay
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlProducer.cs
-    startLine: 558
+    startLine: 543
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Resolves the request delay based on robots.txt rules, falling back to a default value if not specified.
   example: []
   syntax:
-    content: private static TimeSpan ResolveRequestDelay(RobotsRules robots)
+    content: private TimeSpan ResolveRequestDelay(RobotsRules robots)
     parameters:
     - id: robots
       type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
@@ -777,7 +876,7 @@ items:
     return:
       type: System.TimeSpan
       description: A <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> representing the delay duration.
-    content.vb: Private Shared Function ResolveRequestDelay(robots As RobotsRules) As TimeSpan
+    content.vb: Private Function ResolveRequestDelay(robots As RobotsRules) As TimeSpan
   overload: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ResolveRequestDelay*
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
@@ -800,6 +899,13 @@ references:
   name: CrawlJob
   nameWithType: CrawlJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html
+  name: CrawlStateWriter
+  nameWithType: CrawlStateWriter
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html
@@ -1099,26 +1205,26 @@ references:
   - uid: LocalSearchEngine.Core.Searching
     name: Searching
     href: LocalSearchEngine.Core.Searching.html
-- uid: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
-  commentId: T:System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.CrawlJob}
+- uid: System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob}
+  commentId: T:System.Threading.Channels.ChannelWriter{LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob}
   parent: System.Threading.Channels
   definition: System.Threading.Channels.ChannelWriter`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
-  name: ChannelWriter<CrawlJob>
-  nameWithType: ChannelWriter<CrawlJob>
-  fullName: System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.CrawlJob>
-  nameWithType.vb: ChannelWriter(Of CrawlJob)
-  fullName.vb: System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
-  name.vb: ChannelWriter(Of CrawlJob)
+  name: ChannelWriter<EmbeddingJob>
+  nameWithType: ChannelWriter<EmbeddingJob>
+  fullName: System.Threading.Channels.ChannelWriter<LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob>
+  nameWithType.vb: ChannelWriter(Of EmbeddingJob)
+  fullName.vb: System.Threading.Channels.ChannelWriter(Of LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob)
+  name.vb: ChannelWriter(Of EmbeddingJob)
   spec.csharp:
   - uid: System.Threading.Channels.ChannelWriter`1
     name: ChannelWriter
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.channels.channelwriter-1
   - name: <
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-    name: CrawlJob
-    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+    name: EmbeddingJob
+    href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html
   - name: '>'
   spec.vb:
   - uid: System.Threading.Channels.ChannelWriter`1
@@ -1128,9 +1234,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-    name: CrawlJob
-    href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
+    name: EmbeddingJob
+    href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html
   - name: )
 - uid: System.Threading.Channels.ChannelWriter`1
   commentId: T:System.Threading.Channels.ChannelWriter`1
@@ -1197,6 +1303,13 @@ references:
     name: Channels
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.channels
+- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog.html
+  name: EmbeddingBacklog
+  nameWithType: EmbeddingBacklog
+  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
   parent: LocalSearchEngine.Core.Crawling.Engine
@@ -1264,7 +1377,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer__ctor_LocalSearchEngine_Core_Searching_VectorSearchService_System_Threading_Channels_ChannelWriter_LocalSearchEngine_Core_Crawling_Engine_CrawlJob__LocalSearchEngine_Core_Crawling_Engine_CrawlContext_LocalSearchEngine_Core_Crawling_Engine_RobotsService_LocalSearchEngine_Core_Crawling_Engine_PageDownloader_Microsoft_Extensions_Logging_ILogger_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer__ctor_LocalSearchEngine_Core_Searching_VectorSearchService_LocalSearchEngine_Core_Crawling_Engine_CrawlStateWriter_System_Threading_Channels_ChannelWriter_LocalSearchEngine_Core_Crawling_Engine_EmbeddingJob__LocalSearchEngine_Core_Crawling_Engine_EmbeddingBacklog_LocalSearchEngine_Core_Crawling_Engine_CrawlContext_LocalSearchEngine_Core_Crawling_Engine_RobotsService_LocalSearchEngine_Core_Crawling_Engine_PageDownloader_Microsoft_Extensions_Logging_ILogger_
   name: CrawlProducer
   nameWithType: CrawlProducer.CrawlProducer
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.CrawlProducer
@@ -1273,18 +1386,10 @@ references:
   name.vb: New
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceAsync_System_Int32_System_Int32_
   name: ProduceAsync
   nameWithType: CrawlProducer.ProduceAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceAsync
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
   commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32}}
   parent: System.Threading.Tasks
@@ -1356,33 +1461,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   - name: )
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true
@@ -1502,7 +1580,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceJobAsync_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProduceJobAsync_System_String_
   name: ProduceJobAsync
   nameWithType: CrawlProducer.ProduceJobAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProduceJobAsync
@@ -1550,9 +1628,29 @@ references:
     name: CrawlJob
     href: LocalSearchEngine.Core.Crawling.Engine.CrawlJob.html
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.AliasJob
+  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html
+  name: AliasJob
+  nameWithType: AliasJob
+  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob
+- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_HandleRedirect_System_String_System_Uri_
+  name: HandleRedirect
+  nameWithType: CrawlProducer.HandleRedirect
+  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.HandleRedirect
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProcessDownloadSuccessAsync_System_String_System_ValueTuple_System_String_System_String_System_String__LocalSearchEngine_Core_Crawling_Engine_DownloadResult_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_ProcessDownloadSuccessAsync_System_String_System_ValueTuple_System_String_System_String_System_String__LocalSearchEngine_Core_Crawling_Engine_DownloadResult_
   name: ProcessDownloadSuccessAsync
   nameWithType: CrawlProducer.ProcessDownloadSuccessAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ProcessDownloadSuccessAsync
@@ -1673,12 +1771,6 @@ references:
   name: TouchJob
   nameWithType: TouchJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob
-- uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.AliasJob
-  href: LocalSearchEngine.Core.Crawling.Engine.AliasJob.html
-  name: AliasJob
-  nameWithType: AliasJob
-  fullName: LocalSearchEngine.Core.Crawling.Engine.AliasJob
 - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.IndexJob
   href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html
@@ -1687,7 +1779,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EmitIndexableAsync_System_String_System_String_System_String_System_Int32_System_ValueTuple_System_String_System_String_System_String__System_String_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EmitIndexableAsync_System_String_System_Int32_System_ValueTuple_System_String_System_String_System_String__System_String_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_
   name: EmitIndexableAsync
   nameWithType: CrawlProducer.EmitIndexableAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EmitIndexableAsync
@@ -1844,7 +1936,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.ComputeContentHash
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EnqueueStoredOutlinksAsync_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_EnqueueStoredOutlinksAsync_System_String_
   name: EnqueueStoredOutlinksAsync
   nameWithType: CrawlProducer.EnqueueStoredOutlinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.EnqueueStoredOutlinksAsync
@@ -1858,7 +1950,7 @@ references:
   fullName: System.Threading.Tasks.Task
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_DelayForHostAsync_System_String_System_TimeSpan_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html#LocalSearchEngine_Core_Crawling_Engine_CrawlProducer_DelayForHostAsync_System_String_System_TimeSpan_
   name: DelayForHostAsync
   nameWithType: CrawlProducer.DelayForHostAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.DelayForHostAsync

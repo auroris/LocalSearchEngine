@@ -5,25 +5,25 @@ items:
   id: CrawlStore
   parent: LocalSearchEngine.Core.Crawling.Storage
   children:
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   langs:
   - csharp
   - vb
@@ -38,7 +38,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStore
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 17
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -57,9 +57,11 @@ items:
 
     visit, store or re-derive a page's links, find a duplicate by content hash, list URLs a crawl no
 
-    longer reaches, and so on. Every method works on a connection the caller owns and opens, so callers
+    longer reaches, and so on. Every method works on a connection the caller owns and opens; the write
 
-    control transactions and which connection (read vs. write) each runs on.
+    methods accept an optional <xref href="Microsoft.Data.Sqlite.SqliteTransaction" data-throw-if-not-resolved="false"></xref> so a caller can batch several of them
+
+    into one atomic unit (the consumer applies each page's writes that way).
   example: []
   syntax:
     content: public static class CrawlStore
@@ -92,7 +94,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureSchemaAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -116,16 +118,16 @@ items:
   nameWithType.vb: CrawlStore.EnsureSchemaAsync(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(String)
   name.vb: EnsureSchemaAsync(String)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetCrawlStateAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.GetCrawlStateAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: GetCrawlStateAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.GetCrawlStateAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
   type: Method
   source:
     remote:
@@ -141,7 +143,7 @@ items:
   summary: Retrieves the ETag, Last-Modified, and ContentHash validators for a crawled URL.
   example: []
   syntax:
-    content: public static Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    content: public static Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -149,27 +151,24 @@ items:
     - id: url
       type: System.String
       description: The URL whose crawl state to retrieve.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
       description: A tuple containing the ETag, LastModified, and ContentHash, each null if not present.
-    content.vb: Public Shared Function GetCrawlStateAsync(connection As SqliteConnection, url As String, cancellationToken As CancellationToken) As Task(Of (ETag As String, LastModified As String, ContentHash As String))
+    content.vb: Public Shared Function GetCrawlStateAsync(connection As SqliteConnection, url As String) As Task(Of (ETag As String, LastModified As String, ContentHash As String))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync*
-  nameWithType.vb: CrawlStore.GetCrawlStateAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: GetCrawlStateAsync(SqliteConnection, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.GetCrawlStateAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: GetCrawlStateAsync(SqliteConnection, String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: UrlHasChunksAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.UrlHasChunksAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: UrlHasChunksAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.UrlHasChunksAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
   type: Method
   source:
     remote:
@@ -178,14 +177,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlHasChunksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 147
+    startLine: 146
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Checks whether the specified URL has any indexed text chunks in the database.
   example: []
   syntax:
-    content: public static Task<bool> UrlHasChunksAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    content: public static Task<bool> UrlHasChunksAsync(SqliteConnection connection, string url)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -193,27 +192,24 @@ items:
     - id: url
       type: System.String
       description: The URL to verify.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Boolean}
       description: <code>true</code> if the URL has at least one chunk; otherwise, <code>false</code>.
-    content.vb: Public Shared Function UrlHasChunksAsync(connection As SqliteConnection, url As String, cancellationToken As CancellationToken) As Task(Of Boolean)
+    content.vb: Public Shared Function UrlHasChunksAsync(connection As SqliteConnection, url As String) As Task(Of Boolean)
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync*
-  nameWithType.vb: CrawlStore.UrlHasChunksAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: UrlHasChunksAsync(SqliteConnection, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.Threading.CancellationToken)
-  id: FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.UrlHasChunksAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: UrlHasChunksAsync(SqliteConnection, String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  id: FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: FindIndexedDuplicateAsync(SqliteConnection, string, string, CancellationToken)
-  nameWithType: CrawlStore.FindIndexedDuplicateAsync(SqliteConnection, string, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, string, System.Threading.CancellationToken)
+  name: FindIndexedDuplicateAsync(SqliteConnection, string, string)
+  nameWithType: CrawlStore.FindIndexedDuplicateAsync(SqliteConnection, string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, string)
   type: Method
   source:
     remote:
@@ -222,14 +218,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FindIndexedDuplicateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 163
+    startLine: 161
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Searches for a duplicate URL containing identical content hash that has already been indexed.
   example: []
   syntax:
-    content: public static Task<string?> FindIndexedDuplicateAsync(SqliteConnection connection, string contentHash, string excludeUrl, CancellationToken cancellationToken)
+    content: public static Task<string?> FindIndexedDuplicateAsync(SqliteConnection connection, string contentHash, string excludeUrl)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -240,27 +236,24 @@ items:
     - id: excludeUrl
       type: System.String
       description: The URL to exclude from the duplicate search.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.String}
       description: The URL of the duplicate page, or <code>null</code> if not found.
-    content.vb: Public Shared Function FindIndexedDuplicateAsync(connection As SqliteConnection, contentHash As String, excludeUrl As String, cancellationToken As CancellationToken) As Task(Of String)
+    content.vb: Public Shared Function FindIndexedDuplicateAsync(connection As SqliteConnection, contentHash As String, excludeUrl As String) As Task(Of String)
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync*
-  nameWithType.vb: CrawlStore.FindIndexedDuplicateAsync(SqliteConnection, String, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, String, System.Threading.CancellationToken)
-  name.vb: FindIndexedDuplicateAsync(SqliteConnection, String, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
-  id: RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.FindIndexedDuplicateAsync(SqliteConnection, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, String)
+  name.vb: FindIndexedDuplicateAsync(SqliteConnection, String, String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, CancellationToken)
-  nameWithType: CrawlStore.RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, string?, string?, string?, string?, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
+  name: RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, SqliteTransaction?)
+  nameWithType: CrawlStore.RecordCrawlStateAsync(SqliteConnection, string, int, string?, string?, string?, string?, DocKind, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, string?, string?, string?, string?, LocalSearchEngine.Core.Crawling.Policies.DocKind, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -269,14 +262,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 189
+    startLine: 187
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Records crawl metadata (status code, headers, title, content hash) for a successfully crawled URL.
   example: []
   syntax:
-    content: public static Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, CancellationToken cancellationToken)
+    content: public static Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -302,27 +295,27 @@ items:
     - id: docKind
       type: LocalSearchEngine.Core.Crawling.Policies.DocKind
       description: The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function RecordCrawlStateAsync(connection As SqliteConnection, url As String, statusCode As Integer, eTag As String, lastModified As String, title As String, contentHash As String, docKind As DocKind, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function RecordCrawlStateAsync(connection As SqliteConnection, url As String, statusCode As Integer, eTag As String, lastModified As String, title As String, contentHash As String, docKind As DocKind, transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync*
-  nameWithType.vb: CrawlStore.RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, String, String, String, String, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Threading.CancellationToken)
-  name.vb: RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
-  id: RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, String, String, String, String, LocalSearchEngine.Core.Crawling.Policies.DocKind, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: RecordVisitAsync(SqliteConnection, string, int, bool, CancellationToken)
-  nameWithType: CrawlStore.RecordVisitAsync(SqliteConnection, string, int, bool, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, bool, System.Threading.CancellationToken)
+  name: RecordVisitAsync(SqliteConnection, string, int, bool, SqliteTransaction?)
+  nameWithType: CrawlStore.RecordVisitAsync(SqliteConnection, string, int, bool, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, bool, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -331,14 +324,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordVisitAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 225
+    startLine: 224
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Records that a URL was visited, updating timestamp and status code, and optionally clears stored metadata.
   example: []
   syntax:
-    content: public static Task RecordVisitAsync(SqliteConnection connection, string url, int statusCode, bool clearMetadata, CancellationToken cancellationToken)
+    content: public static Task RecordVisitAsync(SqliteConnection connection, string url, int statusCode, bool clearMetadata, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -352,27 +345,27 @@ items:
     - id: clearMetadata
       type: System.Boolean
       description: <code>true</code> to reset headers and content hash (e.g. for redirects/deletions); otherwise, <code>false</code>.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function RecordVisitAsync(connection As SqliteConnection, url As String, statusCode As Integer, clearMetadata As Boolean, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function RecordVisitAsync(connection As SqliteConnection, url As String, statusCode As Integer, clearMetadata As Boolean, transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync*
-  nameWithType.vb: CrawlStore.RecordVisitAsync(SqliteConnection, String, Integer, Boolean, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, Boolean, System.Threading.CancellationToken)
-  name.vb: RecordVisitAsync(SqliteConnection, String, Integer, Boolean, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
-  id: StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.RecordVisitAsync(SqliteConnection, String, Integer, Boolean, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, Boolean, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: RecordVisitAsync(SqliteConnection, String, Integer, Boolean, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},Microsoft.Data.Sqlite.SqliteTransaction)
+  id: StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, CancellationToken)
-  nameWithType: CrawlStore.StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Threading.CancellationToken)
+  name: StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, SqliteTransaction?)
+  nameWithType: CrawlStore.StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -381,21 +374,25 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StoreLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 268
+    startLine: 270
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: >-
     Stores every link discovered on a page — in-scope outlinks and off-site links alike —
 
-    replacing any existing links for that page in a transaction. New rows start
+    replacing any existing links for that page. New rows start
 
     <xref href="LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown" data-throw-if-not-resolved="false"></xref> with no <code>LastUpdated</code>; their status is
 
     filled in when the destination is visited this run, or by the end-of-crawl verification pass.
+
+    When <code class="paramref">transaction</code> is supplied the delete+insert enlist in it and the caller
+
+    commits; otherwise they run as their own atomic transaction.
   example: []
   syntax:
-    content: public static Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, CancellationToken cancellationToken)
+    content: public static Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -409,27 +406,27 @@ items:
     - id: offsiteLinks
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
       description: Off-site target URLs (stored with <code>External=1</code>).
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist these writes in, or <code>null</code> to run them as a standalone transaction.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function StoreLinksAsync(connection As SqliteConnection, fromUrl As String, inScopeLinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function StoreLinksAsync(connection As SqliteConnection, fromUrl As String, inScopeLinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync*
-  nameWithType.vb: CrawlStore.StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), System.Threading.CancellationToken)
-  name.vb: StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: DeleteLinksAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.DeleteLinksAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: DeleteLinksAsync(SqliteConnection, string, SqliteTransaction?)
+  nameWithType: CrawlStore.DeleteLinksAsync(SqliteConnection, string, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -438,14 +435,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 315
+    startLine: 330
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Deletes all stored links (in-scope and off-site) originating from the specified source URL.
   example: []
   syntax:
-    content: public static Task DeleteLinksAsync(SqliteConnection connection, string fromUrl, CancellationToken cancellationToken)
+    content: public static Task DeleteLinksAsync(SqliteConnection connection, string fromUrl, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -453,27 +450,27 @@ items:
     - id: fromUrl
       type: System.String
       description: The source page URL.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function DeleteLinksAsync(connection As SqliteConnection, fromUrl As String, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function DeleteLinksAsync(connection As SqliteConnection, fromUrl As String, transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync*
-  nameWithType.vb: CrawlStore.DeleteLinksAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: DeleteLinksAsync(SqliteConnection, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.DeleteLinksAsync(SqliteConnection, String, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: DeleteLinksAsync(SqliteConnection, String, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetStoredOutlinksAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.GetStoredOutlinksAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: GetStoredOutlinksAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.GetStoredOutlinksAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
   type: Method
   source:
     remote:
@@ -482,7 +479,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 331
+    startLine: 346
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -492,7 +489,7 @@ items:
     when a page is unchanged (off-site links are excluded — they are never crawled).
   example: []
   syntax:
-    content: public static Task<List<string>> GetStoredOutlinksAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    content: public static Task<List<string>> GetStoredOutlinksAsync(SqliteConnection connection, string url)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -500,27 +497,24 @@ items:
     - id: url
       type: System.String
       description: The source page URL.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
       description: A list of in-scope outlink URL strings.
-    content.vb: Public Shared Function GetStoredOutlinksAsync(connection As SqliteConnection, url As String, cancellationToken As CancellationToken) As Task(Of List(Of String))
+    content.vb: Public Shared Function GetStoredOutlinksAsync(connection As SqliteConnection, url As String) As Task(Of List(Of String))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync*
-  nameWithType.vb: CrawlStore.GetStoredOutlinksAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: GetStoredOutlinksAsync(SqliteConnection, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)
-  id: UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.GetStoredOutlinksAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: GetStoredOutlinksAsync(SqliteConnection, String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: UpdateLinkStatusByDestinationAsync(SqliteConnection, string, int, int, CancellationToken)
-  nameWithType: CrawlStore.UpdateLinkStatusByDestinationAsync(SqliteConnection, string, int, int, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, int, System.Threading.CancellationToken)
+  name: UpdateLinkStatusByDestinationAsync(SqliteConnection, string, int, int, SqliteTransaction?)
+  nameWithType: CrawlStore.UpdateLinkStatusByDestinationAsync(SqliteConnection, string, int, int, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection, string, int, int, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -529,7 +523,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UpdateLinkStatusByDestinationAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 356
+    startLine: 371
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -541,7 +535,7 @@ items:
     page reflect how it last responded.
   example: []
   syntax:
-    content: public static Task UpdateLinkStatusByDestinationAsync(SqliteConnection connection, string toUrl, int status, int statusCode, CancellationToken cancellationToken)
+    content: public static Task UpdateLinkStatusByDestinationAsync(SqliteConnection connection, string toUrl, int status, int statusCode, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -555,27 +549,27 @@ items:
     - id: statusCode
       type: System.Int32
       description: The HTTP status observed (0 for a connection-level failure).
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function UpdateLinkStatusByDestinationAsync(connection As SqliteConnection, toUrl As String, status As Integer, statusCode As Integer, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function UpdateLinkStatusByDestinationAsync(connection As SqliteConnection, toUrl As String, status As Integer, statusCode As Integer, transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync*
-  nameWithType.vb: CrawlStore.UpdateLinkStatusByDestinationAsync(SqliteConnection, String, Integer, Integer, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, Integer, System.Threading.CancellationToken)
-  name.vb: UpdateLinkStatusByDestinationAsync(SqliteConnection, String, Integer, Integer, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  id: GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.UpdateLinkStatusByDestinationAsync(SqliteConnection, String, Integer, Integer, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, Integer, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: UpdateLinkStatusByDestinationAsync(SqliteConnection, String, Integer, Integer, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  id: GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetLinksToVerifyAsync(SqliteConnection, DateTime, CancellationToken)
-  nameWithType: CrawlStore.GetLinksToVerifyAsync(SqliteConnection, DateTime, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime, System.Threading.CancellationToken)
+  name: GetLinksToVerifyAsync(SqliteConnection, DateTime)
+  nameWithType: CrawlStore.GetLinksToVerifyAsync(SqliteConnection, DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime)
   type: Method
   source:
     remote:
@@ -584,7 +578,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetLinksToVerifyAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 376
+    startLine: 391
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -596,7 +590,7 @@ items:
     narrows to the links found on pages in the current crawl's scope.
   example: []
   syntax:
-    content: public static Task<List<(string FromUrl, string ToUrl, bool External)>> GetLinksToVerifyAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    content: public static Task<List<(string FromUrl, string ToUrl, bool External)>> GetLinksToVerifyAsync(SqliteConnection connection, DateTime crawlStartUtc)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -604,27 +598,24 @@ items:
     - id: crawlStartUtc
       type: System.DateTime
       description: The crawl start; rows last updated before it are returned.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.Boolean}}}
       description: The (origin, destination, external) tuples awaiting verification.
-    content.vb: Public Shared Function GetLinksToVerifyAsync(connection As SqliteConnection, crawlStartUtc As Date, cancellationToken As CancellationToken) As Task(Of List(Of (FromUrl As String, ToUrl As String, External As Boolean)))
+    content.vb: Public Shared Function GetLinksToVerifyAsync(connection As SqliteConnection, crawlStartUtc As Date) As Task(Of List(Of (FromUrl As String, ToUrl As String, External As Boolean)))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync*
-  nameWithType.vb: CrawlStore.GetLinksToVerifyAsync(SqliteConnection, Date, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection, Date, System.Threading.CancellationToken)
-  name.vb: GetLinksToVerifyAsync(SqliteConnection, Date, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  id: GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.GetLinksToVerifyAsync(SqliteConnection, Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection, Date)
+  name.vb: GetLinksToVerifyAsync(SqliteConnection, Date)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  id: GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetReportableLinksAsync(SqliteConnection, DateTime, CancellationToken)
-  nameWithType: CrawlStore.GetReportableLinksAsync(SqliteConnection, DateTime, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime, System.Threading.CancellationToken)
+  name: GetReportableLinksAsync(SqliteConnection, DateTime)
+  nameWithType: CrawlStore.GetReportableLinksAsync(SqliteConnection, DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime)
   type: Method
   source:
     remote:
@@ -633,7 +624,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetReportableLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 400
+    startLine: 414
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -645,7 +636,7 @@ items:
     The caller narrows to the links found on pages in the current crawl's scope.
   example: []
   syntax:
-    content: public static Task<List<(string FromUrl, string ToUrl, bool External, int Status, int StatusCode)>> GetReportableLinksAsync(SqliteConnection connection, DateTime crawlStartUtc, CancellationToken cancellationToken)
+    content: public static Task<List<(string FromUrl, string ToUrl, bool External, int Status, int StatusCode)>> GetReportableLinksAsync(SqliteConnection connection, DateTime crawlStartUtc)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -653,27 +644,24 @@ items:
     - id: crawlStartUtc
       type: System.DateTime
       description: The crawl start; only rows updated at or after it are returned.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.Boolean,System.Int32,System.Int32}}}
       description: The (origin, destination, external, status, statusCode) tuples to report.
-    content.vb: Public Shared Function GetReportableLinksAsync(connection As SqliteConnection, crawlStartUtc As Date, cancellationToken As CancellationToken) As Task(Of List(Of (FromUrl As String, ToUrl As String, External As Boolean, Status As Integer, StatusCode As Integer)))
+    content.vb: Public Shared Function GetReportableLinksAsync(connection As SqliteConnection, crawlStartUtc As Date) As Task(Of List(Of (FromUrl As String, ToUrl As String, External As Boolean, Status As Integer, StatusCode As Integer)))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync*
-  nameWithType.vb: CrawlStore.GetReportableLinksAsync(SqliteConnection, Date, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, Date, System.Threading.CancellationToken)
-  name.vb: GetReportableLinksAsync(SqliteConnection, Date, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
-  id: GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.GetReportableLinksAsync(SqliteConnection, Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, Date)
+  name.vb: GetReportableLinksAsync(SqliteConnection, Date)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  id: GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetUrlsNotCrawledSinceAsync(SqliteConnection, DateTime, CancellationToken)
-  nameWithType: CrawlStore.GetUrlsNotCrawledSinceAsync(SqliteConnection, DateTime, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime, System.Threading.CancellationToken)
+  name: GetUrlsNotCrawledSinceAsync(SqliteConnection, DateTime)
+  nameWithType: CrawlStore.GetUrlsNotCrawledSinceAsync(SqliteConnection, DateTime)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection, System.DateTime)
   type: Method
   source:
     remote:
@@ -682,7 +670,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetUrlsNotCrawledSinceAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 422
+    startLine: 435
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -692,7 +680,7 @@ items:
     i.e. URLs a crawl that started at the cutoff did not reach.
   example: []
   syntax:
-    content: public static Task<List<string>> GetUrlsNotCrawledSinceAsync(SqliteConnection connection, DateTime cutoffUtc, CancellationToken cancellationToken)
+    content: public static Task<List<string>> GetUrlsNotCrawledSinceAsync(SqliteConnection connection, DateTime cutoffUtc)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -700,27 +688,24 @@ items:
     - id: cutoffUtc
       type: System.DateTime
       description: The crawl start time; rows last crawled before it are returned.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
       description: The list of URLs not visited since the cutoff.
-    content.vb: Public Shared Function GetUrlsNotCrawledSinceAsync(connection As SqliteConnection, cutoffUtc As Date, cancellationToken As CancellationToken) As Task(Of List(Of String))
+    content.vb: Public Shared Function GetUrlsNotCrawledSinceAsync(connection As SqliteConnection, cutoffUtc As Date) As Task(Of List(Of String))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync*
-  nameWithType.vb: CrawlStore.GetUrlsNotCrawledSinceAsync(SqliteConnection, Date, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection, Date, System.Threading.CancellationToken)
-  name.vb: GetUrlsNotCrawledSinceAsync(SqliteConnection, Date, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.GetUrlsNotCrawledSinceAsync(SqliteConnection, Date)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection, Date)
+  name.vb: GetUrlsNotCrawledSinceAsync(SqliteConnection, Date)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetCrawledUrlsWithPrefixAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.GetCrawledUrlsWithPrefixAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: GetCrawledUrlsWithPrefixAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.GetCrawledUrlsWithPrefixAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
   type: Method
   source:
     remote:
@@ -729,7 +714,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawledUrlsWithPrefixAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 448
+    startLine: 460
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -745,7 +730,7 @@ items:
     confirm the exact origin of each result.
   example: []
   syntax:
-    content: public static Task<List<string>> GetCrawledUrlsWithPrefixAsync(SqliteConnection connection, string urlPrefix, CancellationToken cancellationToken)
+    content: public static Task<List<string>> GetCrawledUrlsWithPrefixAsync(SqliteConnection connection, string urlPrefix)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -753,17 +738,14 @@ items:
     - id: urlPrefix
       type: System.String
       description: The literal URL prefix to match.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
       description: The list of crawl-state URLs starting with the prefix.
-    content.vb: Public Shared Function GetCrawledUrlsWithPrefixAsync(connection As SqliteConnection, urlPrefix As String, cancellationToken As CancellationToken) As Task(Of List(Of String))
+    content.vb: Public Shared Function GetCrawledUrlsWithPrefixAsync(connection As SqliteConnection, urlPrefix As String) As Task(Of List(Of String))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync*
-  nameWithType.vb: CrawlStore.GetCrawledUrlsWithPrefixAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: GetCrawledUrlsWithPrefixAsync(SqliteConnection, String, CancellationToken)
+  nameWithType.vb: CrawlStore.GetCrawledUrlsWithPrefixAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: GetCrawledUrlsWithPrefixAsync(SqliteConnection, String)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
   id: EscapeLike(System.String)
@@ -782,7 +764,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EscapeLike
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 468
+    startLine: 480
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -805,16 +787,16 @@ items:
   nameWithType.vb: CrawlStore.EscapeLike(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(String)
   name.vb: EscapeLike(String)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
-  id: DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: DeleteCrawlStateAsync(SqliteConnection, string, CancellationToken)
-  nameWithType: CrawlStore.DeleteCrawlStateAsync(SqliteConnection, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Threading.CancellationToken)
+  name: DeleteCrawlStateAsync(SqliteConnection, string, SqliteTransaction?)
+  nameWithType: CrawlStore.DeleteCrawlStateAsync(SqliteConnection, string, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, string, Microsoft.Data.Sqlite.SqliteTransaction?)
   type: Method
   source:
     remote:
@@ -823,14 +805,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 478
+    startLine: 490
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
   summary: Deletes the crawl-state row for the specified URL.
   example: []
   syntax:
-    content: public static Task DeleteCrawlStateAsync(SqliteConnection connection, string url, CancellationToken cancellationToken)
+    content: public static Task DeleteCrawlStateAsync(SqliteConnection connection, string url, SqliteTransaction? transaction = null)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -838,27 +820,27 @@ items:
     - id: url
       type: System.String
       description: The URL whose row to delete.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.
     return:
       type: System.Threading.Tasks.Task
       description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> representing the asynchronous operation.
-    content.vb: Public Shared Function DeleteCrawlStateAsync(connection As SqliteConnection, url As String, cancellationToken As CancellationToken) As Task
+    content.vb: Public Shared Function DeleteCrawlStateAsync(connection As SqliteConnection, url As String, transaction As SqliteTransaction = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync*
-  nameWithType.vb: CrawlStore.DeleteCrawlStateAsync(SqliteConnection, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Threading.CancellationToken)
-  name.vb: DeleteCrawlStateAsync(SqliteConnection, String, CancellationToken)
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken)
-  id: GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken)
+  nameWithType.vb: CrawlStore.DeleteCrawlStateAsync(SqliteConnection, String, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: DeleteCrawlStateAsync(SqliteConnection, String, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
+  id: GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
   parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
   langs:
   - csharp
   - vb
-  name: GetCountsAsync(SqliteConnection, CancellationToken)
-  nameWithType: CrawlStore.GetCountsAsync(SqliteConnection, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Threading.CancellationToken)
+  name: GetCountsAsync(SqliteConnection)
+  nameWithType: CrawlStore.GetCountsAsync(SqliteConnection)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
   type: Method
   source:
     remote:
@@ -867,7 +849,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCountsAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 493
+    startLine: 505
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -877,18 +859,15 @@ items:
     crawl-state rows. Used for the end-of-run statistics.
   example: []
   syntax:
-    content: public static Task<(long IndexedUrls, long CrawlStateRows)> GetCountsAsync(SqliteConnection connection, CancellationToken cancellationToken)
+    content: public static Task<(long IndexedUrls, long CrawlStateRows)> GetCountsAsync(SqliteConnection connection)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
       description: The open database connection.
-    - id: cancellationToken
-      type: System.Threading.CancellationToken
-      description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{System.Int64,System.Int64}}
       description: A tuple of the distinct indexed URL count and the crawl-state row count.
-    content.vb: Public Shared Function GetCountsAsync(connection As SqliteConnection, cancellationToken As CancellationToken) As Task(Of (IndexedUrls As Long, CrawlStateRows As Long))
+    content.vb: Public Shared Function GetCountsAsync(connection As SqliteConnection) As Task(Of (IndexedUrls As Long, CrawlStateRows As Long))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync*
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
@@ -908,7 +887,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OptimizeDatabaseAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 518
+    startLine: 530
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -946,7 +925,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadPragmaLongAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 550
+    startLine: 562
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -1000,6 +979,14 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: Microsoft.Data.Sqlite.SqliteTransaction
+  commentId: T:Microsoft.Data.Sqlite.SqliteTransaction
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqlitetransaction
+  name: SqliteTransaction
+  nameWithType: SqliteTransaction
+  fullName: Microsoft.Data.Sqlite.SqliteTransaction
 - uid: LocalSearchEngine.Core.Crawling.Storage
   commentId: N:LocalSearchEngine.Core.Crawling.Storage
   href: LocalSearchEngine.html
@@ -1268,6 +1255,43 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
 - uid: System
   commentId: N:System
   isExternal: true
@@ -1346,7 +1370,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
   name: GetCrawlStateAsync
   nameWithType: CrawlStore.GetCrawlStateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
@@ -1358,14 +1382,6 @@ references:
   name: SqliteConnection
   nameWithType: SqliteConnection
   fullName: Microsoft.Data.Sqlite.SqliteConnection
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
   commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
   parent: System.Threading.Tasks
@@ -1459,70 +1475,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
   - name: )
-- uid: Microsoft.Data.Sqlite
-  commentId: N:Microsoft.Data.Sqlite
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft
-  name: Microsoft.Data.Sqlite
-  nameWithType: Microsoft.Data.Sqlite
-  fullName: Microsoft.Data.Sqlite
-  spec.csharp:
-  - uid: Microsoft
-    name: Microsoft
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft
-  - name: .
-  - uid: Microsoft.Data
-    name: Data
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.data
-  - name: .
-  - uid: Microsoft.Data.Sqlite
-    name: Sqlite
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
-  spec.vb:
-  - uid: Microsoft
-    name: Microsoft
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft
-  - name: .
-  - uid: Microsoft.Data
-    name: Data
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.data
-  - name: .
-  - uid: Microsoft.Data.Sqlite
-    name: Sqlite
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true
@@ -1553,7 +1505,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_UrlHasChunksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_UrlHasChunksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
   name: UrlHasChunksAsync
   nameWithType: CrawlStore.UrlHasChunksAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync
@@ -1594,7 +1546,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_FindIndexedDuplicateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_FindIndexedDuplicateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_String_
   name: FindIndexedDuplicateAsync
   nameWithType: CrawlStore.FindIndexedDuplicateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync
@@ -1635,7 +1587,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_String_System_String_System_String_System_String_LocalSearchEngine_Core_Crawling_Policies_DocKind_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_String_System_String_System_String_System_String_LocalSearchEngine_Core_Crawling_Policies_DocKind_Microsoft_Data_Sqlite_SqliteTransaction_
   name: RecordCrawlStateAsync
   nameWithType: CrawlStore.RecordCrawlStateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync
@@ -1697,7 +1649,7 @@ references:
     href: LocalSearchEngine.Core.Crawling.Policies.html
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordVisitAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Boolean_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordVisitAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Boolean_Microsoft_Data_Sqlite_SqliteTransaction_
   name: RecordVisitAsync
   nameWithType: CrawlStore.RecordVisitAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync
@@ -1720,7 +1672,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus.Unknown
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_StoreLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_StoreLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__Microsoft_Data_Sqlite_SqliteTransaction_
   name: StoreLinksAsync
   nameWithType: CrawlStore.StoreLinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync
@@ -1826,13 +1778,13 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_Microsoft_Data_Sqlite_SqliteTransaction_
   name: DeleteLinksAsync
   nameWithType: CrawlStore.DeleteLinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetStoredOutlinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetStoredOutlinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
   name: GetStoredOutlinksAsync
   nameWithType: CrawlStore.GetStoredOutlinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync
@@ -1894,7 +1846,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.LinkStatus
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_UpdateLinkStatusByDestinationAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Int32_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_UpdateLinkStatusByDestinationAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Int32_Microsoft_Data_Sqlite_SqliteTransaction_
   name: UpdateLinkStatusByDestinationAsync
   nameWithType: CrawlStore.UpdateLinkStatusByDestinationAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync
@@ -1938,7 +1890,7 @@ references:
     href: LocalSearchEngine.Core.Crawling.Reporting.html
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetLinksToVerifyAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetLinksToVerifyAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_
   name: GetLinksToVerifyAsync
   nameWithType: CrawlStore.GetLinksToVerifyAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync
@@ -2062,7 +2014,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetReportableLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetReportableLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_
   name: GetReportableLinksAsync
   nameWithType: CrawlStore.GetReportableLinksAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync
@@ -2219,13 +2171,13 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetUrlsNotCrawledSinceAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetUrlsNotCrawledSinceAsync_Microsoft_Data_Sqlite_SqliteConnection_System_DateTime_
   name: GetUrlsNotCrawledSinceAsync
   nameWithType: CrawlStore.GetUrlsNotCrawledSinceAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawledUrlsWithPrefixAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawledUrlsWithPrefixAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
   name: GetCrawledUrlsWithPrefixAsync
   nameWithType: CrawlStore.GetCrawledUrlsWithPrefixAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync
@@ -2237,13 +2189,13 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_Microsoft_Data_Sqlite_SqliteTransaction_
   name: DeleteCrawlStateAsync
   nameWithType: CrawlStore.DeleteCrawlStateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCountsAsync_Microsoft_Data_Sqlite_SqliteConnection_System_Threading_CancellationToken_
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCountsAsync_Microsoft_Data_Sqlite_SqliteConnection_
   name: GetCountsAsync
   nameWithType: CrawlStore.GetCountsAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync
