@@ -101,8 +101,8 @@ internal sealed class CrawlEmbedder
 
     /// <summary>
     /// Applies one item's chunk writes: embeds outside the gate, then takes the gate for the brief
-    /// delete/upsert. Deletes precede upserts (and the redirect source is cleared first) so a re-crawl
-    /// replaces rather than duplicates, exactly as the previous single consumer did.
+    /// delete/upsert. Deletes precede upserts so a re-crawl replaces rather than duplicates, exactly as
+    /// the previous single consumer did.
     /// </summary>
     /// <param name="job">The chunk work to apply.</param>
     private async Task ApplyAsync(EmbeddingJob job)
@@ -121,10 +121,6 @@ internal sealed class CrawlEmbedder
 
         using (await _gate.AcquireAsync())
         {
-            if (job.RedirectSourceUrl != null)
-            {
-                await _vectorSearchService.DeleteUrlChunksAsync(job.RedirectSourceUrl);
-            }
             if (job.Action != ChunkAction.None)
             {
                 await _vectorSearchService.DeleteUrlChunksAsync(job.Url);

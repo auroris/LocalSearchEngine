@@ -432,15 +432,16 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     {
         await EnsureSchemaAsync();
 
-        // The seed redirects to an unrelated host (e.g. a vanity domain -> the real site). The
-        // final host isn't in scope initially, but because the *seed* is what redirected, the
-        // crawler should adopt the destination host and keep crawling there.
+        // The seed redirects to an unrelated host (e.g. a vanity domain -> the real site). The final
+        // host isn't in scope initially, but because the *seed* is what redirected, the crawler adopts
+        // the destination host and enqueues the target, which is then fetched on its own turn.
         _handler.Routes[Seed] = _ =>
         {
-            var resp = Html("<title>Real</title><p>the real site</p> <a href=\"http://real.example/about\">about</a>");
+            var resp = Html("<title>Real</title><p>the real site</p>");
             resp.RequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://real.example/");
             return resp;
         };
+        _handler.Routes["http://real.example/"] = _ => Html("<title>Real</title><p>the real site</p> <a href=\"http://real.example/about\">about</a>");
         _handler.Routes["http://real.example/about"] = _ => Html("<title>About</title><p>about page</p>");
 
         await NewCrawler().CrawlAsync(Seed, maxPages: 50);

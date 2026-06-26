@@ -8,8 +8,7 @@ namespace LocalSearchEngine.Core.Crawling.Engine;
 /// </summary>
 /// <param name="Url">The target page URL.</param>
 /// <param name="StatusCode">The response HTTP status code.</param>
-/// <param name="RedirectSourceUrl">The source URL if this job was reached via redirect.</param>
-internal abstract record CrawlJob(string Url, int StatusCode, string? RedirectSourceUrl = null);
+internal abstract record CrawlJob(string Url, int StatusCode);
 
 /// <summary>
 /// Represents a job classification to fully index the page content and outlinks.
@@ -25,12 +24,11 @@ internal abstract record CrawlJob(string Url, int StatusCode, string? RedirectSo
 /// <param name="Outlinks">List of extracted in-scope outlinks.</param>
 /// <param name="OffsiteLinks">List of extracted out-of-scope/offsite links.</param>
 /// <param name="DocKind">The classified document kind (Html/Pdf/Docx) of the indexed content.</param>
-/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record IndexJob(
     string Url, int StatusCode, string? Title, string Headings, string Text,
     string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks,
-    IReadOnlyCollection<string> OffsiteLinks, DocKind DocKind, string? RedirectSourceUrl = null)
-    : CrawlJob(Url, StatusCode, RedirectSourceUrl);
+    IReadOnlyCollection<string> OffsiteLinks, DocKind DocKind)
+    : CrawlJob(Url, StatusCode);
 
 /// <summary>
 /// Represents a job classification where indexing is skipped but crawl state and outlinks are stored.
@@ -44,36 +42,34 @@ internal sealed record IndexJob(
 /// <param name="Outlinks">List of extracted in-scope outlinks.</param>
 /// <param name="OffsiteLinks">List of extracted out-of-scope/offsite links.</param>
 /// <param name="DocKind">The classified document kind (Html/Pdf/Docx) of the page, recorded even though its content is not indexed.</param>
-/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
 internal sealed record NoIndexJob(
     string Url, int StatusCode, string? Title, string? ETag, string? LastModified,
     string? ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks,
-    DocKind DocKind, string? RedirectSourceUrl = null)
-    : CrawlJob(Url, StatusCode, RedirectSourceUrl);
+    DocKind DocKind)
+    : CrawlJob(Url, StatusCode);
 
 /// <summary>
 /// Represents a job classification for pages that returned 404 or 410 Gone status.
 /// </summary>
 /// <param name="Url">The target page URL.</param>
 /// <param name="StatusCode">The response HTTP status code.</param>
-/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
-internal sealed record GoneJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
-    : CrawlJob(Url, StatusCode, RedirectSourceUrl);
+internal sealed record GoneJob(string Url, int StatusCode)
+    : CrawlJob(Url, StatusCode);
 
 /// <summary>
-/// Represents a job classification for canonical page aliases.
+/// Represents a job classification for a URL that is no longer a page of its own — a redirect source,
+/// a canonical alias, or duplicate content. Its content, links, and chunks are dropped; whatever it
+/// points at is enqueued separately.
 /// </summary>
 /// <param name="Url">The target page URL.</param>
-/// <param name="StatusCode">The response HTTP status code.</param>
-/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
-internal sealed record AliasJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
-    : CrawlJob(Url, StatusCode, RedirectSourceUrl);
+/// <param name="StatusCode">The response HTTP status code (302 for a redirect source).</param>
+internal sealed record AliasJob(string Url, int StatusCode)
+    : CrawlJob(Url, StatusCode);
 
 /// <summary>
 /// Represents a job classification for unchanged pages (304) or transient errors.
 /// </summary>
 /// <param name="Url">The target page URL.</param>
 /// <param name="StatusCode">The response HTTP status code.</param>
-/// <param name="RedirectSourceUrl">The source URL if reached via a redirect.</param>
-internal sealed record TouchJob(string Url, int StatusCode, string? RedirectSourceUrl = null)
-    : CrawlJob(Url, StatusCode, RedirectSourceUrl);
+internal sealed record TouchJob(string Url, int StatusCode)
+    : CrawlJob(Url, StatusCode);

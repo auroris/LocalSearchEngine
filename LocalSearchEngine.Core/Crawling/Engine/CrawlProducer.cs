@@ -214,55 +214,21 @@ internal sealed class CrawlProducer
 
         var state = await CrawlStore.GetCrawlStateAsync(_context.Read, currentUrl);
 
-        // Functional delegate to validate redirected URLs during streaming
-        Func<Uri, Task<bool>> redirectValidator = async (finalUri) =>
-        {
-            var normalizedFinal = UrlNormalizer.Normalize(finalUri);
-            if (!_context.AllowedHosts.IsAllowed(finalUri))
-            {
-                if (string.Equals(currentUrl, _context.SeedUrl, StringComparison.OrdinalIgnoreCase))
-                {
-                    _context.Observer.OnSeedRedirectedToNewOrigin(currentUrl, UrlOrigin.Key(finalUri));
-                    _context.AllowedHosts.AddOrigin(finalUri);
-                    return true;
-                }
-                else
-                {
-                    _context.Observer.OnPageRedirectedOutScope(currentUrl, normalizedFinal);
-                    return false;
-                }
-            }
-
-            var finalRobots = await _robotsService.GetOrFetchRobotsAsync(finalUri, _context);
-            if (!CrawlPolicy.IsAllowedByRobots(normalizedFinal, finalRobots))
-            {
-                _context.Observer.OnPageRedirectedDisallowed(currentUrl, normalizedFinal);
-                return false;
-            }
-
-            if (!_context.Visited.Add(normalizedFinal))
-            {
-                _context.Observer.OnPageRedirectedAlreadySeen(currentUrl, normalizedFinal);
-                return false;
-            }
-
-            return true;
-        };
-
         // A user noindex rule means we re-fetch the page in full every run: we must re-extract its
         // links and ensure any content indexed before the rule existed is dropped. Skip conditional
-        // request headers so the server can't answer 304 with no body. (Matched on the requested URL;
-        // the post-redirect URL is checked again before indexing.)
+        // request headers so the server can't answer 304 with no body.
         bool suppressConditional = _context.NoIndexRules.Matches(currentUrl);
         var condETag = suppressConditional ? null : state.ETag;
         var condLastModified = suppressConditional ? null : state.LastModified;
-        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, condETag, condLastModified, _context.MaxCrawlSizeBytes, redirectValidator);
+        var downloadResult = await _pageDownloader.DownloadAsync(currentUrl, condETag, condLastModified, _context.MaxCrawlSizeBytes);
 
         // Reachability for this host was already recorded when its robots.txt was fetched above,
         // and an unreachable host would have been skipped before we got here. The tracker never
         // writes off a host that has answered, so a per-download recording can't change anything.
         int statusCode = (int)downloadResult.StatusCode;
 
+        // Redirects are resolved before any of the outcomes below, so from here on the dequeued URL is
+        // also the final URL — there is no separate post-redirect URL to track.
         switch (downloadResult.Status)
         {
             case DownloadStatus.NotModified:
@@ -270,28 +236,24 @@ internal sealed class CrawlProducer
                 await EnqueueStoredOutlinksAsync(currentUrl);
                 return new TouchJob(currentUrl, statusCode);
 
-            case DownloadStatus.RedirectBlocked:
-                return new AliasJob(currentUrl, statusCode);
+            case DownloadStatus.Redirected:
+                return HandleRedirect(currentUrl, downloadResult.FinalRequestUri);
 
             case DownloadStatus.Gone:
-                var goneUrl = downloadResult.FinalRequestUri?.ToString() ?? currentUrl;
-                _context.Observer.OnPageGone(currentUrl, goneUrl, statusCode);
-                return new GoneJob(goneUrl, statusCode, string.Equals(goneUrl, currentUrl, StringComparison.OrdinalIgnoreCase) ? null : currentUrl);
+                _context.Observer.OnPageGone(currentUrl, statusCode);
+                return new GoneJob(currentUrl, statusCode);
 
             case DownloadStatus.Failed:
-                var failedUrl = downloadResult.FinalRequestUri?.ToString() ?? currentUrl;
-                _context.Observer.OnPageFailed(currentUrl, failedUrl, statusCode);
-                return new TouchJob(failedUrl, statusCode, string.Equals(failedUrl, currentUrl, StringComparison.OrdinalIgnoreCase) ? null : currentUrl);
+                _context.Observer.OnPageFailed(currentUrl, statusCode);
+                return new TouchJob(currentUrl, statusCode);
 
             case DownloadStatus.SizeLimitExceeded:
-                var sizeUrl = downloadResult.FinalRequestUri?.ToString() ?? currentUrl;
-                _context.Observer.OnPageSkippedSize(currentUrl, sizeUrl, downloadResult.SizeRead, _context.MaxCrawlSizeBytes);
-                return new TouchJob(sizeUrl, statusCode, string.Equals(sizeUrl, currentUrl, StringComparison.OrdinalIgnoreCase) ? null : currentUrl);
+                _context.Observer.OnPageSkippedSize(currentUrl, downloadResult.SizeRead, _context.MaxCrawlSizeBytes);
+                return new TouchJob(currentUrl, statusCode);
 
             case DownloadStatus.UnsupportedType:
-                var typeUrl = downloadResult.FinalRequestUri?.ToString() ?? currentUrl;
-                _context.Observer.OnPageSkippedType(currentUrl, typeUrl, downloadResult.ContentType);
-                return new TouchJob(typeUrl, statusCode, string.Equals(typeUrl, currentUrl, StringComparison.OrdinalIgnoreCase) ? null : currentUrl);
+                _context.Observer.OnPageSkippedType(currentUrl, downloadResult.ContentType);
+                return new TouchJob(currentUrl, statusCode);
 
             case DownloadStatus.Success:
                 return await ProcessDownloadSuccessAsync(currentUrl, state, downloadResult);
@@ -299,6 +261,50 @@ internal sealed class CrawlProducer
             default:
                 throw new InvalidOperationException($"Unhandled download status: {downloadResult.Status}");
         }
+    }
+
+    /// <summary>The synthetic status stamped on a redirect source's crawl-state row. The real 3xx code
+    /// isn't visible once the client has followed the chain, so all redirect sources record a plain 302.</summary>
+    private const int RedirectStatusCode = 302;
+
+    /// <summary>
+    /// Handles a request that redirected: the target is treated exactly like a link discovered on a page —
+    /// handed to the frontier (which deduplicates it and subjects it to the same scope/robots gauntlet when
+    /// it is dequeued) — and the dequeued URL itself is recorded as a redirect, dropping any content, links,
+    /// and chunks it used to have. An off-scope target is reported but not followed; the seed redirecting
+    /// off its origin is the one case that widens the scope, so the destination (a vanity domain pointing at
+    /// the real site) is adopted and crawled.
+    /// </summary>
+    /// <param name="currentUrl">The dequeued URL that redirected.</param>
+    /// <param name="finalUri">The redirect target reported by the downloader.</param>
+    /// <returns>An <see cref="AliasJob"/> recording <paramref name="currentUrl"/> as a redirect source.</returns>
+    private CrawlJob HandleRedirect(string currentUrl, Uri? finalUri)
+    {
+        // A redirect result always carries its target; fall back to a plain touch if it somehow doesn't.
+        if (finalUri is null)
+        {
+            return new TouchJob(currentUrl, RedirectStatusCode);
+        }
+
+        var target = UrlNormalizer.Normalize(finalUri);
+
+        if (_context.AllowedHosts.IsAllowed(finalUri))
+        {
+            _context.Observer.OnPageRedirected(currentUrl, target);
+            _context.Discover(target);
+        }
+        else if (string.Equals(currentUrl, _context.SeedUrl, StringComparison.OrdinalIgnoreCase))
+        {
+            _context.Observer.OnSeedRedirectedToNewOrigin(currentUrl, UrlOrigin.Key(finalUri));
+            _context.AllowedHosts.AddOrigin(finalUri);
+            _context.Discover(target);
+        }
+        else
+        {
+            _context.Observer.OnPageRedirectedOutScope(currentUrl, target);
+        }
+
+        return new AliasJob(currentUrl, RedirectStatusCode);
     }
 
     /// <summary>
@@ -313,28 +319,16 @@ internal sealed class CrawlProducer
         (string? ETag, string? LastModified, string? ContentHash) state,
         DownloadResult downloadResult)
     {
-        var finalUrl = downloadResult.FinalRequestUri != null
-            ? UrlNormalizer.Normalize(downloadResult.FinalRequestUri)
-            : currentUrl;
-
-        var redirectSourceUrl = string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase)
-            ? null
-            : currentUrl;
-
-        // A user-configured noindex rule (matched on the final URL) forces "follow, don't index": the
-        // page is still parsed and its links followed, but the same-hash/duplicate/canonical shortcuts
-        // are skipped and its content is never indexed — exactly as if the page declared noindex itself.
-        bool userNoIndex = _context.NoIndexRules.Matches(finalUrl);
+        // A user-configured noindex rule forces "follow, don't index": the page is still parsed and its
+        // links followed, but the same-hash/duplicate/canonical shortcuts are skipped and its content is
+        // never indexed — exactly as if the page declared noindex itself.
+        bool userNoIndex = _context.NoIndexRules.Matches(currentUrl);
 
         int statusCode = (int)downloadResult.StatusCode;
         byte[] body = downloadResult.Body ?? Array.Empty<byte>();
 
         string? newETag = downloadResult.ETag;
         string? newLastModified = downloadResult.LastModified;
-
-        var finalState = string.Equals(finalUrl, currentUrl, StringComparison.OrdinalIgnoreCase)
-            ? state
-            : await CrawlStore.GetCrawlStateAsync(_context.Read, finalUrl);
 
         var kind = CrawlPolicy.ClassifyContent(downloadResult.ContentType, body);
 
@@ -344,9 +338,9 @@ internal sealed class CrawlProducer
         {
             if (userNoIndex)
             {
-                _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, null,
-                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
+                _context.Observer.OnPageNoIndex(currentUrl);
+                return new NoIndexJob(currentUrl, statusCode, null, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind);
             }
             var pdf = ContentExtractor.ExtractPdf(body);
             // A PDF whose text came out as font-encoding garbage (or that has no text layer at all) is
@@ -354,11 +348,11 @@ internal sealed class CrawlProducer
             // it distinctly so the run stats show how much of the PDF corpus is unreadable.
             if (pdf.IsLowQualityText)
             {
-                _context.Observer.OnPageLowQualityText(currentUrl, finalUrl, pdf.MappableFraction, pdf.TotalGlyphs);
-                return new NoIndexJob(finalUrl, statusCode, pdf.Title, newETag, newLastModified, null,
-                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
+                _context.Observer.OnPageLowQualityText(currentUrl, pdf.MappableFraction, pdf.TotalGlyphs);
+                return new NoIndexJob(currentUrl, statusCode, pdf.Title, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind);
             }
-            return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+            return await EmitIndexableAsync(currentUrl, statusCode, state,
                 pdf.Title, pdf.Title ?? string.Empty, pdf.Text, newETag, newLastModified,
                 Array.Empty<string>(), Array.Empty<string>(), kind);
         }
@@ -367,33 +361,33 @@ internal sealed class CrawlProducer
         {
             if (userNoIndex)
             {
-                _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-                return new NoIndexJob(finalUrl, statusCode, null, newETag, newLastModified, null,
-                    Array.Empty<string>(), Array.Empty<string>(), kind, redirectSourceUrl);
+                _context.Observer.OnPageNoIndex(currentUrl);
+                return new NoIndexJob(currentUrl, statusCode, null, newETag, newLastModified, null,
+                    Array.Empty<string>(), Array.Empty<string>(), kind);
             }
             var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
-            return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+            return await EmitIndexableAsync(currentUrl, statusCode, state,
                 docxTitle, docxTitle ?? string.Empty, docxText, newETag, newLastModified,
                 Array.Empty<string>(), Array.Empty<string>(), kind);
         }
 
         if (kind != DocKind.Html)
         {
-            _context.Observer.OnPageSkippedType(currentUrl, finalUrl, downloadResult.ContentType);
-            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+            _context.Observer.OnPageSkippedType(currentUrl, downloadResult.ContentType);
+            return new TouchJob(currentUrl, statusCode);
         }
 
         var xRobotsTag = downloadResult.XRobotsTag;
-        var analysis = ContentExtractor.AnalyzeHtml(body, downloadResult.CharSet, xRobotsTag, finalUrl,
+        var analysis = ContentExtractor.AnalyzeHtml(body, downloadResult.CharSet, xRobotsTag, currentUrl,
             _context.AllowedHosts, _context.RobotsCache, CrawlerService.UserAgent);
 
         // A noindex rule means "follow, don't index", so honoring a canonical alias here would be
         // wrong: aliasing skips this page's own links. Fall through to follow them instead.
         if (!userNoIndex && analysis.CanonicalAlias != null)
         {
-            _context.Observer.OnPageAlias(currentUrl, finalUrl, analysis.CanonicalAlias);
+            _context.Observer.OnPageAlias(currentUrl, analysis.CanonicalAlias);
             _context.EnqueueSingle(analysis.CanonicalAlias);
-            return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
+            return new AliasJob(currentUrl, statusCode);
         }
 
         _context.Observer.OnOutlinksAdded(analysis.Outlinks.Count);
@@ -407,12 +401,12 @@ internal sealed class CrawlProducer
         // byte identical — still drops any chunks indexed before the directive existed.
         if (userNoIndex || analysis.NoIndex)
         {
-            _context.Observer.OnPageNoIndex(currentUrl, finalUrl);
-            return new NoIndexJob(finalUrl, statusCode, analysis.Title, newETag, newLastModified, null,
-                analysis.Outlinks, analysis.OffsiteLinks, kind, redirectSourceUrl);
+            _context.Observer.OnPageNoIndex(currentUrl);
+            return new NoIndexJob(currentUrl, statusCode, analysis.Title, newETag, newLastModified, null,
+                analysis.Outlinks, analysis.OffsiteLinks, kind);
         }
 
-        return await EmitIndexableAsync(currentUrl, finalUrl, redirectSourceUrl, statusCode, finalState,
+        return await EmitIndexableAsync(currentUrl, statusCode, state,
             analysis.Title, analysis.Headings, analysis.Text, newETag, newLastModified,
             analysis.Outlinks, analysis.OffsiteLinks, kind);
     }
@@ -423,11 +417,9 @@ internal sealed class CrawlProducer
     /// an <see cref="AliasJob"/> when the same content is already indexed under another URL — otherwise an
     /// <see cref="IndexJob"/> that (re)embeds it. Shared by the HTML, PDF, and DOCX paths.
     /// </summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects/normalization.</param>
-    /// <param name="redirectSourceUrl">The dequeued URL when a redirect was followed; otherwise <c>null</c>.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="statusCode">The HTTP status code of the response.</param>
-    /// <param name="finalState">The crawl state previously recorded for <paramref name="finalUrl"/>.</param>
+    /// <param name="state">The crawl state previously recorded for <paramref name="url"/>.</param>
     /// <param name="title">The extracted document/page title.</param>
     /// <param name="headings">The extracted heading text.</param>
     /// <param name="text">The extracted main text.</param>
@@ -438,8 +430,8 @@ internal sealed class CrawlProducer
     /// <param name="kind">The classified document kind (Html/Pdf/Docx) of the page being indexed.</param>
     /// <returns>The crawl job to persist for this page.</returns>
     private async Task<CrawlJob> EmitIndexableAsync(
-        string currentUrl, string finalUrl, string? redirectSourceUrl, int statusCode,
-        (string? ETag, string? LastModified, string? ContentHash) finalState,
+        string url, int statusCode,
+        (string? ETag, string? LastModified, string? ContentHash) state,
         string? title, string headings, string text,
         string? newETag, string? newLastModified,
         IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks,
@@ -453,33 +445,33 @@ internal sealed class CrawlProducer
         // the raw bytes is what makes this reliable — per-request markup noise (CSP nonces, CSRF
         // tokens, timestamps) no longer forces a needless re-index. Outlinks were already discovered
         // by the caller, so the frontier is unaffected by returning early here.
-        if (finalState.ContentHash == contentHash
-            && await CrawlStore.UrlHasChunksAsync(_context.Read, finalUrl))
+        if (state.ContentHash == contentHash
+            && await CrawlStore.UrlHasChunksAsync(_context.Read, url))
         {
-            _context.Observer.OnPageUnchangedHash(currentUrl, finalUrl);
-            return new TouchJob(finalUrl, statusCode, redirectSourceUrl);
+            _context.Observer.OnPageUnchangedHash(url);
+            return new TouchJob(url, statusCode);
         }
 
         // The same content is already indexed under a different URL: alias to it and crawl the
         // original rather than embedding a second copy.
         string? duplicateOf = null;
         if (_context.IndexedContentHashes.TryGetValue(contentHash, out var inRunUrl)
-            && !string.Equals(inRunUrl, finalUrl, StringComparison.OrdinalIgnoreCase))
+            && !string.Equals(inRunUrl, url, StringComparison.OrdinalIgnoreCase))
         {
             duplicateOf = inRunUrl;
         }
-        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, contentHash, finalUrl);
+        duplicateOf ??= await CrawlStore.FindIndexedDuplicateAsync(_context.Read, contentHash, url);
         if (duplicateOf != null)
         {
-            _context.Observer.OnPageDuplicateContent(currentUrl, finalUrl, duplicateOf);
+            _context.Observer.OnPageDuplicateContent(url, duplicateOf);
             _context.EnqueueSingle(duplicateOf);
-            return new AliasJob(finalUrl, statusCode, redirectSourceUrl);
+            return new AliasJob(url, statusCode);
         }
 
-        _context.IndexedContentHashes[contentHash] = finalUrl;
-        _context.Observer.OnPageIndexed(currentUrl, finalUrl, outlinks.Count);
-        return new IndexJob(finalUrl, statusCode, title, headings, text,
-            newETag, newLastModified, contentHash, outlinks, offsiteLinks, kind, redirectSourceUrl);
+        _context.IndexedContentHashes[contentHash] = url;
+        _context.Observer.OnPageIndexed(url, outlinks.Count);
+        return new IndexJob(url, statusCode, title, headings, text,
+            newETag, newLastModified, contentHash, outlinks, offsiteLinks, kind);
     }
 
     /// <summary>

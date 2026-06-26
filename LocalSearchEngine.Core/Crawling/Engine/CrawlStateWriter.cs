@@ -40,9 +40,8 @@ internal sealed class CrawlStateWriter
 
     /// <summary>
     /// Persists the crawl-state and link-index rows implied by <paramref name="job"/> in one transaction —
-    /// recorded against this destination's inbound links too, so even links on pages not re-parsed this run
-    /// reflect its current status. The dequeued URL is the redirect source when a redirect was followed,
-    /// otherwise the job's own URL.
+    /// recorded against this URL's inbound links too, so even links on pages not re-parsed this run reflect
+    /// its current status.
     /// </summary>
     /// <param name="job">The classified job to apply.</param>
     public async Task ApplyAsync(CrawlJob job)
@@ -52,12 +51,6 @@ internal sealed class CrawlStateWriter
             using (await _gate.AcquireAsync())
             {
                 using var tx = _connection.BeginTransaction();
-
-                if (job.RedirectSourceUrl != null)
-                {
-                    await CrawlStore.DeleteLinksAsync(_connection, job.RedirectSourceUrl, tx);
-                    await CrawlStore.RecordVisitAsync(_connection, job.RedirectSourceUrl, 302, clearMetadata: true, tx);
-                }
 
                 switch (job)
                 {
@@ -86,8 +79,7 @@ internal sealed class CrawlStateWriter
                         break;
                 }
 
-                var dequeuedUrl = job.RedirectSourceUrl ?? job.Url;
-                await CrawlStore.UpdateLinkStatusByDestinationAsync(_connection, dequeuedUrl, (int)ClassifyLinkStatus(job), job.StatusCode, tx);
+                await CrawlStore.UpdateLinkStatusByDestinationAsync(_connection, job.Url, (int)ClassifyLinkStatus(job), job.StatusCode, tx);
 
                 await tx.CommitAsync();
             }
@@ -105,7 +97,6 @@ internal sealed class CrawlStateWriter
     /// <returns>The classified <see cref="LinkStatus"/>.</returns>
     private static LinkStatus ClassifyLinkStatus(CrawlJob job)
     {
-        if (job.RedirectSourceUrl != null) return LinkStatus.Redirect;
         int code = job.StatusCode;
         if (code == 304 || code is >= 200 and < 300) return LinkStatus.Ok;
         if (code is >= 300 and < 400) return LinkStatus.Redirect;

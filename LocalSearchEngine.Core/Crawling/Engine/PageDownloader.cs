@@ -19,8 +19,8 @@ internal enum DownloadStatus
     Success,
     /// <summary>The server returned 304 Not Modified, indicating the local cached copy is still fresh.</summary>
     NotModified,
-    /// <summary>The redirect chain led out-of-scope or was disallowed by policy, so the download was blocked.</summary>
-    RedirectBlocked,
+    /// <summary>The request was redirected to a different URL (carried in <see cref="DownloadResult.FinalRequestUri"/>); the body was not read so the caller can treat the target like a discovered link.</summary>
+    Redirected,
     /// <summary>The resource returned 404 Not Found or 410 Gone.</summary>
     Gone,
     /// <summary>The connection failed, timed out, or returned an HTTP error code.</summary>
@@ -61,13 +61,14 @@ internal sealed class DownloadResult
 /// <summary>
 /// Fetches one page or file and reduces the messy result of an HTTP GET to a single tidy
 /// <see cref="DownloadResult"/> the producer can switch on. It sends conditional headers from the
-/// stored ETag/Last-Modified (so an unchanged page comes back as a cheap 304), validates the final URL
-/// after redirects through a caller-supplied callback, and streams the body under a hard byte cap —
-/// bailing out early on an oversized Content-Length, an unsupported media type, or a content signature
-/// that doesn't match. Each of those becomes a distinct <see cref="DownloadStatus"/> (not-modified,
-/// gone, redirect-blocked, too-big, unsupported, failed, or success), with transport-level failures
-/// mapped to a 503 so the rest of the crawl can tell a dead connection from a real server error. It
-/// classifies; it does not persist or parse — the body is handed on for extraction.
+/// stored ETag/Last-Modified (so an unchanged page comes back as a cheap 304) and streams the body under
+/// a hard byte cap — bailing out early on an oversized Content-Length, an unsupported media type, or a
+/// content signature that doesn't match. A request that ends up at a different URL is reported as a
+/// redirect and returned before the body is read, leaving the producer to enqueue the target like any
+/// other link. Each outcome becomes a distinct <see cref="DownloadStatus"/> (not-modified, redirected,
+/// gone, too-big, unsupported, failed, or success), with transport-level failures mapped to a 503 so the
+/// rest of the crawl can tell a dead connection from a real server error. It classifies; it does not
+/// persist or parse — the body is handed on for extraction.
 /// </summary>
 internal sealed class PageDownloader
 {
@@ -94,14 +95,12 @@ internal sealed class PageDownloader
     /// <param name="etag">The cached ETag, if any, for conditional request validation.</param>
     /// <param name="lastModified">The cached Last-Modified string, if any, for conditional request validation.</param>
     /// <param name="maxBytes">The maximum allowed download size in bytes.</param>
-    /// <param name="redirectValidator">The delegate to check if followed redirects are allowed.</param>
     /// <returns>A <see cref="DownloadResult"/> object summarizing the download status and metadata.</returns>
     public async Task<DownloadResult> DownloadAsync(
         string url,
         string? etag,
         string? lastModified,
-        long maxBytes,
-        Func<Uri, Task<bool>> redirectValidator)
+        long maxBytes)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         if (!string.IsNullOrEmpty(etag))
@@ -122,7 +121,24 @@ internal sealed class PageDownloader
         try
         {
             using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, timeout.Token);
-            int statusCode = (int)response.StatusCode;
+
+            var finalRequestUri = response.RequestMessage?.RequestUri;
+
+            // The request ended up somewhere else: report the redirect and hand back the target without
+            // reading the body. Under ResponseHeadersRead the body hasn't been pulled yet, so the target
+            // isn't downloaded here — the producer enqueues it like a discovered link and it is fetched
+            // once, on its own turn. Checked before 304 so a (coincidental) conditional hit on the target
+            // doesn't mask that the request moved.
+            if (finalRequestUri != null
+                && !string.Equals(UrlNormalizer.Normalize(finalRequestUri), url, StringComparison.OrdinalIgnoreCase))
+            {
+                return new DownloadResult
+                {
+                    Status = DownloadStatus.Redirected,
+                    StatusCode = response.StatusCode,
+                    FinalRequestUri = finalRequestUri
+                };
+            }
 
             if (response.StatusCode == HttpStatusCode.NotModified)
             {
@@ -130,27 +146,8 @@ internal sealed class PageDownloader
                 {
                     Status = DownloadStatus.NotModified,
                     StatusCode = response.StatusCode,
-                    FinalRequestUri = response.RequestMessage?.RequestUri
+                    FinalRequestUri = finalRequestUri
                 };
-            }
-
-            var finalRequestUri = response.RequestMessage?.RequestUri;
-            if (finalRequestUri != null)
-            {
-                var normalizedFinal = UrlNormalizer.Normalize(finalRequestUri);
-                if (!string.Equals(normalizedFinal, url, StringComparison.OrdinalIgnoreCase))
-                {
-                    bool allowed = await redirectValidator(finalRequestUri);
-                    if (!allowed)
-                    {
-                        return new DownloadResult
-                        {
-                            Status = DownloadStatus.RedirectBlocked,
-                            StatusCode = response.StatusCode,
-                            FinalRequestUri = finalRequestUri
-                        };
-                    }
-                }
             }
 
             if (response.StatusCode is HttpStatusCode.NotFound or HttpStatusCode.Gone)

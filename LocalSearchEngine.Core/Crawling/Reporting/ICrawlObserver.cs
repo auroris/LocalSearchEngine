@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 /// <summary>
 /// A stateful, per-crawl observer that centralizes all logging, statistics gathering, and progress
 /// reporting. Implementations translate crawler domain events into log messages, stat increments,
-/// and <see cref="ICrawlReporter"/> callbacks. Many callbacks pass both the URL originally dequeued
-/// (<c>currentUrl</c>) and where it ended up after redirects/normalization (<c>finalUrl</c>); these
-/// differ only when a redirect was followed.
+/// and <see cref="ICrawlReporter"/> callbacks. A redirect is resolved into its own outcome on the
+/// dequeued URL (the target is enqueued like a link), so every other page-outcome callback names the
+/// single URL it resolved.
 /// </summary>
 public interface ICrawlObserver
 {
@@ -60,6 +60,11 @@ public interface ICrawlObserver
     /// <summary>An out-of-scope URL reached the frontier — a guard that should not normally fire.</summary>
     void OnOutScopeUrlReached(string url);
 
+    /// <summary>A page redirected to an in-scope URL; the target is enqueued like a discovered link (and deduplicated there), and this URL is recorded as a redirect.</summary>
+    /// <param name="currentUrl">The URL that redirected.</param>
+    /// <param name="targetUrl">The in-scope redirect target now queued.</param>
+    void OnPageRedirected(string currentUrl, string targetUrl);
+
     /// <summary>The seed redirected to a different origin, which is added to the allowed hosts so the crawl can follow it.</summary>
     /// <param name="currentUrl">The seed URL that redirected.</param>
     /// <param name="newOrigin">The new origin (scheme://host:port) now in scope.</param>
@@ -70,84 +75,64 @@ public interface ICrawlObserver
     /// <param name="newUrl">The off-scope redirect target.</param>
     void OnPageRedirectedOutScope(string currentUrl, string newUrl);
 
-    /// <summary>A redirect target is disallowed by robots.txt, so it is not followed.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="newUrl">The disallowed redirect target.</param>
-    void OnPageRedirectedDisallowed(string currentUrl, string newUrl);
-
-    /// <summary>A redirect resolved to a URL already seen this run, so it is not re-crawled.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="newUrl">The already-seen redirect target.</param>
-    void OnPageRedirectedAlreadySeen(string currentUrl, string newUrl);
-
     // Outcomes
 
     /// <summary>A page returned 404/410 and is removed from the index.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="statusCode">The HTTP status returned.</param>
-    void OnPageGone(string currentUrl, string finalUrl, int statusCode);
+    void OnPageGone(string url, int statusCode);
 
     /// <summary>A page returned an error or non-success status; any existing index entry is kept.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="statusCode">The HTTP status returned.</param>
-    void OnPageFailed(string currentUrl, string finalUrl, int statusCode);
+    void OnPageFailed(string url, int statusCode);
 
     /// <summary>A page or file was skipped for exceeding the size limit.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="contentLength">The size seen, in bytes.</param>
     /// <param name="limit">The configured maximum size, in bytes.</param>
-    void OnPageSkippedSize(string currentUrl, string finalUrl, long contentLength, long limit);
+    void OnPageSkippedSize(string url, long contentLength, long limit);
 
     /// <summary>A page or file was skipped for an unsupported content type or a failed sniff.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="contentType">The Content-Type that was rejected, if any.</param>
-    void OnPageSkippedType(string currentUrl, string finalUrl, string? contentType);
+    void OnPageSkippedType(string url, string? contentType);
 
     /// <summary>A page was unchanged since the last crawl (server returned HTTP 304).</summary>
-    void OnPageUnchanged(string currentUrl);
+    void OnPageUnchanged(string url);
 
     /// <summary>A page's content hash matched the stored copy, so it was not re-indexed.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
-    void OnPageUnchangedHash(string currentUrl, string finalUrl);
+    /// <param name="url">The page URL.</param>
+    void OnPageUnchangedHash(string url);
 
     /// <summary>A page's content duplicates an already-indexed URL; the original is enqueued instead of indexing a copy.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="canonicalUrl">The already-indexed URL with identical content.</param>
-    void OnPageDuplicateContent(string currentUrl, string finalUrl, string canonicalUrl);
+    void OnPageDuplicateContent(string url, string canonicalUrl);
 
     /// <summary>A page declares a <c>rel="canonical"</c> pointing elsewhere in scope; the canonical is enqueued.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="canonicalUrl">The canonical URL the page points at.</param>
-    void OnPageAlias(string currentUrl, string finalUrl, string canonicalUrl);
+    void OnPageAlias(string url, string canonicalUrl);
 
     /// <summary>A URL was not fetched because robots.txt disallows it.</summary>
     void OnPageDisallowed(string currentUrl);
 
     /// <summary>A page carries a noindex directive: its content is not indexed, though its links are still followed.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
-    void OnPageNoIndex(string currentUrl, string finalUrl);
+    /// <param name="url">The page URL.</param>
+    void OnPageNoIndex(string url);
 
     /// <summary>A PDF was fetched but its extracted text is unusable — no text layer, or a font encoding that
     /// doesn't reverse to Unicode — so it is not indexed. A candidate for an OCR fallback.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="mappableFraction">The share of drawn glyphs that mapped to Unicode, in [0,1]; 0 when there was no text layer.</param>
     /// <param name="totalGlyphs">The number of visible glyphs drawn in the document.</param>
-    void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs);
+    void OnPageLowQualityText(string url, double mappableFraction, long totalGlyphs);
 
     /// <summary>A page's content was indexed.</summary>
-    /// <param name="currentUrl">The requested URL.</param>
-    /// <param name="finalUrl">The URL after redirects.</param>
+    /// <param name="url">The page URL.</param>
     /// <param name="outlinksCount">The number of in-scope outlinks found on the page.</param>
-    void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount);
+    void OnPageIndexed(string url, int outlinksCount);
 
     // Post-crawl events
 

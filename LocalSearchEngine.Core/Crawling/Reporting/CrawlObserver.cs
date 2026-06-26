@@ -100,9 +100,16 @@ internal sealed class CrawlObserver : ICrawlObserver
         _logger.LogWarning("Out-of-scope URL reached the frontier: {Url}", url);
     }
 
+    public void OnPageRedirected(string currentUrl, string targetUrl)
+    {
+        _logger.LogInformation("Redirect: {From} -> {To}; queued the target.", currentUrl, targetUrl);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
+    }
+
     public void OnSeedRedirectedToNewOrigin(string currentUrl, string newOrigin)
     {
         _logger.LogInformation("Seed {Seed} redirected to {Origin}; adding it to the allowed hosts.", currentUrl, newOrigin);
+        ReportPage(currentUrl, CrawlOutcome.Redirected);
     }
 
     public void OnPageRedirectedOutScope(string currentUrl, string newUrl)
@@ -111,64 +118,52 @@ internal sealed class CrawlObserver : ICrawlObserver
         ReportPage(currentUrl, CrawlOutcome.Redirected);
     }
 
-    public void OnPageRedirectedDisallowed(string currentUrl, string newUrl)
+    public void OnPageGone(string url, int statusCode)
     {
-        _logger.LogInformation("Redirect target disallowed by robots.txt: {Url}", newUrl);
-        ReportPage(currentUrl, CrawlOutcome.Redirected);
+        _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, url);
+        ReportPage(url, CrawlOutcome.Gone);
     }
 
-    public void OnPageRedirectedAlreadySeen(string currentUrl, string newUrl)
+    public void OnPageFailed(string url, int statusCode)
     {
-        _logger.LogInformation("Redirected to already-seen URL: {Url}", newUrl);
-        ReportPage(currentUrl, CrawlOutcome.Redirected);
+        _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}; keeping existing index.", url, statusCode);
+        ReportPage(url, CrawlOutcome.Failed);
     }
 
-    public void OnPageGone(string currentUrl, string finalUrl, int statusCode)
+    public void OnPageSkippedSize(string url, long contentLength, long limit)
     {
-        _logger.LogInformation("Page gone ({StatusCode}): {Url} — removing from index.", statusCode, finalUrl);
-        ReportPage(currentUrl, CrawlOutcome.Gone);
+        _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", url, contentLength, limit);
+        ReportPage(url, CrawlOutcome.SkippedSize);
     }
 
-    public void OnPageFailed(string currentUrl, string finalUrl, int statusCode)
+    public void OnPageSkippedType(string url, string? contentType)
     {
-        _logger.LogWarning("Failed to crawl {Url} with status code {StatusCode}; keeping existing index.", finalUrl, statusCode);
-        ReportPage(currentUrl, CrawlOutcome.Failed);
+        _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", url, contentType);
+        ReportPage(url, CrawlOutcome.SkippedType);
     }
 
-    public void OnPageSkippedSize(string currentUrl, string finalUrl, long contentLength, long limit)
+    public void OnPageUnchanged(string url)
     {
-        _logger.LogWarning("Skipping {Url}: Content-Length ({Length} bytes) exceeds maximum limit of {Limit} bytes.", finalUrl, contentLength, limit);
-        ReportPage(currentUrl, CrawlOutcome.SkippedSize);
+        _logger.LogInformation("Page not modified since last crawl (304): {Url}", url);
+        ReportPage(url, CrawlOutcome.Unchanged);
     }
 
-    public void OnPageSkippedType(string currentUrl, string finalUrl, string? contentType)
+    public void OnPageUnchangedHash(string url)
     {
-        _logger.LogInformation("Skipping {Url}: Content-Type '{ContentType}' is not whitelisted for indexing.", finalUrl, contentType);
-        ReportPage(currentUrl, CrawlOutcome.SkippedType);
+        _logger.LogInformation("Content unchanged since last crawl (hash match): {Url}", url);
+        ReportPage(url, CrawlOutcome.Unchanged);
     }
 
-    public void OnPageUnchanged(string currentUrl)
+    public void OnPageDuplicateContent(string url, string canonicalUrl)
     {
-        _logger.LogInformation("Page not modified since last crawl (304): {Url}", currentUrl);
-        ReportPage(currentUrl, CrawlOutcome.Unchanged);
+        _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", url, canonicalUrl);
+        ReportPage(url, CrawlOutcome.Redirected);
     }
 
-    public void OnPageUnchangedHash(string currentUrl, string finalUrl)
+    public void OnPageAlias(string url, string canonicalUrl)
     {
-        _logger.LogInformation("Content unchanged since last crawl (hash match): {Url}", finalUrl);
-        ReportPage(currentUrl, CrawlOutcome.Unchanged);
-    }
-
-    public void OnPageDuplicateContent(string currentUrl, string finalUrl, string canonicalUrl)
-    {
-        _logger.LogInformation("Duplicate content: {Url} matches already-indexed {Canonical}; not indexing a copy.", finalUrl, canonicalUrl);
-        ReportPage(currentUrl, CrawlOutcome.Redirected);
-    }
-
-    public void OnPageAlias(string currentUrl, string finalUrl, string canonicalUrl)
-    {
-        _logger.LogInformation("Canonical alias: {Url} -> {Canonical}", finalUrl, canonicalUrl);
-        ReportPage(currentUrl, CrawlOutcome.Redirected);
+        _logger.LogInformation("Canonical alias: {Url} -> {Canonical}", url, canonicalUrl);
+        ReportPage(url, CrawlOutcome.Redirected);
     }
 
     public void OnPageDisallowed(string currentUrl)
@@ -177,28 +172,28 @@ internal sealed class CrawlObserver : ICrawlObserver
         ReportPage(currentUrl, CrawlOutcome.Disallowed);
     }
 
-    public void OnPageNoIndex(string currentUrl, string finalUrl)
+    public void OnPageNoIndex(string url)
     {
-        _logger.LogInformation("noindex directive: {Url} — not indexing its content.", finalUrl);
-        ReportPage(currentUrl, CrawlOutcome.NoIndex);
+        _logger.LogInformation("noindex directive: {Url} — not indexing its content.", url);
+        ReportPage(url, CrawlOutcome.NoIndex);
     }
 
-    public void OnPageLowQualityText(string currentUrl, string finalUrl, double mappableFraction, long totalGlyphs)
+    public void OnPageLowQualityText(string url, double mappableFraction, long totalGlyphs)
     {
         if (totalGlyphs == 0)
-            _logger.LogInformation("No extractable text layer in {Url} (likely a scanned image) — not indexing.", finalUrl);
+            _logger.LogInformation("No extractable text layer in {Url} (likely a scanned image) — not indexing.", url);
         else
-            _logger.LogInformation("Unreliable text extraction for {Url}: only {Mappable:P0} of glyphs map to Unicode — not indexing.", finalUrl, mappableFraction);
-        ReportPage(currentUrl, CrawlOutcome.LowQualityText);
+            _logger.LogInformation("Unreliable text extraction for {Url}: only {Mappable:P0} of glyphs map to Unicode — not indexing.", url, mappableFraction);
+        ReportPage(url, CrawlOutcome.LowQualityText);
     }
 
-    public void OnPageIndexed(string currentUrl, string finalUrl, int outlinksCount)
+    public void OnPageIndexed(string url, int outlinksCount)
     {
         // The counterpart to the unchanged/duplicate/noindex outcome lines: without it an embedded
         // page is the one outcome that leaves no trace in the log, making it impossible to tell from
         // the log which pages were re-embedded versus skipped by the content-hash fallback on a re-crawl.
-        _logger.LogInformation("Indexed {Url} ({Outlinks} outlinks).", finalUrl, outlinksCount);
-        ReportPage(currentUrl, CrawlOutcome.Indexed);
+        _logger.LogInformation("Indexed {Url} ({Outlinks} outlinks).", url, outlinksCount);
+        ReportPage(url, CrawlOutcome.Indexed);
     }
 
     public void OnStaleUrlsPruned(int count)
