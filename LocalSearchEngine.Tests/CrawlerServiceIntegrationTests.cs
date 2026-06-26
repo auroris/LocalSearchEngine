@@ -1122,6 +1122,24 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         Assert.Equal(report.EmbedProcessed, reporter.LastEmbedProcessed);
     }
 
+    [Fact]
+    public async Task CrawlAsync_Respects_Custom_RequestDelayMs()
+    {
+        await EnsureSchemaAsync();
+
+        // Register 2 routes on the same host to force a politeness delay on the second request
+        _handler.Routes[Seed] = _ => Html("<title>Home</title><a href=\"/p2\">Page 2</a>");
+        _handler.Routes["http://test.local/p2"] = _ => Html("<title>Page 2</title><p>content</p>");
+
+        // Test with 300ms delay: should take at least 300ms
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5, requestDelayMs: 300);
+        stopwatch.Stop();
+        var elapsedCustom = stopwatch.ElapsedMilliseconds;
+
+        Assert.True(elapsedCustom >= 300, $"Expected elapsed time to be at least 300ms under custom delay, but was {elapsedCustom}ms");
+    }
+
     public void Dispose()
     {
         _provider.Dispose();

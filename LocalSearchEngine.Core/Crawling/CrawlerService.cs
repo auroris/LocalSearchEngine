@@ -82,7 +82,8 @@ public partial class CrawlerService
         int maxPagesPerHost = int.MaxValue,
         long maxCrawlSizeBytes = 15 * 1024 * 1024,
         bool checkExternalLinks = false,
-        ICrawlReporter? reporter = null)
+        ICrawlReporter? reporter = null,
+        int requestDelayMs = 250)
     {
         var crawlStartUtc = DateTime.UtcNow;
         reporter ??= NullCrawlReporter.Instance;
@@ -106,6 +107,7 @@ public partial class CrawlerService
             Observer = observer,
             Heartbeat = heartbeat,
             StartedUtc = crawlStartUtc,
+            DefaultRequestDelayMs = requestDelayMs,
         };
 
         // Feed the live frontier size (unique URLs discovered) into the observer's progress snapshots.

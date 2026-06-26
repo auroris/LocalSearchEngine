@@ -40,6 +40,7 @@ string statsFile = crawlSettings.StatsFile;
 string brokenLinksFile = crawlSettings.BrokenLinksFile;
 bool checkExternalLinks = crawlSettings.CheckExternalLinks;
 bool noLive = crawlSettings.NoLiveStats;
+int requestDelayMs = crawlSettings.RequestDelayMs;
 
 bool showHelp = false;
 
@@ -80,6 +81,14 @@ for (int i = 0; i < args.Length; i++)
         if (i + 1 >= args.Length || !long.TryParse(args[++i], out maxCrawlSizeBytes) || maxCrawlSizeBytes <= 0)
         {
             Console.Error.WriteLine("Error: --max-crawl-size-bytes requires a positive long integer.");
+            return;
+        }
+    }
+    else if (arg == "--request-delay-ms")
+    {
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out requestDelayMs) || requestDelayMs < 0)
+        {
+            Console.Error.WriteLine("Error: --request-delay-ms requires a non-negative integer.");
             return;
         }
     }
@@ -151,6 +160,9 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("  --max-crawl-size-bytes <n> Stop downloading/indexing a page/file if its size exceeds");
     Console.WriteLine("                           n bytes. Default is 15728640 (15 MB).");
     Console.WriteLine("                           (Can also be set via 'max-crawl-size-bytes' in appsettings.json.)");
+    Console.WriteLine("  --request-delay-ms <n>   Politeness delay in milliseconds between requests to the");
+    Console.WriteLine("                           same host. Default is 250 ms. Set to 0 to disable delay.");
+    Console.WriteLine("                           (Can also be set via 'request-delay-ms' in appsettings.json.)");
     Console.WriteLine("  --log-file <path>        Path to the run log file. Default is 'crawl.log'. Log messages");
     Console.WriteLine("                           go here, not to the console. (Or 'log-file' in appsettings.json.)");
     Console.WriteLine("  --stats-file <path>      Base path for the end-of-run stats files; '.json' and '.txt'");
@@ -269,6 +281,7 @@ try
     AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
+    AnsiConsole.MarkupLineInterpolated($"[grey]Request delay[/] {requestDelayMs} ms");
     if (maxPages != int.MaxValue)
     {
         AnsiConsole.MarkupLineInterpolated($"[grey]Max pages[/] {maxPages}");
@@ -300,14 +313,14 @@ try
             .StartAsync(async live =>
             {
                 var reporter = new SpectreCrawlReporter(live);
-                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter);
+                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs);
             });
         report = captured!;
     }
     else
     {
         var reporter = new PlainCrawlReporter(AnsiConsole.Console);
-        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter);
+        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs);
     }
 
     // Channel 3: write the end-of-run stats to disk (JSON + text), then print a summary.
@@ -398,6 +411,19 @@ internal class CrawlSettings : System.Configuration.ConfigurationSection
         set
         {
             this["check-external-links"] = value;
+        }
+    }
+
+    [ConfigurationProperty("request-delay-ms", DefaultValue = 250, IsRequired = false, IsKey = true)]
+    public int RequestDelayMs
+    {
+        get
+        {
+            return (int)this["request-delay-ms"];
+        }
+        set
+        {
+            this["request-delay-ms"] = value;
         }
     }
 

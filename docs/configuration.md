@@ -26,6 +26,7 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
   "max-pages": null,
   "max-pages-per-host": null,
   "max-crawl-size-bytes": 15728640,
+  "request-delay-ms": 250,
   "allowed-servers": [
     "example.com",
     "https://wiki.example.org:8080"
@@ -44,6 +45,7 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
 * **`max-pages`** (integer/null, default: `null`): A hard cap on how many successful pages the crawler will index this run. Stops the crawl once reached.
 * **`max-pages-per-host`** (integer/null, default: `null`): Maximum pages to download from a single origin. Useful to prevent infinite crawl loops on calendar or search filter pages.
 * **`max-crawl-size-bytes`** (integer, default: `15728640` / 15MB): The maximum size (after decompression) of an individual document or page. Large files are ignored or terminated mid-stream.
+* **`request-delay-ms`** (integer, default: `250`): The default politeness delay in milliseconds between requests to the same host when `robots.txt` does not specify a `Crawl-delay`. Set to `0` to disable the delay. Can be overridden using CLI argument `--request-delay-ms <n>`.
 * **`allowed-servers`** (array of strings): Defines the scope of servers the crawler is permitted to visit. See **Crawl Scope Rules** below.
 * **`noindex-patterns`** (array of strings): URL glob patterns whose pages are crawled for their links but never indexed ("noindex, follow"). See **Noindex Patterns** below.
 * **`check-external-links`** (boolean, default: `false`): If `true`, the crawler will verify off-site links found on crawled pages (by performing a lightweight `HEAD` or `GET` request) without indexing their content.

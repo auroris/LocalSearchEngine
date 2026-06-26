@@ -42,7 +42,7 @@ Disallow: /private/
 * Respected as the minimum gap between requests to that host.
 * Fractional values (e.g. `0.5`) are rounded **up** to whole seconds.
 * Capped at **30 seconds** to keep a hostile or mistaken value from stalling the crawl.
-* When no `Crawl-delay` is given, a default politeness delay of **250 ms** per host applies.
+* When no `Crawl-delay` is given, a default politeness delay of **250 ms** per host applies (this is configurable via the `request-delay-ms` setting in `appsettings.json` or the `--request-delay-ms` CLI option).
 
 ### `Sitemap`
 

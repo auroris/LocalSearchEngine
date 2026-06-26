@@ -29,8 +29,6 @@ namespace LocalSearchEngine.Core.Crawling.Engine;
 /// </summary>
 internal sealed class CrawlProducer
 {
-    /// <summary>The default request delay in milliseconds when robots.txt does not specify one.</summary>
-    private const int DefaultRequestDelayMs = 250;
     /// <summary>The maximum allowed crawl delay in seconds to prevent excessive waiting.</summary>
     private const int MaxCrawlDelaySeconds = 30;
 
@@ -551,11 +549,11 @@ internal sealed class CrawlProducer
     /// </summary>
     /// <param name="robots">The robots.txt rules for the host.</param>
     /// <returns>A <see cref="TimeSpan"/> representing the delay duration.</returns>
-    private static TimeSpan ResolveRequestDelay(RobotsRules robots)
+    private TimeSpan ResolveRequestDelay(RobotsRules robots)
     {
         if (!robots.CrawlDelaySeconds.HasValue)
         {
-            return TimeSpan.FromMilliseconds(DefaultRequestDelayMs);
+            return TimeSpan.FromMilliseconds(_context.DefaultRequestDelayMs);
         }
         var delay = robots.CrawlDelaySeconds.Value;
         if (delay > MaxCrawlDelaySeconds)

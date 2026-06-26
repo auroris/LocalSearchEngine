@@ -55,6 +55,9 @@ internal sealed class CrawlContext
     /// <summary>Gets the maximum size in bytes allowed for any single download (pages, files, robots.txt, sitemaps).</summary>
     public required long MaxCrawlSizeBytes { get; init; }
 
+    /// <summary>Gets the default request delay in milliseconds when robots.txt does not specify one.</summary>
+    public required int DefaultRequestDelayMs { get; init; }
+
     /// <summary>Gets the origins (scheme://host:port) whose robots.txt was unavailable (5xx) this run; their URLs are exempt from pruning.</summary>
     public HashSet<string> RobotsUnavailable { get; } = new(StringComparer.OrdinalIgnoreCase);
 
