@@ -241,7 +241,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ClassifyLinkStatus
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlStateWriter.cs
-    startLine: 97
+    startLine: 95
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

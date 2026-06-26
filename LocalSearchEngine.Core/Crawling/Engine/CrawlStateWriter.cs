@@ -64,14 +64,12 @@ internal sealed class CrawlStateWriter
                         await CrawlStore.RecordCrawlStateAsync(_connection, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, j.DocKind, tx);
                         break;
 
-                    case GoneJob j:
-                        await CrawlStore.DeleteLinksAsync(_connection, j.Url, tx);
-                        await CrawlStore.RecordVisitAsync(_connection, j.Url, j.StatusCode, clearMetadata: true, tx);
-                        break;
-
-                    case AliasJob j:
-                        await CrawlStore.DeleteLinksAsync(_connection, j.Url, tx);
-                        await CrawlStore.RecordVisitAsync(_connection, j.Url, j.StatusCode, clearMetadata: true, tx);
+                    case GoneJob:
+                    case AliasJob:
+                        // A URL that no longer holds content of its own: 404/410 (gone) or a
+                        // redirect/canonical/alias. Same cleanup either way; the status code differentiates.
+                        await CrawlStore.DeleteLinksAsync(_connection, job.Url, tx);
+                        await CrawlStore.RecordVisitAsync(_connection, job.Url, job.StatusCode, clearMetadata: true, tx);
                         break;
 
                     case TouchJob j:

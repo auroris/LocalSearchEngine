@@ -333,8 +333,9 @@ internal sealed class CrawlProducer
         var kind = CrawlPolicy.ClassifyContent(downloadResult.ContentType, body);
 
         // PDF/DOCX carry no in-scope outlinks to follow, so a noindex rule simply drops them from the
-        // index (and removes any prior entry). The empty link sets clear out stale links via NoIndexJob.
-        if (kind == DocKind.Pdf)
+        // index (and removes any prior entry); the empty link sets clear out stale links via NoIndexJob.
+        // Both extract to a single (title, body) — only PDF can come back as unusable text.
+        if (kind is DocKind.Pdf or DocKind.Docx)
         {
             if (userNoIndex)
             {
@@ -342,32 +343,30 @@ internal sealed class CrawlProducer
                 return new NoIndexJob(currentUrl, statusCode, null, newETag, newLastModified, null,
                     Array.Empty<string>(), Array.Empty<string>(), kind);
             }
-            var pdf = ContentExtractor.ExtractPdf(body);
-            // A PDF whose text came out as font-encoding garbage (or that has no text layer at all) is
-            // worse than useless in the index: drop it the same way a noindex page is dropped, but flag
-            // it distinctly so the run stats show how much of the PDF corpus is unreadable.
-            if (pdf.IsLowQualityText)
-            {
-                _context.Observer.OnPageLowQualityText(currentUrl, pdf.MappableFraction, pdf.TotalGlyphs);
-                return new NoIndexJob(currentUrl, statusCode, pdf.Title, newETag, newLastModified, null,
-                    Array.Empty<string>(), Array.Empty<string>(), kind);
-            }
-            return await EmitIndexableAsync(currentUrl, statusCode, state,
-                pdf.Title, pdf.Title ?? string.Empty, pdf.Text, newETag, newLastModified,
-                Array.Empty<string>(), Array.Empty<string>(), kind);
-        }
 
-        if (kind == DocKind.Docx)
-        {
-            if (userNoIndex)
+            string? docTitle;
+            string docText;
+            if (kind == DocKind.Pdf)
             {
-                _context.Observer.OnPageNoIndex(currentUrl);
-                return new NoIndexJob(currentUrl, statusCode, null, newETag, newLastModified, null,
-                    Array.Empty<string>(), Array.Empty<string>(), kind);
+                var pdf = ContentExtractor.ExtractPdf(body);
+                // A PDF whose text came out as font-encoding garbage (or that has no text layer at all)
+                // is worse than useless in the index: drop it the same way a noindex page is dropped, but
+                // flag it distinctly so the run stats show how much of the PDF corpus is unreadable.
+                if (pdf.IsLowQualityText)
+                {
+                    _context.Observer.OnPageLowQualityText(currentUrl, pdf.MappableFraction, pdf.TotalGlyphs);
+                    return new NoIndexJob(currentUrl, statusCode, pdf.Title, newETag, newLastModified, null,
+                        Array.Empty<string>(), Array.Empty<string>(), kind);
+                }
+                (docTitle, docText) = (pdf.Title, pdf.Text);
             }
-            var (docxTitle, docxText) = ContentExtractor.ExtractDocx(body);
+            else
+            {
+                (docTitle, docText) = ContentExtractor.ExtractDocx(body);
+            }
+
             return await EmitIndexableAsync(currentUrl, statusCode, state,
-                docxTitle, docxTitle ?? string.Empty, docxText, newETag, newLastModified,
+                docTitle, docTitle ?? string.Empty, docText, newETag, newLastModified,
                 Array.Empty<string>(), Array.Empty<string>(), kind);
         }
 
