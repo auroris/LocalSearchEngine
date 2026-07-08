@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LocalSearchEngine.Core\LocalSearchEngine.Core.csproj" />
+    <!-- Referenced so the config-binding test can reach the crawler's internal CrawlSettings. -->
+    <ProjectReference Include="..\LocalSearchEngine.Crawler\LocalSearchEngine.Crawler.csproj" />
   </ItemGroup>
 
 </Project>

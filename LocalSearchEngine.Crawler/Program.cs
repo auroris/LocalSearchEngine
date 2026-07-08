@@ -18,7 +18,6 @@ using Polly.Extensions.Http;
 using Serilog;
 using Serilog.Events;
 using Spectre.Console;
-using System.Configuration;
 using System.Net;
 
 var config = new ConfigurationBuilder()
@@ -30,8 +29,8 @@ var crawlSettings = config.GetSection("CrawlSettings").Get<CrawlSettings>() ?? n
 
 string url = "";
 string dbPath = !string.IsNullOrWhiteSpace(config["db"]) ? config["db"]! : "search.db";
-int maxPages = crawlSettings.MaxPages;
-int maxPagesPerHost = crawlSettings.MaxPagesPerHost;
+int maxPages = crawlSettings.MaxPages ?? int.MaxValue;
+int maxPagesPerHost = crawlSettings.MaxPagesPerHost ?? int.MaxValue;
 long maxCrawlSizeBytes = crawlSettings.MaxCrawlSizeBytes;
 var allowedServers = crawlSettings.AllowedServers ?? Array.Empty<string>();
 var noIndexPatterns = crawlSettings.NoIndexPatterns ?? Array.Empty<string>();
@@ -334,148 +333,57 @@ finally
     Log.CloseAndFlush();
 }
 
-internal class CrawlSettings : System.Configuration.ConfigurationSection
+/// <summary>
+/// The crawler's <c>CrawlSettings</c> section from appsettings.json — a plain options POCO bound by
+/// Microsoft.Extensions.Configuration. Each kebab-case JSON key is mapped to its property with
+/// <see cref="ConfigurationKeyNameAttribute"/>: without it the binder matches only PascalCase property
+/// names, so keys like <c>allowed-servers</c> would silently leave every value at its default (which is
+/// how a crawl once ended up limited to just its seed host). Property defaults below are the values used
+/// when a key is absent or null.
+/// </summary>
+internal sealed class CrawlSettings
 {
-    [ConfigurationProperty("max-pages", DefaultValue = int.MaxValue, IsRequired = false, IsKey = true)]
-    public int MaxPages
-    {
-        get
-        {
-            return (int)this["max-pages"];
-        }
-        set
-        {
-            this["max-pages"] = value;
-        }
-    }
+    /// <summary>Maximum pages to index this run; <c>null</c> (the JSON "no limit" convention) means unbounded.</summary>
+    [ConfigurationKeyName("max-pages")]
+    public int? MaxPages { get; set; }
 
-    [ConfigurationProperty("max-pages-per-host", DefaultValue = int.MaxValue, IsRequired = false, IsKey = true)]
-    public int MaxPagesPerHost
-    {
-        get
-        {
-            return (int)this["max-pages-per-host"];
-        }
-        set
-        {
-            this["max-pages-per-host"] = value;
-        }
-    }
+    /// <summary>Maximum pages to index per host; <c>null</c> (the JSON "no limit" convention) means unbounded.</summary>
+    [ConfigurationKeyName("max-pages-per-host")]
+    public int? MaxPagesPerHost { get; set; }
 
-    [ConfigurationProperty("max-crawl-size-bytes", DefaultValue = (long)15728640, IsRequired = false, IsKey = true)]
-    public long MaxCrawlSizeBytes
-    {
-        get
-        {
-            return (long)this["max-crawl-size-bytes"];
-        }
-        set
-        {
-            this["max-crawl-size-bytes"] = value;
-        }
-    }
+    /// <summary>Maximum size in bytes of any single downloaded page/file. Defaults to 15 MB.</summary>
+    [ConfigurationKeyName("max-crawl-size-bytes")]
+    public long MaxCrawlSizeBytes { get; set; } = 15 * 1024 * 1024;
 
-    [ConfigurationProperty("allowed-servers", DefaultValue = null, IsRequired = false, IsKey = true)]
-    public string[] AllowedServers
-    {
-        get
-        {
-            return (string[])this["allowed-servers"];
-        }
-        set
-        {
-            this["allowed-servers"] = value;
-        }
-    }
+    /// <summary>Politeness delay in milliseconds between requests to the same host. Defaults to 250.</summary>
+    [ConfigurationKeyName("request-delay-ms")]
+    public int RequestDelayMs { get; set; } = 250;
 
-    [ConfigurationProperty("noindex-patterns", DefaultValue = null, IsRequired = false, IsKey = true)]
-    public string[] NoIndexPatterns
-    {
-        get
-        {
-            return (string[])this["noindex-patterns"];
-        }
-        set
-        {
-            this["noindex-patterns"] = value;
-        }
-    }
+    /// <summary>Additional allowed hosts as [scheme://]host[:port]; null/empty means the seed origin only.</summary>
+    [ConfigurationKeyName("allowed-servers")]
+    public string[]? AllowedServers { get; set; }
 
-    [ConfigurationProperty("check-external-links", DefaultValue = false, IsRequired = false, IsKey = true)]
-    public bool CheckExternalLinks
-    {
-        get
-        {
-            return (bool)this["check-external-links"];
-        }
-        set
-        {
-            this["check-external-links"] = value;
-        }
-    }
+    /// <summary>URL glob patterns whose pages are followed for links but never indexed ("noindex, follow").</summary>
+    [ConfigurationKeyName("noindex-patterns")]
+    public string[]? NoIndexPatterns { get; set; }
 
-    [ConfigurationProperty("request-delay-ms", DefaultValue = 250, IsRequired = false, IsKey = true)]
-    public int RequestDelayMs
-    {
-        get
-        {
-            return (int)this["request-delay-ms"];
-        }
-        set
-        {
-            this["request-delay-ms"] = value;
-        }
-    }
+    /// <summary>Whether to probe off-site links after the crawl to confirm they still resolve.</summary>
+    [ConfigurationKeyName("check-external-links")]
+    public bool CheckExternalLinks { get; set; }
 
-    [ConfigurationProperty("no-live-stats", DefaultValue = false, IsRequired = false, IsKey = true)]
-    public bool NoLiveStats
-    {
-        get
-        {
-            return (bool)this["no-live-stats"];
-        }
-        set
-        {
-            this["no-live-stats"] = value;
-        }
-    }
+    /// <summary>Whether to force plain progress lines instead of the live display.</summary>
+    [ConfigurationKeyName("no-live-stats")]
+    public bool NoLiveStats { get; set; }
 
-    [ConfigurationProperty("log-file", DefaultValue = "crawl.log", IsRequired = false, IsKey = true)]
-    public string LogFile
-    {
-        get
-        {
-            return (string)this["log-file"];
-        }
-        set
-        {
-            this["log-file"] = value;
-        }
-    }
+    /// <summary>Path to the run log file.</summary>
+    [ConfigurationKeyName("log-file")]
+    public string LogFile { get; set; } = "crawl.log";
 
-    [ConfigurationProperty("stats-file", DefaultValue = "crawl-stats.log", IsRequired = false, IsKey = true)]
-    public string StatsFile
-    {
-        get
-        {
-            return (string)this["stats-file"];
-        }
-        set
-        {
-            this["stats-file"] = value;
-        }
-    }
+    /// <summary>Base path for the end-of-run stats files ('.json' and '.txt' are appended).</summary>
+    [ConfigurationKeyName("stats-file")]
+    public string StatsFile { get; set; } = "crawl-stats.log";
 
-    [ConfigurationProperty("broken-links-file", DefaultValue = "crawl-broken-links.log", IsRequired = false, IsKey = true)]
-    public string BrokenLinksFile
-    {
-        get
-        {
-            return (string)this["broken-links-file"];
-        }
-        set
-        {
-            this["broken-links-file"] = value;
-        }
-    }
+    /// <summary>Base path for the broken-links report ('.txt' is appended).</summary>
+    [ConfigurationKeyName("broken-links-file")]
+    public string BrokenLinksFile { get; set; } = "crawl-broken-links.log";
 }
