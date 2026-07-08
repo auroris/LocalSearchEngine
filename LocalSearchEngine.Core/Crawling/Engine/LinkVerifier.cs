@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -15,18 +14,18 @@ namespace LocalSearchEngine.Core.Crawling.Engine;
 /// <summary>
 /// The end-of-crawl link check. It takes the links the crawl didn't already resolve — off-site links
 /// (never crawled) and any in-scope links it never reached — and probes each destination with a HEAD
-/// (falling back to GET), classifying it Ok, Redirect, or Error. Probes run concurrently across hosts
-/// with a bounded degree of parallelism and a politeness gap between hits on the same host; the results
-/// are written back to the link index, and connection failures feed the host-health tracker. A second
-/// method turns the index's redirected and errored rows into the sorted broken/redirected lists the
-/// report shows. Its probes are safe to run in parallel — the trackers they touch are thread-safe.
+/// (falling back to GET), classifying it Ok, Redirect, or Error. Probes run concurrently with a bounded
+/// degree of parallelism; unlike the content crawl these are one-shot, read-only HEAD/GET checks, so they
+/// don't take the crawl's per-host politeness delay (which, when the undetermined links pile up on a single
+/// host, would drag the pass out to a near-serial trickle). Results are written back to the link index, and
+/// connection failures feed the host-health tracker. A second method turns the index's redirected and
+/// errored rows into the sorted broken/redirected lists the report shows. Its probes are safe to run in
+/// parallel — the trackers they touch are thread-safe.
 /// </summary>
 internal sealed class LinkVerifier
 {
-    /// <summary>The maximum number of hosts to query in parallel during link checking.</summary>
-    private const int LinkCheckConcurrency = 8;
-    /// <summary>The polite interval/delay between link probes targeted at the same host.</summary>
-    private static readonly TimeSpan LinkCheckPerHostGap = TimeSpan.FromMilliseconds(250);
+    /// <summary>The maximum number of link probes to run in flight at once, across all hosts.</summary>
+    private const int LinkCheckConcurrency = 16;
 
     /// <summary>The HTTP client instance used to probe links.</summary>
     private readonly HttpClient _httpClient;
@@ -64,27 +63,21 @@ internal sealed class LinkVerifier
 
         context.Observer.OnPhaseChanged(CrawlPhase.CheckingLinks);
 
-        var byHost = destinations
-             .Select(target => (Target: target, Uri: Uri.TryCreate(target, UriKind.Absolute, out var u) ? u : null))
-             .Where(x => x.Uri is not null)
-             .GroupBy(x => x.Uri!.Host)
-             .ToList();
-
+        int total = destinations.Count;
+        int done = 0;
         var results = new ConcurrentBag<(string Target, LinkStatus Status, int StatusCode)>();
         await Parallel.ForEachAsync(
-            byHost,
+            destinations,
             new ParallelOptions { MaxDegreeOfParallelism = LinkCheckConcurrency },
-            async (group, _) =>
+            async (target, _) =>
             {
-                bool first = true;
-                foreach (var (target, _) in group)
-                {
-                    if (!first) await Task.Delay(LinkCheckPerHostGap);
-                    first = false;
+                var (status, statusCode) = await ProbeLinkAsync(target, context);
+                results.Add((target, status, statusCode));
 
-                    var (status, statusCode) = await ProbeLinkAsync(target, context);
-                    results.Add((target, status, statusCode));
-                }
+                // Bump the crawler heartbeat as each probe lands so the watchdog sees this long post-crawl
+                // pass making progress instead of reading its one-time phase mark as a multi-hour stall, and
+                // so a real hang (every probe wedged) still trips it.
+                context.Heartbeat.MarkCrawler($"checking links ({Interlocked.Increment(ref done)}/{total})");
             });
 
         int broken = 0, redirected = 0;
