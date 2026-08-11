@@ -1,0 +1,312 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  id: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document
+  - LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  - LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+  - LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  - LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
+  - LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+  - LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  - LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext
+  - LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  - LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  langs:
+  - csharp
+  - vb
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  type: Namespace
+  assemblies:
+  - LocalSearchEngine.Core
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult.html
+  name: PipelineResult
+  nameWithType: PipelineResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html
+  name: CrawlPipeline
+  nameWithType: CrawlPipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html
+  name: CrawlPlan
+  nameWithType: CrawlPlan
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker.html
+  name: CrawlWorker
+  nameWithType: CrawlWorker
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.Document
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  name: Document
+  nameWithType: Document
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.html
+  name: PageDocument
+  nameWithType: PageDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  href: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.html
+  name: DocumentFactory
+  nameWithType: DocumentFactory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument.html
+  name: DocxDocument
+  nameWithType: DocxDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.html
+  name: FeedDocument
+  nameWithType: FeedDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource.html
+  name: FeedSeedSource
+  nameWithType: FeedSeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  name: FetchResult
+  nameWithType: FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  name: HostGate
+  nameWithType: HostGate
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  name: HostGate.HostLane
+  nameWithType: HostGate.HostLane
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+    name: HostLane
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+    name: HostLane
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  name: HostGate.Releaser
+  nameWithType: HostGate.Releaser
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument.html
+  name: HtmlDocument
+  nameWithType: HtmlDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  name: ICrawlContext
+  nameWithType: ICrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  name: ISeedSource
+  nameWithType: ISeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument.html
+  name: PdfDocument
+  nameWithType: PdfDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter.html
+  name: PendingWorkCounter
+  nameWithType: PendingWorkCounter
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  name: PersistenceConsumer
+  nameWithType: PersistenceConsumer
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  name: PersistenceConsumer.ChunkAction
+  nameWithType: PersistenceConsumer.ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+    name: PersistenceConsumer
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+    name: ChunkAction
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+    name: PersistenceConsumer
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+    name: ChunkAction
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.html
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext.html
+  name: PipelineContext
+  nameWithType: PipelineContext
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html
+  name: RobotsDirectory
+  nameWithType: RobotsDirectory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource.html
+  name: RootUrlSource
+  nameWithType: RootUrlSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument.html
+  name: SitemapDocument
+  nameWithType: SitemapDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget.html
+  name: SitemapBudget
+  nameWithType: SitemapBudget
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.html
+  name: SitemapSeedSource
+  nameWithType: SitemapSeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html
+  name: VisitedSet
+  nameWithType: VisitedSet
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html

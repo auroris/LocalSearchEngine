@@ -1,0 +1,600 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  id: PageDocument
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: PageDocument
+  nameWithType: PageDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageDocument
+    path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+    startLine: 160
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The "we don't know what this is yet" work item — what links, sitemap entries, and feed items
+
+    enqueue. The worker fetches it once and resolves it through <xref href="LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory" data-throw-if-not-resolved="false"></xref> into
+
+    the typed document that actually processes the body, so type detection costs no second fetch.
+  example: []
+  syntax:
+    content: 'internal sealed class PageDocument : Document'
+    content.vb: Friend NotInheritable Class PageDocument Inherits Document
+  inheritance:
+  - System.Object
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document
+  inheritedMembers:
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document.FetchUri
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document.DedupKey
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document.IsPage
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor(System.Uri)
+  id: '#ctor(System.Uri)'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  langs:
+  - csharp
+  - vb
+  name: PageDocument(Uri)
+  nameWithType: PageDocument.PageDocument(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.PageDocument(System.Uri)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+    startLine: 162
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: public PageDocument(Uri fetchUri)
+    parameters:
+    - id: fetchUri
+      type: System.Uri
+    content.vb: Public Sub New(fetchUri As Uri)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor*
+  nameWithType.vb: PageDocument.New(Uri)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.New(System.Uri)
+  name.vb: New(Uri)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  id: ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  langs:
+  - csharp
+  - vb
+  name: ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  nameWithType: PageDocument.ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProcessAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
+    startLine: 165
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: 'Never called: the worker resolves a PageDocument to a typed document before processing.'
+  example: []
+  syntax:
+    content: public override Task ProcessAsync(FetchResult fetch, ICrawlContext ctx, CancellationToken ct)
+    parameters:
+    - id: fetch
+      type: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    - id: ctx
+      type: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overrides Function ProcessAsync(fetch As FetchResult, ctx As ICrawlContext, ct As CancellationToken) As Task
+  overridden: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  href: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.html
+  name: DocumentFactory
+  nameWithType: DocumentFactory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.Document
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  name: Document
+  nameWithType: Document
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.FetchUri
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.Document.FetchUri
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_FetchUri
+  name: FetchUri
+  nameWithType: Document.FetchUri
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.FetchUri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.DedupKey
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.Document.DedupKey
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_DedupKey
+  name: DedupKey
+  nameWithType: Document.DedupKey
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.DedupKey
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.IsPage
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.Document.IsPage
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_IsPage
+  name: IsPage
+  nameWithType: Document.IsPage
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.IsPage
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_WithLocation_System_Uri_
+  name: WithLocation(Uri)
+  nameWithType: Document.WithLocation(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+    name: WithLocation
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_WithLocation_System_Uri_
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation(System.Uri)
+    name: WithLocation
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_WithLocation_System_Uri_
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.html#LocalSearchEngine_Core_Crawling_Pipeline_PageDocument__ctor_System_Uri_
+  name: PageDocument
+  nameWithType: PageDocument.PageDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.PageDocument
+  nameWithType.vb: PageDocument.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.New
+  name.vb: New
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  name: ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  nameWithType: Document.ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: ProcessAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: ProcessAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.html#LocalSearchEngine_Core_Crawling_Pipeline_PageDocument_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  name: ProcessAsync
+  nameWithType: PageDocument.ProcessAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.ProcessAsync
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  name: FetchResult
+  nameWithType: FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  name: ICrawlContext
+  nameWithType: ICrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

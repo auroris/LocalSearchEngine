@@ -7,9 +7,11 @@ items:
   children:
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append(LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(System.String,System.Nullable{System.Int32}@)
   - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
+  - LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._writeLock
   langs:
   - csharp
   - vb
@@ -24,7 +26,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AllowedHosts
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -36,6 +38,12 @@ items:
     filter — listing a host here never causes it to be contacted. Robots.txt and pages are
 
     only fetched for origins the crawl actually reaches.
+
+    Safe for concurrent readers while rules are added: the rule set grows mid-crawl when the
+
+    seed redirects to a new origin, so mutation swaps in a fresh array (copy-on-write) rather
+
+    than appending to a list a concurrent <xref href="LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)" data-throw-if-not-resolved="false"></xref> may be walking.
   example: []
   syntax:
     content: public sealed class AllowedHosts
@@ -49,6 +57,33 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._writeLock
+  commentId: F:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._writeLock
+  id: _writeLock
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: _writeLock
+  nameWithType: AllowedHosts._writeLock
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._writeLock
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _writeLock
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 17
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private readonly object _writeLock
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _writeLock As Object
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
   commentId: F:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts._rules
   id: _rules
@@ -67,15 +102,15 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _rules
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 14
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
   syntax:
-    content: private readonly List<AllowedHosts.HostRule> _rules
+    content: private volatile AllowedHosts.HostRule[] _rules
     return:
-      type: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
-    content.vb: Private ReadOnly _rules As List(Of AllowedHosts.HostRule)
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule[]
+    content.vb: Private _rules As AllowedHosts.HostRule()
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add(System.String)
   id: Add(System.String)
@@ -94,7 +129,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Add
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -137,7 +172,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddOrigin
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 77
+    startLine: 81
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -154,6 +189,35 @@ items:
       description: The absolute URI whose origin to allow.
     content.vb: Public Sub AddOrigin(uri As Uri)
   overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.AddOrigin*
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append(LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append(LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
+  id: Append(LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
+  parent: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  langs:
+  - csharp
+  - vb
+  name: Append(HostRule)
+  nameWithType: AllowedHosts.Append(AllowedHosts.HostRule)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append(LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Append
+    path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
+    startLine: 83
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  syntax:
+    content: private void Append(AllowedHosts.HostRule rule)
+    parameters:
+    - id: rule
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    content.vb: Private Sub Append(rule As AllowedHosts.HostRule)
+  overload: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append*
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
   id: IsAllowed(System.Uri)
@@ -172,7 +236,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsAllowed
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 84
+    startLine: 99
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -207,7 +271,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryParsePort
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 102
+    startLine: 117
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -231,6 +295,33 @@ items:
   fullName.vb: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.TryParsePort(String, Integer?)
   name.vb: TryParsePort(String, Integer?)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_IsAllowed_System_Uri_
+  name: IsAllowed(Uri)
+  nameWithType: AllowedHosts.IsAllowed(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+    name: IsAllowed
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_IsAllowed_System_Uri_
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed(System.Uri)
+    name: IsAllowed
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_IsAllowed_System_Uri_
+  - name: (
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Policies
   commentId: N:LocalSearchEngine.Core.Crawling.Policies
   href: LocalSearchEngine.html
@@ -482,112 +573,27 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
-  commentId: T:System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule}
-  parent: System.Collections.Generic
-  definition: System.Collections.Generic.List`1
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  name: List<AllowedHosts.HostRule>
-  nameWithType: List<AllowedHosts.HostRule>
-  fullName: System.Collections.Generic.List<LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule>
-  nameWithType.vb: List(Of AllowedHosts.HostRule)
-  fullName.vb: System.Collections.Generic.List(Of LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule)
-  name.vb: List(Of AllowedHosts.HostRule)
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule[]
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
+  name: HostRule[]
+  nameWithType: AllowedHosts.HostRule[]
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule[]
+  nameWithType.vb: AllowedHosts.HostRule()
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule()
+  name.vb: HostRule()
   spec.csharp:
-  - uid: System.Collections.Generic.List`1
-    name: List
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  - name: <
-  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
-    name: AllowedHosts
-    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
-  - name: .
   - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
     name: HostRule
     href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
-  - name: '>'
+  - name: '['
+  - name: ']'
   spec.vb:
-  - uid: System.Collections.Generic.List`1
-    name: List
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
-    name: AllowedHosts
-    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
-  - name: .
   - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
     name: HostRule
     href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
-  - name: )
-- uid: System.Collections.Generic.List`1
-  commentId: T:System.Collections.Generic.List`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  name: List<T>
-  nameWithType: List<T>
-  fullName: System.Collections.Generic.List<T>
-  nameWithType.vb: List(Of T)
-  fullName.vb: System.Collections.Generic.List(Of T)
-  name.vb: List(Of T)
-  spec.csharp:
-  - uid: System.Collections.Generic.List`1
-    name: List
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.List`1
-    name: List
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
   - name: (
-  - name: Of
-  - name: " "
-  - name: T
   - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Add
   href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_Add_System_String_
@@ -630,6 +636,35 @@ references:
   name: Uri
   nameWithType: Uri
   fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_Append_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_HostRule_
+  name: Append
+  nameWithType: AllowedHosts.Append
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.Append
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  name: AllowedHosts.HostRule
+  nameWithType: AllowedHosts.HostRule
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    name: AllowedHosts
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+    name: HostRule
+    href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule.html
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.IsAllowed
   href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html#LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_IsAllowed_System_Uri_

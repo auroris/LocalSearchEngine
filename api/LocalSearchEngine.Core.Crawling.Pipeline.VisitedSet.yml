@@ -1,0 +1,629 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  id: VisitedSet
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+  - LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+  - LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet._seen
+  langs:
+  - csharp
+  - vb
+  name: VisitedSet
+  nameWithType: VisitedSet
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: VisitedSet
+    path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+    startLine: 12
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The crawl-wide set of URL identities already accepted into the frontier. <xref href="LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)" data-throw-if-not-resolved="false"></xref>
+
+    is the single atomic dedup decision: with several workers discovering the same link at once, a
+
+    check-then-add would let two of them both enqueue it, so membership and insertion are one
+
+    <xref href="System.Collections.Concurrent.ConcurrentDictionary%602.TryAdd(%600%2c%601)" data-throw-if-not-resolved="false"></xref>. Keys are normalized URLs
+
+    (<xref href="LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer" data-throw-if-not-resolved="false"></xref> output), compared case-insensitively like the old frontier.
+  example: []
+  syntax:
+    content: internal sealed class VisitedSet
+    content.vb: Friend NotInheritable Class VisitedSet
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet._seen
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet._seen
+  id: _seen
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  langs:
+  - csharp
+  - vb
+  name: _seen
+  nameWithType: VisitedSet._seen
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet._seen
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _seen
+    path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+    startLine: 14
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ConcurrentDictionary<string, byte> _seen
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+    content.vb: Private ReadOnly _seen As ConcurrentDictionary(Of String, Byte)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+  id: TryMarkSeen(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  langs:
+  - csharp
+  - vb
+  name: TryMarkSeen(string)
+  nameWithType: VisitedSet.TryMarkSeen(string)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryMarkSeen
+    path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Claims a URL identity for the frontier.
+  example: []
+  syntax:
+    content: public bool TryMarkSeen(string dedupKey)
+    parameters:
+    - id: dedupKey
+      type: System.String
+      description: The normalized URL to claim.
+    return:
+      type: System.Boolean
+      description: <code>true</code> exactly once per key — for the caller that won the claim; <code>false</code> for every later caller.
+    content.vb: Public Function TryMarkSeen(dedupKey As String) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen*
+  nameWithType.vb: VisitedSet.TryMarkSeen(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(String)
+  name.vb: TryMarkSeen(String)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+  id: Count
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: VisitedSet.Count
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Count
+    path: LocalSearchEngine.Core/Crawling/Pipeline/VisitedSet.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the number of unique URLs discovered so far (the live "discovered" figure).
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html#LocalSearchEngine_Core_Crawling_Pipeline_VisitedSet_TryMarkSeen_System_String_
+  name: TryMarkSeen(string)
+  nameWithType: VisitedSet.TryMarkSeen(string)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(string)
+  nameWithType.vb: VisitedSet.TryMarkSeen(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(String)
+  name.vb: TryMarkSeen(String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+    name: TryMarkSeen
+    href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html#LocalSearchEngine_Core_Crawling_Pipeline_VisitedSet_TryMarkSeen_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen(System.String)
+    name: TryMarkSeen
+    href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html#LocalSearchEngine_Core_Crawling_Pipeline_VisitedSet_TryMarkSeen_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2.TryAdd(`0,`1)
+  commentId: M:System.Collections.Concurrent.ConcurrentDictionary`2.TryAdd(`0,`1)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2.tryadd
+  name: TryAdd(TKey, TValue)
+  nameWithType: ConcurrentDictionary<TKey, TValue>.TryAdd(TKey, TValue)
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>.TryAdd(TKey, TValue)
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue).TryAdd(TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue).TryAdd(TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2.TryAdd(`0,`1)
+    name: TryAdd
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2.tryadd
+  - name: (
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2.TryAdd(`0,`1)
+    name: TryAdd
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2.tryadd
+  - name: (
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+  href: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer.html
+  name: UrlNormalizer
+  nameWithType: UrlNormalizer
+  fullName: LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, byte>
+  nameWithType: ConcurrentDictionary<string, byte>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, byte>
+  nameWithType.vb: ConcurrentDictionary(Of String, Byte)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, Byte)
+  name.vb: ConcurrentDictionary(Of String, Byte)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<TKey, TValue>
+  nameWithType: ConcurrentDictionary<TKey, TValue>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue)
+  name.vb: ConcurrentDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Concurrent
+  commentId: N:System.Collections.Concurrent
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Concurrent
+  nameWithType: System.Collections.Concurrent
+  fullName: System.Collections.Concurrent
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen
+  href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html#LocalSearchEngine_Core_Crawling_Pipeline_VisitedSet_TryMarkSeen_System_String_
+  name: TryMarkSeen
+  nameWithType: VisitedSet.TryMarkSeen
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.TryMarkSeen
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+  href: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.html#LocalSearchEngine_Core_Crawling_Pipeline_VisitedSet_Count
+  name: Count
+  nameWithType: VisitedSet.Count
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

@@ -1,0 +1,177 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  id: PersistenceConsumer.ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Delete
+  - LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.None
+  - LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Replace
+  langs:
+  - csharp
+  - vb
+  name: PersistenceConsumer.ChunkAction
+  nameWithType: PersistenceConsumer.ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ChunkAction
+    path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private enum PersistenceConsumer.ChunkAction
+    content.vb: Private Enum PersistenceConsumer.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.None
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.None
+  id: None
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: PersistenceConsumer.ChunkAction.None
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.None
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: None
+    path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Chunks untouched (a plain visit stamp).
+  example: []
+  syntax:
+    content: None = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Delete
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Delete
+  id: Delete
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: Delete
+  nameWithType: PersistenceConsumer.ChunkAction.Delete
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Delete
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Delete
+    path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The URL no longer holds indexed content; its chunks are removed.
+  example: []
+  syntax:
+    content: Delete = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Replace
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Replace
+  id: Replace
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  langs:
+  - csharp
+  - vb
+  name: Replace
+  nameWithType: PersistenceConsumer.ChunkAction.Replace
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.Replace
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Replace
+    path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The URL's content is (re-)embedded and its chunks replaced.
+  example: []
+  syntax:
+    content: Replace = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  name: PersistenceConsumer.ChunkAction
+  nameWithType: PersistenceConsumer.ChunkAction
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+    name: PersistenceConsumer
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+    name: ChunkAction
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+    name: PersistenceConsumer
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+    name: ChunkAction
+    href: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction.html

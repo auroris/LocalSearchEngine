@@ -40,6 +40,8 @@ string brokenLinksFile = crawlSettings.BrokenLinksFile;
 bool checkExternalLinks = crawlSettings.CheckExternalLinks;
 bool noLive = crawlSettings.NoLiveStats;
 int requestDelayMs = crawlSettings.RequestDelayMs;
+bool feedMode = crawlSettings.Feed;
+int crawlWorkers = crawlSettings.CrawlWorkers;
 
 bool showHelp = false;
 
@@ -122,6 +124,18 @@ for (int i = 0; i < args.Length; i++)
     {
         checkExternalLinks = true;
     }
+    else if (arg == "--feed")
+    {
+        feedMode = true;
+    }
+    else if (arg == "--crawl-workers")
+    {
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out crawlWorkers) || crawlWorkers <= 0)
+        {
+            Console.Error.WriteLine("Error: --crawl-workers requires a positive integer.");
+            return;
+        }
+    }
     else if (arg == "--no-live")
     {
         noLive = true;
@@ -173,6 +187,15 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("  --check-external-links   After the crawl, probe off-site links (hosts outside the allowed");
     Console.WriteLine("                           set) to confirm they still resolve; broken or redirected ones are");
     Console.WriteLine("                           added to the broken-links report. Off by default. (Or 'check-external-links'.)");
+    Console.WriteLine("  --feed                   Treat <url> as an RSS/Atom feed and run an update crawl: only the");
+    Console.WriteLine("                           items the feed lists are fetched (unchanged ones answer 304 and");
+    Console.WriteLine("                           cost nothing to re-index), links are not followed, and nothing");
+    Console.WriteLine("                           the run didn't visit is pruned. Site deletions are reconciled by");
+    Console.WriteLine("                           the next full crawl. (Or 'feed' in appsettings.json.)");
+    Console.WriteLine("  --crawl-workers <n>      Number of concurrent crawl workers. Default is 4. Each host is");
+    Console.WriteLine("                           still fetched sequentially with the politeness delay, so extra");
+    Console.WriteLine("                           workers pay off when the crawl spans several hosts.");
+    Console.WriteLine("                           (Or 'crawl-workers' in appsettings.json.)");
     Console.WriteLine("  --no-live                Force plain progress lines instead of the live display. Not");
     Console.WriteLine("                           usually needed: the live display turns itself off automatically");
     Console.WriteLine("                           when output is redirected or there is no interactive console");
@@ -276,7 +299,7 @@ try
     AnsiConsole.Write(new Rule("[bold]LocalSearchEngine crawler[/]").LeftJustified());
     AnsiConsole.WriteLine();
     AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
-    AnsiConsole.MarkupLineInterpolated($"[grey]Seed[/]      {url}");
+    AnsiConsole.MarkupLineInterpolated($"[grey]{(feedMode ? "Feed" : "Seed")}[/]      {url}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
@@ -303,6 +326,12 @@ try
     // would otherwise qualify.
     bool useLive = !noLive && AnsiConsole.Profile.Capabilities.Interactive;
 
+    // The one place run composition is chosen: a full crawl (sitemaps + seed, follow links, prune)
+    // or a feed-driven update (fetch exactly what the feed lists, delete nothing else).
+    Task<CrawlReport> RunCrawlAsync(ICrawlReporter reporter) => feedMode
+        ? crawlerService.CrawlFeedAsync(url, maxPages, allowedServers, noIndexPatterns, maxCrawlSizeBytes, reporter, requestDelayMs, crawlWorkers)
+        : crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
+
     CrawlReport report;
     if (useLive)
     {
@@ -311,15 +340,13 @@ try
             .AutoClear(false) // leave the final frame on screen
             .StartAsync(async live =>
             {
-                var reporter = new SpectreCrawlReporter(live);
-                captured = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs);
+                captured = await RunCrawlAsync(new SpectreCrawlReporter(live));
             });
         report = captured!;
     }
     else
     {
-        var reporter = new PlainCrawlReporter(AnsiConsole.Console);
-        report = await crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs);
+        report = await RunCrawlAsync(new PlainCrawlReporter(AnsiConsole.Console));
     }
 
     // Channel 3: write the end-of-run stats to disk (JSON + text), then print a summary.
@@ -370,6 +397,14 @@ internal sealed class CrawlSettings
     /// <summary>Whether to probe off-site links after the crawl to confirm they still resolve.</summary>
     [ConfigurationKeyName("check-external-links")]
     public bool CheckExternalLinks { get; set; }
+
+    /// <summary>Whether the URL is an RSS/Atom feed driving an update crawl instead of a full crawl.</summary>
+    [ConfigurationKeyName("feed")]
+    public bool Feed { get; set; }
+
+    /// <summary>Number of concurrent crawl workers. Defaults to 4; each host still fetches sequentially.</summary>
+    [ConfigurationKeyName("crawl-workers")]
+    public int CrawlWorkers { get; set; } = 4;
 
     /// <summary>Whether to force plain progress lines instead of the live display.</summary>
     [ConfigurationKeyName("no-live-stats")]

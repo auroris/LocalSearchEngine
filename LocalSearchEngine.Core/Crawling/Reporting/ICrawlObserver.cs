@@ -6,9 +6,10 @@ using Microsoft.Extensions.Logging;
 /// <summary>
 /// A stateful, per-crawl observer that centralizes all logging, statistics gathering, and progress
 /// reporting. Implementations translate crawler domain events into log messages, stat increments,
-/// and <see cref="ICrawlReporter"/> callbacks. A redirect is resolved into its own outcome on the
-/// dequeued URL (the target is enqueued like a link), so every other page-outcome callback names the
-/// single URL it resolved.
+/// and <see cref="ICrawlReporter"/> callbacks, and must tolerate callbacks arriving from several
+/// crawl workers at once. A redirect is resolved into its own outcome on the dequeued URL (the
+/// target is enqueued like a link), so every other page-outcome callback names the single URL it
+/// resolved.
 /// </summary>
 public interface ICrawlObserver
 {

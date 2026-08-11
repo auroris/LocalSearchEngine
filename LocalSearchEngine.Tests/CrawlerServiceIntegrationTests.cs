@@ -1177,7 +1177,11 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         return resp;
     }
 
-    /// <summary>Canned HTTP server: routes keyed by absolute URL; unmapped paths 404.</summary>
+    /// <summary>
+    /// Canned HTTP server: routes keyed by absolute URL; unmapped paths 404. Requests arrive from
+    /// concurrent crawl workers, so the request log locks; Routes are only mutated while no crawl
+    /// runs, and tests read Requested only after the crawl returns.
+    /// </summary>
     private sealed class FakeHandler : HttpMessageHandler
     {
         public readonly Dictionary<string, Func<HttpRequestMessage, HttpResponseMessage>> Routes = new(StringComparer.OrdinalIgnoreCase);
@@ -1186,7 +1190,10 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var url = request.RequestUri!.GetLeftPart(UriPartial.Query);
-            Requested.Add(url);
+            lock (Requested)
+            {
+                Requested.Add(url);
+            }
 
             HttpResponseMessage response = Routes.TryGetValue(url, out var factory)
                 ? factory(request)
@@ -1215,17 +1222,28 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
         public override ReadOnlyMemory<float> Embed(string text) => throw new InvalidOperationException("embed failed");
     }
 
-    /// <summary>Captures the last embedder-progress callback so a test can assert it was driven to completion.</summary>
+    /// <summary>
+    /// Captures the last embedder-progress callback so a test can assert it was driven to completion.
+    /// Locked because the reporter contract allows concurrent callbacks; tests read after the crawl returns.
+    /// </summary>
     private sealed class RecordingReporter : ICrawlReporter
     {
-        public int LastEmbedProcessed { get; private set; }
-        public int LastEmbedQueued { get; private set; }
+        private readonly object _gate = new();
+        private int _lastEmbedProcessed;
+        private int _lastEmbedQueued;
+
+        public int LastEmbedProcessed { get { lock (_gate) { return _lastEmbedProcessed; } } }
+        public int LastEmbedQueued { get { lock (_gate) { return _lastEmbedQueued; } } }
+
         public void PhaseChanged(CrawlPhase phase, CrawlStatsSnapshot stats) { }
         public void PageProcessed(string url, CrawlOutcome outcome, CrawlStatsSnapshot stats) { }
         public void EmbedProgress(int processed, int queued)
         {
-            LastEmbedProcessed = processed;
-            LastEmbedQueued = queued;
+            lock (_gate)
+            {
+                _lastEmbedProcessed = processed;
+                _lastEmbedQueued = queued;
+            }
         }
     }
 }

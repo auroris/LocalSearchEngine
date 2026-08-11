@@ -5,16 +5,15 @@ items:
   id: CrawlHeartbeat
   parent: LocalSearchEngine.Core.Crawling.Reporting
   children:
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet(System.String)
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark(System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
-  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._lanes
   langs:
   - csharp
   - vb
@@ -34,21 +33,19 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: >-
-    Two independent "what is this half of the crawl doing right now" markers — one for the crawler thread
+    A per-lane "what is this part of the crawl doing right now" marker. Each concurrent actor
 
-    (fetch plus crawl-state writes) and one for the embedder thread (CPU embedding plus chunk writes). Each
+    (crawl worker, persistence consumer) bumps its own named lane before every unit of work, and
 
-    thread bumps its own lane before every unit of work, and the orchestrator's watchdog reads both on a
+    the orchestrator's watchdog snapshots all lanes on a timer and warns per lane when one has
 
-    timer and warns per lane when one has been in flight too long. Two lanes rather than one because the
+    been in flight too long. One lane per actor rather than one shared marker because the actors
 
-    halves run concurrently: a single shared marker only ever showed whichever thread wrote last, so a stuck
+    run concurrently: a single marker only ever showed whichever actor wrote last, so a stuck
 
-    embedder was routinely masked by the crawler's next fetch mark (and a slow fetch by the embedder's), and
+    one was routinely masked by another's next mark and the log named the wrong culprit.
 
-    the log named the wrong half. <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)" data-throw-if-not-resolved="false"></xref>/<xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)" data-throw-if-not-resolved="false"></xref> and the reads are all
-
-    safe to call from the two threads at once.
+    All members are safe to call from any number of actors at once.
   example: []
   syntax:
     content: internal sealed class CrawlHeartbeat
@@ -84,13 +81,47 @@ items:
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: The sentinel a lane carries when its thread is parked with no work; the watchdog ignores it.
+  summary: The sentinel a lane carries when its actor is parked with no work; the watchdog ignores it.
   example: []
   syntax:
     content: public const string Idle = "idle"
     return:
       type: System.String
     content.vb: Public Const Idle As String = "idle"
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  id: PoliteWaitPrefix
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+  langs:
+  - csharp
+  - vb
+  name: PoliteWaitPrefix
+  nameWithType: CrawlHeartbeat.PoliteWaitPrefix
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PoliteWaitPrefix
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: >-
+    Prefix for a lane waiting its turn at a host's politeness gate. A long wait here is queueing
+
+    behind a slow or crawl-delayed host, not a stall, so the watchdog ignores it like <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> —
+
+    but the marked activity should still name the host so a snapshot shows where the queue is.
+  example: []
+  syntax:
+    content: public const string PoliteWaitPrefix = "polite wait"
+    return:
+      type: System.String
+    content.vb: Public Const PoliteWaitPrefix As String = "polite wait"
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
   commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._gate
   id: _gate
@@ -109,7 +140,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _gate
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 19
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -118,60 +149,71 @@ items:
     return:
       type: System.Object
     content.vb: Private ReadOnly _gate As Object
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
-  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
-  id: _crawler
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._lanes
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._lanes
+  id: _lanes
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
   langs:
   - csharp
   - vb
-  name: _crawler
-  nameWithType: CrawlHeartbeat._crawler
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._crawler
+  name: _lanes
+  nameWithType: CrawlHeartbeat._lanes
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._lanes
   type: Field
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: _crawler
+    id: _lanes
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 20
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   syntax:
-    content: private CrawlHeartbeat.Lane _crawler
+    content: private readonly Dictionary<string, CrawlHeartbeat.Lane> _lanes
     return:
-      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-    content.vb: Private _crawler As CrawlHeartbeat.Lane
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
-  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
-  id: _embedder
+      type: System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane}
+    content.vb: Private ReadOnly _lanes As Dictionary(Of String, CrawlHeartbeat.Lane)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark(System.String,System.String)
+  id: Mark(System.String,System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
   langs:
   - csharp
   - vb
-  name: _embedder
-  nameWithType: CrawlHeartbeat._embedder
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat._embedder
-  type: Field
+  name: Mark(string, string)
+  nameWithType: CrawlHeartbeat.Mark(string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark(string, string)
+  type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: _embedder
+    id: Mark
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 21
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
+  summary: Records what the named lane's actor is now doing, resetting its clock. Lanes are created on first mark.
+  example: []
   syntax:
-    content: private CrawlHeartbeat.Lane _embedder
-    return:
-      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-    content.vb: Private _embedder As CrawlHeartbeat.Lane
+    content: public void Mark(string lane, string activity)
+    parameters:
+    - id: lane
+      type: System.String
+      description: The lane name, e.g. "worker-1" or "persistence".
+    - id: activity
+      type: System.String
+      description: A short description (e.g. "fetching {url}"), or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
+    content.vb: Public Sub Mark(lane As String, activity As String)
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark*
+  nameWithType.vb: CrawlHeartbeat.Mark(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark(String, String)
+  name.vb: Mark(String, String)
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
   id: MarkCrawler(System.String)
@@ -190,18 +232,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MarkCrawler
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 25
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Records what the crawler thread is now doing, resetting its clock.
+  summary: Records what the crawler is now doing. Shorthand for the old engine's fixed "crawler" lane.
   example: []
   syntax:
     content: public void MarkCrawler(string activity)
     parameters:
     - id: activity
       type: System.String
-      description: A short description (e.g. "fetching {url}"), or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
+      description: A short description, or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
     content.vb: Public Sub MarkCrawler(activity As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler*
   nameWithType.vb: CrawlHeartbeat.MarkCrawler(String)
@@ -225,212 +267,96 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MarkEmbedder
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 29
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Records what the embedder thread is now doing, resetting its clock.
+  summary: Records what the embedder is now doing. Shorthand for the old engine's fixed "embedder" lane.
   example: []
   syntax:
     content: public void MarkEmbedder(string activity)
     parameters:
     - id: activity
       type: System.String
-      description: A short description (e.g. "embedding {url} (backlog N)"), or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
+      description: A short description, or <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> when parked.
     content.vb: Public Sub MarkEmbedder(activity As String)
   overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder*
   nameWithType.vb: CrawlHeartbeat.MarkEmbedder(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(String)
   name.vb: MarkEmbedder(String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
-  id: ReadCrawler
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot
+  id: Snapshot
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
   langs:
   - csharp
   - vb
-  name: ReadCrawler()
-  nameWithType: CrawlHeartbeat.ReadCrawler()
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler()
+  name: Snapshot()
+  nameWithType: CrawlHeartbeat.Snapshot()
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ReadCrawler
+    id: Snapshot
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 32
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Reads the crawler lane's current activity and how long it has been running.
+  summary: Reads every lane's current activity and how long it has been running.
   example: []
   syntax:
-    content: public (string Activity, TimeSpan Elapsed) ReadCrawler()
+    content: public IReadOnlyList<(string Lane, string Activity, TimeSpan Elapsed)> Snapshot()
     return:
-      type: System.ValueTuple{System.String,System.TimeSpan}
-    content.vb: Public Function ReadCrawler() As (Activity As String, Elapsed As TimeSpan)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler*
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
-  id: ReadEmbedder
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.String,System.TimeSpan}}
+      description: A point-in-time copy; mutating actors never see or affect it.
+    content.vb: Public Function Snapshot() As IReadOnlyList(Of (Lane As String, Activity As String, Elapsed As TimeSpan))
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot*
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet(System.String)
+  id: IsQuiet(System.String)
   parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
   langs:
   - csharp
   - vb
-  name: ReadEmbedder()
-  nameWithType: CrawlHeartbeat.ReadEmbedder()
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder()
+  name: IsQuiet(string)
+  nameWithType: CrawlHeartbeat.IsQuiet(string)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet(string)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ReadEmbedder
+    id: IsQuiet
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 35
+    startLine: 70
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
-  summary: Reads the embedder lane's current activity and how long it has been running.
+  summary: >-
+    Whether an activity is one the stall watchdog should ignore: a parked actor
+
+    (<xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref>) or one queued at a politeness gate (<xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix" data-throw-if-not-resolved="false"></xref>).
   example: []
   syntax:
-    content: public (string Activity, TimeSpan Elapsed) ReadEmbedder()
-    return:
-      type: System.ValueTuple{System.String,System.TimeSpan}
-    content.vb: Public Function ReadEmbedder() As (Activity As String, Elapsed As TimeSpan)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder*
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
-  id: Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
-  langs:
-  - csharp
-  - vb
-  name: Set(ref Lane, string)
-  nameWithType: CrawlHeartbeat.Set(ref CrawlHeartbeat.Lane, string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(ref LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane, string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Set
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 37
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  syntax:
-    content: private void Set(ref CrawlHeartbeat.Lane lane, string activity)
+    content: public static bool IsQuiet(string activity)
     parameters:
-    - id: lane
-      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
     - id: activity
       type: System.String
-    content.vb: Private Sub [Set](lane As CrawlHeartbeat.Lane, activity As String)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set*
-  nameWithType.vb: CrawlHeartbeat.Set(CrawlHeartbeat.Lane, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane, String)
-  name.vb: Set(Lane, String)
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
-  id: Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane@)
-  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
-  langs:
-  - csharp
-  - vb
-  name: Get(ref Lane)
-  nameWithType: CrawlHeartbeat.Get(ref CrawlHeartbeat.Lane)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(ref LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Get
-    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 45
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Reporting
-  syntax:
-    content: private (string Activity, TimeSpan Elapsed) Get(ref CrawlHeartbeat.Lane lane)
-    parameters:
-    - id: lane
-      type: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+      description: The lane activity to classify.
     return:
-      type: System.ValueTuple{System.String,System.TimeSpan}
-    content.vb: Private Function [Get](lane As CrawlHeartbeat.Lane) As (Activity As String, Elapsed As TimeSpan)
-  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get*
-  nameWithType.vb: CrawlHeartbeat.Get(CrawlHeartbeat.Lane)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane)
-  name.vb: Get(Lane)
+      type: System.Boolean
+      description: <code>true</code> if the activity is expected to sit for long stretches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function IsQuiet(activity As String) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet*
+  nameWithType.vb: CrawlHeartbeat.IsQuiet(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet(String)
+  name.vb: IsQuiet(String)
 references:
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
-  name: MarkCrawler(string)
-  nameWithType: CrawlHeartbeat.MarkCrawler(string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(string)
-  nameWithType.vb: CrawlHeartbeat.MarkCrawler(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(String)
-  name.vb: MarkCrawler(String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
-    name: MarkCrawler
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler(System.String)
-    name: MarkCrawler
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
-  isExternal: true
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
-  name: MarkEmbedder(string)
-  nameWithType: CrawlHeartbeat.MarkEmbedder(string)
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(string)
-  nameWithType.vb: CrawlHeartbeat.MarkEmbedder(String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(String)
-  name.vb: MarkEmbedder(String)
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
-    name: MarkEmbedder
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
-  - name: (
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder(System.String)
-    name: MarkEmbedder
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkEmbedder_System_String_
-  - name: (
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting
   commentId: N:LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.html
@@ -693,35 +619,142 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-  parent: LocalSearchEngine.Core.Crawling.Reporting
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
-  name: CrawlHeartbeat.Lane
-  nameWithType: CrawlHeartbeat.Lane
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
-    name: CrawlHeartbeat
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-    name: Lane
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
-    name: CrawlHeartbeat
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-    name: Lane
-    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
   commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Idle
   name: Idle
   nameWithType: CrawlHeartbeat.Idle
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle
+- uid: System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, CrawlHeartbeat.Lane>
+  nameWithType: Dictionary<string, CrawlHeartbeat.Lane>
+  fullName: System.Collections.Generic.Dictionary<string, LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane>
+  nameWithType.vb: Dictionary(Of String, CrawlHeartbeat.Lane)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane)
+  name.vb: Dictionary(Of String, CrawlHeartbeat.Lane)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
+    name: CrawlHeartbeat
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
+    name: Lane
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane.html
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Mark_System_String_System_String_
+  name: Mark
+  nameWithType: CrawlHeartbeat.Mark
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Mark
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkCrawler
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_MarkCrawler_System_String_
@@ -734,33 +767,48 @@ references:
   name: MarkEmbedder
   nameWithType: CrawlHeartbeat.MarkEmbedder
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.MarkEmbedder
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_ReadCrawler
-  name: ReadCrawler
-  nameWithType: CrawlHeartbeat.ReadCrawler
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadCrawler
-- uid: System.ValueTuple{System.String,System.TimeSpan}
-  commentId: T:System.ValueTuple{System.String,System.TimeSpan}
-  parent: System
-  definition: System.ValueTuple`2
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: (string Activity, TimeSpan Elapsed)
-  nameWithType: (string Activity, TimeSpan Elapsed)
-  fullName: (string Activity, System.TimeSpan Elapsed)
-  nameWithType.vb: (Activity As String, Elapsed As TimeSpan)
-  fullName.vb: (Activity As String, Elapsed As System.TimeSpan)
-  name.vb: (Activity As String, Elapsed As TimeSpan)
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Snapshot
+  name: Snapshot
+  nameWithType: CrawlHeartbeat.Snapshot
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Snapshot
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.String,System.TimeSpan}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.String,System.String,System.TimeSpan}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(string Lane, string Activity, TimeSpan Elapsed)>
+  nameWithType: IReadOnlyList<(string Lane, string Activity, TimeSpan Elapsed)>
+  fullName: System.Collections.Generic.IReadOnlyList<(string Lane, string Activity, System.TimeSpan Elapsed)>
+  nameWithType.vb: IReadOnlyList(Of (Lane As String, Activity As String, Elapsed As TimeSpan))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (Lane As String, Activity As String, Elapsed As System.TimeSpan))
+  name.vb: IReadOnlyList(Of (Lane As String, Activity As String, Elapsed As TimeSpan))
   spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
   - name: (
   - uid: System.String
     name: string
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: " "
-  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Lane
+    name: Lane
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.lane
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Activity
     name: Activity
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.activity
   - name: ','
   - name: " "
   - uid: System.TimeSpan
@@ -768,15 +816,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.timespan
   - name: " "
-  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Elapsed
     name: Elapsed
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.elapsed
   - name: )
+  - name: '>'
   spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
   - name: (
-  - uid: System.ValueTuple{System.String,System.TimeSpan}.Activity
-    name: Activity
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.activity
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Lane
+    name: Lane
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.lane
   - name: " "
   - name: As
   - name: " "
@@ -786,9 +842,21 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
-  - uid: System.ValueTuple{System.String,System.TimeSpan}.Elapsed
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Activity
+    name: Activity
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.activity
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.TimeSpan}.Elapsed
     name: Elapsed
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.timespan-.elapsed
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.timespan-.elapsed
   - name: " "
   - name: As
   - name: " "
@@ -797,40 +865,55 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.timespan
   - name: )
-- uid: System.ValueTuple`2
-  commentId: T:System.ValueTuple`2
-  name: (T1, T2)
-  nameWithType: (T1, T2)
-  fullName: (T1, T2)
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
   spec.csharp:
-  - name: (
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: )
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
   spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
   - name: (
-  - name: T1
-  - name: ','
+  - name: Of
   - name: " "
-  - name: T2
+  - name: T
   - name: )
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_ReadEmbedder
-  name: ReadEmbedder
-  nameWithType: CrawlHeartbeat.ReadEmbedder
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.ReadEmbedder
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Set_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Lane__System_String_
-  name: Set
-  nameWithType: CrawlHeartbeat.Set
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Set
-- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get
-  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Get_LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_Lane__
-  name: Get
-  nameWithType: CrawlHeartbeat.Get
-  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Get
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_PoliteWaitPrefix
+  name: PoliteWaitPrefix
+  nameWithType: CrawlHeartbeat.PoliteWaitPrefix
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.PoliteWaitPrefix
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlHeartbeat_IsQuiet_System_String_
+  name: IsQuiet
+  nameWithType: CrawlHeartbeat.IsQuiet
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.IsQuiet
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

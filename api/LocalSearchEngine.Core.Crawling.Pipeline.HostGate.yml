@@ -1,0 +1,808 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  id: HostGate
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate._lanes
+  langs:
+  - csharp
+  - vb
+  name: HostGate
+  nameWithType: HostGate
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HostGate
+    path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Per-host serialization and politeness for the parallel crawl workers. Entering a host's lane
+
+    waits for its turn (one fetch at a time per host), then waits out the minimum gap since the
+
+    previous fetch started. The releaser is held through the fetch <em>and</em> the document's
+
+    processing, which makes each host's documents exactly sequential — that sequencing is what keeps
+
+    the per-host page cap exact and the politeness contract identical to the old single-threaded
+
+    engine. Parallelism therefore pays off across hosts, never against one.
+  example: []
+  syntax:
+    content: internal sealed class HostGate
+    content.vb: Friend NotInheritable Class HostGate
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  id: MaxCrawlDelaySeconds
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  langs:
+  - csharp
+  - vb
+  name: MaxCrawlDelaySeconds
+  nameWithType: HostGate.MaxCrawlDelaySeconds
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxCrawlDelaySeconds
+    path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The longest crawl-delay honored from robots.txt, so a hostile value can't park the crawl.
+  example: []
+  syntax:
+    content: private const int MaxCrawlDelaySeconds = 30
+    return:
+      type: System.Int32
+    content.vb: Private Const MaxCrawlDelaySeconds As Integer = 30
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate._lanes
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.HostGate._lanes
+  id: _lanes
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  langs:
+  - csharp
+  - vb
+  name: _lanes
+  nameWithType: HostGate._lanes
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate._lanes
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _lanes
+    path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ConcurrentDictionary<string, HostGate.HostLane> _lanes
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane}
+    content.vb: Private ReadOnly _lanes As ConcurrentDictionary(Of String, HostGate.HostLane)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  id: EnterAsync(System.String,System.TimeSpan,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  langs:
+  - csharp
+  - vb
+  name: EnterAsync(string, TimeSpan, CancellationToken)
+  nameWithType: HostGate.EnterAsync(string, TimeSpan, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync(string, System.TimeSpan, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnterAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Takes the host's turn, waiting out the politeness gap, and stamps the new fetch start.
+  example: []
+  syntax:
+    content: public ValueTask<HostGate.Releaser> EnterAsync(string host, TimeSpan minGap, CancellationToken ct = default)
+    parameters:
+    - id: host
+      type: System.String
+      description: The host about to be fetched.
+    - id: minGap
+      type: System.TimeSpan
+      description: The minimum time between fetch starts on this host.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancels the wait.
+    return:
+      type: System.Threading.Tasks.ValueTask{LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser}
+      description: A releaser the caller disposes after the fetch and its processing complete.
+    content.vb: Public Function EnterAsync(host As String, minGap As TimeSpan, ct As CancellationToken = Nothing) As ValueTask(Of HostGate.Releaser)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync*
+  nameWithType.vb: HostGate.EnterAsync(String, TimeSpan, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync(String, System.TimeSpan, System.Threading.CancellationToken)
+  name.vb: EnterAsync(String, TimeSpan, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Int32)
+  id: ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+  langs:
+  - csharp
+  - vb
+  name: ResolveDelay(RobotsRules, int)
+  nameWithType: HostGate.ResolveDelay(RobotsRules, int)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ResolveDelay
+    path: LocalSearchEngine.Core/Crawling/Pipeline/HostGate.cs
+    startLine: 73
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Resolves the politeness gap for a host: its robots.txt crawl-delay capped at
+
+    <xref href="LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds" data-throw-if-not-resolved="false"></xref>, or the configured default when none is declared.
+  example: []
+  syntax:
+    content: public static TimeSpan ResolveDelay(RobotsRules robots, int defaultRequestDelayMs)
+    parameters:
+    - id: robots
+      type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+      description: The host's robots.txt rules.
+    - id: defaultRequestDelayMs
+      type: System.Int32
+      description: The gap to use when robots.txt declares no crawl-delay.
+    return:
+      type: System.TimeSpan
+      description: The minimum time between fetch starts on the host.
+    content.vb: Public Shared Function ResolveDelay(robots As RobotsRules, defaultRequestDelayMs As Integer) As TimeSpan
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay*
+  nameWithType.vb: HostGate.ResolveDelay(RobotsRules, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay(LocalSearchEngine.Core.Crawling.Policies.RobotsRules, Integer)
+  name.vb: ResolveDelay(RobotsRules, Integer)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, HostGate.HostLane>
+  nameWithType: ConcurrentDictionary<string, HostGate.HostLane>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane>
+  nameWithType.vb: ConcurrentDictionary(Of String, HostGate.HostLane)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane)
+  name.vb: ConcurrentDictionary(Of String, HostGate.HostLane)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+    name: HostLane
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+    name: HostLane
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
+  - name: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<TKey, TValue>
+  nameWithType: ConcurrentDictionary<TKey, TValue>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue)
+  name.vb: ConcurrentDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Concurrent
+  commentId: N:System.Collections.Concurrent
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Concurrent
+  nameWithType: System.Collections.Concurrent
+  fullName: System.Collections.Concurrent
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html#LocalSearchEngine_Core_Crawling_Pipeline_HostGate_EnterAsync_System_String_System_TimeSpan_System_Threading_CancellationToken_
+  name: EnterAsync
+  nameWithType: HostGate.EnterAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.EnterAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.ValueTask{LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser}
+  commentId: T:System.Threading.Tasks.ValueTask{LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<HostGate.Releaser>
+  nameWithType: ValueTask<HostGate.Releaser>
+  fullName: System.Threading.Tasks.ValueTask<LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser>
+  nameWithType.vb: ValueTask(Of HostGate.Releaser)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser)
+  name.vb: ValueTask(Of HostGate.Releaser)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+    name: Releaser
+    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html#LocalSearchEngine_Core_Crawling_Pipeline_HostGate_MaxCrawlDelaySeconds
+  name: MaxCrawlDelaySeconds
+  nameWithType: HostGate.MaxCrawlDelaySeconds
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.MaxCrawlDelaySeconds
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay
+  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html#LocalSearchEngine_Core_Crawling_Pipeline_HostGate_ResolveDelay_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_System_Int32_
+  name: ResolveDelay
+  nameWithType: HostGate.ResolveDelay
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.ResolveDelay
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

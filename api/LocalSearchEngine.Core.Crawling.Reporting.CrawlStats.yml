@@ -23,6 +23,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.SkippedType
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.TimeSpan)
   - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Unchanged
+  - LocalSearchEngine.Core.Crawling.Reporting.CrawlStats._gate
   langs:
   - csharp
   - vb
@@ -37,16 +38,18 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStats
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 7
+    startLine: 8
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: >-
-    Running tallies for a single crawl. Updated only from the crawl's producer thread (the loop that
+    Running tallies for a single crawl. Recorded from every crawl worker at once, so mutation and
 
-    fetches and classifies pages, and the end-of-crawl removals that run after the indexer drains),
+    <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase%2cSystem.Int32%2cSystem.TimeSpan)" data-throw-if-not-resolved="false"></xref> serialize on an internal lock — a snapshot is a consistent point in time,
 
-    so it carries no synchronization of its own.
+    never a torn read taken mid-increment. The properties themselves are safe to read once the crawl
+
+    has drained (the report/summary path); mid-crawl readers must go through <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase%2cSystem.Int32%2cSystem.TimeSpan)" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: public sealed class CrawlStats
@@ -60,6 +63,33 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats._gate
+  commentId: F:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats._gate
+  id: _gate
+  parent: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: CrawlStats._gate
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Reporting
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Indexed
   commentId: P:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Indexed
   id: Indexed
@@ -78,7 +108,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Indexed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -109,7 +139,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unchanged
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 13
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -140,7 +170,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoIndex
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 16
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -171,7 +201,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SkippedType
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 19
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -202,7 +232,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SkippedSize
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 22
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -233,7 +263,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LowQualityText
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 25
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -264,7 +294,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirected
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 28
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -295,7 +325,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gone
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 31
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -326,7 +356,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Disallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 34
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -357,7 +387,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Failed
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 37
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -388,7 +418,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LinksFound
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 40
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -419,7 +449,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedBanned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 43
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -450,7 +480,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RemovedStale
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 46
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -481,7 +511,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Record
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 50
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -513,7 +543,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddLinks
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 69
+    startLine: 75
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -548,7 +578,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddRemovedBanned
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 73
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -583,7 +613,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AddRemovedStale
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 77
+    startLine: 83
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -618,7 +648,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Snapshot
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlStats.cs
-    startLine: 87
+    startLine: 93
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -648,6 +678,58 @@ items:
   fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, Integer, System.TimeSpan)
   name.vb: Snapshot(CrawlPhase, Integer, TimeSpan)
 references:
+- uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.TimeSpan)
+  commentId: M:LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.TimeSpan)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStats_Snapshot_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_System_Int32_System_TimeSpan_
+  name: Snapshot(CrawlPhase, int, TimeSpan)
+  nameWithType: CrawlStats.Snapshot(CrawlPhase, int, TimeSpan)
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, int, System.TimeSpan)
+  nameWithType.vb: CrawlStats.Snapshot(CrawlPhase, Integer, TimeSpan)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase, Integer, System.TimeSpan)
+  name.vb: Snapshot(CrawlPhase, Integer, TimeSpan)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.TimeSpan)
+    name: Snapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStats_Snapshot_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.Snapshot(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,System.Int32,System.TimeSpan)
+    name: Snapshot
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlStats.html#LocalSearchEngine_Core_Crawling_Reporting_CrawlStats_Snapshot_LocalSearchEngine_Core_Crawling_Reporting_CrawlPhase_System_Int32_System_TimeSpan_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase
+    name: CrawlPhase
+    href: LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Reporting
   commentId: N:LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.html

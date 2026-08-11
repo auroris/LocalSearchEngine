@@ -1,0 +1,938 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  id: FetchResult
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor(System.Int32,System.Byte[],System.String,System.String,System.String,System.String,System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.String)
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+  - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+  langs:
+  - csharp
+  - vb
+  name: FetchResult
+  nameWithType: FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FetchResult
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    A successful download as <xref href="LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult%2cLocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> sees it. Transport outcomes
+
+    (redirects, 304s, errors, size/type rejections) are resolved by the worker before typed
+
+    processing, so a document handler only ever receives a body it can parse.
+  example: []
+  syntax:
+    content: 'internal sealed record FetchResult : IEquatable<FetchResult>'
+    content.vb: Friend NotInheritable Class FetchResult Implements IEquatable(Of FetchResult)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FetchResult}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor(System.Int32,System.Byte[],System.String,System.String,System.String,System.String,System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor(System.Int32,System.Byte[],System.String,System.String,System.String,System.String,System.String,System.String)
+  id: '#ctor(System.Int32,System.Byte[],System.String,System.String,System.String,System.String,System.String,System.String)'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: FetchResult(int, byte[], string?, string?, string?, string?, string?, string?)
+  nameWithType: FetchResult.FetchResult(int, byte[], string?, string?, string?, string?, string?, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FetchResult(int, byte[], string?, string?, string?, string?, string?, string?)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 19
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    A successful download as <xref href="LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult%2cLocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> sees it. Transport outcomes
+
+    (redirects, 304s, errors, size/type rejections) are resolved by the worker before typed
+
+    processing, so a document handler only ever receives a body it can parse.
+  example: []
+  syntax:
+    content: public FetchResult(int StatusCode, byte[] Body, string? ContentType, string? CharSet, string? ETag, string? LastModified, string? XRobotsTag, string? PriorContentHash)
+    parameters:
+    - id: StatusCode
+      type: System.Int32
+      description: The HTTP status code of the response.
+    - id: Body
+      type: System.Byte[]
+      description: The response body bytes.
+    - id: ContentType
+      type: System.String
+      description: The response media type, if declared.
+    - id: CharSet
+      type: System.String
+      description: The response charset, if declared (HTML decoding).
+    - id: ETag
+      type: System.String
+      description: The response ETag, stored for the next crawl's conditional request.
+    - id: LastModified
+      type: System.String
+      description: The response Last-Modified value, stored for the next conditional request.
+    - id: XRobotsTag
+      type: System.String
+      description: The X-Robots-Tag header value, if any.
+    - id: PriorContentHash
+      type: System.String
+      description: >-
+        The content hash stored for this URL by a previous crawl, carried
+            through from the pre-fetch state read so the unchanged-content shortcut needs no second query.
+    content.vb: Public Sub New(StatusCode As Integer, Body As Byte(), ContentType As String, CharSet As String, ETag As String, LastModified As String, XRobotsTag As String, PriorContentHash As String)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor*
+  nameWithType.vb: FetchResult.New(Integer, Byte(), String, String, String, String, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.New(Integer, Byte(), String, String, String, String, String, String)
+  name.vb: New(Integer, Byte(), String, String, String, String, String, String)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+  id: StatusCode
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: StatusCode
+  nameWithType: FetchResult.StatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StatusCode
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The HTTP status code of the response.
+  example: []
+  syntax:
+    content: public int StatusCode { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property StatusCode As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+  id: Body
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: FetchResult.Body
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Body
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The response body bytes.
+  example: []
+  syntax:
+    content: public byte[] Body { get; init; }
+    parameters: []
+    return:
+      type: System.Byte[]
+    content.vb: Public Property Body As Byte()
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+  id: ContentType
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: ContentType
+  nameWithType: FetchResult.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContentType
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 22
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The response media type, if declared.
+  example: []
+  syntax:
+    content: public string? ContentType { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContentType As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+  id: CharSet
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: CharSet
+  nameWithType: FetchResult.CharSet
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CharSet
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 23
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The response charset, if declared (HTML decoding).
+  example: []
+  syntax:
+    content: public string? CharSet { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CharSet As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+  id: ETag
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: ETag
+  nameWithType: FetchResult.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ETag
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The response ETag, stored for the next crawl's conditional request.
+  example: []
+  syntax:
+    content: public string? ETag { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ETag As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+  id: LastModified
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: LastModified
+  nameWithType: FetchResult.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LastModified
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The response Last-Modified value, stored for the next conditional request.
+  example: []
+  syntax:
+    content: public string? LastModified { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastModified As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+  id: XRobotsTag
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: XRobotsTag
+  nameWithType: FetchResult.XRobotsTag
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: XRobotsTag
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The X-Robots-Tag header value, if any.
+  example: []
+  syntax:
+    content: public string? XRobotsTag { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property XRobotsTag As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+  id: PriorContentHash
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: PriorContentHash
+  nameWithType: FetchResult.PriorContentHash
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PriorContentHash
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The content hash stored for this URL by a previous crawl, carried
+        through from the pre-fetch state read so the unchanged-content shortcut needs no second query.
+  example: []
+  syntax:
+    content: public string? PriorContentHash { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PriorContentHash As String
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.String)
+  id: FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  langs:
+  - csharp
+  - vb
+  name: FromSuccess(DownloadResult, string?)
+  nameWithType: FetchResult.FromSuccess(DownloadResult, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult, string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FromSuccess
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FetchResult.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Shapes a successful <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadResult" data-throw-if-not-resolved="false"></xref> into what document processing consumes.
+  example: []
+  syntax:
+    content: public static FetchResult FromSuccess(DownloadResult download, string? priorContentHash)
+    parameters:
+    - id: download
+      type: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+      description: The successful download.
+    - id: priorContentHash
+      type: System.String
+      description: The content hash previously stored for the URL, if any.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+      description: The fetch result handed to <xref href="LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult%2cLocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext%2cSystem.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Function FromSuccess(download As DownloadResult, priorContentHash As String) As FetchResult
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess*
+  nameWithType.vb: FetchResult.FromSuccess(DownloadResult, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess(LocalSearchEngine.Core.Crawling.Engine.DownloadResult, String)
+  name.vb: FromSuccess(DownloadResult, String)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  name: ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  nameWithType: Document.ProcessAsync(FetchResult, ICrawlContext, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: ProcessAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: ProcessAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_ProcessAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FetchResult}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FetchResult}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<FetchResult>
+  nameWithType: IEquatable<FetchResult>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Pipeline.FetchResult>
+  nameWithType.vb: IEquatable(Of FetchResult)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  name.vb: IEquatable(Of FetchResult)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.Document
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  name: Document
+  nameWithType: Document
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult__ctor_System_Int32_System_Byte___System_String_System_String_System_String_System_String_System_String_System_String_
+  name: FetchResult
+  nameWithType: FetchResult.FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FetchResult
+  nameWithType.vb: FetchResult.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_StatusCode
+  name: StatusCode
+  nameWithType: FetchResult.StatusCode
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.StatusCode
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_Body
+  name: Body
+  nameWithType: FetchResult.Body
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.Body
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_ContentType
+  name: ContentType
+  nameWithType: FetchResult.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ContentType
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_CharSet
+  name: CharSet
+  nameWithType: FetchResult.CharSet
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.CharSet
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_ETag
+  name: ETag
+  nameWithType: FetchResult.ETag
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.ETag
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LastModified
+  name: LastModified
+  nameWithType: FetchResult.LastModified
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.LastModified
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_XRobotsTag
+  name: XRobotsTag
+  nameWithType: FetchResult.XRobotsTag
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.XRobotsTag
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_PriorContentHash
+  name: PriorContentHash
+  nameWithType: FetchResult.PriorContentHash
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.PriorContentHash
+- uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.DownloadResult.html
+  name: DownloadResult
+  nameWithType: DownloadResult
+  fullName: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html#LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_FromSuccess_LocalSearchEngine_Core_Crawling_Engine_DownloadResult_System_String_
+  name: FromSuccess
+  nameWithType: FetchResult.FromSuccess
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.FromSuccess
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  name: FetchResult
+  nameWithType: FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html

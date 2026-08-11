@@ -23,7 +23,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostRule
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -57,7 +57,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -93,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Scheme
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -122,7 +122,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Host
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -151,7 +151,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Port
     path: LocalSearchEngine.Core/Crawling/Policies/AllowedHosts.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies

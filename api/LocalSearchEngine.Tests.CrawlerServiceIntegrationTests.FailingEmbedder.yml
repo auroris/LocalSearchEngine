@@ -20,7 +20,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FailingEmbedder
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1212
+    startLine: 1219
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Embed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1214
+    startLine: 1221
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

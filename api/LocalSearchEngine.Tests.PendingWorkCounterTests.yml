@@ -1,0 +1,406 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests
+  commentId: T:LocalSearchEngine.Tests.PendingWorkCounterTests
+  id: PendingWorkCounterTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+  - LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once
+  langs:
+  - csharp
+  - vb
+  name: PendingWorkCounterTests
+  nameWithType: PendingWorkCounterTests
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PendingWorkCounterTests
+    path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+    startLine: 5
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public sealed class PendingWorkCounterTests
+    content.vb: Public NotInheritable Class PendingWorkCounterTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once
+  commentId: M:LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once
+  id: Zero_strike_fires_exactly_once
+  parent: LocalSearchEngine.Tests.PendingWorkCounterTests
+  langs:
+  - csharp
+  - vb
+  name: Zero_strike_fires_exactly_once()
+  nameWithType: PendingWorkCounterTests.Zero_strike_fires_exactly_once()
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Zero_strike_fires_exactly_once
+    path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Zero_strike_fires_exactly_once()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Zero_strike_fires_exactly_once()
+  overload: LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+  commentId: M:LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+  id: Concurrent_balanced_traffic_strikes_zero_exactly_once
+  parent: LocalSearchEngine.Tests.PendingWorkCounterTests
+  langs:
+  - csharp
+  - vb
+  name: Concurrent_balanced_traffic_strikes_zero_exactly_once()
+  nameWithType: PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once()
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Concurrent_balanced_traffic_strikes_zero_exactly_once
+    path: LocalSearchEngine.Tests/PendingWorkCounterTests.cs
+    startLine: 17
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Concurrent_balanced_traffic_strikes_zero_exactly_once()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Concurrent_balanced_traffic_strikes_zero_exactly_once() As Task
+  overload: LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once*
+  commentId: Overload:LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once
+  href: LocalSearchEngine.Tests.PendingWorkCounterTests.html#LocalSearchEngine_Tests_PendingWorkCounterTests_Zero_strike_fires_exactly_once
+  name: Zero_strike_fires_exactly_once
+  nameWithType: PendingWorkCounterTests.Zero_strike_fires_exactly_once
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests.Zero_strike_fires_exactly_once
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once*
+  commentId: Overload:LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+  href: LocalSearchEngine.Tests.PendingWorkCounterTests.html#LocalSearchEngine_Tests_PendingWorkCounterTests_Concurrent_balanced_traffic_strikes_zero_exactly_once
+  name: Concurrent_balanced_traffic_strikes_zero_exactly_once
+  nameWithType: PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests.Concurrent_balanced_traffic_strikes_zero_exactly_once
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

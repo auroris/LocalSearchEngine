@@ -3,9 +3,10 @@ namespace LocalSearchEngine.Core.Crawling.Reporting;
 /// <summary>
 /// Receives crawl progress so a host (CLI, web, tests) can present it however it likes. The crawler
 /// invokes these as work happens; they must be cheap and must never throw, as the crawl does not guard
-/// against a misbehaving reporter. <see cref="PhaseChanged"/> and <see cref="PageProcessed"/> arrive on
-/// the crawler thread, but <see cref="EmbedProgress"/> arrives on the separate embedder thread and can
-/// overlap them — so an implementation that keeps shared display state must guard it.
+/// against a misbehaving reporter. Callbacks are concurrent: <see cref="PhaseChanged"/> and
+/// <see cref="PageProcessed"/> arrive from any of the parallel crawl workers, and <see cref="EmbedProgress"/>
+/// from the persistence consumer, all potentially overlapping — an implementation that keeps shared
+/// display state must guard it.
 /// </summary>
 public interface ICrawlReporter
 {

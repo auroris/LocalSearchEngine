@@ -47,6 +47,13 @@ public static class ContentExtractor
         public string? CanonicalAlias;
         /// <summary>Gets or sets the list of absolute in-scope outlinks discovered on the page.</summary>
         public List<string> Outlinks = new();
+        /// <summary>
+        /// Gets or sets the exact resolved URIs of <see cref="Outlinks"/>, index-aligned 1:1.
+        /// The normalized string is the link's identity (dedup, storage); this is what actually
+        /// goes on the wire — an href's original percent-escaping survives here, where the
+        /// display-form string would re-encode it on re-parse.
+        /// </summary>
+        public List<Uri> OutlinkUris = new();
         /// <summary>Gets or sets the absolute off-site (out-of-scope) http(s) links on the page, kept for optional link verification.</summary>
         public List<string> OffsiteLinks = new();
     }
@@ -200,7 +207,11 @@ public static class ContentExtractor
             var linkRobots = robotsCache.TryGetValue(UrlOrigin.Key(absoluteUri), out var lr) ? lr : RobotsRules.AllowAll;
             if (!CrawlPolicy.IsAllowedByRobots(normalizedUrl, linkRobots)) continue;
 
-            if (seenInScope.Add(normalizedUrl)) analysis.Outlinks.Add(normalizedUrl);
+            if (seenInScope.Add(normalizedUrl))
+            {
+                analysis.Outlinks.Add(normalizedUrl);
+                analysis.OutlinkUris.Add(absoluteUri);
+            }
         }
     }
 

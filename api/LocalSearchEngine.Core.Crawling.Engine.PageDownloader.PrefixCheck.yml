@@ -1,0 +1,499 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  id: PageDownloader.PrefixCheck
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  children:
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor(System.String,System.String)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl
+  langs:
+  - csharp
+  - vb
+  name: PageDownloader.PrefixCheck
+  nameWithType: PageDownloader.PrefixCheck
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  type: Struct
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PrefixCheck
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 272
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The declared type and URL a body's leading bytes are verified against.
+  example: []
+  syntax:
+    content: 'private readonly record struct PageDownloader.PrefixCheck : IEquatable<PageDownloader.PrefixCheck>'
+    content.vb: Private Structure PageDownloader.PrefixCheck Implements IEquatable(Of PageDownloader.PrefixCheck)
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor(System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor(System.String,System.String)
+  id: '#ctor(System.String,System.String)'
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  langs:
+  - csharp
+  - vb
+  name: PrefixCheck(string?, string?)
+  nameWithType: PageDownloader.PrefixCheck.PrefixCheck(string?, string?)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.PrefixCheck(string?, string?)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 272
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The declared type and URL a body's leading bytes are verified against.
+  example: []
+  syntax:
+    content: public PrefixCheck(string? ContentType, string? FinalUrl)
+    parameters:
+    - id: ContentType
+      type: System.String
+      description: The MIME type content header value.
+    - id: FinalUrl
+      type: System.String
+      description: The final request URL (its extension can veto a zip body).
+    content.vb: Public Sub New(ContentType As String, FinalUrl As String)
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor*
+  nameWithType.vb: PageDownloader.PrefixCheck.New(String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.New(String, String)
+  name.vb: New(String, String)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+  id: ContentType
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  langs:
+  - csharp
+  - vb
+  name: ContentType
+  nameWithType: PageDownloader.PrefixCheck.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContentType
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 272
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The MIME type content header value.
+  example: []
+  syntax:
+    content: public string? ContentType { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContentType As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType*
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl
+  id: FinalUrl
+  parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  langs:
+  - csharp
+  - vb
+  name: FinalUrl
+  nameWithType: PageDownloader.PrefixCheck.FinalUrl
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FinalUrl
+    path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
+    startLine: 272
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The final request URL (its extension can veto a zip body).
+  example: []
+  syntax:
+    content: public string? FinalUrl { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FinalUrl As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Engine
+  commentId: N:LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Engine
+  nameWithType: LocalSearchEngine.Core.Crawling.Engine
+  fullName: LocalSearchEngine.Core.Crawling.Engine
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine
+    name: Engine
+    href: LocalSearchEngine.Core.Crawling.Engine.html
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<PageDownloader.PrefixCheck>
+  nameWithType: IEquatable<PageDownloader.PrefixCheck>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck>
+  nameWithType.vb: IEquatable(Of PageDownloader.PrefixCheck)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck)
+  name.vb: IEquatable(Of PageDownloader.PrefixCheck)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.#ctor
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_PrefixCheck__ctor_System_String_System_String_
+  name: PrefixCheck
+  nameWithType: PageDownloader.PrefixCheck.PrefixCheck
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.PrefixCheck
+  nameWithType.vb: PageDownloader.PrefixCheck.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_PrefixCheck_ContentType
+  name: ContentType
+  nameWithType: PageDownloader.PrefixCheck.ContentType
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.ContentType
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_PrefixCheck_FinalUrl
+  name: FinalUrl
+  nameWithType: PageDownloader.PrefixCheck.FinalUrl
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.FinalUrl

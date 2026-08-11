@@ -32,6 +32,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
 - uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.HostRule
+  parent: LocalSearchEngine.Core.Crawling.Policies
   href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
   name: AllowedHosts.HostRule
   nameWithType: AllowedHosts.HostRule

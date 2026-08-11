@@ -12,6 +12,26 @@ using LocalSearchEngine.Core.Crawling.Policies;
 namespace LocalSearchEngine.Core.Crawling.Engine;
 
 /// <summary>
+/// What the link verification pass needs from the finished crawl. Write access is only safe because
+/// the pass runs after the persistence consumer has drained — it inherits the run's single-writer slot.
+/// </summary>
+/// <param name="Read">The orchestrator's read connection.</param>
+/// <param name="Write">The orchestrator's write connection.</param>
+/// <param name="Scope">The crawl's host rules; links found on out-of-scope pages are not probed.</param>
+/// <param name="HostHealth">The run's reachability tracker; links on written-off hosts are skipped.</param>
+/// <param name="CheckExternalLinks">Whether off-site destinations are probed at all.</param>
+/// <param name="Observer">The crawl's event sink.</param>
+/// <param name="Heartbeat">The activity marker bumped as probes land.</param>
+internal sealed record LinkVerificationContext(
+    Microsoft.Data.Sqlite.SqliteConnection Read,
+    Microsoft.Data.Sqlite.SqliteConnection Write,
+    AllowedHosts Scope,
+    HostHealthTracker HostHealth,
+    bool CheckExternalLinks,
+    ICrawlObserver Observer,
+    CrawlHeartbeat Heartbeat);
+
+/// <summary>
 /// The end-of-crawl link check. It takes the links the crawl didn't already resolve — off-site links
 /// (never crawled) and any in-scope links it never reached — and probes each destination with a HEAD
 /// (falling back to GET), classifying it Ok, Redirect, or Error. Probes run concurrently with a bounded
@@ -43,10 +63,10 @@ internal sealed class LinkVerifier
     /// Verify links not already determined this run — off-site links (never crawled) plus any
     /// in-scope links the crawl didn't reach.
     /// </summary>
-    /// <param name="context">The active crawl context.</param>
+    /// <param name="context">The finished crawl's verification context.</param>
     /// <param name="crawlStartUtc">The UTC timestamp indicating when the crawl started.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous verification process.</returns>
-    public async Task VerifyUndeterminedLinksAsync(CrawlContext context, DateTime crawlStartUtc)
+    public async Task VerifyUndeterminedLinksAsync(LinkVerificationContext context, DateTime crawlStartUtc)
     {
         var rows = await CrawlStore.GetLinksToVerifyAsync(context.Read, crawlStartUtc);
 
@@ -54,7 +74,7 @@ internal sealed class LinkVerifier
         foreach (var (fromUrl, toUrl, external) in rows)
         {
             if (external && !context.CheckExternalLinks) continue;
-            if (!Uri.TryCreate(fromUrl, UriKind.Absolute, out var fromUri) || !context.AllowedHosts.IsAllowed(fromUri)) continue;
+            if (!Uri.TryCreate(fromUrl, UriKind.Absolute, out var fromUri) || !context.Scope.IsAllowed(fromUri)) continue;
             if (Uri.TryCreate(toUrl, UriKind.Absolute, out var toUri) && context.HostHealth.IsUnreachable(toUri.Host)) continue;
             destinations.Add(toUrl);
         }
@@ -94,10 +114,10 @@ internal sealed class LinkVerifier
     /// <summary>
     /// Builds the report's broken and redirected link lists from the link index.
     /// </summary>
-    /// <param name="context">The active crawl context.</param>
+    /// <param name="context">The finished crawl's verification context.</param>
     /// <param name="crawlStartUtc">The UTC timestamp indicating when the crawl started.</param>
     /// <returns>A tuple containing lists of broken and redirected <see cref="BrokenLink"/> objects.</returns>
-    public async Task<(List<BrokenLink> Broken, List<BrokenLink> Redirected)> BuildLinkReportAsync(CrawlContext context, DateTime crawlStartUtc)
+    public async Task<(List<BrokenLink> Broken, List<BrokenLink> Redirected)> BuildLinkReportAsync(LinkVerificationContext context, DateTime crawlStartUtc)
     {
         var rows = await CrawlStore.GetReportableLinksAsync(context.Read, crawlStartUtc);
         var broken = new List<BrokenLink>();
@@ -126,9 +146,9 @@ internal sealed class LinkVerifier
     /// Probes a single link to determine if it is OK, redirected, or broken.
     /// </summary>
     /// <param name="url">The link URL to probe.</param>
-    /// <param name="context">The active crawl context.</param>
+    /// <param name="context">The finished crawl's verification context.</param>
     /// <returns>A tuple containing the link's classified <see cref="LinkStatus"/> and actual HTTP status code.</returns>
-    private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, CrawlContext context)
+    private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, LinkVerificationContext context)
     {
         using var timeout = HttpContentReader.NewRequestTimeout();
         try

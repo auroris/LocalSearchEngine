@@ -6,8 +6,8 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
-  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64)
-  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.Uri,System.String,System.String,System.String,System.Int64,System.Boolean)
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck},System.Threading.CancellationToken)
   - LocalSearchEngine.Core.Crawling.Engine.PageDownloader._httpClient
   - LocalSearchEngine.Core.Crawling.Engine.PageDownloader._logger
   langs:
@@ -157,16 +157,16 @@ items:
   nameWithType.vb: PageDownloader.New(HttpClient, ILogger)
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.New(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
   name.vb: New(HttpClient, ILogger)
-- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.String,System.String,System.String,System.Int64)
-  id: DownloadAsync(System.String,System.String,System.String,System.Int64)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.Uri,System.String,System.String,System.String,System.Int64,System.Boolean)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.Uri,System.String,System.String,System.String,System.Int64,System.Boolean)
+  id: DownloadAsync(System.Uri,System.String,System.String,System.String,System.Int64,System.Boolean)
   parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
   langs:
   - csharp
   - vb
-  name: DownloadAsync(string, string?, string?, long)
-  nameWithType: PageDownloader.DownloadAsync(string, string?, string?, long)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(string, string?, string?, long)
+  name: DownloadAsync(Uri, string, string?, string?, long, bool)
+  nameWithType: PageDownloader.DownloadAsync(Uri, string, string?, string?, long, bool)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.Uri, string, string?, string?, long, bool)
   type: Method
   source:
     remote:
@@ -175,18 +175,26 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DownloadAsync
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 98
+    startLine: 105
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Executes a request, validating redirects, content sizes, and mime-types.
   example: []
   syntax:
-    content: public Task<DownloadResult> DownloadAsync(string url, string? etag, string? lastModified, long maxBytes)
+    content: public Task<DownloadResult> DownloadAsync(Uri requestUri, string normalizedUrl, string? etag, string? lastModified, long maxBytes, bool acceptAnyContentType = false)
     parameters:
-    - id: url
+    - id: requestUri
+      type: System.Uri
+      description: >-
+        The exact URI to put on the wire. Kept as a <xref href="System.Uri" data-throw-if-not-resolved="false"></xref> so the
+            href's original escaping survives — re-parsing a display-form string re-encodes it, which is
+            how percent-encoded filesystem paths used to break.
+    - id: normalizedUrl
       type: System.String
-      description: The target page URL to download.
+      description: >-
+        The URL's normalized identity, compared against the (normalized)
+            final request URI to detect that the request moved.
     - id: etag
       type: System.String
       description: The cached ETag, if any, for conditional request validation.
@@ -196,40 +204,49 @@ items:
     - id: maxBytes
       type: System.Int64
       description: The maximum allowed download size in bytes.
+    - id: acceptAnyContentType
+      type: System.Boolean
+      description: >-
+        Skips the content-type whitelist and signature sniff.
+            Infrastructure fetches (sitemaps, feeds) are XML the page whitelist would reject; their
+            parsers are the validation.
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Engine.DownloadResult" data-throw-if-not-resolved="false"></xref> object summarizing the download status and metadata.
-    content.vb: Public Function DownloadAsync(url As String, etag As String, lastModified As String, maxBytes As Long) As Task(Of DownloadResult)
+    content.vb: Public Function DownloadAsync(requestUri As Uri, normalizedUrl As String, etag As String, lastModified As String, maxBytes As Long, acceptAnyContentType As Boolean = False) As Task(Of DownloadResult)
   overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync*
-  nameWithType.vb: PageDownloader.DownloadAsync(String, String, String, Long)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(String, String, String, Long)
-  name.vb: DownloadAsync(String, String, String, Long)
-- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
-  id: ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: PageDownloader.DownloadAsync(Uri, String, String, String, Long, Boolean)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync(System.Uri, String, String, String, Long, Boolean)
+  name.vb: DownloadAsync(Uri, String, String, String, Long, Boolean)
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck},System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck},System.Threading.CancellationToken)
+  id: ReadBodyAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck},System.Threading.CancellationToken)
   parent: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
   langs:
   - csharp
   - vb
-  name: ReadBodyAndValidatePrefixAsync(HttpResponseMessage, long, string?, string, CancellationToken)
-  nameWithType: PageDownloader.ReadBodyAndValidatePrefixAsync(HttpResponseMessage, long, string?, string, CancellationToken)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage, long, string?, string, System.Threading.CancellationToken)
+  name: ReadBodyAsync(HttpResponseMessage, long, PrefixCheck?, CancellationToken)
+  nameWithType: PageDownloader.ReadBodyAsync(HttpResponseMessage, long, PageDownloader.PrefixCheck?, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync(System.Net.Http.HttpResponseMessage, long, LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck?, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ReadBodyAndValidatePrefixAsync
+    id: ReadBodyAsync
     path: LocalSearchEngine.Core/Crawling/Engine/PageDownloader.cs
-    startLine: 267
+    startLine: 283
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Reads the response stream up to the max byte limit, performing MIME type signature prefix verification on the first 4096 bytes.
+  summary: >-
+    Reads the response stream up to the max byte limit, verifying the MIME type signature against
+
+    the first 4096 bytes when a <xref href="LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck" data-throw-if-not-resolved="false"></xref> is supplied.
   example: []
   syntax:
-    content: private static Task<(byte[]? Body, bool Truncated)> ReadBodyAndValidatePrefixAsync(HttpResponseMessage response, long maxBytes, string? contentType, string finalUrl, CancellationToken cancellationToken)
+    content: private static Task<(byte[]? Body, bool Truncated)> ReadBodyAsync(HttpResponseMessage response, long maxBytes, PageDownloader.PrefixCheck? prefixCheck, CancellationToken cancellationToken)
     parameters:
     - id: response
       type: System.Net.Http.HttpResponseMessage
@@ -237,23 +254,20 @@ items:
     - id: maxBytes
       type: System.Int64
       description: The maximum allowed bytes to read.
-    - id: contentType
-      type: System.String
-      description: The MIME type content header value.
-    - id: finalUrl
-      type: System.String
-      description: The final request URL.
+    - id: prefixCheck
+      type: System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+      description: The signature check to run, or <code>null</code> to accept any body.
     - id: cancellationToken
       type: System.Threading.CancellationToken
       description: The cancellation token.
     return:
       type: System.Threading.Tasks.Task{System.ValueTuple{System.Byte[],System.Boolean}}
       description: A tuple containing the downloaded body bytes (or <code>null</code> if validation fails) and a boolean indicating if reading was truncated due to exceeding the size limit.
-    content.vb: Private Shared Function ReadBodyAndValidatePrefixAsync(response As HttpResponseMessage, maxBytes As Long, contentType As String, finalUrl As String, cancellationToken As CancellationToken) As Task(Of (Body As Byte(), Truncated As Boolean))
-  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync*
-  nameWithType.vb: PageDownloader.ReadBodyAndValidatePrefixAsync(HttpResponseMessage, Long, String, String, CancellationToken)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync(System.Net.Http.HttpResponseMessage, Long, String, String, System.Threading.CancellationToken)
-  name.vb: ReadBodyAndValidatePrefixAsync(HttpResponseMessage, Long, String, String, CancellationToken)
+    content.vb: Private Shared Function ReadBodyAsync(response As HttpResponseMessage, maxBytes As Long, prefixCheck As PageDownloader.PrefixCheck?, cancellationToken As CancellationToken) As Task(Of (Body As Byte(), Truncated As Boolean))
+  overload: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync*
+  nameWithType.vb: PageDownloader.ReadBodyAsync(HttpResponseMessage, Long, PageDownloader.PrefixCheck?, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync(System.Net.Http.HttpResponseMessage, Long, LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck?, System.Threading.CancellationToken)
+  name.vb: ReadBodyAsync(HttpResponseMessage, Long, PrefixCheck?, CancellationToken)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.DownloadResult
@@ -626,9 +640,17 @@ references:
   nameWithType.vb: PageDownloader.New
   fullName.vb: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.New
   name.vb: New
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
 - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_DownloadAsync_System_String_System_String_System_String_System_Int64_
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_DownloadAsync_System_Uri_System_String_System_String_System_String_System_Int64_System_Boolean_
   name: DownloadAsync
   nameWithType: PageDownloader.DownloadAsync
   fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.DownloadAsync
@@ -654,6 +676,17 @@ references:
   nameWithType.vb: Long
   fullName.vb: Long
   name.vb: Long
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
   commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Engine.DownloadResult}
   parent: System.Threading.Tasks
@@ -752,12 +785,34 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync
-  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_ReadBodyAndValidatePrefixAsync_System_Net_Http_HttpResponseMessage_System_Int64_System_String_System_String_System_Threading_CancellationToken_
-  name: ReadBodyAndValidatePrefixAsync
-  nameWithType: PageDownloader.ReadBodyAndValidatePrefixAsync
-  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAndValidatePrefixAsync
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader.PrefixCheck
+  nameWithType: PageDownloader.PrefixCheck
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html#LocalSearchEngine_Core_Crawling_Engine_PageDownloader_ReadBodyAsync_System_Net_Http_HttpResponseMessage_System_Int64_System_Nullable_LocalSearchEngine_Core_Crawling_Engine_PageDownloader_PrefixCheck__System_Threading_CancellationToken_
+  name: ReadBodyAsync
+  nameWithType: PageDownloader.ReadBodyAsync
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.ReadBodyAsync
 - uid: System.Net.Http.HttpResponseMessage
   commentId: T:System.Net.Http.HttpResponseMessage
   parent: System.Net.Http
@@ -766,6 +821,32 @@ references:
   name: HttpResponseMessage
   nameWithType: HttpResponseMessage
   fullName: System.Net.Http.HttpResponseMessage
+- uid: System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+  commentId: T:System.Nullable{LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck}
+  parent: System
+  definition: System.Nullable`1
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader.PrefixCheck?
+  nameWithType: PageDownloader.PrefixCheck?
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck?
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  - name: '?'
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  - name: '?'
 - uid: System.Threading.CancellationToken
   commentId: T:System.Threading.CancellationToken
   parent: System.Threading
@@ -848,6 +929,34 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
   - name: )
 - uid: System.Threading
   commentId: N:System.Threading

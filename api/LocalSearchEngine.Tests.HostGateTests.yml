@@ -1,0 +1,496 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.HostGateTests
+  commentId: T:LocalSearchEngine.Tests.HostGateTests
+  id: HostGateTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+  - LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+  - LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+  - LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+  langs:
+  - csharp
+  - vb
+  name: HostGateTests
+  nameWithType: HostGateTests
+  fullName: LocalSearchEngine.Tests.HostGateTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostGateTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HostGateTests
+    path: LocalSearchEngine.Tests/HostGateTests.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public sealed class HostGateTests
+    content.vb: Public NotInheritable Class HostGateTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+  commentId: M:LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+  id: Same_host_entries_are_spaced_by_the_gap
+  parent: LocalSearchEngine.Tests.HostGateTests
+  langs:
+  - csharp
+  - vb
+  name: Same_host_entries_are_spaced_by_the_gap()
+  nameWithType: HostGateTests.Same_host_entries_are_spaced_by_the_gap()
+  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostGateTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Same_host_entries_are_spaced_by_the_gap
+    path: LocalSearchEngine.Tests/HostGateTests.cs
+    startLine: 9
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Same_host_entries_are_spaced_by_the_gap()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Same_host_entries_are_spaced_by_the_gap() As Task
+  overload: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+  commentId: M:LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+  id: Different_hosts_do_not_wait_on_each_other
+  parent: LocalSearchEngine.Tests.HostGateTests
+  langs:
+  - csharp
+  - vb
+  name: Different_hosts_do_not_wait_on_each_other()
+  nameWithType: HostGateTests.Different_hosts_do_not_wait_on_each_other()
+  fullName: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostGateTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Different_hosts_do_not_wait_on_each_other
+    path: LocalSearchEngine.Tests/HostGateTests.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Different_hosts_do_not_wait_on_each_other()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Different_hosts_do_not_wait_on_each_other() As Task
+  overload: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+  commentId: M:LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+  id: Same_host_lane_is_exclusive_while_held
+  parent: LocalSearchEngine.Tests.HostGateTests
+  langs:
+  - csharp
+  - vb
+  name: Same_host_lane_is_exclusive_while_held()
+  nameWithType: HostGateTests.Same_host_lane_is_exclusive_while_held()
+  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostGateTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Same_host_lane_is_exclusive_while_held
+    path: LocalSearchEngine.Tests/HostGateTests.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Same_host_lane_is_exclusive_while_held()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Same_host_lane_is_exclusive_while_held() As Task
+  overload: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+  commentId: M:LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+  id: Crawl_delay_is_honored_and_capped
+  parent: LocalSearchEngine.Tests.HostGateTests
+  langs:
+  - csharp
+  - vb
+  name: Crawl_delay_is_honored_and_capped()
+  nameWithType: HostGateTests.Crawl_delay_is_honored_and_capped()
+  fullName: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostGateTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Crawl_delay_is_honored_and_capped
+    path: LocalSearchEngine.Tests/HostGateTests.cs
+    startLine: 53
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Crawl_delay_is_honored_and_capped()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Crawl_delay_is_honored_and_capped()
+  overload: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap*
+  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Same_host_entries_are_spaced_by_the_gap
+  name: Same_host_entries_are_spaced_by_the_gap
+  nameWithType: HostGateTests.Same_host_entries_are_spaced_by_the_gap
+  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other*
+  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Different_hosts_do_not_wait_on_each_other
+  name: Different_hosts_do_not_wait_on_each_other
+  nameWithType: HostGateTests.Different_hosts_do_not_wait_on_each_other
+  fullName: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held*
+  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Same_host_lane_is_exclusive_while_held
+  name: Same_host_lane_is_exclusive_while_held
+  nameWithType: HostGateTests.Same_host_lane_is_exclusive_while_held
+  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+- uid: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped*
+  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Crawl_delay_is_honored_and_capped
+  name: Crawl_delay_is_honored_and_capped
+  nameWithType: HostGateTests.Crawl_delay_is_honored_and_capped
+  fullName: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped

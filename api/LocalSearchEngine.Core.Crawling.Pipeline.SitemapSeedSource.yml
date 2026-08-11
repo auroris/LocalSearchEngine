@@ -1,0 +1,737 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  id: SitemapSeedSource
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor(System.Uri,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._robots
+  - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._seedUri
+  langs:
+  - csharp
+  - vb
+  name: SitemapSeedSource
+  nameWithType: SitemapSeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SitemapSeedSource
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Seeds the frontier with the seed origin's sitemaps: any declared by its robots.txt plus the
+
+    <code>/sitemap.xml</code> convention. Only discovery happens here — each sitemap is enqueued as a
+
+    <xref href="LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument" data-throw-if-not-resolved="false"></xref> and fetched/parsed/recursed by the workers, under the same
+
+    politeness and size rules as everything else. All sitemaps of the tree share one
+
+    <xref href="LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'internal sealed class SitemapSeedSource : ISeedSource'
+    content.vb: Friend NotInheritable Class SitemapSeedSource Implements ISeedSource
+  inheritance:
+  - System.Object
+  implements:
+  - LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._seedUri
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._seedUri
+  id: _seedUri
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  langs:
+  - csharp
+  - vb
+  name: _seedUri
+  nameWithType: SitemapSeedSource._seedUri
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._seedUri
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _seedUri
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 17
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly Uri _seedUri
+    return:
+      type: System.Uri
+    content.vb: Private ReadOnly _seedUri As Uri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._robots
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._robots
+  id: _robots
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  langs:
+  - csharp
+  - vb
+  name: _robots
+  nameWithType: SitemapSeedSource._robots
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource._robots
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _robots
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly RobotsDirectory _robots
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+    content.vb: Private ReadOnly _robots As RobotsDirectory
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor(System.Uri,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor(System.Uri,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)
+  id: '#ctor(System.Uri,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  langs:
+  - csharp
+  - vb
+  name: SitemapSeedSource(Uri, RobotsDirectory)
+  nameWithType: SitemapSeedSource.SitemapSeedSource(Uri, RobotsDirectory)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SitemapSeedSource(System.Uri, LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: public SitemapSeedSource(Uri seedUri, RobotsDirectory robots)
+    parameters:
+    - id: seedUri
+      type: System.Uri
+    - id: robots
+      type: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+    content.vb: Public Sub New(seedUri As Uri, robots As RobotsDirectory)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor*
+  nameWithType.vb: SitemapSeedSource.New(Uri, RobotsDirectory)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.New(System.Uri, LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory)
+  name.vb: New(Uri, RobotsDirectory)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  id: SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  langs:
+  - csharp
+  - vb
+  name: SeedAsync(ICrawlContext, CancellationToken)
+  nameWithType: SitemapSeedSource.SeedAsync(ICrawlContext, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SeedAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Enqueues this source's root documents through <xref href="LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Task SeedAsync(ICrawlContext ctx, CancellationToken ct)
+    parameters:
+    - id: ctx
+      type: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+      description: The crawl context to enqueue into.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancels seeding.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that completes when everything this source contributes directly is enqueued.
+    content.vb: Public Function SeedAsync(ctx As ICrawlContext, ct As CancellationToken) As Task
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync*
+  implements:
+  - LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  id: EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules,LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+  langs:
+  - csharp
+  - vb
+  name: EnqueueSitemap(ICrawlContext, string, string, RobotsRules, SitemapBudget)
+  nameWithType: SitemapSeedSource.EnqueueSitemap(ICrawlContext, string, string, RobotsRules, SitemapBudget)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, string, string, LocalSearchEngine.Core.Crawling.Policies.RobotsRules, LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnqueueSitemap
+    path: LocalSearchEngine.Core/Crawling/Pipeline/SitemapSeedSource.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private static void EnqueueSitemap(ICrawlContext ctx, string sitemapUrl, string originKey, RobotsRules seedRobots, SitemapBudget budget)
+    parameters:
+    - id: ctx
+      type: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    - id: sitemapUrl
+      type: System.String
+    - id: originKey
+      type: System.String
+    - id: seedRobots
+      type: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    - id: budget
+      type: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+    content.vb: Private Shared Sub EnqueueSitemap(ctx As ICrawlContext, sitemapUrl As String, originKey As String, seedRobots As RobotsRules, budget As SitemapBudget)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap*
+  nameWithType.vb: SitemapSeedSource.EnqueueSitemap(ICrawlContext, String, String, RobotsRules, SitemapBudget)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, String, String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules, LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget)
+  name.vb: EnqueueSitemap(ICrawlContext, String, String, RobotsRules, SitemapBudget)
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument.html
+  name: SitemapDocument
+  nameWithType: SitemapDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget.html
+  name: SitemapBudget
+  nameWithType: SitemapBudget
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  name: ISeedSource
+  nameWithType: ISeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html
+  name: RobotsDirectory
+  nameWithType: RobotsDirectory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_SitemapSeedSource__ctor_System_Uri_LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_
+  name: SitemapSeedSource
+  nameWithType: SitemapSeedSource.SitemapSeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SitemapSeedSource
+  nameWithType.vb: SitemapSeedSource.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html#LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_Enqueue_LocalSearchEngine_Core_Crawling_Pipeline_Document_
+  name: Enqueue(Document)
+  nameWithType: ICrawlContext.Enqueue(Document)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
+    name: Enqueue
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html#LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_Enqueue_LocalSearchEngine_Core_Crawling_Pipeline_Document_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+    name: Document
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
+    name: Enqueue
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html#LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_Enqueue_LocalSearchEngine_Core_Crawling_Pipeline_Document_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+    name: Document
+    href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_SitemapSeedSource_SeedAsync_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  name: SeedAsync
+  nameWithType: SitemapSeedSource.SeedAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.SeedAsync
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_ISeedSource_SeedAsync_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  name: SeedAsync(ICrawlContext, CancellationToken)
+  nameWithType: ISeedSource.SeedAsync(ICrawlContext, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: SeedAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_ISeedSource_SeedAsync_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
+    name: SeedAsync
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_ISeedSource_SeedAsync_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_Threading_CancellationToken_
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html
+  name: ICrawlContext
+  nameWithType: ICrawlContext
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap
+  href: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.html#LocalSearchEngine_Core_Crawling_Pipeline_SitemapSeedSource_EnqueueSitemap_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_String_System_String_LocalSearchEngine_Core_Crawling_Policies_RobotsRules_LocalSearchEngine_Core_Crawling_Pipeline_SitemapBudget_
+  name: EnqueueSitemap
+  nameWithType: SitemapSeedSource.EnqueueSitemap
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource.EnqueueSitemap
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  name: RobotsRules
+  nameWithType: RobotsRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html

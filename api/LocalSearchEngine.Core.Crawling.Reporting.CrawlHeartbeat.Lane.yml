@@ -22,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Lane
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 53
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 53
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -90,7 +90,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Activity
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 53
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -119,7 +119,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SinceUtc
     path: LocalSearchEngine.Core/Crawling/Reporting/CrawlHeartbeat.cs
-    startLine: 53
+    startLine: 73
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting

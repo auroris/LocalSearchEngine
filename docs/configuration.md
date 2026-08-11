@@ -49,6 +49,8 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
 * **`allowed-servers`** (array of strings): Defines the scope of servers the crawler is permitted to visit. See **Crawl Scope Rules** below.
 * **`noindex-patterns`** (array of strings): URL glob patterns whose pages are crawled for their links but never indexed ("noindex, follow"). See **Noindex Patterns** below.
 * **`check-external-links`** (boolean, default: `false`): If `true`, the crawler will verify off-site links found on crawled pages (by performing a lightweight `HEAD` or `GET` request) without indexing their content.
+* **`feed`** (boolean, default: `false`): If `true`, the URL is treated as an RSS/Atom feed and the run is a **feed-driven update** instead of a full crawl. Only the items the feed lists are fetched (with conditional requests, so unchanged items answer `304` and are never re-embedded), links are not followed, and nothing the run didn't visit is pruned — the feed is trusted as the site's change journal. Site deletions are reconciled by the next full crawl. Can also be enabled per run with the CLI flag `--feed`.
+* **`crawl-workers`** (integer, default: `4`): Number of concurrent crawl workers. Each host is still fetched sequentially with the politeness delay, so extra workers pay off when the crawl spans several hosts. Can be overridden using CLI argument `--crawl-workers <n>`.
 
 ---
 

@@ -1,0 +1,995 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  id: CrawlPlan
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+  langs:
+  - csharp
+  - vb
+  name: CrawlPlan
+  nameWithType: CrawlPlan
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlPlan
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 12
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The composition of one crawl run: which seed sources feed the frontier and which policies shape
+
+    what happens after. This is where the crawler's behavior is decided — a full crawl composes
+
+    sitemap + root seeds with link-following and pruning on, an RSS update run composes a single feed
+
+    seed with following, pruning, and link verification off. Pure data; nothing here does I/O.
+  example: []
+  syntax:
+    content: internal sealed class CrawlPlan
+    content.vb: Friend NotInheritable Class CrawlPlan
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  id: SeedUri
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: SeedUri
+  nameWithType: CrawlPlan.SeedUri
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SeedUri
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the crawl's scope root. For update runs this is the feed URL; its origin anchors scope either way.
+  example: []
+  syntax:
+    content: public required Uri SeedUri { get; init; }
+    parameters: []
+    return:
+      type: System.Uri
+    content.vb: Public Property SeedUri As Uri
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  id: SeedSources
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: SeedSources
+  nameWithType: CrawlPlan.SeedSources
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SeedSources
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the modules that seed the frontier, run in order under the pipeline's root work token.
+  example: []
+  syntax:
+    content: public required IReadOnlyList<ISeedSource> SeedSources { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+    content.vb: Public Property SeedSources As IReadOnlyList(Of ISeedSource)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+  id: Scope
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: Scope
+  nameWithType: CrawlPlan.Scope
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Scope
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 21
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the host rules in crawl scope; grows mid-crawl only on a seed redirect.
+  example: []
+  syntax:
+    content: public required AllowedHosts Scope { get; init; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    content.vb: Public Property Scope As AllowedHosts
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+  id: NoIndexRules
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: NoIndexRules
+  nameWithType: CrawlPlan.NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NoIndexRules
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the user-configured URL patterns whose pages are followed for links but never indexed.
+  example: []
+  syntax:
+    content: public NoIndexRules NoIndexRules { get; init; }
+    parameters: []
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+    content.vb: Public Property NoIndexRules As NoIndexRules
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+  id: FollowLinks
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: FollowLinks
+  nameWithType: CrawlPlan.FollowLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FollowLinks
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Gets a value indicating whether pages' outlinks (and stored outlinks on a 304) expand the
+
+    frontier. Off for update runs: the feed names what changed, so nothing else is re-fetched.
+
+    Identity enqueues (redirect targets, canonical aliases, duplicate originals) are never gated
+
+    by this — dropping them would delete an item's index entry with no replacement.
+  example: []
+  syntax:
+    content: public bool FollowLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property FollowLinks As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+  id: PruneStale
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: PruneStale
+  nameWithType: CrawlPlan.PruneStale
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PruneStale
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Gets a value indicating whether URLs the crawl no longer reaches are pruned after natural completion.
+        Must be off for partial runs (feeds) or the prune would gut everything the run didn't visit.
+  example: []
+  syntax:
+    content: public bool PruneStale { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property PruneStale As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+  id: VerifyLinks
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: VerifyLinks
+  nameWithType: CrawlPlan.VerifyLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: VerifyLinks
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 41
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Gets a value indicating whether the end-of-crawl link verification pass runs.
+        Off for update runs: it probes every link not determined since crawl start, which on a
+        partial run means nearly the whole historic link table.
+  example: []
+  syntax:
+    content: public bool VerifyLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property VerifyLinks As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+  id: CheckExternalLinks
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: CheckExternalLinks
+  nameWithType: CrawlPlan.CheckExternalLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CheckExternalLinks
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 44
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets a value indicating whether off-site links are probed during link verification.
+  example: []
+  syntax:
+    content: public bool CheckExternalLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property CheckExternalLinks As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+  id: CrawlWorkers
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: CrawlWorkers
+  nameWithType: CrawlPlan.CrawlWorkers
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlWorkers
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 47
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the number of concurrent crawl workers. Parallelism pays off across hosts; each single host stays sequential.
+  example: []
+  syntax:
+    content: public int CrawlWorkers { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CrawlWorkers As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+  id: MaxPages
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: MaxPages
+  nameWithType: CrawlPlan.MaxPages
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxPages
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 50
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the maximum pages to index this run.
+  example: []
+  syntax:
+    content: public int MaxPages { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property MaxPages As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  id: MaxPagesPerHost
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: MaxPagesPerHost
+  nameWithType: CrawlPlan.MaxPagesPerHost
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxPagesPerHost
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 53
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the maximum pages to index on any single host.
+  example: []
+  syntax:
+    content: public int MaxPagesPerHost { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property MaxPagesPerHost As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+  id: MaxCrawlSizeBytes
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: MaxCrawlSizeBytes
+  nameWithType: CrawlPlan.MaxCrawlSizeBytes
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxCrawlSizeBytes
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 56
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the maximum size in bytes for any single download.
+  example: []
+  syntax:
+    content: public long MaxCrawlSizeBytes { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property MaxCrawlSizeBytes As Long
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs
+  id: DefaultRequestDelayMs
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+  langs:
+  - csharp
+  - vb
+  name: DefaultRequestDelayMs
+  nameWithType: CrawlPlan.DefaultRequestDelayMs
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DefaultRequestDelayMs
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
+    startLine: 59
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the politeness gap between same-host fetches when robots.txt declares no crawl-delay.
+  example: []
+  syntax:
+    content: public int DefaultRequestDelayMs { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DefaultRequestDelayMs As Integer
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedUri
+  name: SeedUri
+  nameWithType: CrawlPlan.SeedUri
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedSources
+  name: SeedSources
+  nameWithType: CrawlPlan.SeedSources
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+- uid: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+  commentId: T:System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ISeedSource>
+  nameWithType: IReadOnlyList<ISeedSource>
+  fullName: System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource>
+  nameWithType.vb: IReadOnlyList(Of ISeedSource)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource)
+  name.vb: IReadOnlyList(Of ISeedSource)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+    name: ISeedSource
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+    name: ISeedSource
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_Scope
+  name: Scope
+  nameWithType: CrawlPlan.Scope
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  name: AllowedHosts
+  nameWithType: AllowedHosts
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_NoIndexRules
+  name: NoIndexRules
+  nameWithType: CrawlPlan.NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.NoIndexRules
+- uid: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules.html
+  name: NoIndexRules
+  nameWithType: NoIndexRules
+  fullName: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_FollowLinks
+  name: FollowLinks
+  nameWithType: CrawlPlan.FollowLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.FollowLinks
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_PruneStale
+  name: PruneStale
+  nameWithType: CrawlPlan.PruneStale
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_VerifyLinks
+  name: VerifyLinks
+  nameWithType: CrawlPlan.VerifyLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_CheckExternalLinks
+  name: CheckExternalLinks
+  nameWithType: CrawlPlan.CheckExternalLinks
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CheckExternalLinks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_CrawlWorkers
+  name: CrawlWorkers
+  nameWithType: CrawlPlan.CrawlWorkers
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.CrawlWorkers
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_MaxPages
+  name: MaxPages
+  nameWithType: CrawlPlan.MaxPages
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_MaxPagesPerHost
+  name: MaxPagesPerHost
+  nameWithType: CrawlPlan.MaxPagesPerHost
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_MaxCrawlSizeBytes
+  name: MaxCrawlSizeBytes
+  nameWithType: CrawlPlan.MaxCrawlSizeBytes
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxCrawlSizeBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_DefaultRequestDelayMs
+  name: DefaultRequestDelayMs
+  nameWithType: CrawlPlan.DefaultRequestDelayMs
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.DefaultRequestDelayMs

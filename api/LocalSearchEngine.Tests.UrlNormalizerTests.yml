@@ -6,6 +6,8 @@ items:
   parent: LocalSearchEngine.Tests
   children:
   - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_canonicalizes(System.String,System.String)
+  - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable(System.String,System.String)
+  - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent(System.String)
   - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_preserves_query_string
   - LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_strips_tracking_parameters(System.String,System.String)
   - LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
@@ -277,6 +279,140 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable(System.String,System.String)
+  id: Normalize_escaping_contract_is_stable(System.String,System.String)
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: Normalize_escaping_contract_is_stable(string, string)
+  nameWithType: UrlNormalizerTests.Normalize_escaping_contract_is_stable(string, string)
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Normalize_escaping_contract_is_stable
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 58
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "http://h/a%20b/c.html", "http://h/a b/c.html" })]
+
+      [InlineData(new object[] { "http://h/caf%C3%A9/x", "http://h/café/x" })]
+
+      [InlineData(new object[] { "http://h/a%2Fb/c", "http://h/a%2Fb/c" })]
+
+      [InlineData(new object[] { "http://h/p%25s/x", "http://h/p%25s/x" })]
+
+      [InlineData(new object[] { "http://h/p?q=a%26b", "http://h/p?q=a%26b" })]
+
+      [InlineData(new object[] { "http://h/p?q=a%3Db", "http://h/p?q=a%3Db" })]
+
+      public void Normalize_escaping_contract_is_stable(string input, string expected)
+    parameters:
+    - id: input
+      type: System.String
+    - id: expected
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "http://h/a%20b/c.html", "http://h/a b/c.html" })>
+
+      <InlineData(New Object() { "http://h/caf%C3%A9/x", "http://h/café/x" })>
+
+      <InlineData(New Object() { "http://h/a%2Fb/c", "http://h/a%2Fb/c" })>
+
+      <InlineData(New Object() { "http://h/p%25s/x", "http://h/p%25s/x" })>
+
+      <InlineData(New Object() { "http://h/p?q=a%26b", "http://h/p?q=a%26b" })>
+
+      <InlineData(New Object() { "http://h/p?q=a%3Db", "http://h/p?q=a%3Db" })>
+
+      Public Sub Normalize_escaping_contract_is_stable(input As String, expected As String)
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: UrlNormalizerTests.Normalize_escaping_contract_is_stable(String, String)
+  fullName.vb: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable(String, String)
+  name.vb: Normalize_escaping_contract_is_stable(String, String)
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent(System.String)
+  commentId: M:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent(System.String)
+  id: Normalize_is_idempotent(System.String)
+  parent: LocalSearchEngine.Tests.UrlNormalizerTests
+  langs:
+  - csharp
+  - vb
+  name: Normalize_is_idempotent(string)
+  nameWithType: UrlNormalizerTests.Normalize_is_idempotent(string)
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Normalize_is_idempotent
+    path: LocalSearchEngine.Tests/UrlNormalizerTests.cs
+    startLine: 73
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { "http://h/a%20b/c.html" })]
+
+      [InlineData(new object[] { "http://h/caf%C3%A9/x" })]
+
+      [InlineData(new object[] { "http://h/a%2Fb/c" })]
+
+      [InlineData(new object[] { "http://h/p%25s/x" })]
+
+      [InlineData(new object[] { "http://h/dir/page?q=a%26b&r=2" })]
+
+      [InlineData(new object[] { "http://h/~user/index.html" })]
+
+      public void Normalize_is_idempotent(string input)
+    parameters:
+    - id: input
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { "http://h/a%20b/c.html" })>
+
+      <InlineData(New Object() { "http://h/caf%C3%A9/x" })>
+
+      <InlineData(New Object() { "http://h/a%2Fb/c" })>
+
+      <InlineData(New Object() { "http://h/p%25s/x" })>
+
+      <InlineData(New Object() { "http://h/dir/page?q=a%26b&r=2" })>
+
+      <InlineData(New Object() { "http://h/~user/index.html" })>
+
+      Public Sub Normalize_is_idempotent(input As String)
+  overload: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: UrlNormalizerTests.Normalize_is_idempotent(String)
+  fullName.vb: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent(String)
+  name.vb: Normalize_is_idempotent(String)
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -578,3 +714,15 @@ references:
   name: TryNormalize_accepts_absolute_urls
   nameWithType: UrlNormalizerTests.TryNormalize_accepts_absolute_urls
   fullName: LocalSearchEngine.Tests.UrlNormalizerTests.TryNormalize_accepts_absolute_urls
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_Normalize_escaping_contract_is_stable_System_String_System_String_
+  name: Normalize_escaping_contract_is_stable
+  nameWithType: UrlNormalizerTests.Normalize_escaping_contract_is_stable
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_escaping_contract_is_stable
+- uid: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent*
+  commentId: Overload:LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent
+  href: LocalSearchEngine.Tests.UrlNormalizerTests.html#LocalSearchEngine_Tests_UrlNormalizerTests_Normalize_is_idempotent_System_String_
+  name: Normalize_is_idempotent
+  nameWithType: UrlNormalizerTests.Normalize_is_idempotent
+  fullName: LocalSearchEngine.Tests.UrlNormalizerTests.Normalize_is_idempotent

@@ -91,18 +91,27 @@ internal sealed class PageDownloader
     /// <summary>
     /// Executes a request, validating redirects, content sizes, and mime-types.
     /// </summary>
-    /// <param name="url">The target page URL to download.</param>
+    /// <param name="requestUri">The exact URI to put on the wire. Kept as a <see cref="Uri"/> so the
+    /// href's original escaping survives — re-parsing a display-form string re-encodes it, which is
+    /// how percent-encoded filesystem paths used to break.</param>
+    /// <param name="normalizedUrl">The URL's normalized identity, compared against the (normalized)
+    /// final request URI to detect that the request moved.</param>
     /// <param name="etag">The cached ETag, if any, for conditional request validation.</param>
     /// <param name="lastModified">The cached Last-Modified string, if any, for conditional request validation.</param>
     /// <param name="maxBytes">The maximum allowed download size in bytes.</param>
+    /// <param name="acceptAnyContentType">Skips the content-type whitelist and signature sniff.
+    /// Infrastructure fetches (sitemaps, feeds) are XML the page whitelist would reject; their
+    /// parsers are the validation.</param>
     /// <returns>A <see cref="DownloadResult"/> object summarizing the download status and metadata.</returns>
     public async Task<DownloadResult> DownloadAsync(
-        string url,
+        Uri requestUri,
+        string normalizedUrl,
         string? etag,
         string? lastModified,
-        long maxBytes)
+        long maxBytes,
+        bool acceptAnyContentType = false)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
         if (!string.IsNullOrEmpty(etag))
         {
             request.Headers.IfNoneMatch.ParseAdd(etag);
@@ -130,7 +139,7 @@ internal sealed class PageDownloader
             // once, on its own turn. Checked before 304 so a (coincidental) conditional hit on the target
             // doesn't mask that the request moved.
             if (finalRequestUri != null
-                && !string.Equals(UrlNormalizer.Normalize(finalRequestUri), url, StringComparison.OrdinalIgnoreCase))
+                && !string.Equals(UrlNormalizer.Normalize(finalRequestUri), normalizedUrl, StringComparison.OrdinalIgnoreCase))
             {
                 return new DownloadResult
                 {
@@ -183,7 +192,7 @@ internal sealed class PageDownloader
             }
 
             var contentType = response.Content.Headers.ContentType?.MediaType;
-            if (!CrawlPolicy.IsSupportedOrGenericContentType(contentType))
+            if (!acceptAnyContentType && !CrawlPolicy.IsSupportedOrGenericContentType(contentType))
             {
                 return new DownloadResult
                 {
@@ -194,7 +203,9 @@ internal sealed class PageDownloader
                 };
             }
 
-            var (body, truncated) = await ReadBodyAndValidatePrefixAsync(response, maxBytes, contentType, finalRequestUri?.ToString() ?? url, timeout.Token);
+            var (body, truncated) = await ReadBodyAsync(response, maxBytes,
+                acceptAnyContentType ? null : new PrefixCheck(contentType, finalRequestUri?.ToString() ?? normalizedUrl),
+                timeout.Token);
             if (truncated)
             {
                 return new DownloadResult
@@ -224,7 +235,7 @@ internal sealed class PageDownloader
             string? xRobotsTag = xRobotsValues != null ? string.Join(",", xRobotsValues) : null;
 
             _logger.LogDebug("Downloaded {Url}: {Bytes} bytes in {Ms}ms.",
-                finalRequestUri?.ToString() ?? url, body.Length, (long)Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
+                finalRequestUri?.ToString() ?? normalizedUrl, body.Length, (long)Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
 
             return new DownloadResult
             {
@@ -246,7 +257,7 @@ internal sealed class PageDownloader
             // (503) so the rest of the crawl treats it like any other unreachable response.
             if (timeout.IsCancellationRequested)
             {
-                _logger.LogWarning("Request to {Url} timed out after {Seconds}s.", url, (int)HttpContentReader.RequestTimeout.TotalSeconds);
+                _logger.LogWarning("Request to {Url} timed out after {Seconds}s.", normalizedUrl, (int)HttpContentReader.RequestTimeout.TotalSeconds);
             }
             return new DownloadResult
             {
@@ -256,27 +267,31 @@ internal sealed class PageDownloader
         }
     }
 
+    /// <summary>The declared type and URL a body's leading bytes are verified against.</summary>
+    /// <param name="ContentType">The MIME type content header value.</param>
+    /// <param name="FinalUrl">The final request URL (its extension can veto a zip body).</param>
+    private readonly record struct PrefixCheck(string? ContentType, string? FinalUrl);
+
     /// <summary>
-    /// Reads the response stream up to the max byte limit, performing MIME type signature prefix verification on the first 4096 bytes.
+    /// Reads the response stream up to the max byte limit, verifying the MIME type signature against
+    /// the first 4096 bytes when a <see cref="PrefixCheck"/> is supplied.
     /// </summary>
     /// <param name="response">The HTTP response message containing the stream.</param>
     /// <param name="maxBytes">The maximum allowed bytes to read.</param>
-    /// <param name="contentType">The MIME type content header value.</param>
-    /// <param name="finalUrl">The final request URL.</param>
+    /// <param name="prefixCheck">The signature check to run, or <c>null</c> to accept any body.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A tuple containing the downloaded body bytes (or <c>null</c> if validation fails) and a boolean indicating if reading was truncated due to exceeding the size limit.</returns>
-    private static async Task<(byte[]? Body, bool Truncated)> ReadBodyAndValidatePrefixAsync(
+    private static async Task<(byte[]? Body, bool Truncated)> ReadBodyAsync(
         HttpResponseMessage response,
         long maxBytes,
-        string? contentType,
-        string finalUrl,
+        PrefixCheck? prefixCheck,
         CancellationToken cancellationToken)
     {
         using var responseStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         using var bodyStream = new MemoryStream();
         byte[] buffer = new byte[8192];
         int bytesRead;
-        bool checkedPrefix = false;
+        bool checkedPrefix = prefixCheck is null;
 
         while ((bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
         {
@@ -291,7 +306,7 @@ internal sealed class PageDownloader
             {
                 checkedPrefix = true;
                 var prefix = bodyStream.ToArray();
-                if (!CrawlPolicy.IsSupportedPrefix(prefix, contentType, finalUrl))
+                if (!CrawlPolicy.IsSupportedPrefix(prefix, prefixCheck!.Value.ContentType, prefixCheck.Value.FinalUrl))
                 {
                     return (null, false);
                 }
@@ -301,7 +316,7 @@ internal sealed class PageDownloader
         var body = bodyStream.ToArray();
         if (!checkedPrefix)
         {
-            if (!CrawlPolicy.IsSupportedPrefix(body, contentType, finalUrl))
+            if (!CrawlPolicy.IsSupportedPrefix(body, prefixCheck!.Value.ContentType, prefixCheck.Value.FinalUrl))
             {
                 return (null, false);
             }

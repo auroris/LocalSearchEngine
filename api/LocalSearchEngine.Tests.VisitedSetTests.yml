@@ -1,0 +1,449 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.VisitedSetTests
+  commentId: T:LocalSearchEngine.Tests.VisitedSetTests
+  id: VisitedSetTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+  - LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose
+  - LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively
+  langs:
+  - csharp
+  - vb
+  name: VisitedSetTests
+  nameWithType: VisitedSetTests
+  fullName: LocalSearchEngine.Tests.VisitedSetTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VisitedSetTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: VisitedSetTests
+    path: LocalSearchEngine.Tests/VisitedSetTests.cs
+    startLine: 5
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public sealed class VisitedSetTests
+    content.vb: Public NotInheritable Class VisitedSetTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose
+  commentId: M:LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose
+  id: First_claim_wins_and_repeats_lose
+  parent: LocalSearchEngine.Tests.VisitedSetTests
+  langs:
+  - csharp
+  - vb
+  name: First_claim_wins_and_repeats_lose()
+  nameWithType: VisitedSetTests.First_claim_wins_and_repeats_lose()
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VisitedSetTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: First_claim_wins_and_repeats_lose
+    path: LocalSearchEngine.Tests/VisitedSetTests.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void First_claim_wins_and_repeats_lose()
+    content.vb: >-
+      <Fact>
+
+      Public Sub First_claim_wins_and_repeats_lose()
+  overload: LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively
+  commentId: M:LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively
+  id: Keys_compare_case_insensitively
+  parent: LocalSearchEngine.Tests.VisitedSetTests
+  langs:
+  - csharp
+  - vb
+  name: Keys_compare_case_insensitively()
+  nameWithType: VisitedSetTests.Keys_compare_case_insensitively()
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VisitedSetTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Keys_compare_case_insensitively
+    path: LocalSearchEngine.Tests/VisitedSetTests.cs
+    startLine: 16
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Keys_compare_case_insensitively()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Keys_compare_case_insensitively()
+  overload: LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+  commentId: M:LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+  id: Concurrent_storm_yields_exactly_one_winner_per_key
+  parent: LocalSearchEngine.Tests.VisitedSetTests
+  langs:
+  - csharp
+  - vb
+  name: Concurrent_storm_yields_exactly_one_winner_per_key()
+  nameWithType: VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key()
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VisitedSetTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Concurrent_storm_yields_exactly_one_winner_per_key
+    path: LocalSearchEngine.Tests/VisitedSetTests.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Concurrent_storm_yields_exactly_one_winner_per_key()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Concurrent_storm_yields_exactly_one_winner_per_key() As Task
+  overload: LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose*
+  commentId: Overload:LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose
+  href: LocalSearchEngine.Tests.VisitedSetTests.html#LocalSearchEngine_Tests_VisitedSetTests_First_claim_wins_and_repeats_lose
+  name: First_claim_wins_and_repeats_lose
+  nameWithType: VisitedSetTests.First_claim_wins_and_repeats_lose
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.First_claim_wins_and_repeats_lose
+- uid: LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively*
+  commentId: Overload:LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively
+  href: LocalSearchEngine.Tests.VisitedSetTests.html#LocalSearchEngine_Tests_VisitedSetTests_Keys_compare_case_insensitively
+  name: Keys_compare_case_insensitively
+  nameWithType: VisitedSetTests.Keys_compare_case_insensitively
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.Keys_compare_case_insensitively
+- uid: LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key*
+  commentId: Overload:LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+  href: LocalSearchEngine.Tests.VisitedSetTests.html#LocalSearchEngine_Tests_VisitedSetTests_Concurrent_storm_yields_exactly_one_winner_per_key
+  name: Concurrent_storm_yields_exactly_one_winner_per_key
+  nameWithType: VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+  fullName: LocalSearchEngine.Tests.VisitedSetTests.Concurrent_storm_yields_exactly_one_winner_per_key
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

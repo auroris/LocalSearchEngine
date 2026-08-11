@@ -5,26 +5,18 @@ items:
   id: LocalSearchEngine.Core.Crawling.Engine
   children:
   - LocalSearchEngine.Core.Crawling.Engine.AliasJob
-  - LocalSearchEngine.Core.Crawling.Engine.ChunkAction
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
   - LocalSearchEngine.Core.Crawling.Engine.CrawlJob
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-  - LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
-  - LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-  - LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
   - LocalSearchEngine.Core.Crawling.Engine.DownloadResult
   - LocalSearchEngine.Core.Crawling.Engine.DownloadStatus
   - LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
-  - LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
   - LocalSearchEngine.Core.Crawling.Engine.GoneJob
   - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  - LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext
   - LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
   - LocalSearchEngine.Core.Crawling.Engine.NoIndexJob
   - LocalSearchEngine.Core.Crawling.Engine.PageDownloader
-  - LocalSearchEngine.Core.Crawling.Engine.RobotsService
-  - LocalSearchEngine.Core.Crawling.Engine.SitemapService
+  - LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
   - LocalSearchEngine.Core.Crawling.Engine.TouchJob
   langs:
   - csharp
@@ -36,19 +28,6 @@ items:
   assemblies:
   - LocalSearchEngine.Core
 references:
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlContext.html
-  name: CrawlContext
-  nameWithType: CrawlContext
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder.html
-  name: CrawlEmbedder
-  nameWithType: CrawlEmbedder
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
 - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlJob
   parent: LocalSearchEngine.Core.Crawling.Engine
@@ -86,48 +65,6 @@ references:
   name: TouchJob
   nameWithType: TouchJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer.html
-  name: CrawlProducer
-  nameWithType: CrawlProducer
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-- uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter.html
-  name: CrawlStateWriter
-  nameWithType: CrawlStateWriter
-  fullName: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
-- uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
-  name: DbWriteGate
-  nameWithType: DbWriteGate
-  fullName: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-- uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-  href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
-  name: DbWriteGate.Releaser
-  nameWithType: DbWriteGate.Releaser
-  fullName: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-    name: DbWriteGate
-    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-    name: Releaser
-    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser.html
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-    name: DbWriteGate
-    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-    name: Releaser
-    href: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser.html
 - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
   parent: LocalSearchEngine.Core.Crawling.Engine
@@ -135,26 +72,19 @@ references:
   name: EmbeddingBacklog
   nameWithType: EmbeddingBacklog
   fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
-- uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.ChunkAction
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.ChunkAction.html
-  name: ChunkAction
-  nameWithType: ChunkAction
-  fullName: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
-- uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob.html
-  name: EmbeddingJob
-  nameWithType: EmbeddingJob
-  fullName: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
 - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html
   name: HttpContentReader
   nameWithType: HttpContentReader
   fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
+- uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext
+  parent: LocalSearchEngine.Core.Crawling.Engine
+  href: LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext.html
+  name: LinkVerificationContext
+  nameWithType: LinkVerificationContext
+  fullName: LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext
 - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
   commentId: T:LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
   href: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier.html
@@ -182,19 +112,28 @@ references:
   name: PageDownloader
   nameWithType: PageDownloader
   fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
-- uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.RobotsService
-  parent: LocalSearchEngine.Core.Crawling.Engine
-  href: LocalSearchEngine.Core.Crawling.Engine.RobotsService.html
-  name: RobotsService
-  nameWithType: RobotsService
-  fullName: LocalSearchEngine.Core.Crawling.Engine.RobotsService
-- uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService
-  commentId: T:LocalSearchEngine.Core.Crawling.Engine.SitemapService
-  href: LocalSearchEngine.Core.Crawling.Engine.SitemapService.html
-  name: SitemapService
-  nameWithType: SitemapService
-  fullName: LocalSearchEngine.Core.Crawling.Engine.SitemapService
+- uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  commentId: T:LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  name: PageDownloader.PrefixCheck
+  nameWithType: PageDownloader.PrefixCheck
+  fullName: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
+    name: PageDownloader
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PrefixCheck
+    href: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck.html
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
   href: LocalSearchEngine.html

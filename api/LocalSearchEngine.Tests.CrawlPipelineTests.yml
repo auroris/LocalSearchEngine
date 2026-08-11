@@ -1,0 +1,1762 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests
+  commentId: T:LocalSearchEngine.Tests.CrawlPipelineTests
+  id: CrawlPipelineTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.CrawlPipelineTests.#ctor
+  - LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
+  - LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+  - LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Html(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  - LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo(System.String,System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Boolean)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Seed
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  - LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
+  - LocalSearchEngine.Tests.CrawlPipelineTests._connectionString
+  - LocalSearchEngine.Tests.CrawlPipelineTests._dbPath
+  - LocalSearchEngine.Tests.CrawlPipelineTests._embedder
+  - LocalSearchEngine.Tests.CrawlPipelineTests._handler
+  - LocalSearchEngine.Tests.CrawlPipelineTests._httpClient
+  - LocalSearchEngine.Tests.CrawlPipelineTests._provider
+  - LocalSearchEngine.Tests.CrawlPipelineTests._search
+  langs:
+  - csharp
+  - vb
+  name: CrawlPipelineTests
+  nameWithType: CrawlPipelineTests
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlPipelineTests
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 26
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: >-
+    Drives the channel pipeline directly (no CrawlerService facade) against a fake HTTP server and a
+
+    real sqlite-vec database. These tests exist for the properties the old engine never had to prove:
+
+    that a self-feeding channel crawl terminates — on deep chains, wide fanouts, redirect chains, a
+
+    zero-work seed, and a mid-flight cap — and that four workers index every page exactly once.
+  example: []
+  syntax:
+    content: 'public sealed class CrawlPipelineTests : IDisposable'
+    content.vb: Public NotInheritable Class CrawlPipelineTests Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Seed
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests.Seed
+  id: Seed
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Seed
+  nameWithType: CrawlPipelineTests.Seed
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Seed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Seed
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private const string Seed = "http://test.local/"
+    return:
+      type: System.String
+    content.vb: Private Const Seed As String = "http://test.local/"
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._dbPath
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._dbPath
+  id: _dbPath
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _dbPath
+  nameWithType: CrawlPipelineTests._dbPath
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._dbPath
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _dbPath
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _dbPath
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _dbPath As String
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._connectionString
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._connectionString
+  id: _connectionString
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _connectionString
+  nameWithType: CrawlPipelineTests._connectionString
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._connectionString
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connectionString
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _connectionString
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _connectionString As String
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._provider
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._provider
+  id: _provider
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _provider
+  nameWithType: CrawlPipelineTests._provider
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._provider
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _provider
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly ServiceProvider _provider
+    return:
+      type: Microsoft.Extensions.DependencyInjection.ServiceProvider
+    content.vb: Private ReadOnly _provider As ServiceProvider
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._search
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._search
+  id: _search
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _search
+  nameWithType: CrawlPipelineTests._search
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._search
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _search
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly VectorSearchService _search
+    return:
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+    content.vb: Private ReadOnly _search As VectorSearchService
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._embedder
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._embedder
+  id: _embedder
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _embedder
+  nameWithType: CrawlPipelineTests._embedder
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._embedder
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _embedder
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly FakeEmbedder _embedder
+    return:
+      type: LocalSearchEngine.Tests.FakeEmbedder
+    content.vb: Private ReadOnly _embedder As FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._handler
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._handler
+  id: _handler
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _handler
+  nameWithType: CrawlPipelineTests._handler
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._handler
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _handler
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly CrawlPipelineTests.PipelineFakeHandler _handler
+    return:
+      type: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    content.vb: Private ReadOnly _handler As CrawlPipelineTests.PipelineFakeHandler
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests._httpClient
+  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: CrawlPipelineTests._httpClient
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.#ctor
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.#ctor
+  id: '#ctor'
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: CrawlPipelineTests()
+  nameWithType: CrawlPipelineTests.CrawlPipelineTests()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlPipelineTests()
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public CrawlPipelineTests()
+    content.vb: Public Sub New()
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.#ctor*
+  nameWithType.vb: CrawlPipelineTests.New()
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.New()
+  name.vb: New()
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
+  id: Dispose
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: CrawlPipelineTests.Dispose()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Dispose()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dispose
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 53
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(System.String)
+  id: TryDelete(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: TryDelete(string)
+  nameWithType: CrawlPipelineTests.TryDelete(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryDelete
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 64
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static void TryDelete(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Private Shared Sub TryDelete(path As String)
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete*
+  nameWithType.vb: CrawlPipelineTests.TryDelete(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(String)
+  name.vb: TryDelete(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
+  id: EnsureSchemaAsync
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: EnsureSchemaAsync()
+  nameWithType: CrawlPipelineTests.EnsureSchemaAsync()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnsureSchemaAsync
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 70
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task EnsureSchemaAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Function EnsureSchemaAsync() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync*
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Boolean)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Boolean)
+  id: RunAsync(System.String,System.Int32,System.Int32,System.Boolean,System.Int32,System.Boolean)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: RunAsync(string, int, int, bool, int, bool)
+  nameWithType: CrawlPipelineTests.RunAsync(string, int, int, bool, int, bool)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync(string, int, int, bool, int, bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RunAsync
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 81
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: >-
+    Runs one pipeline crawl of <code class="paramref">seedUrl</code> under a hang guard: a crawl that fails
+
+    to terminate is the bug class these tests exist for, so it must fail fast and loudly rather
+
+    than time out the whole test run.
+  example: []
+  syntax:
+    content: private Task<(PipelineResult Result, EmbeddingBacklog Backlog)> RunAsync(string seedUrl, int workers = 4, int maxPages = 2147483647, bool followLinks = true, int requestDelayMs = 0, bool includeSitemapSource = true)
+    parameters:
+    - id: seedUrl
+      type: System.String
+    - id: workers
+      type: System.Int32
+    - id: maxPages
+      type: System.Int32
+    - id: followLinks
+      type: System.Boolean
+    - id: requestDelayMs
+      type: System.Int32
+    - id: includeSitemapSource
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}}
+    content.vb: Private Function RunAsync(seedUrl As String, workers As Integer = 4, maxPages As Integer = 2147483647, followLinks As Boolean = True, requestDelayMs As Integer = 0, includeSitemapSource As Boolean = True) As Task(Of (Result As PipelineResult, Backlog As EmbeddingBacklog))
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync*
+  nameWithType.vb: CrawlPipelineTests.RunAsync(String, Integer, Integer, Boolean, Integer, Boolean)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync(String, Integer, Integer, Boolean, Integer, Boolean)
+  name.vb: RunAsync(String, Integer, Integer, Boolean, Integer, Boolean)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(System.String)
+  id: ChunkCount(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: ChunkCount(string)
+  nameWithType: CrawlPipelineTests.ChunkCount(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ChunkCount
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 128
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task<int> ChunkCount(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Private Function ChunkCount(url As String) As Task(Of Integer)
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount*
+  nameWithType.vb: CrawlPipelineTests.ChunkCount(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(String)
+  name.vb: ChunkCount(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(System.String)
+  id: HasCrawlState(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: HasCrawlState(string)
+  nameWithType: CrawlPipelineTests.HasCrawlState(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HasCrawlState
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 138
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task<bool> HasCrawlState(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Private Function HasCrawlState(url As String) As Task(Of Boolean)
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState*
+  nameWithType.vb: CrawlPipelineTests.HasCrawlState(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(String)
+  name.vb: HasCrawlState(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Html(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Html(System.String)
+  id: Html(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Html(string)
+  nameWithType: CrawlPipelineTests.Html(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Html(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Html
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 148
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static HttpResponseMessage Html(string body)
+    parameters:
+    - id: body
+      type: System.String
+    return:
+      type: System.Net.Http.HttpResponseMessage
+    content.vb: Private Shared Function Html(body As String) As HttpResponseMessage
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Html*
+  nameWithType.vb: CrawlPipelineTests.Html(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.Html(String)
+  name.vb: Html(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo(System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo(System.String,System.String)
+  id: RedirectedTo(System.String,System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: RedirectedTo(string, string)
+  nameWithType: CrawlPipelineTests.RedirectedTo(string, string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo(string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RedirectedTo
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 153
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static HttpResponseMessage RedirectedTo(string targetUrl, string body)
+    parameters:
+    - id: targetUrl
+      type: System.String
+    - id: body
+      type: System.String
+    return:
+      type: System.Net.Http.HttpResponseMessage
+    content.vb: Private Shared Function RedirectedTo(targetUrl As String, body As String) As HttpResponseMessage
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo*
+  nameWithType.vb: CrawlPipelineTests.RedirectedTo(String, String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo(String, String)
+  name.vb: RedirectedTo(String, String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+  id: Four_workers_index_every_page_exactly_once
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Four_workers_index_every_page_exactly_once()
+  nameWithType: CrawlPipelineTests.Four_workers_index_every_page_exactly_once()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Four_workers_index_every_page_exactly_once
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 160
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Four_workers_index_every_page_exactly_once()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Four_workers_index_every_page_exactly_once() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
+  id: Zero_work_crawl_terminates
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Zero_work_crawl_terminates()
+  nameWithType: CrawlPipelineTests.Zero_work_crawl_terminates()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Zero_work_crawl_terminates
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 191
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Zero_work_crawl_terminates()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Zero_work_crawl_terminates() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+  id: Deep_chain_completes
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Deep_chain_completes()
+  nameWithType: CrawlPipelineTests.Deep_chain_completes()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Deep_chain_completes
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 209
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Deep_chain_completes()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Deep_chain_completes() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+  id: Wide_fanout_completes_and_indexes_all
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Wide_fanout_completes_and_indexes_all()
+  nameWithType: CrawlPipelineTests.Wide_fanout_completes_and_indexes_all()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Wide_fanout_completes_and_indexes_all
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 228
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Wide_fanout_completes_and_indexes_all()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Wide_fanout_completes_and_indexes_all() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  id: Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Redirect_chain_is_followed_and_sources_recorded_as_aliases()
+  nameWithType: CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Redirect_chain_is_followed_and_sources_recorded_as_aliases
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 252
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Redirect_chain_is_followed_and_sources_recorded_as_aliases()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Redirect_chain_is_followed_and_sources_recorded_as_aliases() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  id: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion()
+  nameWithType: CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 271
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+  id: Same_host_fetches_respect_the_politeness_gap_across_workers
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Same_host_fetches_respect_the_politeness_gap_across_workers()
+  nameWithType: CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Same_host_fetches_respect_the_politeness_gap_across_workers
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 299
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Same_host_fetches_respect_the_politeness_gap_across_workers()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Same_host_fetches_respect_the_politeness_gap_across_workers() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  id: Sitemap_entries_seed_the_frontier
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Sitemap_entries_seed_the_frontier()
+  nameWithType: CrawlPipelineTests.Sitemap_entries_seed_the_frontier()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Sitemap_entries_seed_the_frontier
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 318
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Sitemap_entries_seed_the_frontier()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Sitemap_entries_seed_the_frontier() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  id: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form()
+  nameWithType: CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 338
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Href_escaping_survives_to_the_wire_while_the_database_stores_display_form()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Href_escaping_survives_to_the_wire_while_the_database_stores_display_form() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(System.String)
+  id: CrawlStateRowCount(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: CrawlStateRowCount(string)
+  nameWithType: CrawlPipelineTests.CrawlStateRowCount(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlStateRowCount
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 381
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task<int> CrawlStateRowCount(string url)
+    parameters:
+    - id: url
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Private Function CrawlStateRowCount(url As String) As Task(Of Integer)
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount*
+  nameWithType.vb: CrawlPipelineTests.CrawlStateRowCount(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(String)
+  name.vb: CrawlStateRowCount(String)
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Microsoft.Extensions.DependencyInjection.ServiceProvider
+  commentId: T:Microsoft.Extensions.DependencyInjection.ServiceProvider
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovider
+  name: ServiceProvider
+  nameWithType: ServiceProvider
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceProvider
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: LocalSearchEngine.Tests.FakeEmbedder
+  commentId: T:LocalSearchEngine.Tests.FakeEmbedder
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.FakeEmbedder.html
+  name: FakeEmbedder
+  nameWithType: FakeEmbedder
+  fullName: LocalSearchEngine.Tests.FakeEmbedder
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  commentId: T:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  name: CrawlPipelineTests.PipelineFakeHandler
+  nameWithType: CrawlPipelineTests.PipelineFakeHandler
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests
+    name: CrawlPipelineTests
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    name: PipelineFakeHandler
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests
+    name: CrawlPipelineTests
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    name: PipelineFakeHandler
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.#ctor*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.#ctor
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests__ctor
+  name: CrawlPipelineTests
+  nameWithType: CrawlPipelineTests.CrawlPipelineTests
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlPipelineTests
+  nameWithType.vb: CrawlPipelineTests.New
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.New
+  name.vb: New
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Dispose*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Dispose
+  name: Dispose
+  nameWithType: CrawlPipelineTests.Dispose
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_TryDelete_System_String_
+  name: TryDelete
+  nameWithType: CrawlPipelineTests.TryDelete
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_EnsureSchemaAsync
+  name: EnsureSchemaAsync
+  nameWithType: CrawlPipelineTests.EnsureSchemaAsync
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_RunAsync_System_String_System_Int32_System_Int32_System_Boolean_System_Int32_System_Boolean_
+  name: RunAsync
+  nameWithType: CrawlPipelineTests.RunAsync
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.RunAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(PipelineResult Result, EmbeddingBacklog Backlog)>
+  nameWithType: Task<(PipelineResult Result, EmbeddingBacklog Backlog)>
+  fullName: System.Threading.Tasks.Task<(LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult Result, LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog Backlog)>
+  nameWithType.vb: Task(Of (Result As PipelineResult, Backlog As EmbeddingBacklog))
+  fullName.vb: System.Threading.Tasks.Task(Of (Result As LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult, Backlog As LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog))
+  name.vb: Task(Of (Result As PipelineResult, Backlog As EmbeddingBacklog))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+    name: PipelineResult
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}.Result
+    name: Result
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.pipeline.pipelineresult,localsearchengine.core.crawling.engine.embeddingbacklog-.result
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+    name: EmbeddingBacklog
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}.Backlog
+    name: Backlog
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.pipeline.pipelineresult,localsearchengine.core.crawling.engine.embeddingbacklog-.backlog
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}.Result
+    name: Result
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.pipeline.pipelineresult,localsearchengine.core.crawling.engine.embeddingbacklog-.result
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+    name: PipelineResult
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult,LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog}.Backlog
+    name: Backlog
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.pipeline.pipelineresult,localsearchengine.core.crawling.engine.embeddingbacklog-.backlog
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
+    name: EmbeddingBacklog
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_ChunkCount_System_String_
+  name: ChunkCount
+  nameWithType: CrawlPipelineTests.ChunkCount
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_HasCrawlState_System_String_
+  name: HasCrawlState
+  nameWithType: CrawlPipelineTests.HasCrawlState
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Html*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Html
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Html_System_String_
+  name: Html
+  nameWithType: CrawlPipelineTests.Html
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Html
+- uid: System.Net.Http.HttpResponseMessage
+  commentId: T:System.Net.Http.HttpResponseMessage
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  name: HttpResponseMessage
+  nameWithType: HttpResponseMessage
+  fullName: System.Net.Http.HttpResponseMessage
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_RedirectedTo_System_String_System_String_
+  name: RedirectedTo
+  nameWithType: CrawlPipelineTests.RedirectedTo
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.RedirectedTo
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Four_workers_index_every_page_exactly_once
+  name: Four_workers_index_every_page_exactly_once
+  nameWithType: CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Zero_work_crawl_terminates
+  name: Zero_work_crawl_terminates
+  nameWithType: CrawlPipelineTests.Zero_work_crawl_terminates
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Deep_chain_completes
+  name: Deep_chain_completes
+  nameWithType: CrawlPipelineTests.Deep_chain_completes
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Wide_fanout_completes_and_indexes_all
+  name: Wide_fanout_completes_and_indexes_all
+  nameWithType: CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  name: Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  nameWithType: CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Redirect_chain_is_followed_and_sources_recorded_as_aliases
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  name: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  nameWithType: CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Same_host_fetches_respect_the_politeness_gap_across_workers
+  name: Same_host_fetches_respect_the_politeness_gap_across_workers
+  nameWithType: CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Sitemap_entries_seed_the_frontier
+  name: Sitemap_entries_seed_the_frontier
+  nameWithType: CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  name: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  nameWithType: CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_CrawlStateRowCount_System_String_
+  name: CrawlStateRowCount
+  nameWithType: CrawlPipelineTests.CrawlStateRowCount
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount

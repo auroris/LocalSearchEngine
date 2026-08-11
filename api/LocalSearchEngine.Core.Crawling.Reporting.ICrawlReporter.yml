@@ -22,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ICrawlReporter
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -31,11 +31,13 @@ items:
 
     invokes these as work happens; they must be cheap and must never throw, as the crawl does not guard
 
-    against a misbehaving reporter. <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> arrive on
+    against a misbehaving reporter. Callbacks are concurrent: <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> and
 
-    the crawler thread, but <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref> arrives on the separate embedder thread and can
+    <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.PageProcessed(System.String%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome%2cLocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)" data-throw-if-not-resolved="false"></xref> arrive from any of the parallel crawl workers, and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter.EmbedProgress(System.Int32%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref>
 
-    overlap them — so an implementation that keeps shared display state must guard it.
+    from the persistence consumer, all potentially overlapping — an implementation that keeps shared
+
+    display state must guard it.
   example: []
   syntax:
     content: public interface ICrawlReporter
@@ -63,7 +65,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -98,7 +100,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -139,7 +141,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmbedProgress
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlReporter.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting

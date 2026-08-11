@@ -10,6 +10,9 @@ items:
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PageProcessed(System.String,LocalSearchEngine.Core.Crawling.Reporting.CrawlOutcome,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._gate
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedProcessed
+  - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedQueued
   langs:
   - csharp
   - vb
@@ -24,11 +27,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordingReporter
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1218
+    startLine: 1228
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
-  summary: Captures the last embedder-progress callback so a test can assert it was driven to completion.
+  summary: >-
+    Captures the last embedder-progress callback so a test can assert it was driven to completion.
+
+    Locked because the reporter contract allows concurrent callbacks; tests read after the crawl returns.
   example: []
   syntax:
     content: 'private sealed class CrawlerServiceIntegrationTests.RecordingReporter : ICrawlReporter'
@@ -44,6 +50,87 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._gate
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._gate
+  id: _gate
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  langs:
+  - csharp
+  - vb
+  name: _gate
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter._gate
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._gate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _gate
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1230
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly object _gate
+    return:
+      type: System.Object
+    content.vb: Private ReadOnly _gate As Object
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedProcessed
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedProcessed
+  id: _lastEmbedProcessed
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  langs:
+  - csharp
+  - vb
+  name: _lastEmbedProcessed
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedProcessed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedProcessed
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _lastEmbedProcessed
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1231
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private int _lastEmbedProcessed
+    return:
+      type: System.Int32
+    content.vb: Private _lastEmbedProcessed As Integer
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedQueued
+  commentId: F:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedQueued
+  id: _lastEmbedQueued
+  parent: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  langs:
+  - csharp
+  - vb
+  name: _lastEmbedQueued
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedQueued
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter._lastEmbedQueued
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _lastEmbedQueued
+    path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
+    startLine: 1232
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private int _lastEmbedQueued
+    return:
+      type: System.Int32
+    content.vb: Private _lastEmbedQueued As Integer
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
   commentId: P:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
   id: LastEmbedProcessed
@@ -62,16 +149,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastEmbedProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1220
+    startLine: 1234
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: public int LastEmbedProcessed { get; private set; }
+    content: public int LastEmbedProcessed { get; }
     parameters: []
     return:
       type: System.Int32
-    content.vb: Public Property LastEmbedProcessed As Integer
+    content.vb: Public ReadOnly Property LastEmbedProcessed As Integer
   overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed*
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
   commentId: P:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
@@ -91,16 +178,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastEmbedQueued
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1221
+    startLine: 1235
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: public int LastEmbedQueued { get; private set; }
+    content: public int LastEmbedQueued { get; }
     parameters: []
     return:
       type: System.Int32
-    content.vb: Public Property LastEmbedQueued As Integer
+    content.vb: Public ReadOnly Property LastEmbedQueued As Integer
   overload: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued*
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
   commentId: M:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.PhaseChanged(LocalSearchEngine.Core.Crawling.Reporting.CrawlPhase,LocalSearchEngine.Core.Crawling.Reporting.CrawlStatsSnapshot)
@@ -120,7 +207,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1222
+    startLine: 1237
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -157,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1223
+    startLine: 1238
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -200,7 +287,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmbedProgress
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1224
+    startLine: 1239
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -506,12 +593,6 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Reporting
     name: Reporting
     href: LocalSearchEngine.Core.Crawling.Reporting.html
-- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed*
-  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
-  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_LastEmbedProcessed
-  name: LastEmbedProcessed
-  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
-  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -523,6 +604,12 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_LastEmbedProcessed
+  name: LastEmbedProcessed
+  nameWithType: CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
+  fullName: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedProcessed
 - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued*
   commentId: Overload:LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.LastEmbedQueued
   href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html#LocalSearchEngine_Tests_CrawlerServiceIntegrationTests_RecordingReporter_LastEmbedQueued

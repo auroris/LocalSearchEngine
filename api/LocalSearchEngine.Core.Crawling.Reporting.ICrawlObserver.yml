@@ -53,7 +53,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ICrawlObserver
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 12
+    startLine: 13
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -62,11 +62,13 @@ items:
 
     reporting. Implementations translate crawler domain events into log messages, stat increments,
 
-    and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter" data-throw-if-not-resolved="false"></xref> callbacks. A redirect is resolved into its own outcome on the
+    and <xref href="LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter" data-throw-if-not-resolved="false"></xref> callbacks, and must tolerate callbacks arriving from several
 
-    dequeued URL (the target is enqueued like a link), so every other page-outcome callback names the
+    crawl workers at once. A redirect is resolved into its own outcome on the dequeued URL (the
 
-    single URL it resolved.
+    target is enqueued like a link), so every other page-outcome callback names the single URL it
+
+    resolved.
   example: []
   syntax:
     content: public interface ICrawlObserver
@@ -91,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Stats
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 15
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -122,7 +124,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPhaseChanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -153,7 +155,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutlinksAdded
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 26
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -188,7 +190,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedInvalid
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -222,7 +224,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedUnreachable
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -256,7 +258,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 37
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -290,7 +292,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnHostCapReached
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 43
+    startLine: 44
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -331,7 +333,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFetching
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -372,7 +374,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnFetchError
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 52
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -408,7 +410,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnCrawlCompleted
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 55
+    startLine: 56
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -442,7 +444,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnOutScopeUrlReached
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 60
+    startLine: 61
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -476,7 +478,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirected
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 65
+    startLine: 66
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -514,7 +516,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnSeedRedirectedToNewOrigin
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 70
+    startLine: 71
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -552,7 +554,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageRedirectedOutScope
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 75
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -590,7 +592,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageGone
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 82
+    startLine: 83
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -628,7 +630,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 87
+    startLine: 88
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -666,7 +668,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedSize
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 93
+    startLine: 94
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -707,7 +709,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageSkippedType
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 98
+    startLine: 99
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -745,7 +747,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchanged
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 101
+    startLine: 102
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -779,7 +781,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageUnchangedHash
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 105
+    startLine: 106
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -814,7 +816,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDuplicateContent
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 110
+    startLine: 111
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -852,7 +854,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageAlias
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 115
+    startLine: 116
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -890,7 +892,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageDisallowed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 118
+    startLine: 119
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -924,7 +926,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageNoIndex
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 122
+    startLine: 123
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -959,7 +961,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageLowQualityText
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 129
+    startLine: 130
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1002,7 +1004,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPageIndexed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 134
+    startLine: 135
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1040,7 +1042,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnStaleUrlsPruned
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 140
+    startLine: 141
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1075,7 +1077,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnPruneFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 143
+    startLine: 144
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1106,7 +1108,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnBannedUrlsRemoved
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 147
+    startLine: 148
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1141,7 +1143,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnRemoveBannedFailed
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 150
+    startLine: 151
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1172,7 +1174,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinksVerified
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 156
+    startLine: 157
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1213,7 +1215,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnLinkProbeInconclusive
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 159
+    startLine: 160
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1249,7 +1251,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnAllowedServerIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 163
+    startLine: 164
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
@@ -1284,7 +1286,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OnNoIndexPatternIgnored
     path: LocalSearchEngine.Core/Crawling/Reporting/ICrawlObserver.cs
-    startLine: 167
+    startLine: 168
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting

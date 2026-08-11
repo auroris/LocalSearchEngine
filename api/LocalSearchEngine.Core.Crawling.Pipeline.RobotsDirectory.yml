@@ -1,0 +1,1703 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  id: RobotsDirectory
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync(System.String,System.Uri)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable(System.String)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver)
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._flights
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._hostHealth
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._httpClient
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._logger
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._maxBytes
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._rules
+  - LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._unavailable
+  langs:
+  - csharp
+  - vb
+  name: RobotsDirectory
+  nameWithType: RobotsDirectory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RobotsDirectory
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The run's robots.txt authority. Each origin is fetched exactly once no matter how many workers
+
+    ask at once — the cache is a per-origin <xref href="System.Lazy%601" data-throw-if-not-resolved="false"></xref> single-flight, which is load-bearing
+
+    beyond politeness: host health writes a dead host off after its <em>first</em> connection failure,
+
+    and that contract only holds if a burst of workers can't race four fetches at it. Fetch outcomes
+
+    feed the host-health tracker; a 5xx marks the origin's rules unavailable, which exempts its URLs
+
+    from pruning (we can't tell what it would have disallowed).
+  example: []
+  syntax:
+    content: internal sealed class RobotsDirectory
+    content.vb: Friend NotInheritable Class RobotsDirectory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._httpClient
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: RobotsDirectory._httpClient
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 27
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._hostHealth
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._hostHealth
+  id: _hostHealth
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _hostHealth
+  nameWithType: RobotsDirectory._hostHealth
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._hostHealth
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _hostHealth
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly HostHealthTracker _hostHealth
+    return:
+      type: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+    content.vb: Private ReadOnly _hostHealth As HostHealthTracker
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._maxBytes
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._maxBytes
+  id: _maxBytes
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _maxBytes
+  nameWithType: RobotsDirectory._maxBytes
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._maxBytes
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _maxBytes
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly long _maxBytes
+    return:
+      type: System.Int64
+    content.vb: Private ReadOnly _maxBytes As Long
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._logger
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._logger
+  id: _logger
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: RobotsDirectory._logger
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Private ReadOnly _logger As ILogger
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._flights
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._flights
+  id: _flights
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _flights
+  nameWithType: RobotsDirectory._flights
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._flights
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _flights
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ConcurrentDictionary<string, Lazy<Task<RobotsRules>>> _flights
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Lazy{System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}}}
+    content.vb: Private ReadOnly _flights As ConcurrentDictionary(Of String, Lazy(Of Task(Of RobotsRules)))
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._rules
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._rules
+  id: _rules
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _rules
+  nameWithType: RobotsDirectory._rules
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._rules
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _rules
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ConcurrentDictionary<string, RobotsRules> _rules
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+    content.vb: Private ReadOnly _rules As ConcurrentDictionary(Of String, RobotsRules)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._unavailable
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._unavailable
+  id: _unavailable
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: _unavailable
+  nameWithType: RobotsDirectory._unavailable
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory._unavailable
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _unavailable
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ConcurrentDictionary<string, byte> _unavailable
+    return:
+      type: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+    content.vb: Private ReadOnly _unavailable As ConcurrentDictionary(Of String, Byte)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,System.Int64,Microsoft.Extensions.Logging.ILogger)'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: RobotsDirectory(HttpClient, HostHealthTracker, long, ILogger)
+  nameWithType: RobotsDirectory.RobotsDirectory(HttpClient, HostHealthTracker, long, ILogger)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RobotsDirectory(System.Net.Http.HttpClient, LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker, long, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 36
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: public RobotsDirectory(HttpClient httpClient, HostHealthTracker hostHealth, long maxBytes, ILogger logger)
+    parameters:
+    - id: httpClient
+      type: System.Net.Http.HttpClient
+    - id: hostHealth
+      type: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+    - id: maxBytes
+      type: System.Int64
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Public Sub New(httpClient As HttpClient, hostHealth As HostHealthTracker, maxBytes As Long, logger As ILogger)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor*
+  nameWithType.vb: RobotsDirectory.New(HttpClient, HostHealthTracker, Long, ILogger)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.New(System.Net.Http.HttpClient, LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker, Long, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(HttpClient, HostHealthTracker, Long, ILogger)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+  id: Rules
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: Rules
+  nameWithType: RobotsDirectory.Rules
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Rules
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Gets the live view of rules fetched so far, keyed by origin — what HTML analysis filters links against.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<string, RobotsRules> Rules { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+    content.vb: Public ReadOnly Property Rules As IReadOnlyDictionary(Of String, RobotsRules)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable(System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable(System.String)
+  id: IsUnavailable(System.String)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: IsUnavailable(string)
+  nameWithType: RobotsDirectory.IsUnavailable(string)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsUnavailable
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 49
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Whether the origin's robots.txt was unavailable (5xx) this run; its URLs are exempt from pruning.
+  example: []
+  syntax:
+    content: public bool IsUnavailable(string originKey)
+    parameters:
+    - id: originKey
+      type: System.String
+      description: The origin key (scheme://host:port).
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsUnavailable(originKey As String) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable*
+  nameWithType.vb: RobotsDirectory.IsUnavailable(String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable(String)
+  name.vb: IsUnavailable(String)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync(System.Uri)
+  id: GetOrFetchAsync(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: GetOrFetchAsync(Uri)
+  nameWithType: RobotsDirectory.GetOrFetchAsync(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetOrFetchAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 56
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Returns the origin's robots rules, fetching them on first contact. Concurrent callers for the
+
+    same origin share one fetch.
+  example: []
+  syntax:
+    content: public Task<RobotsRules> GetOrFetchAsync(Uri uri)
+    parameters:
+    - id: uri
+      type: System.Uri
+      description: Any URL on the origin.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+    content.vb: Public Function GetOrFetchAsync(uri As Uri) As Task(Of RobotsRules)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync(System.String,System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync(System.String,System.Uri)
+  id: FetchAsync(System.String,System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: FetchAsync(string, Uri)
+  nameWithType: RobotsDirectory.FetchAsync(string, Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync(string, System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FetchAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 65
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private Task<RobotsRules> FetchAsync(string origin, Uri baseUri)
+    parameters:
+    - id: origin
+      type: System.String
+    - id: baseUri
+      type: System.Uri
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+    content.vb: Private Function FetchAsync(origin As String, baseUri As Uri) As Task(Of RobotsRules)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync*
+  nameWithType.vb: RobotsDirectory.FetchAsync(String, Uri)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync(String, System.Uri)
+  name.vb: FetchAsync(String, Uri)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync(System.Uri)
+  id: GetRobotsRulesAsync(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: GetRobotsRulesAsync(Uri)
+  nameWithType: RobotsDirectory.GetRobotsRulesAsync(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetRobotsRulesAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 82
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Performs the HTTP fetch of robots.txt, recording host reachability and returning parse
+
+    results or policy fallbacks: 2xx parses (truncated past the size cap parses the prefix),
+
+    5xx is disallow-all and unavailable, any other status allows all, and a transport failure
+
+    allows all while feeding the host-health write-off.
+  example: []
+  syntax:
+    content: private Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri)
+    parameters:
+    - id: baseUri
+      type: System.Uri
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}}
+    content.vb: Private Function GetRobotsRulesAsync(baseUri As Uri) As Task(Of (Rules As RobotsRules, Unavailable As Boolean))
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver)
+  id: RemoveBannedUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Searching.VectorSearchService,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+  langs:
+  - csharp
+  - vb
+  name: RemoveBannedUrlsAsync(SqliteConnection, SqliteConnection, VectorSearchService, ICrawlObserver)
+  nameWithType: RobotsDirectory.RemoveBannedUrlsAsync(SqliteConnection, SqliteConnection, VectorSearchService, ICrawlObserver)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection, Microsoft.Data.Sqlite.SqliteConnection, LocalSearchEngine.Core.Searching.VectorSearchService, LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RemoveBannedUrlsAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/RobotsDirectory.cs
+    startLine: 134
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Removes already-indexed URLs that an origin's robots.txt fetched this run now disallows.
+
+    Runs only after the persistence consumer has drained — its writes are ungated, and that
+
+    post-drain timing is what keeps the single-writer rule intact.
+  example: []
+  syntax:
+    content: public Task<int> RemoveBannedUrlsAsync(SqliteConnection read, SqliteConnection write, VectorSearchService vectorSearchService, ICrawlObserver observer)
+    parameters:
+    - id: read
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The orchestrator's read connection.
+    - id: write
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The orchestrator's write connection.
+    - id: vectorSearchService
+      type: LocalSearchEngine.Core.Searching.VectorSearchService
+      description: Deletes the banned URLs' chunks.
+    - id: observer
+      type: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+      description: Receives the failure event if the pass dies.
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+      description: The number of banned URLs removed.
+    content.vb: Public Function RemoveBannedUrlsAsync(read As SqliteConnection, write As SqliteConnection, vectorSearchService As VectorSearchService, observer As ICrawlObserver) As Task(Of Integer)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync*
+references:
+- uid: System.Lazy`1
+  commentId: T:System.Lazy`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.lazy-1
+  name: Lazy<T>
+  nameWithType: Lazy<T>
+  fullName: System.Lazy<T>
+  nameWithType.vb: Lazy(Of T)
+  fullName.vb: System.Lazy(Of T)
+  name.vb: Lazy(Of T)
+  spec.csharp:
+  - uid: System.Lazy`1
+    name: Lazy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.lazy-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Lazy`1
+    name: Lazy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.lazy-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html
+  name: HostHealthTracker
+  nameWithType: HostHealthTracker
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Lazy{System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}}}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Lazy{System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}}}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, Lazy<Task<RobotsRules>>>
+  nameWithType: ConcurrentDictionary<string, Lazy<Task<RobotsRules>>>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, System.Lazy<System.Threading.Tasks.Task<LocalSearchEngine.Core.Crawling.Policies.RobotsRules>>>
+  nameWithType.vb: ConcurrentDictionary(Of String, Lazy(Of Task(Of RobotsRules)))
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, System.Lazy(Of System.Threading.Tasks.Task(Of LocalSearchEngine.Core.Crawling.Policies.RobotsRules)))
+  name.vb: ConcurrentDictionary(Of String, Lazy(Of Task(Of RobotsRules)))
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Lazy`1
+    name: Lazy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.lazy-1
+  - name: <
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Lazy`1
+    name: Lazy
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.lazy-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary`2
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<TKey, TValue>
+  nameWithType: ConcurrentDictionary<TKey, TValue>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<TKey, TValue>
+  nameWithType.vb: ConcurrentDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of TKey, TValue)
+  name.vb: ConcurrentDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Concurrent
+  commentId: N:System.Collections.Concurrent
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Concurrent
+  nameWithType: System.Collections.Concurrent
+  fullName: System.Collections.Concurrent
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Concurrent
+    name: Concurrent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, RobotsRules>
+  nameWithType: ConcurrentDictionary<string, RobotsRules>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, LocalSearchEngine.Core.Crawling.Policies.RobotsRules>
+  nameWithType.vb: ConcurrentDictionary(Of String, RobotsRules)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  name.vb: ConcurrentDictionary(Of String, RobotsRules)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: )
+- uid: System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+  commentId: T:System.Collections.Concurrent.ConcurrentDictionary{System.String,System.Byte}
+  parent: System.Collections.Concurrent
+  definition: System.Collections.Concurrent.ConcurrentDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  name: ConcurrentDictionary<string, byte>
+  nameWithType: ConcurrentDictionary<string, byte>
+  fullName: System.Collections.Concurrent.ConcurrentDictionary<string, byte>
+  nameWithType.vb: ConcurrentDictionary(Of String, Byte)
+  fullName.vb: System.Collections.Concurrent.ConcurrentDictionary(Of String, Byte)
+  name.vb: ConcurrentDictionary(Of String, Byte)
+  spec.csharp:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Concurrent.ConcurrentDictionary`2
+    name: ConcurrentDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.concurrent.concurrentdictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory__ctor_System_Net_Http_HttpClient_LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_System_Int64_Microsoft_Extensions_Logging_ILogger_
+  name: RobotsDirectory
+  nameWithType: RobotsDirectory.RobotsDirectory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RobotsDirectory
+  nameWithType.vb: RobotsDirectory.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_Rules
+  name: Rules
+  nameWithType: RobotsDirectory.Rules
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.Rules
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, RobotsRules>
+  nameWithType: IReadOnlyDictionary<string, RobotsRules>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, LocalSearchEngine.Core.Crawling.Policies.RobotsRules>
+  nameWithType.vb: IReadOnlyDictionary(Of String, RobotsRules)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  name.vb: IReadOnlyDictionary(Of String, RobotsRules)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_IsUnavailable_System_String_
+  name: IsUnavailable
+  nameWithType: RobotsDirectory.IsUnavailable
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.IsUnavailable
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_GetOrFetchAsync_System_Uri_
+  name: GetOrFetchAsync
+  nameWithType: RobotsDirectory.GetOrFetchAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetOrFetchAsync
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  commentId: T:System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Policies.RobotsRules}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RobotsRules>
+  nameWithType: Task<RobotsRules>
+  fullName: System.Threading.Tasks.Task<LocalSearchEngine.Core.Crawling.Policies.RobotsRules>
+  nameWithType.vb: Task(Of RobotsRules)
+  fullName.vb: System.Threading.Tasks.Task(Of LocalSearchEngine.Core.Crawling.Policies.RobotsRules)
+  name.vb: Task(Of RobotsRules)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_FetchAsync_System_String_System_Uri_
+  name: FetchAsync
+  nameWithType: RobotsDirectory.FetchAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.FetchAsync
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_GetRobotsRulesAsync_System_Uri_
+  name: GetRobotsRulesAsync
+  nameWithType: RobotsDirectory.GetRobotsRulesAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.GetRobotsRulesAsync
+- uid: System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(RobotsRules Rules, bool Unavailable)>
+  nameWithType: Task<(RobotsRules Rules, bool Unavailable)>
+  fullName: System.Threading.Tasks.Task<(LocalSearchEngine.Core.Crawling.Policies.RobotsRules Rules, bool Unavailable)>
+  nameWithType.vb: Task(Of (Rules As RobotsRules, Unavailable As Boolean))
+  fullName.vb: System.Threading.Tasks.Task(Of (Rules As LocalSearchEngine.Core.Crawling.Policies.RobotsRules, Unavailable As Boolean))
+  name.vb: Task(Of (Rules As RobotsRules, Unavailable As Boolean))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}.Rules
+    name: Rules
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.policies.robotsrules,system.boolean-.rules
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}.Unavailable
+    name: Unavailable
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.policies.robotsrules,system.boolean-.unavailable
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}.Rules
+    name: Rules
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.policies.robotsrules,system.boolean-.rules
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.RobotsRules
+    name: RobotsRules
+    href: LocalSearchEngine.Core.Crawling.Policies.RobotsRules.html
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{LocalSearchEngine.Core.Crawling.Policies.RobotsRules,System.Boolean}.Unavailable
+    name: Unavailable
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-localsearchengine.core.crawling.policies.robotsrules,system.boolean-.unavailable
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.html#LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_RemoveBannedUrlsAsync_Microsoft_Data_Sqlite_SqliteConnection_Microsoft_Data_Sqlite_SqliteConnection_LocalSearchEngine_Core_Searching_VectorSearchService_LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_
+  name: RemoveBannedUrlsAsync
+  nameWithType: RobotsDirectory.RemoveBannedUrlsAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory.RemoveBannedUrlsAsync
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService
+  commentId: T:LocalSearchEngine.Core.Searching.VectorSearchService
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html
+  name: VectorSearchService
+  nameWithType: VectorSearchService
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService
+- uid: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  commentId: T:LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+  parent: LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver.html
+  name: ICrawlObserver
+  nameWithType: ICrawlObserver
+  fullName: LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+- uid: LocalSearchEngine.Core.Searching
+  commentId: N:LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Searching
+  nameWithType: LocalSearchEngine.Core.Searching
+  fullName: LocalSearchEngine.Core.Searching
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching
+    name: Searching
+    href: LocalSearchEngine.Core.Searching.html
+- uid: LocalSearchEngine.Core.Crawling.Reporting
+  commentId: N:LocalSearchEngine.Core.Crawling.Reporting
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Reporting
+  nameWithType: LocalSearchEngine.Core.Crawling.Reporting
+  fullName: LocalSearchEngine.Core.Crawling.Reporting
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Reporting
+    name: Reporting
+    href: LocalSearchEngine.Core.Crawling.Reporting.html

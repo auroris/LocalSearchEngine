@@ -43,7 +43,6 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat
 - uid: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
   commentId: T:LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Lane
-  parent: LocalSearchEngine.Core.Crawling.Reporting
   href: LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.html
   name: CrawlHeartbeat.Lane
   nameWithType: CrawlHeartbeat.Lane

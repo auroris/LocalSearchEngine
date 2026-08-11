@@ -8,7 +8,9 @@ using Microsoft.Extensions.Logging;
 /// The single sink for crawl events: each <c>On…</c> callback both writes the run log and updates
 /// the running <see cref="CrawlStats"/>, and the page-outcome callbacks additionally push a fresh
 /// snapshot to the <see cref="ICrawlReporter"/> driving the live display. Centralizing this here
-/// keeps the crawl engine free of logging and presentation concerns. See <see cref="ICrawlObserver"/>
+/// keeps the crawl engine free of logging and presentation concerns. Callbacks arrive from every
+/// crawl worker at once; the stats serialize internally, the logger is thread-safe, and the phase
+/// is a volatile scalar — so the observer itself needs no lock. See <see cref="ICrawlObserver"/>
 /// for what each callback signifies.
 /// </summary>
 internal sealed class CrawlObserver : ICrawlObserver
@@ -18,7 +20,7 @@ internal sealed class CrawlObserver : ICrawlObserver
     private readonly DateTime _startedUtc;
     private readonly CrawlHeartbeat _heartbeat;
 
-    private CrawlPhase _currentPhase;
+    private volatile CrawlPhase _currentPhase;
 
     public CrawlStats Stats { get; } = new CrawlStats();
 

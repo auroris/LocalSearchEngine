@@ -21,30 +21,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Engine.AliasJob
     name: AliasJob
     type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.ChunkAction
-    name: ChunkAction
-    type: Enum
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlContext
-    name: CrawlContext
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlEmbedder
-    name: CrawlEmbedder
-    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlJob
     name: CrawlJob
     type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlProducer
-    name: CrawlProducer
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.CrawlStateWriter
-    name: CrawlStateWriter
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate
-    name: DbWriteGate
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.DbWriteGate.Releaser
-    name: DbWriteGate.Releaser
-    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Engine.DownloadResult
     name: DownloadResult
     type: Class
@@ -53,9 +32,6 @@ items:
     type: Enum
   - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingBacklog
     name: EmbeddingBacklog
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.EmbeddingJob
-    name: EmbeddingJob
     type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.GoneJob
     name: GoneJob
@@ -66,6 +42,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob
     name: IndexJob
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerificationContext
+    name: LinkVerificationContext
+    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Engine.LinkVerifier
     name: LinkVerifier
     type: Class
@@ -75,12 +54,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader
     name: PageDownloader
     type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.RobotsService
-    name: RobotsService
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Engine.SitemapService
-    name: SitemapService
-    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Engine.PageDownloader.PrefixCheck
+    name: PageDownloader.PrefixCheck
+    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob
     name: TouchJob
     type: Class
@@ -99,6 +75,94 @@ items:
     type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.TextQualityExtractionStrategy
     name: ContentExtractor.TextQualityExtractionStrategy
+    type: Class
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  type: Namespace
+  items:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+    name: CrawlPipeline
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
+    name: CrawlPlan
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker
+    name: CrawlWorker
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+    name: Document
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+    name: DocumentFactory
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
+    name: DocxDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+    name: FeedDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+    name: FeedSeedSource
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+    name: FetchResult
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+    name: HostGate
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
+    name: HostGate.HostLane
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
+    name: HostGate.Releaser
+    type: Struct
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
+    name: HtmlDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+    name: ICrawlContext
+    type: Interface
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+    name: ISeedSource
+    type: Interface
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+    name: PageDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
+    name: PdfDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
+    name: PendingWorkCounter
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer
+    name: PersistenceConsumer
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PersistenceConsumer.ChunkAction
+    name: PersistenceConsumer.ChunkAction
+    type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineContext
+    name: PipelineContext
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.PipelineResult
+    name: PipelineResult
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory
+    name: RobotsDirectory
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
+    name: RootUrlSource
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapBudget
+    name: SitemapBudget
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapDocument
+    name: SitemapDocument
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
+    name: SitemapSeedSource
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.VisitedSet
+    name: VisitedSet
     type: Class
 - uid: LocalSearchEngine.Core.Crawling.Policies
   name: LocalSearchEngine.Core.Crawling.Policies
@@ -266,8 +330,17 @@ items:
   - uid: LocalSearchEngine.Tests.ContentExtractorTests
     name: ContentExtractorTests
     type: Class
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests
+    name: CrawlPipelineTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    name: CrawlPipelineTests.PipelineFakeHandler
+    type: Class
   - uid: LocalSearchEngine.Tests.CrawlPolicyTests
     name: CrawlPolicyTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.CrawlSettingsBindingTests
+    name: CrawlSettingsBindingTests
     type: Class
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
     name: CrawlerServiceIntegrationTests
@@ -284,17 +357,32 @@ items:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
     name: CrawlerServiceIntegrationTests.RecordingReporter
     type: Class
+  - uid: LocalSearchEngine.Tests.DocumentFactoryTests
+    name: DocumentFactoryTests
+    type: Class
   - uid: LocalSearchEngine.Tests.FakeEmbedder
     name: FakeEmbedder
     type: Class
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests
+    name: FeedCrawlTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+    name: FeedCrawlTests.FeedFakeHandler
+    type: Class
   - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
     name: Fts5MatchSemanticsTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.HostGateTests
+    name: HostGateTests
     type: Class
   - uid: LocalSearchEngine.Tests.NoIndexRulesTests
     name: NoIndexRulesTests
     type: Class
   - uid: LocalSearchEngine.Tests.PdfTextQualityTests
     name: PdfTextQualityTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.PendingWorkCounterTests
+    name: PendingWorkCounterTests
     type: Class
   - uid: LocalSearchEngine.Tests.RobotsRulesTests
     name: RobotsRulesTests
@@ -313,6 +401,9 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
     name: VectorSearchServiceIntegrationTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.VisitedSetTests
+    name: VisitedSetTests
     type: Class
 - uid: LocalSearchEngine.Web.Controllers
   name: LocalSearchEngine.Web.Controllers

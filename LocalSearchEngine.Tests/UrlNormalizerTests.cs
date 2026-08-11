@@ -49,4 +49,39 @@ public class UrlNormalizerTests
         Assert.True(UrlNormalizer.TryNormalize("https://example.com/x/", out var normalized));
         Assert.Equal("https://example.com/x", normalized);
     }
+
+    // The encoding contract. Normalize's output is the URL's *stored identity* — every CrawlState
+    // row, link edge, and dedup key in an existing database is in this form — so its escaping
+    // behavior is frozen: valid UTF-8 escapes and spaces come out as display characters, reserved
+    // and invalid escapes stay escaped. Fetching no longer round-trips through this form (the
+    // pipeline fetches the exact resolved Uri), but the identity itself must never drift or every
+    // existing database orphans.
+    [Theory]
+    [InlineData("http://h/a%20b/c.html", "http://h/a b/c.html")]     // %20 → literal space
+    [InlineData("http://h/caf%C3%A9/x", "http://h/café/x")]          // valid UTF-8 escape → character
+    [InlineData("http://h/a%2Fb/c", "http://h/a%2Fb/c")]             // escaped slash must not change path structure
+    [InlineData("http://h/p%25s/x", "http://h/p%25s/x")]             // escaped percent stays (unescaping would re-interpret)
+    [InlineData("http://h/p?q=a%26b", "http://h/p?q=a%26b")]         // escaped ampersand stays (a literal one splits the query)
+    [InlineData("http://h/p?q=a%3Db", "http://h/p?q=a%3Db")]         // escaped equals stays
+    public void Normalize_escaping_contract_is_stable(string input, string expected)
+    {
+        Assert.Equal(expected, UrlNormalizer.Normalize(new Uri(input)));
+    }
+
+    // Stored URLs get re-parsed and re-normalized (stored outlinks on a 304, prune candidates,
+    // duplicate targets); if a second pass produced a different string, a URL's identity would
+    // drift between crawls and rows would orphan.
+    [Theory]
+    [InlineData("http://h/a%20b/c.html")]
+    [InlineData("http://h/caf%C3%A9/x")]
+    [InlineData("http://h/a%2Fb/c")]
+    [InlineData("http://h/p%25s/x")]
+    [InlineData("http://h/dir/page?q=a%26b&r=2")]
+    [InlineData("http://h/~user/index.html")]
+    public void Normalize_is_idempotent(string input)
+    {
+        var once = UrlNormalizer.Normalize(new Uri(input));
+        var twice = UrlNormalizer.Normalize(new Uri(once));
+        Assert.Equal(once, twice);
+    }
 }

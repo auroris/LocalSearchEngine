@@ -11,6 +11,7 @@ A console crawler builds a knowledge base from web pages and documents into a si
 * **Polite & Origin-Scoped Crawler**: Respects `robots.txt` rules, sitemaps, and `Crawl-delay` settings per origin. Includes crawler trap protection and site-cap controls.
 * **Document Extraction**: Sniffs and extracts text from HTML pages (boilerplate stripped), PDFs, and Word (`.docx`) files.
 * **Incremental Crawls**: Employs conditional HTTP requests, SHA-256 content hashing to avoid re-embedding duplicate text, and outlink persistence to crawl efficiently.
+* **Feed-Driven Updates**: Point the crawler at your site's `rss.xml` with `--feed` and only the items the feed lists are fetched and re-indexed — nothing else is touched, so routine updates cost a handful of requests instead of a full crawl.
 * **Local AI Embeddings**: Uses `snowflake-arctic-embed-s` (384-dim, int8 ONNX) running locally on CPU via ONNX Runtime.
 * **Hybrid Search Ranker**: Ranks search results combining sparse keyword matching (SQLite FTS5) and dense semantic vector similarity (`sqlite-vec`).
 

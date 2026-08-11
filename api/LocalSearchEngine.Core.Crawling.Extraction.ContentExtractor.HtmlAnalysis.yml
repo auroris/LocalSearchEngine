@@ -10,6 +10,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.NoFollow
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.NoIndex
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OutlinkUris
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Text
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Title
@@ -248,6 +249,42 @@ items:
     return:
       type: System.Collections.Generic.List{System.String}
     content.vb: Public Outlinks As List(Of String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OutlinkUris
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OutlinkUris
+  id: OutlinkUris
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  langs:
+  - csharp
+  - vb
+  name: OutlinkUris
+  nameWithType: ContentExtractor.HtmlAnalysis.OutlinkUris
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OutlinkUris
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OutlinkUris
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 55
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Gets or sets the exact resolved URIs of <xref href="LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks" data-throw-if-not-resolved="false"></xref>, index-aligned 1:1.
+
+    The normalized string is the link's identity (dedup, storage); this is what actually
+
+    goes on the wire — an href's original percent-escaping survives here, where the
+
+    display-form string would re-encode it on re-parse.
+  example: []
+  syntax:
+    content: public List<Uri> OutlinkUris
+    return:
+      type: System.Collections.Generic.List{System.Uri}
+    content.vb: Public OutlinkUris As List(Of Uri)
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
   commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
   id: OffsiteLinks
@@ -266,7 +303,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OffsiteLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 50
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -651,3 +688,44 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_Outlinks
+  name: Outlinks
+  nameWithType: ContentExtractor.HtmlAnalysis.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
+- uid: System.Collections.Generic.List{System.Uri}
+  commentId: T:System.Collections.Generic.List{System.Uri}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<Uri>
+  nameWithType: List<Uri>
+  fullName: System.Collections.Generic.List<System.Uri>
+  nameWithType.vb: List(Of Uri)
+  fullName.vb: System.Collections.Generic.List(Of System.Uri)
+  name.vb: List(Of Uri)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )

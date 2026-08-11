@@ -6,22 +6,31 @@ items:
   children:
   - LocalSearchEngine.Tests.AllowedHostsTests
   - LocalSearchEngine.Tests.ContentExtractorTests
+  - LocalSearchEngine.Tests.CrawlPipelineTests
+  - LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
   - LocalSearchEngine.Tests.CrawlPolicyTests
+  - LocalSearchEngine.Tests.CrawlSettingsBindingTests
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.DelayEmbedder
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FailingEmbedder
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.FakeHandler
   - LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
+  - LocalSearchEngine.Tests.DocumentFactoryTests
   - LocalSearchEngine.Tests.FakeEmbedder
+  - LocalSearchEngine.Tests.FeedCrawlTests
+  - LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+  - LocalSearchEngine.Tests.HostGateTests
   - LocalSearchEngine.Tests.NoIndexRulesTests
   - LocalSearchEngine.Tests.PdfTextQualityTests
+  - LocalSearchEngine.Tests.PendingWorkCounterTests
   - LocalSearchEngine.Tests.RobotsRulesTests
   - LocalSearchEngine.Tests.SearchQueryParserTests
   - LocalSearchEngine.Tests.SearchRankerTests
   - LocalSearchEngine.Tests.TextChunkerTests
   - LocalSearchEngine.Tests.UrlNormalizerTests
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  - LocalSearchEngine.Tests.VisitedSetTests
   langs:
   - csharp
   - vb
@@ -139,12 +148,53 @@ references:
   - uid: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter
     name: RecordingReporter
     href: LocalSearchEngine.Tests.CrawlerServiceIntegrationTests.RecordingReporter.html
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests
+  commentId: T:LocalSearchEngine.Tests.CrawlPipelineTests
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  name: CrawlPipelineTests
+  nameWithType: CrawlPipelineTests
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  commentId: T:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  name: CrawlPipelineTests.PipelineFakeHandler
+  nameWithType: CrawlPipelineTests.PipelineFakeHandler
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests
+    name: CrawlPipelineTests
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    name: PipelineFakeHandler
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests
+    name: CrawlPipelineTests
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+    name: PipelineFakeHandler
+    href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html
 - uid: LocalSearchEngine.Tests.CrawlPolicyTests
   commentId: T:LocalSearchEngine.Tests.CrawlPolicyTests
   href: LocalSearchEngine.Tests.CrawlPolicyTests.html
   name: CrawlPolicyTests
   nameWithType: CrawlPolicyTests
   fullName: LocalSearchEngine.Tests.CrawlPolicyTests
+- uid: LocalSearchEngine.Tests.CrawlSettingsBindingTests
+  commentId: T:LocalSearchEngine.Tests.CrawlSettingsBindingTests
+  href: LocalSearchEngine.Tests.CrawlSettingsBindingTests.html
+  name: CrawlSettingsBindingTests
+  nameWithType: CrawlSettingsBindingTests
+  fullName: LocalSearchEngine.Tests.CrawlSettingsBindingTests
+- uid: LocalSearchEngine.Tests.DocumentFactoryTests
+  commentId: T:LocalSearchEngine.Tests.DocumentFactoryTests
+  href: LocalSearchEngine.Tests.DocumentFactoryTests.html
+  name: DocumentFactoryTests
+  nameWithType: DocumentFactoryTests
+  fullName: LocalSearchEngine.Tests.DocumentFactoryTests
 - uid: LocalSearchEngine.Tests.FakeEmbedder
   commentId: T:LocalSearchEngine.Tests.FakeEmbedder
   parent: LocalSearchEngine.Tests
@@ -152,12 +202,47 @@ references:
   name: FakeEmbedder
   nameWithType: FakeEmbedder
   fullName: LocalSearchEngine.Tests.FakeEmbedder
+- uid: LocalSearchEngine.Tests.FeedCrawlTests
+  commentId: T:LocalSearchEngine.Tests.FeedCrawlTests
+  href: LocalSearchEngine.Tests.FeedCrawlTests.html
+  name: FeedCrawlTests
+  nameWithType: FeedCrawlTests
+  fullName: LocalSearchEngine.Tests.FeedCrawlTests
+- uid: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+  commentId: T:LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+  parent: LocalSearchEngine.Tests
+  href: LocalSearchEngine.Tests.FeedCrawlTests.html
+  name: FeedCrawlTests.FeedFakeHandler
+  nameWithType: FeedCrawlTests.FeedFakeHandler
+  fullName: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+  spec.csharp:
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests
+    name: FeedCrawlTests
+    href: LocalSearchEngine.Tests.FeedCrawlTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+    name: FeedFakeHandler
+    href: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler.html
+  spec.vb:
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests
+    name: FeedCrawlTests
+    href: LocalSearchEngine.Tests.FeedCrawlTests.html
+  - name: .
+  - uid: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
+    name: FeedFakeHandler
+    href: LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler.html
 - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   commentId: T:LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html
   name: Fts5MatchSemanticsTests
   nameWithType: Fts5MatchSemanticsTests
   fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
+- uid: LocalSearchEngine.Tests.HostGateTests
+  commentId: T:LocalSearchEngine.Tests.HostGateTests
+  href: LocalSearchEngine.Tests.HostGateTests.html
+  name: HostGateTests
+  nameWithType: HostGateTests
+  fullName: LocalSearchEngine.Tests.HostGateTests
 - uid: LocalSearchEngine.Tests.NoIndexRulesTests
   commentId: T:LocalSearchEngine.Tests.NoIndexRulesTests
   href: LocalSearchEngine.Tests.NoIndexRulesTests.html
@@ -170,6 +255,12 @@ references:
   name: PdfTextQualityTests
   nameWithType: PdfTextQualityTests
   fullName: LocalSearchEngine.Tests.PdfTextQualityTests
+- uid: LocalSearchEngine.Tests.PendingWorkCounterTests
+  commentId: T:LocalSearchEngine.Tests.PendingWorkCounterTests
+  href: LocalSearchEngine.Tests.PendingWorkCounterTests.html
+  name: PendingWorkCounterTests
+  nameWithType: PendingWorkCounterTests
+  fullName: LocalSearchEngine.Tests.PendingWorkCounterTests
 - uid: LocalSearchEngine.Tests.RobotsRulesTests
   commentId: T:LocalSearchEngine.Tests.RobotsRulesTests
   href: LocalSearchEngine.Tests.RobotsRulesTests.html
@@ -206,6 +297,12 @@ references:
   name: VectorSearchServiceIntegrationTests
   nameWithType: VectorSearchServiceIntegrationTests
   fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+- uid: LocalSearchEngine.Tests.VisitedSetTests
+  commentId: T:LocalSearchEngine.Tests.VisitedSetTests
+  href: LocalSearchEngine.Tests.VisitedSetTests.html
+  name: VisitedSetTests
+  nameWithType: VisitedSetTests
+  fullName: LocalSearchEngine.Tests.VisitedSetTests
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
   href: LocalSearchEngine.html

@@ -22,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DelayEmbedder
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1200
+    startLine: 1207
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -63,7 +63,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _delay
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1202
+    startLine: 1209
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -90,7 +90,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1203
+    startLine: 1210
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -122,7 +122,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Embed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1204
+    startLine: 1211
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

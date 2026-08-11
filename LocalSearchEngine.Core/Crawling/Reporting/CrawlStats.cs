@@ -1,12 +1,15 @@
 namespace LocalSearchEngine.Core.Crawling.Reporting;
 
 /// <summary>
-/// Running tallies for a single crawl. Updated only from the crawl's producer thread (the loop that
-/// fetches and classifies pages, and the end-of-crawl removals that run after the indexer drains),
-/// so it carries no synchronization of its own.
+/// Running tallies for a single crawl. Recorded from every crawl worker at once, so mutation and
+/// <see cref="Snapshot"/> serialize on an internal lock — a snapshot is a consistent point in time,
+/// never a torn read taken mid-increment. The properties themselves are safe to read once the crawl
+/// has drained (the report/summary path); mid-crawl readers must go through <see cref="Snapshot"/>.
 /// </summary>
 public sealed class CrawlStats
 {
+    private readonly object _gate = new();
+
     /// <summary>Pages whose content was (re-)indexed.</summary>
     public int Indexed { get; private set; }
 
@@ -50,32 +53,35 @@ public sealed class CrawlStats
     /// <param name="outcome">The outcome to tally.</param>
     public void Record(CrawlOutcome outcome)
     {
-        switch (outcome)
+        lock (_gate)
         {
-            case CrawlOutcome.Indexed: Indexed++; break;
-            case CrawlOutcome.Unchanged: Unchanged++; break;
-            case CrawlOutcome.NoIndex: NoIndex++; break;
-            case CrawlOutcome.SkippedType: SkippedType++; break;
-            case CrawlOutcome.SkippedSize: SkippedSize++; break;
-            case CrawlOutcome.LowQualityText: LowQualityText++; break;
-            case CrawlOutcome.Redirected: Redirected++; break;
-            case CrawlOutcome.Gone: Gone++; break;
-            case CrawlOutcome.Disallowed: Disallowed++; break;
-            case CrawlOutcome.Failed: Failed++; break;
+            switch (outcome)
+            {
+                case CrawlOutcome.Indexed: Indexed++; break;
+                case CrawlOutcome.Unchanged: Unchanged++; break;
+                case CrawlOutcome.NoIndex: NoIndex++; break;
+                case CrawlOutcome.SkippedType: SkippedType++; break;
+                case CrawlOutcome.SkippedSize: SkippedSize++; break;
+                case CrawlOutcome.LowQualityText: LowQualityText++; break;
+                case CrawlOutcome.Redirected: Redirected++; break;
+                case CrawlOutcome.Gone: Gone++; break;
+                case CrawlOutcome.Disallowed: Disallowed++; break;
+                case CrawlOutcome.Failed: Failed++; break;
+            }
         }
     }
 
     /// <summary>Adds to the running total of outlinks discovered on a page.</summary>
     /// <param name="count">The number of outlinks found on the page.</param>
-    public void AddLinks(int count) => LinksFound += count;
+    public void AddLinks(int count) { lock (_gate) { LinksFound += count; } }
 
     /// <summary>Adds to the count of URLs removed for being newly robots-disallowed.</summary>
     /// <param name="count">The number removed.</param>
-    public void AddRemovedBanned(int count) => RemovedBanned += count;
+    public void AddRemovedBanned(int count) { lock (_gate) { RemovedBanned += count; } }
 
     /// <summary>Adds to the count of stale URLs pruned at end of crawl.</summary>
     /// <param name="count">The number pruned.</param>
-    public void AddRemovedStale(int count) => RemovedStale += count;
+    public void AddRemovedStale(int count) { lock (_gate) { RemovedStale += count; } }
 
     /// <summary>
     /// Captures an immutable snapshot, stamped with the moment's phase, discovered-URL count, and
@@ -85,7 +91,13 @@ public sealed class CrawlStats
     /// <param name="discovered">The number of unique URLs discovered so far.</param>
     /// <param name="elapsed">Wall-clock time since the crawl started.</param>
     /// <returns>A snapshot of the current tallies.</returns>
-    public CrawlStatsSnapshot Snapshot(CrawlPhase phase, int discovered, TimeSpan elapsed) => new(
-        phase, discovered, Indexed, Unchanged, NoIndex, SkippedType, SkippedSize, LowQualityText,
-        Redirected, Gone, Disallowed, Failed, LinksFound, RemovedBanned, RemovedStale, elapsed);
+    public CrawlStatsSnapshot Snapshot(CrawlPhase phase, int discovered, TimeSpan elapsed)
+    {
+        lock (_gate)
+        {
+            return new(
+                phase, discovered, Indexed, Unchanged, NoIndex, SkippedType, SkippedSize, LowQualityText,
+                Redirected, Gone, Disallowed, Failed, LinksFound, RemovedBanned, RemovedStale, elapsed);
+        }
+    }
 }

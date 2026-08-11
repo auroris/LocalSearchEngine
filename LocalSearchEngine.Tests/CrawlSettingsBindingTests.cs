@@ -26,6 +26,8 @@ public class CrawlSettingsBindingTests
         "noindex-patterns": [ "http://coldlake.mil.ca/en/Documents/*", "http://coldlake.mil.ca/fr/Documents/*" ],
         "check-external-links": true,
         "no-live-stats": true,
+        "feed": true,
+        "crawl-workers": 8,
         "log-file": "custom.log",
         "stats-file": "custom-stats",
         "broken-links-file": "custom-broken"
@@ -70,6 +72,21 @@ public class CrawlSettingsBindingTests
         Assert.Equal("custom.log", settings.LogFile);
         Assert.Equal("custom-stats", settings.StatsFile);
         Assert.Equal("custom-broken", settings.BrokenLinksFile);
+        Assert.True(settings.Feed);
+        Assert.Equal(8, settings.CrawlWorkers);
+    }
+
+    [Fact]
+    public void Crawl_workers_defaults_to_four_when_absent()
+    {
+        // An empty section binds to null; Program null-coalesces to a fresh CrawlSettings, so the
+        // property initializers are the effective defaults. Mirror that path.
+        var config = new ConfigurationBuilder()
+            .AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes("""{ "CrawlSettings": { } }""")))
+            .Build();
+        var settings = config.GetSection("CrawlSettings").Get<CrawlSettings>() ?? new CrawlSettings();
+        Assert.Equal(4, settings.CrawlWorkers);
+        Assert.False(settings.Feed);
     }
 
     [Fact]

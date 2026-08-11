@@ -22,11 +22,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FakeHandler
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1180
+    startLine: 1184
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
-  summary: 'Canned HTTP server: routes keyed by absolute URL; unmapped paths 404.'
+  summary: >-
+    Canned HTTP server: routes keyed by absolute URL; unmapped paths 404. Requests arrive from
+
+    concurrent crawl workers, so the request log locks; Routes are only mutated while no crawl
+
+    runs, and tests read Requested only after the crawl returns.
   example: []
   syntax:
     content: 'private sealed class CrawlerServiceIntegrationTests.FakeHandler : HttpMessageHandler, IDisposable'
@@ -62,7 +67,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Routes
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1182
+    startLine: 1186
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -89,7 +94,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Requested
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1183
+    startLine: 1187
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -116,7 +121,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendAsync
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1185
+    startLine: 1189
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

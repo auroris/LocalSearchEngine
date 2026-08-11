@@ -1,0 +1,439 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  id: DocumentFactory
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve(LocalSearchEngine.Core.Crawling.Pipeline.PageDocument,LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  langs:
+  - csharp
+  - vb
+  name: DocumentFactory
+  nameWithType: DocumentFactory
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/DocumentFactory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DocumentFactory
+    path: LocalSearchEngine.Core/Crawling/Pipeline/DocumentFactory.cs
+    startLine: 11
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Resolves an unknown <xref href="LocalSearchEngine.Core.Crawling.Pipeline.PageDocument" data-throw-if-not-resolved="false"></xref> into the typed document that can process its body,
+
+    after the single fetch. Placed here rather than in a constructor because an object cannot decide
+
+    mid-construction to be a different type — resolution has to be a function that returns the right
+
+    one. Classification defers to <xref href="LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String%2cSystem.Byte%5b%5d)" data-throw-if-not-resolved="false"></xref>: the Content-Type header
+
+    wins, magic bytes are the fallback for misdeclared servers.
+  example: []
+  syntax:
+    content: internal static class DocumentFactory
+    content.vb: Friend Module DocumentFactory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve(LocalSearchEngine.Core.Crawling.Pipeline.PageDocument,LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve(LocalSearchEngine.Core.Crawling.Pipeline.PageDocument,LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  id: Resolve(LocalSearchEngine.Core.Crawling.Pipeline.PageDocument,LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
+  langs:
+  - csharp
+  - vb
+  name: Resolve(PageDocument, FetchResult)
+  nameWithType: DocumentFactory.Resolve(PageDocument, FetchResult)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve(LocalSearchEngine.Core.Crawling.Pipeline.PageDocument, LocalSearchEngine.Core.Crawling.Pipeline.FetchResult)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/DocumentFactory.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Resolve
+    path: LocalSearchEngine.Core/Crawling/Pipeline/DocumentFactory.cs
+    startLine: 20
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Picks the typed document for a fetched body.
+  example: []
+  syntax:
+    content: public static Document? Resolve(PageDocument page, FetchResult fetch)
+    parameters:
+    - id: page
+      type: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+      description: The unresolved work item.
+    - id: fetch
+      type: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+      description: Its successful download.
+    return:
+      type: LocalSearchEngine.Core.Crawling.Pipeline.Document
+      description: >-
+        The typed document to process, or <code>null</code> when the content kind is unsupported
+            (the worker records a skip and a plain visit).
+    content.vb: Public Shared Function Resolve(page As PageDocument, fetch As FetchResult) As Document
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument.html
+  name: PageDocument
+  nameWithType: PageDocument
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
+- uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_ClassifyContent_System_String_System_Byte___
+  name: ClassifyContent(string, byte[])
+  nameWithType: CrawlPolicy.ClassifyContent(string, byte[])
+  fullName: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(string, byte[])
+  nameWithType.vb: CrawlPolicy.ClassifyContent(String, Byte())
+  fullName.vb: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(String, Byte())
+  name.vb: ClassifyContent(String, Byte())
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+    name: ClassifyContent
+    href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_ClassifyContent_System_String_System_Byte___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.ClassifyContent(System.String,System.Byte[])
+    name: ClassifyContent
+    href: LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy.html#LocalSearchEngine_Core_Crawling_Policies_CrawlPolicy_ClassifyContent_System_String_System_Byte___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve
+  href: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.html#LocalSearchEngine_Core_Crawling_Pipeline_DocumentFactory_Resolve_LocalSearchEngine_Core_Crawling_Pipeline_PageDocument_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_
+  name: Resolve
+  nameWithType: DocumentFactory.Resolve
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory.Resolve
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult.html
+  name: FetchResult
+  nameWithType: FetchResult
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.Document
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html
+  name: Document
+  nameWithType: Document
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document

@@ -7,12 +7,16 @@ namespace LocalSearchEngine.Core.Crawling.Policies;
 /// port restriction; a component that is not specified matches anything. This is purely a
 /// filter — listing a host here never causes it to be contacted. Robots.txt and pages are
 /// only fetched for origins the crawl actually reaches.
+/// Safe for concurrent readers while rules are added: the rule set grows mid-crawl when the
+/// seed redirects to a new origin, so mutation swaps in a fresh array (copy-on-write) rather
+/// than appending to a list a concurrent <see cref="IsAllowed"/> may be walking.
 /// </summary>
 public sealed class AllowedHosts
 {
     private readonly record struct HostRule(string? Scheme, string Host, int? Port);
 
-    private readonly List<HostRule> _rules = new();
+    private readonly object _writeLock = new();
+    private volatile HostRule[] _rules = Array.Empty<HostRule>();
 
     /// <summary>
     /// Parses and adds a configured entry of the form <c>[scheme://]host[:port]</c>.
@@ -66,7 +70,7 @@ public sealed class AllowedHosts
         }
 
         if (host.Length == 0) return false;
-        _rules.Add(new HostRule(scheme, host.ToLowerInvariant(), port));
+        Append(new HostRule(scheme, host.ToLowerInvariant(), port));
         return true;
     }
 
@@ -75,7 +79,18 @@ public sealed class AllowedHosts
     /// the seed URL: a seed without an explicit port allows only the scheme's default port.
     /// </summary>
     /// <param name="uri">The absolute URI whose origin to allow.</param>
-    public void AddOrigin(Uri uri) => _rules.Add(new HostRule(uri.Scheme, uri.Host, uri.Port));
+    public void AddOrigin(Uri uri) => Append(new HostRule(uri.Scheme, uri.Host, uri.Port));
+
+    private void Append(HostRule rule)
+    {
+        lock (_writeLock)
+        {
+            var next = new HostRule[_rules.Length + 1];
+            _rules.CopyTo(next, 0);
+            next[^1] = rule;
+            _rules = next;
+        }
+    }
 
     /// <summary>
     /// Determines whether the specified URI falls within the allowed set.
