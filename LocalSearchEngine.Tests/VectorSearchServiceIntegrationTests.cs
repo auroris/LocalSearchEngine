@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.VectorData;
-using Microsoft.SemanticKernel;
 using Xunit;
 
 namespace LocalSearchEngine.Tests;

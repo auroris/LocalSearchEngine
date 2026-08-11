@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <!-- Referenced directly (not just via Core) because Program.cs calls AddSqliteVectorStore. -->
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" Version="1.74.0-preview" />
+    <PackageReference Include="CommunityToolkit.VectorData.SqliteVec" Version="1.0.1-preview" />
     <!-- Referenced directly so this package's build targets run for the web app too,
          bundling the embedding model next to its binaries — see Directory.Build.props. -->
     <PackageReference Include="SmartComponents.LocalEmbeddings" Version="0.1.0-preview10148" />

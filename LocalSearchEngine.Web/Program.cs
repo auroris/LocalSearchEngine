@@ -5,7 +5,6 @@
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
-using Microsoft.SemanticKernel;
 using Microsoft.Data.Sqlite;
 using System.Text.Json.Serialization;
 
