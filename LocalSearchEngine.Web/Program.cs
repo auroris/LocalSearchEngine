@@ -80,8 +80,6 @@ else
     });
 }
 
-app.UseHttpsRedirection();
-
 // Serve the frontend
 app.UseDefaultFiles();
 app.UseStaticFiles();

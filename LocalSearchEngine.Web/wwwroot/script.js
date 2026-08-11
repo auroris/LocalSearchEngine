@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('searchInput');
-    const resultsContainer = document.getElementById('resultsContainer');
+    const app = document.getElementById('local-search-app');
+    if (!app) return;
+
+    const searchForm = app.querySelector('[data-lse-search-form]');
+    const searchInput = app.querySelector('[data-lse-search-input]');
+    const resultsContainer = app.querySelector('[data-lse-results]');
 
     let inFlight = null;
 
@@ -74,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
     applyQuery(currentQuery());
 
     function displayResults(responseObj, query) {
-        const results = (responseObj && responseObj.items) || [];
+        const results = [...((responseObj && responseObj.items) || [])].sort((a, b) =>
+            (Number(b.score) - Number(a.score))
+            || (Number(b.similarity) - Number(a.similarity)));
         resultsContainer.innerHTML = '';
 
         if (results.length === 0) {
@@ -86,9 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const stopWords = new Set(["the", "and", "a", "an", "of", "to", "in", "is", "for", "on", "at", "by", "this", "that", "with", "from", "as", "it", "its"]);
         const terms = query.toLowerCase().split(/\s+/).filter(t => t.length >= 2 && !stopWords.has(t));
 
-        // The ranker already orders web pages ahead of documents, so splitting the single ranked
-        // list into two tabs preserves each group's relevance order. "Documents" is everything that
-        // isn't an HTML page (PDF/DOCX).
+        // Split the sorted list into tabs without disturbing the explicit relevance/similarity
+        // ordering. "Documents" is everything that isn't an HTML page (PDF/DOCX).
         const groups = [
             { key: 'pages',     label: 'Pages',     items: results.filter(r => r.docKind === 'Html') },
             { key: 'documents', label: 'Documents', items: results.filter(r => r.docKind !== 'Html') },
@@ -114,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const radio = document.createElement('input');
             radio.type = 'radio';
             radio.name = 'resultTab';
-            radio.id = `tab-${group.key}`;
+            radio.id = `lse-tab-${group.key}`;
             radio.className = 'result-tab-radio';
             radio.checked = group.key === activeKey;
             radio.disabled = group.items.length === 0; // empty group isn't selectable
@@ -126,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const panel = document.createElement('div');
             panel.className = 'results-list';
-            panel.id = `panel-${group.key}`;
+            panel.id = `lse-panel-${group.key}`;
             group.items.forEach(result => panel.appendChild(buildResultCard(result, terms)));
 
             wrap.appendChild(radio);
@@ -247,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stats.lastCrawledUtc) {
                 parts.push(`last crawl ${new Date(stats.lastCrawledUtc).toLocaleString()}`);
             }
-            document.getElementById('statsFooter').textContent = parts.join(' · ');
+            app.querySelector('[data-lse-stats]').textContent = parts.join(' · ');
         } catch { /* leave the footer empty */ }
     })();
 });
