@@ -44,6 +44,7 @@ bool feedMode = crawlSettings.Feed;
 int crawlWorkers = crawlSettings.CrawlWorkers;
 bool allowIncremental = crawlSettings.AllowIncremental;
 string? incrementalFeed = crawlSettings.IncrementalFeed;
+bool forceFull = false;
 
 bool showHelp = false;
 
@@ -134,6 +135,10 @@ for (int i = 0; i < args.Length; i++)
     {
         allowIncremental = true;
     }
+    else if (arg == "--full")
+    {
+        forceFull = true;
+    }
     else if (arg == "--crawl-workers")
     {
         if (i + 1 >= args.Length || !int.TryParse(args[++i], out crawlWorkers) || crawlWorkers <= 0)
@@ -206,7 +211,11 @@ if (showHelp)
     Console.WriteLine("                           already covered, the run crawls exactly the newer items and stops.");
     Console.WriteLine("                           If any site can't prove its change list complete (no feed, or the");
     Console.WriteLine("                           feed ends before a covered item), the run falls back to a normal");
-    Console.WriteLine("                           full crawl. (Or 'allow-incremental' in appsettings.json.)");
+    Console.WriteLine("                           full crawl. (Or 'allow-incremental' in appsettings.json; a single");
+    Console.WriteLine("                           configured 'incremental-feed' journal replaces autodiscovery.)");
+    Console.WriteLine("  --full                   Force this run to be a full crawl, ignoring allow-incremental and");
+    Console.WriteLine("                           any configured change journal. Use after feed problems, suspected");
+    Console.WriteLine("                           drift, or deletions the journal has already rotated out.");
     Console.WriteLine("  --crawl-workers <n>      Number of concurrent crawl workers. Default is 4. Each host is");
     Console.WriteLine("                           still fetched sequentially with the politeness delay, so extra");
     Console.WriteLine("                           workers pay off when the crawl spans several hosts.");
@@ -231,6 +240,18 @@ if (showHelp)
     Console.WriteLine("whole URL with '*' as a wildcard and an optional trailing '$' to anchor the end, e.g.");
     Console.WriteLine("'*/tag/*', 'https://example.com/calendar/*', or '*://wiki.example.com/*'.");
     return;
+}
+
+if (forceFull && feedMode)
+{
+    Console.Error.WriteLine("Error: --full and --feed contradict each other (a feed update is partial by definition).");
+    return;
+}
+if (forceFull)
+{
+    // The per-run override for "I want the whole sweep, whatever the journal says" — after feed
+    // bugs, suspected drift, or bulk deletions the journal has already rotated out.
+    allowIncremental = false;
 }
 
 // The seeds for this run: the CLI <url> when given, otherwise every configured allowed server —
@@ -344,7 +365,11 @@ try
     AnsiConsole.WriteLine();
     AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]{(feedMode ? "Feed" : "Seeds")}[/]     {string.Join(", ", seedUrls)}");
-    if (allowIncremental && !feedMode)
+    if (forceFull)
+    {
+        AnsiConsole.MarkupLine("[grey]Mode[/]      full crawl (forced by --full)");
+    }
+    else if (allowIncremental && !feedMode)
     {
         AnsiConsole.MarkupLine("[grey]Mode[/]      incremental when feeds prove the change list; full crawl otherwise");
         if (!string.IsNullOrWhiteSpace(incrementalFeed))
