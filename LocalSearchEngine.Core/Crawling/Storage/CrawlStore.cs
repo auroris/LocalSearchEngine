@@ -139,6 +139,28 @@ public static class CrawlStore
     }
 
     /// <summary>
+    /// Retrieves when a URL was last visited by any crawl, in UTC. This is the incremental
+    /// planner's coverage boundary: a feed entry whose publish date is at or before this moment was
+    /// already seen in its current version.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="url">The URL whose last visit to retrieve.</param>
+    /// <returns>The last visit in UTC, or <c>null</c> if the URL has never been crawled.</returns>
+    public static async Task<DateTime?> GetLastCrawledAsync(SqliteConnection connection, string url)
+    {
+        using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT LastCrawled FROM CrawlState WHERE Url = @Url AND LastCrawled IS NOT NULL";
+        cmd.Parameters.AddWithValue("@Url", url);
+        using var reader = await cmd.ExecuteReaderAsync();
+        if (await reader.ReadAsync() && !reader.IsDBNull(0))
+        {
+            // Stored from DateTime.UtcNow; the ISO text round-trips without a kind, so restamp UTC.
+            return DateTime.SpecifyKind(reader.GetDateTime(0), DateTimeKind.Utc);
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Checks whether the specified URL has any indexed text chunks in the database.
     /// </summary>
     /// <param name="connection">The open database connection.</param>

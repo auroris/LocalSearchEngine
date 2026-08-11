@@ -11,6 +11,8 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.DocumentFactory
   - LocalSearchEngine.Core.Crawling.Pipeline.DocxDocument
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
   - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
   - LocalSearchEngine.Core.Crawling.Pipeline.HostGate
@@ -19,6 +21,8 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
   - LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  - LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
   - LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
   - LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
   - LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
@@ -100,6 +104,18 @@ references:
   name: FeedDocument
   nameWithType: FeedDocument
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html
+  name: FeedItem
+  nameWithType: FeedItem
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedParser.html
+  name: FeedParser
+  nameWithType: FeedParser
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
   commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
   href: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource.html
@@ -177,6 +193,12 @@ references:
   name: ICrawlContext
   nameWithType: ICrawlContext
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html
+  name: IncrementalPlanner
+  nameWithType: IncrementalPlanner
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
   commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
   parent: LocalSearchEngine.Core.Crawling.Pipeline
@@ -184,6 +206,12 @@ references:
   name: ISeedSource
   nameWithType: ISeedSource
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource.html
+  name: ListSeedSource
+  nameWithType: ListSeedSource
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
   commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument
   href: LocalSearchEngine.Core.Crawling.Pipeline.PdfDocument.html

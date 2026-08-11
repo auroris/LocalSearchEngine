@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync(Microsoft.Data.Sqlite.SqliteConnection)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawledUrlsWithPrefixAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLinksToVerifyAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
@@ -159,6 +160,52 @@ items:
   nameWithType.vb: CrawlStore.GetCrawlStateAsync(SqliteConnection, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
   name.vb: GetCrawlStateAsync(SqliteConnection, String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: GetLastCrawledAsync(SqliteConnection, string)
+  nameWithType: CrawlStore.GetLastCrawledAsync(SqliteConnection, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetLastCrawledAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 148
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Retrieves when a URL was last visited by any crawl, in UTC. This is the incremental
+
+    planner's coverage boundary: a feed entry whose publish date is at or before this moment was
+
+    already seen in its current version.
+  example: []
+  syntax:
+    content: public static Task<DateTime?> GetLastCrawledAsync(SqliteConnection connection, string url)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The open database connection.
+    - id: url
+      type: System.String
+      description: The URL whose last visit to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{System.Nullable{System.DateTime}}
+      description: The last visit in UTC, or <code>null</code> if the URL has never been crawled.
+    content.vb: Public Shared Function GetLastCrawledAsync(connection As SqliteConnection, url As String) As Task(Of Date?)
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync*
+  nameWithType.vb: CrawlStore.GetLastCrawledAsync(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: GetLastCrawledAsync(SqliteConnection, String)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   id: UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
@@ -177,7 +224,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlHasChunksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 146
+    startLine: 168
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -218,7 +265,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FindIndexedDuplicateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 161
+    startLine: 183
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -262,7 +309,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 187
+    startLine: 209
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -324,7 +371,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordVisitAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 224
+    startLine: 246
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -374,7 +421,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StoreLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 270
+    startLine: 292
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -435,7 +482,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 330
+    startLine: 352
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -479,7 +526,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 346
+    startLine: 368
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -523,7 +570,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UpdateLinkStatusByDestinationAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 371
+    startLine: 393
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -578,7 +625,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetLinksToVerifyAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 391
+    startLine: 413
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -624,7 +671,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetReportableLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 414
+    startLine: 436
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -670,7 +717,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetUrlsNotCrawledSinceAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 435
+    startLine: 457
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -714,7 +761,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawledUrlsWithPrefixAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 460
+    startLine: 482
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -764,7 +811,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EscapeLike
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 480
+    startLine: 502
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -805,7 +852,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 490
+    startLine: 512
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -849,7 +896,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCountsAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 505
+    startLine: 527
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -887,7 +934,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OptimizeDatabaseAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 530
+    startLine: 552
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -925,7 +972,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadPragmaLongAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 562
+    startLine: 584
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -1502,6 +1549,49 @@ references:
   - name: Of
   - name: " "
   - name: TResult
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetLastCrawledAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: GetLastCrawledAsync
+  nameWithType: CrawlStore.GetLastCrawledAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetLastCrawledAsync
+- uid: System.Threading.Tasks.Task{System.Nullable{System.DateTime}}
+  commentId: T:System.Threading.Tasks.Task{System.Nullable{System.DateTime}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DateTime?>
+  nameWithType: Task<DateTime?>
+  fullName: System.Threading.Tasks.Task<System.DateTime?>
+  nameWithType.vb: Task(Of Date?)
+  fullName.vb: System.Threading.Tasks.Task(Of Date?)
+  name.vb: Task(Of Date?)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync

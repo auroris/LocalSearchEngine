@@ -16,7 +16,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.PruneStale
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
-  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.VerifyLinks
   langs:
   - csharp
@@ -57,37 +57,42 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
-  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
-  id: SeedUri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
+  id: SeedUris
   parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
   langs:
   - csharp
   - vb
-  name: SeedUri
-  nameWithType: CrawlPlan.SeedUri
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
+  name: SeedUris
+  nameWithType: CrawlPlan.SeedUris
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: SeedUri
+    id: SeedUris
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 15
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  summary: Gets the crawl's scope root. For update runs this is the feed URL; its origin anchors scope either way.
+  summary: >-
+    Gets the crawl's scope roots — one per configured site (a no-argument run seeds every
+
+    allowed origin at once, so pruning can see the whole in-scope world in a single pass).
+
+    For update runs this is the feed URL. The first entry names the run in the report.
   example: []
   syntax:
-    content: public required Uri SeedUri { get; init; }
+    content: public required IReadOnlyList<Uri> SeedUris { get; init; }
     parameters: []
     return:
-      type: System.Uri
-    content.vb: Public Property SeedUri As Uri
-  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri*
+      type: System.Collections.Generic.IReadOnlyList{System.Uri}
+    content.vb: Public Property SeedUris As IReadOnlyList(Of Uri)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris*
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
   commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
   id: SeedSources
@@ -106,7 +111,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedSources
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -137,7 +142,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Scope
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 21
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -168,7 +173,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoIndexRules
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 24
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -199,7 +204,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FollowLinks
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 32
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -237,7 +242,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStale
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 36
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -270,7 +275,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VerifyLinks
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 41
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -304,7 +309,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CheckExternalLinks
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 44
+    startLine: 48
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -335,7 +340,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlWorkers
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 47
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -366,7 +371,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxPages
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 50
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -397,7 +402,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxPagesPerHost
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 53
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -428,7 +433,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxCrawlSizeBytes
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 56
+    startLine: 60
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -459,7 +464,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DefaultRequestDelayMs
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPlan.cs
-    startLine: 59
+    startLine: 63
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -724,46 +729,33 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
-  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedUri
-  name: SeedUri
-  nameWithType: CrawlPlan.SeedUri
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUri
-- uid: System.Uri
-  commentId: T:System.Uri
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.uri
-  name: Uri
-  nameWithType: Uri
-  fullName: System.Uri
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
-  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedSources
-  name: SeedSources
-  nameWithType: CrawlPlan.SeedSources
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
-- uid: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
-  commentId: T:System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedUris
+  name: SeedUris
+  nameWithType: CrawlPlan.SeedUris
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedUris
+- uid: System.Collections.Generic.IReadOnlyList{System.Uri}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Uri}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.IReadOnlyList`1
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
-  name: IReadOnlyList<ISeedSource>
-  nameWithType: IReadOnlyList<ISeedSource>
-  fullName: System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource>
-  nameWithType.vb: IReadOnlyList(Of ISeedSource)
-  fullName.vb: System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource)
-  name.vb: IReadOnlyList(Of ISeedSource)
+  name: IReadOnlyList<Uri>
+  nameWithType: IReadOnlyList<Uri>
+  fullName: System.Collections.Generic.IReadOnlyList<System.Uri>
+  nameWithType.vb: IReadOnlyList(Of Uri)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of System.Uri)
+  name.vb: IReadOnlyList(Of Uri)
   spec.csharp:
   - uid: System.Collections.Generic.IReadOnlyList`1
     name: IReadOnlyList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
   - name: <
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
-    name: ISeedSource
-    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
   - name: '>'
   spec.vb:
   - uid: System.Collections.Generic.IReadOnlyList`1
@@ -773,9 +765,10 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
-    name: ISeedSource
-    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
   - name: )
 - uid: System.Collections.Generic.IReadOnlyList`1
   commentId: T:System.Collections.Generic.IReadOnlyList`1
@@ -842,6 +835,45 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_SeedSources
+  name: SeedSources
+  nameWithType: CrawlPlan.SeedSources
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.SeedSources
+- uid: System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+  commentId: T:System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ISeedSource>
+  nameWithType: IReadOnlyList<ISeedSource>
+  fullName: System.Collections.Generic.IReadOnlyList<LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource>
+  nameWithType.vb: IReadOnlyList(Of ISeedSource)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource)
+  name.vb: IReadOnlyList(Of ISeedSource)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+    name: ISeedSource
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
+    name: ISeedSource
+    href: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.html
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.Scope
   href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_Scope

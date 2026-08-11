@@ -292,6 +292,27 @@ public sealed class FeedCrawlTests : IDisposable
     }
 
     [Fact]
+    public async Task Update_run_does_not_chase_feeds_advertised_by_items()
+    {
+        await EnsureSchemaAsync();
+
+        // Feed auto-discovery is frontier expansion, so the update run's follow-nothing rule gates
+        // it: an item page advertising another feed must not widen the run beyond the seeded feed.
+        _handler.Routes[Feed] = _ => Rss(Post1);
+        _handler.Routes[Post1] = _ => Html(
+            "<title>One</title><p>first post body</p>" +
+            "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/other-feed.xml\">");
+        _handler.Routes["http://test.local/other-feed.xml"] = _ => Rss(Post2);
+        _handler.Routes[Post2] = _ => Html("<title>Two</title><p>must not be fetched</p>");
+
+        await NewCrawler().CrawlFeedAsync(Feed);
+
+        Assert.True(await ChunkCount(Post1) > 0);
+        Assert.DoesNotContain("http://test.local/other-feed.xml", _handler.RequestedSnapshot());
+        Assert.DoesNotContain(Post2, _handler.RequestedSnapshot());
+    }
+
+    [Fact]
     public async Task Out_of_scope_feed_items_are_not_fetched()
     {
         await EnsureSchemaAsync();

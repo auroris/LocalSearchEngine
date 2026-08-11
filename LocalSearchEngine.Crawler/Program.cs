@@ -42,6 +42,8 @@ bool noLive = crawlSettings.NoLiveStats;
 int requestDelayMs = crawlSettings.RequestDelayMs;
 bool feedMode = crawlSettings.Feed;
 int crawlWorkers = crawlSettings.CrawlWorkers;
+bool allowIncremental = crawlSettings.AllowIncremental;
+string? incrementalFeed = crawlSettings.IncrementalFeed;
 
 bool showHelp = false;
 
@@ -128,6 +130,10 @@ for (int i = 0; i < args.Length; i++)
     {
         feedMode = true;
     }
+    else if (arg == "--allow-incremental")
+    {
+        allowIncremental = true;
+    }
     else if (arg == "--crawl-workers")
     {
         if (i + 1 >= args.Length || !int.TryParse(args[++i], out crawlWorkers) || crawlWorkers <= 0)
@@ -156,9 +162,12 @@ for (int i = 0; i < args.Length; i++)
     }
 }
 
-if (args.Length == 0 || showHelp)
+if (showHelp)
 {
-    Console.WriteLine("Usage: dotnet run -- [options] <url>");
+    Console.WriteLine("Usage: dotnet run -- [options] [url]");
+    Console.WriteLine();
+    Console.WriteLine("With no <url>, every entry in the 'allowed-servers' array in appsettings.json is");
+    Console.WriteLine("seeded and crawled in one run (entries without a scheme are seeded over http).");
     Console.WriteLine();
     Console.WriteLine("Options:");
     Console.WriteLine("  --db <path>              Path to the SQLite database. Default is 'search.db' in the");
@@ -192,6 +201,12 @@ if (args.Length == 0 || showHelp)
     Console.WriteLine("                           cost nothing to re-index), links are not followed, and nothing");
     Console.WriteLine("                           the run didn't visit is pruned. Site deletions are reconciled by");
     Console.WriteLine("                           the next full crawl. (Or 'feed' in appsettings.json.)");
+    Console.WriteLine("  --allow-incremental      Before a full crawl, consult each site's advertised RSS/Atom feed");
+    Console.WriteLine("                           as its change journal: if the feed reaches back to an item we've");
+    Console.WriteLine("                           already covered, the run crawls exactly the newer items and stops.");
+    Console.WriteLine("                           If any site can't prove its change list complete (no feed, or the");
+    Console.WriteLine("                           feed ends before a covered item), the run falls back to a normal");
+    Console.WriteLine("                           full crawl. (Or 'allow-incremental' in appsettings.json.)");
     Console.WriteLine("  --crawl-workers <n>      Number of concurrent crawl workers. Default is 4. Each host is");
     Console.WriteLine("                           still fetched sequentially with the politeness delay, so extra");
     Console.WriteLine("                           workers pay off when the crawl spans several hosts.");
@@ -218,12 +233,41 @@ if (args.Length == 0 || showHelp)
     return;
 }
 
-if (string.IsNullOrEmpty(url))
+// The seeds for this run: the CLI <url> when given, otherwise every configured allowed server —
+// so a bare `crawler.exe` (e.g. a scheduled task) crawls the whole configured site set.
+var seedUrls = new List<string>();
+if (!string.IsNullOrEmpty(url))
 {
-    Console.WriteLine("Error: Missing required argument <url>.");
-    Console.WriteLine("Usage: dotnet run -- [options] <url>");
+    seedUrls.Add(url);
+}
+else if (feedMode)
+{
+    Console.WriteLine("Error: --feed requires an explicit feed <url>.");
     Console.WriteLine("Run with --help for more information.");
     return;
+}
+else
+{
+    foreach (var entry in allowedServers)
+    {
+        var candidate = entry.Contains("://", StringComparison.Ordinal) ? entry : "http://" + entry;
+        if (Uri.TryCreate(candidate, UriKind.Absolute, out var origin)
+            && (origin.Scheme == Uri.UriSchemeHttp || origin.Scheme == Uri.UriSchemeHttps))
+        {
+            seedUrls.Add(origin.GetLeftPart(UriPartial.Authority) + "/");
+        }
+        else
+        {
+            Console.Error.WriteLine($"Warning: allowed-servers entry '{entry}' cannot be seeded; it stays in scope only.");
+        }
+    }
+    if (seedUrls.Count == 0)
+    {
+        Console.WriteLine("Error: no <url> given and no seedable 'allowed-servers' entries in appsettings.json.");
+        Console.WriteLine("Usage: dotnet run -- [options] [url]");
+        Console.WriteLine("Run with --help for more information.");
+        return;
+    }
 }
 
 string fullDbPath = Path.GetFullPath(dbPath);
@@ -299,7 +343,15 @@ try
     AnsiConsole.Write(new Rule("[bold]LocalSearchEngine crawler[/]").LeftJustified());
     AnsiConsole.WriteLine();
     AnsiConsole.MarkupLineInterpolated($"[grey]Database[/]  {fullDbPath}");
-    AnsiConsole.MarkupLineInterpolated($"[grey]{(feedMode ? "Feed" : "Seed")}[/]      {url}");
+    AnsiConsole.MarkupLineInterpolated($"[grey]{(feedMode ? "Feed" : "Seeds")}[/]     {string.Join(", ", seedUrls)}");
+    if (allowIncremental && !feedMode)
+    {
+        AnsiConsole.MarkupLine("[grey]Mode[/]      incremental when feeds prove the change list; full crawl otherwise");
+        if (!string.IsNullOrWhiteSpace(incrementalFeed))
+        {
+            AnsiConsole.MarkupLineInterpolated($"[grey]Journal[/]   {incrementalFeed}");
+        }
+    }
     AnsiConsole.MarkupLineInterpolated($"[grey]Log[/]       {logPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
@@ -326,11 +378,12 @@ try
     // would otherwise qualify.
     bool useLive = !noLive && AnsiConsole.Profile.Capabilities.Interactive;
 
-    // The one place run composition is chosen: a full crawl (sitemaps + seed, follow links, prune)
-    // or a feed-driven update (fetch exactly what the feed lists, delete nothing else).
+    // The one place run composition is chosen: an explicit feed update (fetch exactly what the feed
+    // lists), or a site run over the seeds — which, with allow-incremental, the sites' own feeds may
+    // bound to just the proven changes.
     Task<CrawlReport> RunCrawlAsync(ICrawlReporter reporter) => feedMode
         ? crawlerService.CrawlFeedAsync(url, maxPages, allowedServers, noIndexPatterns, maxCrawlSizeBytes, reporter, requestDelayMs, crawlWorkers)
-        : crawlerService.CrawlAsync(url, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
+        : crawlerService.CrawlSitesAsync(seedUrls, allowIncremental, incrementalFeed, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
 
     CrawlReport report;
     if (useLive)
@@ -401,6 +454,15 @@ internal sealed class CrawlSettings
     /// <summary>Whether the URL is an RSS/Atom feed driving an update crawl instead of a full crawl.</summary>
     [ConfigurationKeyName("feed")]
     public bool Feed { get; set; }
+
+    /// <summary>Whether each site's advertised feed may bound a run to just its proven changes (full crawl otherwise).</summary>
+    [ConfigurationKeyName("allow-incremental")]
+    public bool AllowIncremental { get; set; }
+
+    /// <summary>A declared change-journal feed covering every configured host at once; replaces
+    /// per-site feed autodiscovery when incremental runs are allowed.</summary>
+    [ConfigurationKeyName("incremental-feed")]
+    public string? IncrementalFeed { get; set; }
 
     /// <summary>Number of concurrent crawl workers. Defaults to 4; each host still fetches sequentially.</summary>
     [ConfigurationKeyName("crawl-workers")]

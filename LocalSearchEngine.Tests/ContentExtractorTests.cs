@@ -162,4 +162,51 @@ public class ContentExtractorTests
         Assert.Equal(expectedNoIndex, analysis.NoIndex);
         Assert.Equal(expectedNoFollow, analysis.NoFollow);
     }
+
+    [Fact]
+    public void Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+    {
+        var html = "<html><head><title>T</title>" +
+                   "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/rss.xml\">" +
+                   "<link rel=\"alternate\" type=\"application/atom+xml\" href=\"http://test.local/atom.xml\">" +
+                   "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/rss.xml\">" + // duplicate
+                   "</head><body><p>x</p></body></html>";
+
+        var analysis = Analyze(Encoding.UTF8.GetBytes(html), null);
+
+        Assert.Equal(
+            new[] { "http://test.local/rss.xml", "http://test.local/atom.xml" },
+            analysis.AdvertisedFeedUris.Select(u => u.AbsoluteUri));
+    }
+
+    [Fact]
+    public void Non_feed_link_elements_are_not_mistaken_for_feeds()
+    {
+        var html = "<html><head><title>T</title>" +
+                   "<link rel=\"stylesheet\" type=\"text/css\" href=\"/site.css\">" +
+                   "<link rel=\"alternate\" type=\"text/html\" hreflang=\"fr\" href=\"/fr/page\">" + // translation, not a feed
+                   "<link rel=\"alternate stylesheet\" type=\"application/rss+xml\" href=\"/weird.xml\">" + // token list still counts as alternate
+                   "<link rel=\"preload\" type=\"application/rss+xml\" href=\"/not-alternate.xml\">" +
+                   "</head><body><p>x</p></body></html>";
+
+        var analysis = Analyze(Encoding.UTF8.GetBytes(html), null);
+
+        Assert.Equal(new[] { "http://test.local/weird.xml" }, analysis.AdvertisedFeedUris.Select(u => u.AbsoluteUri));
+    }
+
+    [Fact]
+    public void Feeds_are_advertised_even_on_nofollow_pages()
+    {
+        // Feed advertisement is discovery metadata like the canonical link, not an
+        // endorsement-carrying anchor, so nofollow (which suppresses link extraction) leaves it alone.
+        var html = "<html><head><title>T</title><meta name=\"robots\" content=\"nofollow\">" +
+                   "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/rss.xml\">" +
+                   "</head><body><p>x</p> <a href=\"/other\">o</a></body></html>";
+
+        var analysis = Analyze(Encoding.UTF8.GetBytes(html), null);
+
+        Assert.True(analysis.NoFollow);
+        Assert.Empty(analysis.Outlinks);
+        Assert.Equal(new[] { "http://test.local/rss.xml" }, analysis.AdvertisedFeedUris.Select(u => u.AbsoluteUri));
+    }
 }

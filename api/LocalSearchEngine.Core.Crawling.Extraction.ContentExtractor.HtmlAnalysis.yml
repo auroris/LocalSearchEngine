@@ -5,6 +5,7 @@ items:
   id: ContentExtractor.HtmlAnalysis
   parent: LocalSearchEngine.Core.Crawling.Extraction
   children:
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.CanonicalAlias
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Headings
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.NoFollow
@@ -314,6 +315,44 @@ items:
     return:
       type: System.Collections.Generic.List{System.String}
     content.vb: Public OffsiteLinks As List(Of String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
+  id: AdvertisedFeedUris
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  langs:
+  - csharp
+  - vb
+  name: AdvertisedFeedUris
+  nameWithType: ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AdvertisedFeedUris
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 65
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Gets or sets the RSS/Atom feeds the page advertises via
+
+    <code>&lt;link rel="alternate" type="application/rss+xml|atom+xml"&gt;</code>. A site's own feed
+
+    is its declared change journal — a positive signal of what to (re)fetch — so the crawl
+
+    consults advertised feeds as extra seed material. Extracted regardless of nofollow (it is
+
+    discovery metadata, like the canonical link, not an endorsement-carrying anchor).
+  example: []
+  syntax:
+    content: public List<Uri> AdvertisedFeedUris
+    return:
+      type: System.Collections.Generic.List{System.Uri}
+    content.vb: Public AdvertisedFeedUris As List(Of Uri)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Extraction
   commentId: N:LocalSearchEngine.Core.Crawling.Extraction

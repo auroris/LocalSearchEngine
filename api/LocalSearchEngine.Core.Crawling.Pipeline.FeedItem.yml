@@ -1,0 +1,545 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  id: FeedItem
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor(System.Uri,System.Nullable{System.DateTime})
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+  - LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc
+  langs:
+  - csharp
+  - vb
+  name: FeedItem
+  nameWithType: FeedItem
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  type: Struct
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FeedItem
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: One feed entry, in the feed's own (newest-first) order.
+  example: []
+  syntax:
+    content: 'internal readonly record struct FeedItem : IEquatable<FeedItem>'
+    content.vb: Friend Structure FeedItem Implements IEquatable(Of FeedItem)
+  implements:
+  - System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor(System.Uri,System.Nullable{System.DateTime})
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor(System.Uri,System.Nullable{System.DateTime})
+  id: '#ctor(System.Uri,System.Nullable{System.DateTime})'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  langs:
+  - csharp
+  - vb
+  name: FeedItem(Uri, DateTime?)
+  nameWithType: FeedItem.FeedItem(Uri, DateTime?)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.FeedItem(System.Uri, System.DateTime?)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: One feed entry, in the feed's own (newest-first) order.
+  example: []
+  syntax:
+    content: public FeedItem(Uri Location, DateTime? PublishedUtc)
+    parameters:
+    - id: Location
+      type: System.Uri
+      description: The item's resolved link target.
+    - id: PublishedUtc
+      type: System.Nullable{System.DateTime}
+      description: >-
+        When the feed says the item changed (RSS <code>pubDate</code>, Atom
+            <code>updated</code>/<code>published</code>), or <code>null</code> when the entry carries no parseable date —
+            which incremental planning must treat as "can't prove it's covered".
+    content.vb: Public Sub New(Location As Uri, PublishedUtc As Date?)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor*
+  nameWithType.vb: FeedItem.New(Uri, Date?)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.New(System.Uri, Date?)
+  name.vb: New(Uri, Date?)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+  id: Location
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  langs:
+  - csharp
+  - vb
+  name: Location
+  nameWithType: FeedItem.Location
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Location
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: The item's resolved link target.
+  example: []
+  syntax:
+    content: public Uri Location { get; init; }
+    parameters: []
+    return:
+      type: System.Uri
+    content.vb: Public Property Location As Uri
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc
+  id: PublishedUtc
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+  langs:
+  - csharp
+  - vb
+  name: PublishedUtc
+  nameWithType: FeedItem.PublishedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PublishedUtc
+    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedParser.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    When the feed says the item changed (RSS <code>pubDate</code>, Atom
+        <code>updated</code>/<code>published</code>), or <code>null</code> when the entry carries no parseable date —
+        which incremental planning must treat as "can't prove it's covered".
+  example: []
+  syntax:
+    content: public DateTime? PublishedUtc { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: Public Property PublishedUtc As Date?
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<FeedItem>
+  nameWithType: IEquatable<FeedItem>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Crawling.Pipeline.FeedItem>
+  nameWithType.vb: IEquatable(Of FeedItem)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Crawling.Pipeline.FeedItem)
+  name.vb: IEquatable(Of FeedItem)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+    name: FeedItem
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+    name: FeedItem
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html#LocalSearchEngine_Core_Crawling_Pipeline_FeedItem__ctor_System_Uri_System_Nullable_System_DateTime__
+  name: FeedItem
+  nameWithType: FeedItem.FeedItem
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.FeedItem
+  nameWithType.vb: FeedItem.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.New
+  name.vb: New
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html#LocalSearchEngine_Core_Crawling_Pipeline_FeedItem_Location
+  name: Location
+  nameWithType: FeedItem.Location
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.Location
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc
+  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html#LocalSearchEngine_Core_Crawling_Pipeline_FeedItem_PublishedUtc
+  name: PublishedUtc
+  nameWithType: FeedItem.PublishedUtc
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.PublishedUtc

@@ -27,6 +27,8 @@ public class CrawlSettingsBindingTests
         "check-external-links": true,
         "no-live-stats": true,
         "feed": true,
+        "allow-incremental": true,
+        "incremental-feed": "http://coldlake.mil.ca/changes.xml",
         "crawl-workers": 8,
         "log-file": "custom.log",
         "stats-file": "custom-stats",
@@ -73,6 +75,8 @@ public class CrawlSettingsBindingTests
         Assert.Equal("custom-stats", settings.StatsFile);
         Assert.Equal("custom-broken", settings.BrokenLinksFile);
         Assert.True(settings.Feed);
+        Assert.True(settings.AllowIncremental);
+        Assert.Equal("http://coldlake.mil.ca/changes.xml", settings.IncrementalFeed);
         Assert.Equal(8, settings.CrawlWorkers);
     }
 

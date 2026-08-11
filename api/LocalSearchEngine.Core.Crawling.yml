@@ -5,6 +5,7 @@ items:
   id: LocalSearchEngine.Core.Crawling
   children:
   - LocalSearchEngine.Core.Crawling.CrawlerService
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
   langs:
   - csharp
   - vb
@@ -22,6 +23,29 @@ references:
   name: CrawlerService
   nameWithType: CrawlerService
   fullName: LocalSearchEngine.Core.Crawling.CrawlerService
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  name: CrawlerService.RunMode
+  nameWithType: CrawlerService.RunMode
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
 - uid: LocalSearchEngine.Core.Crawling
   commentId: N:LocalSearchEngine.Core.Crawling
   href: LocalSearchEngine.html

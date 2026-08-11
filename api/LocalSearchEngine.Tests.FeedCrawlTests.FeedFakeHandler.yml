@@ -23,7 +23,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FeedFakeHandler
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 312
+    startLine: 332
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -66,7 +66,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Routes
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 314
+    startLine: 334
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -93,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _requested
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 315
+    startLine: 335
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -120,7 +120,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RequestedSnapshot
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 317
+    startLine: 337
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -148,7 +148,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendAsync
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 325
+    startLine: 345
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

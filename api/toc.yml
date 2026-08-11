@@ -14,6 +14,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.CrawlerService
     name: CrawlerService
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: CrawlerService.RunMode
+    type: Enum
 - uid: LocalSearchEngine.Core.Crawling.Engine
   name: LocalSearchEngine.Core.Crawling.Engine
   type: Namespace
@@ -101,6 +104,12 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
     name: FeedDocument
     type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+    name: FeedItem
+    type: Struct
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
+    name: FeedParser
+    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
     name: FeedSeedSource
     type: Class
@@ -125,6 +134,12 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
     name: ISeedSource
     type: Interface
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+    name: IncrementalPlanner
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
+    name: ListSeedSource
+    type: Class
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.PageDocument
     name: PageDocument
     type: Class
@@ -374,6 +389,12 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.HostGateTests
     name: HostGateTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.IncrementalCrawlTests
+    name: IncrementalCrawlTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+    name: IncrementalCrawlTests.CountingFakeHandler
     type: Class
   - uid: LocalSearchEngine.Tests.NoIndexRulesTests
     name: NoIndexRulesTests

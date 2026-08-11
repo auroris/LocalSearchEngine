@@ -15,6 +15,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.IndexedCount
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.IndexedOn(System.String)
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Logger
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.MaxDiscoveredFeeds
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.NoteCappedSkip
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.NoteHostCapSkip
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Observer
@@ -23,9 +24,10 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.RunAsync(System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Submit(LocalSearchEngine.Core.Crawling.Engine.CrawlJob)
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String,System.String,System.String@)
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed(System.Uri)
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Visited
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._backlog
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._capped
@@ -33,6 +35,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._connectionString
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._contentHashes
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._crawlChannel
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._discoveredFeedBudget
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._hostCapSkipped
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._httpClient
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._indexChannel
@@ -394,6 +397,42 @@ items:
     return:
       type: System.Collections.Generic.Dictionary{System.String,System.String}
     content.vb: Private ReadOnly _contentHashes As Dictionary(Of String, String)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.MaxDiscoveredFeeds
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.MaxDiscoveredFeeds
+  id: MaxDiscoveredFeeds
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  langs:
+  - csharp
+  - vb
+  name: MaxDiscoveredFeeds
+  nameWithType: CrawlPipeline.MaxDiscoveredFeeds
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.MaxDiscoveredFeeds
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MaxDiscoveredFeeds
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+    startLine: 62
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    The most discovered (page-advertised) feeds one run will fetch. Legitimate sites advertise a
+
+    handful — the main feed plus maybe per-section ones — while blog platforms advertise a
+
+    distinct comments feed on every post; without a cap a large site would spend hundreds of
+
+    fetches re-learning URLs it already knows.
+  example: []
+  syntax:
+    content: private const int MaxDiscoveredFeeds = 8
+    return:
+      type: System.Int32
+    content.vb: Private Const MaxDiscoveredFeeds As Integer = 8
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._jobsSubmitted
   commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._jobsSubmitted
   id: _jobsSubmitted
@@ -412,7 +451,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _jobsSubmitted
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 56
+    startLine: 64
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -439,7 +478,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _indexedCount
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 57
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -448,6 +487,33 @@ items:
     return:
       type: System.Int32
     content.vb: Private _indexedCount As Integer
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._discoveredFeedBudget
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._discoveredFeedBudget
+  id: _discoveredFeedBudget
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  langs:
+  - csharp
+  - vb
+  name: _discoveredFeedBudget
+  nameWithType: CrawlPipeline._discoveredFeedBudget
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._discoveredFeedBudget
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _discoveredFeedBudget
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+    startLine: 66
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private int _discoveredFeedBudget
+    return:
+      type: System.Int32
+    content.vb: Private _discoveredFeedBudget As Integer
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._capped
   commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline._capped
   id: _capped
@@ -466,7 +532,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _capped
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 58
+    startLine: 67
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -493,7 +559,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _cappedWithWorkRemaining
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 59
+    startLine: 68
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -520,7 +586,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _hostCapSkipped
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 60
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -547,7 +613,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 62
+    startLine: 71
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -601,7 +667,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Plan
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 92
+    startLine: 106
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -612,37 +678,37 @@ items:
       type: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan
     content.vb: Public ReadOnly Property Plan As CrawlPlan
   overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Plan*
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
-  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
-  id: SeedKey
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
+  id: SeedKeys
   parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
   langs:
   - csharp
   - vb
-  name: SeedKey
-  nameWithType: CrawlPipeline.SeedKey
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
+  name: SeedKeys
+  nameWithType: CrawlPipeline.SeedKeys
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: SeedKey
+    id: SeedKeys
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 95
+    startLine: 109
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  summary: Gets the seed's normalized identity — the one URL whose off-scope redirect widens the crawl scope.
+  summary: Gets the seeds' normalized identities — the only URLs whose off-scope redirects widen the crawl scope.
   example: []
   syntax:
-    content: public string SeedKey { get; }
+    content: public IReadOnlySet<string> SeedKeys { get; }
     parameters: []
     return:
-      type: System.String
-    content.vb: Public ReadOnly Property SeedKey As String
-  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey*
+      type: System.Collections.Generic.IReadOnlySet{System.String}
+    content.vb: Public ReadOnly Property SeedKeys As IReadOnlySet(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys*
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Visited
   commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Visited
   id: Visited
@@ -661,7 +727,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Visited
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 98
+    startLine: 112
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -692,7 +758,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Pending
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 100
+    startLine: 114
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -721,7 +787,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Gate
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 101
+    startLine: 115
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -750,7 +816,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 102
+    startLine: 116
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -779,7 +845,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HostHealth
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 103
+    startLine: 117
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -808,7 +874,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Observer
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 104
+    startLine: 118
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -837,7 +903,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Heartbeat
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 105
+    startLine: 119
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -866,7 +932,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Logger
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 106
+    startLine: 120
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -895,7 +961,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Downloader
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 107
+    startLine: 121
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -924,7 +990,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Capped
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 110
+    startLine: 124
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -955,7 +1021,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedCount
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 112
+    startLine: 126
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -984,7 +1050,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexedOn
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 114
+    startLine: 128
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1018,7 +1084,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoteCappedSkip
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 117
+    startLine: 131
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1046,7 +1112,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoteHostCapSkip
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 120
+    startLine: 134
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1074,7 +1140,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Enqueue
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 130
+    startLine: 144
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1116,7 +1182,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Submit
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 145
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1153,7 +1219,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryAcceptIndex
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 166
+    startLine: 180
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1188,6 +1254,46 @@ items:
   nameWithType.vb: CrawlPipeline.TryAcceptIndex(String, String, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(String, String, String)
   name.vb: TryAcceptIndex(String, String, String)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed(System.Uri)
+  id: TryDiscoverFeed(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
+  langs:
+  - csharp
+  - vb
+  name: TryDiscoverFeed(Uri)
+  nameWithType: CrawlPipeline.TryDiscoverFeed(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryDiscoverFeed
+    path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
+    startLine: 223
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Offers a page-advertised feed to the frontier under the per-run budget. Take-then-refund so
+
+    the budget counts feeds that will actually be fetched: a duplicate or out-of-scope feed
+
+    (rejected at the choke point) hands its token back.
+  example: []
+  syntax:
+    content: internal bool TryDiscoverFeed(Uri feedUri)
+    parameters:
+    - id: feedUri
+      type: System.Uri
+      description: The exact resolved feed target.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the feed entered the frontier.
+    content.vb: Friend Function TryDiscoverFeed(feedUri As Uri) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed*
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending
   commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending
   id: ReleasePending
@@ -1206,7 +1312,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReleasePending
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 203
+    startLine: 240
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1234,7 +1340,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 220
+    startLine: 257
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -2306,12 +2412,75 @@ references:
   name: Plan
   nameWithType: CrawlPipeline.Plan
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Plan
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
-  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_SeedKey
-  name: SeedKey
-  nameWithType: CrawlPipeline.SeedKey
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKey
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_SeedKeys
+  name: SeedKeys
+  nameWithType: CrawlPipeline.SeedKeys
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.SeedKeys
+- uid: System.Collections.Generic.IReadOnlySet{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlySet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlySet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<string>
+  nameWithType: IReadOnlySet<string>
+  fullName: System.Collections.Generic.IReadOnlySet<string>
+  nameWithType.vb: IReadOnlySet(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of String)
+  name.vb: IReadOnlySet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlySet`1
+  commentId: T:System.Collections.Generic.IReadOnlySet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  name: IReadOnlySet<T>
+  nameWithType: IReadOnlySet<T>
+  fullName: System.Collections.Generic.IReadOnlySet<T>
+  nameWithType.vb: IReadOnlySet(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlySet(Of T)
+  name.vb: IReadOnlySet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlySet`1
+    name: IReadOnlySet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlyset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Visited*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Visited
   href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_Visited
@@ -2510,6 +2679,20 @@ references:
   name: TryAcceptIndex
   nameWithType: CrawlPipeline.TryAcceptIndex
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_TryDiscoverFeed_System_Uri_
+  name: TryDiscoverFeed
+  nameWithType: CrawlPipeline.TryDiscoverFeed
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryDiscoverFeed
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending
   href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_ReleasePending

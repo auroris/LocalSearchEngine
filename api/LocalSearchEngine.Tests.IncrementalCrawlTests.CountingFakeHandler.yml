@@ -1,40 +1,42 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
-  commentId: T:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
-  id: CrawlPipelineTests.PipelineFakeHandler
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+  commentId: T:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+  id: IncrementalCrawlTests.CountingFakeHandler
   parent: LocalSearchEngine.Tests
   children:
-  - LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
-  - LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.Routes
-  - LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
-  - LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler._requested
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince(System.Int32)
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.Routes
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
+  - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler._requested
   langs:
   - csharp
   - vb
-  name: CrawlPipelineTests.PipelineFakeHandler
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  name: IncrementalCrawlTests.CountingFakeHandler
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   type: Class
   source:
     remote:
-      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: PipelineFakeHandler
-    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 447
+    id: CountingFakeHandler
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 338
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   summary: >-
-    Canned HTTP server for pipeline tests: routes keyed by absolute URL; unmapped paths 404.
+    Canned HTTP server: routes keyed by absolute URL; unmapped paths 404. The request log locks
 
-    Requests arrive from concurrent workers, so the request log locks.
+    and supports slicing, so a test can isolate what a particular run fetched.
   example: []
   syntax:
-    content: 'private sealed class CrawlPipelineTests.PipelineFakeHandler : HttpMessageHandler, IDisposable'
-    content.vb: Private NotInheritable Class CrawlPipelineTests.PipelineFakeHandler Inherits HttpMessageHandler Implements IDisposable
+    content: 'private sealed class IncrementalCrawlTests.CountingFakeHandler : HttpMessageHandler, IDisposable'
+    content.vb: Private NotInheritable Class IncrementalCrawlTests.CountingFakeHandler Inherits HttpMessageHandler Implements IDisposable
   inheritance:
   - System.Object
   - System.Net.Http.HttpMessageHandler
@@ -48,25 +50,25 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.Routes
-  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.Routes
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.Routes
+  commentId: F:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.Routes
   id: Routes
-  parent: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   langs:
   - csharp
   - vb
   name: Routes
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler.Routes
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.Routes
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.Routes
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.Routes
   type: Field
   source:
     remote:
-      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Routes
-    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 449
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 340
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -75,25 +77,25 @@ items:
     return:
       type: System.Collections.Generic.Dictionary{System.String,System.Func{System.Net.Http.HttpRequestMessage,System.Net.Http.HttpResponseMessage}}
     content.vb: Public ReadOnly Routes As Dictionary(Of String, Func(Of HttpRequestMessage, HttpResponseMessage))
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler._requested
-  commentId: F:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler._requested
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler._requested
+  commentId: F:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler._requested
   id: _requested
-  parent: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   langs:
   - csharp
   - vb
   name: _requested
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler._requested
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler._requested
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler._requested
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler._requested
   type: Field
   source:
     remote:
-      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _requested
-    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 450
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 341
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -102,25 +104,54 @@ items:
     return:
       type: System.Collections.Generic.List{System.String}
     content.vb: Private ReadOnly _requested As List(Of String)
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
-  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  commentId: P:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  id: RequestedCount
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+  langs:
+  - csharp
+  - vb
+  name: RequestedCount
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RequestedCount
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 343
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public int RequestedCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property RequestedCount As Integer
+  overload: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount*
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
+  commentId: M:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
   id: RequestedSnapshot
-  parent: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   langs:
   - csharp
   - vb
   name: RequestedSnapshot()
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot()
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot()
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot()
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot()
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RequestedSnapshot
-    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 452
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 345
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -129,26 +160,60 @@ items:
     return:
       type: System.Collections.Generic.IReadOnlyList{System.String}
     content.vb: Public Function RequestedSnapshot() As IReadOnlyList(Of String)
-  overload: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot*
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
-  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
+  overload: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot*
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince(System.Int32)
+  commentId: M:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince(System.Int32)
+  id: RequestedSince(System.Int32)
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+  langs:
+  - csharp
+  - vb
+  name: RequestedSince(int)
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedSince(int)
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince(int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RequestedSince
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 350
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public IReadOnlyList<string> RequestedSince(int start)
+    parameters:
+    - id: start
+      type: System.Int32
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    content.vb: Public Function RequestedSince(start As Integer) As IReadOnlyList(Of String)
+  overload: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince*
+  nameWithType.vb: IncrementalCrawlTests.CountingFakeHandler.RequestedSince(Integer)
+  fullName.vb: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince(Integer)
+  name.vb: RequestedSince(Integer)
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
   id: SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
-  parent: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler
+  parent: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   langs:
   - csharp
   - vb
   name: SendAsync(HttpRequestMessage, CancellationToken)
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler.SendAsync(HttpRequestMessage, CancellationToken)
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage, System.Threading.CancellationToken)
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.SendAsync(HttpRequestMessage, CancellationToken)
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync(System.Net.Http.HttpRequestMessage, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SendAsync
-    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 460
+    path: LocalSearchEngine.Tests/IncrementalCrawlTests.cs
+    startLine: 355
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -168,7 +233,7 @@ items:
       description: The task object representing the asynchronous operation.
     content.vb: Protected Overrides Function SendAsync(request As HttpRequestMessage, cancellationToken As CancellationToken) As Task(Of HttpResponseMessage)
   overridden: System.Net.Http.HttpMessageHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)
-  overload: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync*
+  overload: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
@@ -694,12 +759,29 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot*
-  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
-  href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html#LocalSearchEngine_Tests_CrawlPipelineTests_PipelineFakeHandler_RequestedSnapshot
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount*
+  commentId: Overload:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  href: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.html#LocalSearchEngine_Tests_IncrementalCrawlTests_CountingFakeHandler_RequestedCount
+  name: RequestedCount
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot*
+  commentId: Overload:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
+  href: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.html#LocalSearchEngine_Tests_IncrementalCrawlTests_CountingFakeHandler_RequestedSnapshot
   name: RequestedSnapshot
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.RequestedSnapshot
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSnapshot
 - uid: System.Collections.Generic.IReadOnlyList{System.String}
   commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
   parent: System.Collections.Generic
@@ -763,6 +845,12 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince*
+  commentId: Overload:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince
+  href: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.html#LocalSearchEngine_Tests_IncrementalCrawlTests_CountingFakeHandler_RequestedSince_System_Int32_
+  name: RequestedSince
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.RequestedSince
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.RequestedSince
 - uid: System.ArgumentNullException
   commentId: T:System.ArgumentNullException
   isExternal: true
@@ -819,12 +907,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
-- uid: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync*
-  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync
-  href: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.html#LocalSearchEngine_Tests_CrawlPipelineTests_PipelineFakeHandler_SendAsync_System_Net_Http_HttpRequestMessage_System_Threading_CancellationToken_
+- uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync*
+  commentId: Overload:LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync
+  href: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.html#LocalSearchEngine_Tests_IncrementalCrawlTests_CountingFakeHandler_SendAsync_System_Net_Http_HttpRequestMessage_System_Threading_CancellationToken_
   name: SendAsync
-  nameWithType: CrawlPipelineTests.PipelineFakeHandler.SendAsync
-  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.PipelineFakeHandler.SendAsync
+  nameWithType: IncrementalCrawlTests.CountingFakeHandler.SendAsync
+  fullName: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.SendAsync
 - uid: System.Net.Http.HttpRequestMessage
   commentId: T:System.Net.Http.HttpRequestMessage
   parent: System.Net.Http

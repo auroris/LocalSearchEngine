@@ -54,8 +54,17 @@ internal sealed class CrawlPipeline
     private readonly ConcurrentDictionary<string, int> _indexedPerHost = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _contentHashes = new(StringComparer.Ordinal);
 
+    /// <summary>
+    /// The most discovered (page-advertised) feeds one run will fetch. Legitimate sites advertise a
+    /// handful — the main feed plus maybe per-section ones — while blog platforms advertise a
+    /// distinct comments feed on every post; without a cap a large site would spend hundreds of
+    /// fetches re-learning URLs it already knows.
+    /// </summary>
+    private const int MaxDiscoveredFeeds = 8;
+
     private int _jobsSubmitted;
     private int _indexedCount;
+    private int _discoveredFeedBudget = MaxDiscoveredFeeds;
     private volatile bool _capped;
     private volatile bool _cappedWithWorkRemaining;
     private volatile bool _hostCapSkipped;
@@ -75,7 +84,12 @@ internal sealed class CrawlPipeline
         ILogger logger)
     {
         Plan = plan;
-        SeedKey = UrlNormalizer.Normalize(plan.SeedUri);
+        var seedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var seedUri in plan.SeedUris)
+        {
+            seedKeys.Add(UrlNormalizer.Normalize(seedUri));
+        }
+        SeedKeys = seedKeys;
         _httpClient = httpClient;
         _vectorSearchService = vectorSearchService;
         _connectionString = connectionString;
@@ -92,8 +106,8 @@ internal sealed class CrawlPipeline
 
     public CrawlPlan Plan { get; }
 
-    /// <summary>Gets the seed's normalized identity — the one URL whose off-scope redirect widens the crawl scope.</summary>
-    public string SeedKey { get; }
+    /// <summary>Gets the seeds' normalized identities — the only URLs whose off-scope redirects widen the crawl scope.</summary>
+    public IReadOnlySet<string> SeedKeys { get; }
 
     /// <summary>Gets the crawl-wide seen set (also the live "discovered" count for reporting).</summary>
     public VisitedSet Visited { get; } = new();
@@ -198,6 +212,29 @@ internal sealed class CrawlPipeline
             duplicateOf = null;
             return true;
         }
+    }
+
+    /// <summary>
+    /// Offers a page-advertised feed to the frontier under the per-run budget. Take-then-refund so
+    /// the budget counts feeds that will actually be fetched: a duplicate or out-of-scope feed
+    /// (rejected at the choke point) hands its token back.
+    /// </summary>
+    /// <param name="feedUri">The exact resolved feed target.</param>
+    /// <returns><c>true</c> if the feed entered the frontier.</returns>
+    internal bool TryDiscoverFeed(Uri feedUri)
+    {
+        if (Interlocked.Decrement(ref _discoveredFeedBudget) < 0)
+        {
+            Interlocked.Increment(ref _discoveredFeedBudget);
+            return false;
+        }
+        if (!Enqueue(new FeedDocument(feedUri)))
+        {
+            Interlocked.Increment(ref _discoveredFeedBudget);
+            return false;
+        }
+        Logger.LogInformation("Consulting advertised feed {Url} as extra seed material.", UrlNormalizer.Normalize(feedUri));
+        return true;
     }
 
     /// <summary>Releases one unit of pending work; the release that strikes zero completes the crawl channel.</summary>

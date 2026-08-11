@@ -77,10 +77,10 @@ items:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: 'private const string AppSettingsJson = "{\n  \"CrawlSettings\": {\n    \"max-pages\": null,\n    \"max-pages-per-host\": null,\n    \"max-crawl-size-bytes\": 15728640,\n    \"request-delay-ms\": 500,\n    \"allowed-servers\": [ \"http://coldlake.mil.ca\", \"http://documents.coldlake.mil.ca\" ],\n    \"noindex-patterns\": [ \"http://coldlake.mil.ca/en/Documents/*\", \"http://coldlake.mil.ca/fr/Documents/*\" ],\n    \"check-external-links\": true,\n    \"no-live-stats\": true,\n    \"feed\": true,\n    \"crawl-workers\": 8,\n    \"log-file\": \"custom.log\",\n    \"stats-file\": \"custom-stats\",\n    \"broken-links-file\": \"custom-broken\"\n  }\n}"'
+    content: 'private const string AppSettingsJson = "{\n  \"CrawlSettings\": {\n    \"max-pages\": null,\n    \"max-pages-per-host\": null,\n    \"max-crawl-size-bytes\": 15728640,\n    \"request-delay-ms\": 500,\n    \"allowed-servers\": [ \"http://coldlake.mil.ca\", \"http://documents.coldlake.mil.ca\" ],\n    \"noindex-patterns\": [ \"http://coldlake.mil.ca/en/Documents/*\", \"http://coldlake.mil.ca/fr/Documents/*\" ],\n    \"check-external-links\": true,\n    \"no-live-stats\": true,\n    \"feed\": true,\n    \"allow-incremental\": true,\n    \"incremental-feed\": \"http://coldlake.mil.ca/changes.xml\",\n    \"crawl-workers\": 8,\n    \"log-file\": \"custom.log\",\n    \"stats-file\": \"custom-stats\",\n    \"broken-links-file\": \"custom-broken\"\n  }\n}"'
     return:
       type: System.String
-    content.vb: 'Private Const AppSettingsJson As String = "{" & vbLf & "  ""CrawlSettings"": {" & vbLf & "    ""max-pages"": null," & vbLf & "    ""max-pages-per-host"": null," & vbLf & "    ""max-crawl-size-bytes"": 15728640," & vbLf & "    ""request-delay-ms"": 500," & vbLf & "    ""allowed-servers"": [ ""http://coldlake.mil.ca"", ""http://documents.coldlake.mil.ca"" ]," & vbLf & "    ""noindex-patterns"": [ ""http://coldlake.mil.ca/en/Documents/*"", ""http://coldlake.mil.ca/fr/Documents/*"" ]," & vbLf & "    ""check-external-links"": true," & vbLf & "    ""no-live-stats"": true," & vbLf & "    ""feed"": true," & vbLf & "    ""crawl-workers"": 8," & vbLf & "    ""log-file"": ""custom.log""," & vbLf & "    ""stats-file"": ""custom-stats""," & vbLf & "    ""broken-links-file"": ""custom-broken""" & vbLf & "  }" & vbLf & "}"'
+    content.vb: 'Private Const AppSettingsJson As String = "{" & vbLf & "  ""CrawlSettings"": {" & vbLf & "    ""max-pages"": null," & vbLf & "    ""max-pages-per-host"": null," & vbLf & "    ""max-crawl-size-bytes"": 15728640," & vbLf & "    ""request-delay-ms"": 500," & vbLf & "    ""allowed-servers"": [ ""http://coldlake.mil.ca"", ""http://documents.coldlake.mil.ca"" ]," & vbLf & "    ""noindex-patterns"": [ ""http://coldlake.mil.ca/en/Documents/*"", ""http://coldlake.mil.ca/fr/Documents/*"" ]," & vbLf & "    ""check-external-links"": true," & vbLf & "    ""no-live-stats"": true," & vbLf & "    ""feed"": true," & vbLf & "    ""allow-incremental"": true," & vbLf & "    ""incremental-feed"": ""http://coldlake.mil.ca/changes.xml""," & vbLf & "    ""crawl-workers"": 8," & vbLf & "    ""log-file"": ""custom.log""," & vbLf & "    ""stats-file"": ""custom-stats""," & vbLf & "    ""broken-links-file"": ""custom-broken""" & vbLf & "  }" & vbLf & "}"'
 - uid: LocalSearchEngine.Tests.CrawlSettingsBindingTests.Bind
   commentId: M:LocalSearchEngine.Tests.CrawlSettingsBindingTests.Bind
   id: Bind
@@ -99,7 +99,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Bind
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 37
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -127,7 +127,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Binds_allowed_servers_from_kebab_case_key
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 45
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -163,7 +163,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Binds_noindex_patterns_from_kebab_case_key
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 54
+    startLine: 56
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -199,7 +199,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Binds_scalar_kebab_case_keys
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 63
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -235,7 +235,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_workers_defaults_to_four_when_absent
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 78
+    startLine: 82
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -271,7 +271,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Null_max_pages_binds_to_null_not_zero
     path: LocalSearchEngine.Tests/CrawlSettingsBindingTests.cs
-    startLine: 91
+    startLine: 95
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

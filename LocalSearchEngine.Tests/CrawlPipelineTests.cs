@@ -104,7 +104,7 @@ public sealed class CrawlPipelineTests : IDisposable
 
         var plan = new CrawlPlan
         {
-            SeedUri = seedUri,
+            SeedUris = new[] { seedUri },
             SeedSources = sources,
             Scope = scope,
             FollowLinks = followLinks,
@@ -386,6 +386,59 @@ public sealed class CrawlPipelineTests : IDisposable
         cmd.CommandText = "SELECT COUNT(*) FROM CrawlState WHERE Url = @u";
         cmd.Parameters.AddWithValue("@u", url);
         return Convert.ToInt32(await cmd.ExecuteScalarAsync());
+    }
+
+    [Fact]
+    public async Task Advertised_feed_is_consulted_and_pulls_unlinked_items()
+    {
+        await EnsureSchemaAsync();
+
+        // The seed links to nothing, but advertises its feed; the feed names a post no page links
+        // to. The positive-indicator contract: whatever the feed lists is guaranteed into the
+        // frontier, even where link discovery would never find it.
+        _handler.Routes[Seed] = _ => Html(
+            "<title>Home</title><p>home page, links nothing</p>" +
+            "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/rss.xml\">");
+        _handler.Routes["http://test.local/rss.xml"] = _ => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(
+                "<?xml version=\"1.0\"?><rss version=\"2.0\"><channel><title>S</title>" +
+                "<item><title>t</title><link>http://test.local/unlinked-post</link></item>" +
+                "</channel></rss>",
+                Encoding.UTF8, "application/rss+xml"),
+        };
+        _handler.Routes["http://test.local/unlinked-post"] = _ => Html("<title>Hidden</title><p>reachable only through the advertised feed</p>");
+
+        var (result, _) = await RunAsync(Seed, includeSitemapSource: false);
+
+        Assert.Equal(2, result.IndexedCount);
+        Assert.True(await ChunkCount("http://test.local/unlinked-post") > 0);
+        // Advertised on the seed (which the Html helper mirrors into head and body) yet fetched once.
+        Assert.Equal(1, _handler.RequestedSnapshot().Count(r => r.Equals("http://test.local/rss.xml", StringComparison.OrdinalIgnoreCase)));
+    }
+
+    [Fact]
+    public async Task Discovered_feed_budget_bounds_feed_fetches()
+    {
+        await EnsureSchemaAsync();
+
+        // Blog platforms advertise a distinct comments feed on every post; the per-run budget keeps
+        // a large site from spending hundreds of fetches re-learning URLs it already knows.
+        const int advertised = 12;
+        const int budget = 8; // CrawlPipeline.MaxDiscoveredFeeds
+        var links = new StringBuilder();
+        for (int i = 0; i < advertised; i++)
+        {
+            links.Append($"<link rel=\"alternate\" type=\"application/rss+xml\" href=\"/feed{i}.xml\">");
+        }
+        _handler.Routes[Seed] = _ => Html($"<title>Home</title><p>home page</p>{links}");
+        // The feeds themselves 404 — the budget counts fetch attempts, not parse successes.
+
+        var (result, _) = await RunAsync(Seed, includeSitemapSource: false);
+
+        Assert.Equal(1, result.IndexedCount);
+        int feedFetches = _handler.RequestedSnapshot().Count(r => r.Contains("/feed", StringComparison.OrdinalIgnoreCase));
+        Assert.Equal(budget, feedFetches);
     }
 
     /// <summary>

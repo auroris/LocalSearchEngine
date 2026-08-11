@@ -262,7 +262,7 @@ internal sealed class CrawlWorker
             _pipeline.Observer.OnPageRedirected(document.DedupKey, target);
             _pipeline.Enqueue(new PageDocument(finalUri));
         }
-        else if (string.Equals(document.DedupKey, _pipeline.SeedKey, StringComparison.OrdinalIgnoreCase))
+        else if (_pipeline.SeedKeys.Contains(document.DedupKey))
         {
             _pipeline.Observer.OnSeedRedirectedToNewOrigin(document.DedupKey, UrlOrigin.Key(finalUri));
             _pipeline.Plan.Scope.AddOrigin(finalUri);

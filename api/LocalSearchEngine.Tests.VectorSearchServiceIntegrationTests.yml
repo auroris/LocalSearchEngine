@@ -32,7 +32,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorSearchServiceIntegrationTests
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 21
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -79,7 +79,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbPath
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 23
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -106,7 +106,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connectionString
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 24
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -133,7 +133,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _provider
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -160,7 +160,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _service
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -187,7 +187,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 28
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -216,7 +216,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedSchemaAndDataAsync
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 43
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -244,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Self_match_ranks_first_with_near_zero_distance
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 55
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -282,7 +282,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Deleting_a_url_clears_data_vector_and_fts_rows_together
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 70
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -320,7 +320,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Site_filter_restricts_results_to_the_named_host
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 98
+    startLine: 97
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -358,7 +358,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Site_only_query_returns_no_results
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 116
+    startLine: 115
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -396,7 +396,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Count
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 127
+    startLine: 126
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -430,7 +430,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 136
+    startLine: 135
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -460,7 +460,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 145
+    startLine: 144
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

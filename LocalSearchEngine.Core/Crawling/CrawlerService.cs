@@ -92,8 +92,53 @@ public partial class CrawlerService
         int requestDelayMs = 250,
         int crawlWorkers = 4)
     {
-        return RunAsync(seedUrl, fullCrawl: true, maxPages, allowedServers, noIndexPatterns,
-            maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
+        return RunAsync(new[] { seedUrl }, RunMode.FullSites, incrementalFeed: null, maxPages, allowedServers,
+            noIndexPatterns, maxPagesPerHost, maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
+    }
+
+    /// <summary>
+    /// Crawls one or more configured sites in a single run — the no-argument CLI path, seeded from
+    /// every allowed origin at once so post-crawl pruning sees the whole in-scope world in one pass.
+    /// With <paramref name="allowIncremental"/>, each site's advertised feed is consulted first as a
+    /// positive indicator: walking it newest-first, entries not yet covered are the changes, and the
+    /// first already-covered entry (stored visit at or after the entry's date) proves everything
+    /// older was seen — so the run crawls exactly those changes and stops. If any site can't prove
+    /// its change list complete (no feed, or the feed's window ends before a covered entry), the
+    /// run falls back to a normal full crawl of every site.
+    /// </summary>
+    /// <param name="seedUrls">The site root URLs to crawl.</param>
+    /// <param name="allowIncremental">Whether feeds may bound the run to just the listed changes.</param>
+    /// <param name="incrementalFeed">A declared change-journal feed covering every seed host at
+    /// once; when set, it replaces per-site autodiscovery as the incremental proof. The site set's
+    /// one feed-capable host can vouch for hosts (like a bare document server) that cannot
+    /// advertise a feed of their own.</param>
+    /// <param name="maxPages">The maximum number of pages to index.</param>
+    /// <param name="allowedServers">Optional additional allowed hosts.</param>
+    /// <param name="noIndexPatterns">Optional URL glob patterns whose pages are followed for links but never indexed.</param>
+    /// <param name="maxPagesPerHost">The maximum pages to crawl on any single host.</param>
+    /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
+    /// <param name="checkExternalLinks">Whether to check external links after a full crawl.</param>
+    /// <param name="reporter">Receives live progress and phase changes.</param>
+    /// <param name="requestDelayMs">The politeness gap between same-host fetches.</param>
+    /// <param name="crawlWorkers">The number of concurrent crawl workers.</param>
+    /// <returns>A <see cref="CrawlReport"/> summarizing the run.</returns>
+    public Task<CrawlReport> CrawlSitesAsync(
+        IReadOnlyList<string> seedUrls,
+        bool allowIncremental = false,
+        string? incrementalFeed = null,
+        int maxPages = int.MaxValue,
+        IEnumerable<string>? allowedServers = null,
+        IEnumerable<string>? noIndexPatterns = null,
+        int maxPagesPerHost = int.MaxValue,
+        long maxCrawlSizeBytes = 15 * 1024 * 1024,
+        bool checkExternalLinks = false,
+        ICrawlReporter? reporter = null,
+        int requestDelayMs = 250,
+        int crawlWorkers = 4)
+    {
+        return RunAsync(seedUrls, allowIncremental ? RunMode.AutoSites : RunMode.FullSites,
+            incrementalFeed, maxPages, allowedServers, noIndexPatterns, maxPagesPerHost,
+            maxCrawlSizeBytes, checkExternalLinks, reporter, requestDelayMs, crawlWorkers);
     }
 
     /// <summary>
@@ -123,20 +168,33 @@ public partial class CrawlerService
         int requestDelayMs = 250,
         int crawlWorkers = 4)
     {
-        return RunAsync(feedUrl, fullCrawl: false, maxPages, allowedServers, noIndexPatterns,
-            maxPagesPerHost: int.MaxValue, maxCrawlSizeBytes, checkExternalLinks: false,
+        return RunAsync(new[] { feedUrl }, RunMode.FeedUpdate, incrementalFeed: null, maxPages, allowedServers,
+            noIndexPatterns, maxPagesPerHost: int.MaxValue, maxCrawlSizeBytes, checkExternalLinks: false,
             reporter, requestDelayMs, crawlWorkers);
     }
 
+    /// <summary>How one run composes: a full sweep, a feed-may-bound-it sweep, or an explicit feed update.</summary>
+    private enum RunMode
+    {
+        /// <summary>Sitemap + root seeds per site, links followed, prune on natural completion.</summary>
+        FullSites,
+        /// <summary>Like <see cref="FullSites"/>, unless every site's feed proves its change list complete — then exactly those changes.</summary>
+        AutoSites,
+        /// <summary>The seed is a feed; fetch exactly what it lists.</summary>
+        FeedUpdate,
+    }
+
     /// <summary>
-    /// Composes and runs one crawl. Full crawls seed from sitemaps + the root URL, follow links,
-    /// prune on natural completion, and verify links; update crawls (a feed seed) do none of that —
-    /// they fetch exactly what the feed names, index only what changed, and never delete anything
-    /// the run didn't visit.
+    /// Composes and runs one crawl. Full crawls seed from sitemaps + the root URL of every site,
+    /// follow links, prune on natural completion, and verify links; partial runs (an explicit feed
+    /// update, or an incremental run the sites' feeds proved complete) do none of that — they fetch
+    /// exactly the named items, index only what changed, and never delete anything the run didn't
+    /// visit.
     /// </summary>
     private async Task<CrawlReport> RunAsync(
-        string seedUrl,
-        bool fullCrawl,
+        IReadOnlyList<string> seedUrls,
+        RunMode mode,
+        string? incrementalFeed,
         int maxPages,
         IEnumerable<string>? allowedServers,
         IEnumerable<string>? noIndexPatterns,
@@ -152,10 +210,21 @@ public partial class CrawlerService
         var heartbeat = new CrawlHeartbeat();
         var observer = new CrawlObserver(_logger, reporter, crawlStartUtc, heartbeat);
 
-        if (!Uri.TryCreate(seedUrl, UriKind.Absolute, out var baseUri))
+        var seeds = new List<Uri>();
+        foreach (var raw in seedUrls)
         {
-            observer.OnSeedInvalid(seedUrl);
-            return EmptyReport(seedUrl, crawlStartUtc);
+            if (Uri.TryCreate(raw, UriKind.Absolute, out var seedUri))
+            {
+                seeds.Add(seedUri);
+            }
+            else
+            {
+                observer.OnSeedInvalid(raw);
+            }
+        }
+        if (seeds.Count == 0)
+        {
+            return EmptyReport(seedUrls.Count > 0 ? seedUrls[0] : string.Empty, crawlStartUtc);
         }
 
         var scope = new AllowedHosts();
@@ -169,7 +238,10 @@ public partial class CrawlerService
                 }
             }
         }
-        scope.AddOrigin(baseUri);
+        foreach (var seed in seeds)
+        {
+            scope.AddOrigin(seed);
+        }
 
         var noIndexRules = new NoIndexRules();
         if (noIndexPatterns != null)
@@ -202,26 +274,85 @@ public partial class CrawlerService
         var robots = new RobotsDirectory(_httpClient, hostHealth, maxCrawlSizeBytes, _logger);
         var backlog = new EmbeddingBacklog();
 
-        // First contact is the seed origin's robots.txt; a connection failure here writes the host
-        // off, and there is nothing to crawl.
-        await robots.GetOrFetchAsync(baseUri);
+        // First contact is each seed origin's robots.txt; a connection failure writes that host off
+        // and drops its seed from the run.
+        var reachableSeeds = new List<Uri>();
+        foreach (var seed in seeds)
+        {
+            await robots.GetOrFetchAsync(seed);
+            if (hostHealth.IsUnreachable(seed.Host))
+            {
+                observer.OnSeedUnreachable(seed.Host);
+            }
+            else
+            {
+                reachableSeeds.Add(seed);
+            }
+        }
 
         var result = new PipelineResult(0, 0, false, false);
         int discoveredCount = 0;
-        string reportSeed = seedUrl;
+        string reportSeed = seedUrls[0];
+        bool fullCrawl = mode != RunMode.FeedUpdate;
 
-        if (hostHealth.IsUnreachable(baseUri.Host))
+        if (reachableSeeds.Count > 0)
         {
-            observer.OnSeedUnreachable(baseUri.Host);
-        }
-        else
-        {
+            IReadOnlyList<ISeedSource> sources;
+            if (mode == RunMode.FeedUpdate)
+            {
+                sources = new ISeedSource[] { new FeedSeedSource(reachableSeeds[0]) };
+            }
+            else
+            {
+                IReadOnlyList<Uri>? provenChanges = null;
+                if (mode == RunMode.AutoSites)
+                {
+                    var planner = new IncrementalPlanner(_httpClient, _connectionString, maxCrawlSizeBytes, _logger);
+                    if (incrementalFeed is not null)
+                    {
+                        // A declared journal covers the whole site set from one feed; misconfiguration
+                        // is a full crawl, never a guess.
+                        if (Uri.TryCreate(incrementalFeed, UriKind.Absolute, out var journalUri))
+                        {
+                            provenChanges = await planner.TryPlanDeclaredAsync(journalUri, scope);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("incremental-feed '{Feed}' is not an absolute URL; running a full crawl.", incrementalFeed);
+                        }
+                    }
+                    else
+                    {
+                        provenChanges = await planner.TryPlanAsync(reachableSeeds, scope);
+                    }
+                }
+
+                if (provenChanges is not null)
+                {
+                    // Every site's feed proved its change list complete: the run is exactly those
+                    // changes (possibly none), then stop — with all of a partial run's guarantees.
+                    sources = new ISeedSource[] { new ListSeedSource(provenChanges) };
+                    fullCrawl = false;
+                }
+                else
+                {
+                    var full = new List<ISeedSource>();
+                    foreach (var seed in reachableSeeds)
+                    {
+                        full.Add(new SitemapSeedSource(seed, robots));
+                    }
+                    foreach (var seed in reachableSeeds)
+                    {
+                        full.Add(new RootUrlSource(seed, robots));
+                    }
+                    sources = full;
+                }
+            }
+
             var plan = new CrawlPlan
             {
-                SeedUri = baseUri,
-                SeedSources = fullCrawl
-                    ? new ISeedSource[] { new SitemapSeedSource(baseUri, robots), new RootUrlSource(baseUri, robots) }
-                    : new ISeedSource[] { new FeedSeedSource(baseUri) },
+                SeedUris = reachableSeeds,
+                SeedSources = sources,
                 Scope = scope,
                 NoIndexRules = noIndexRules,
                 FollowLinks = fullCrawl,
@@ -240,7 +371,7 @@ public partial class CrawlerService
 
             result = await pipeline.RunAsync();
             discoveredCount = pipeline.Visited.Count;
-            reportSeed = pipeline.SeedKey;
+            reportSeed = UrlNormalizer.Normalize(reachableSeeds[0]);
         }
 
         bool completedNaturally = result.JobsSubmitted > 0
@@ -289,7 +420,7 @@ public partial class CrawlerService
 
         var (brokenLinks, redirectedLinks) = await linkVerifier.BuildLinkReportAsync(verification, crawlStartUtc);
 
-        observer.OnCrawlCompleted(seedUrl);
+        observer.OnCrawlCompleted(seedUrls[0]);
 
         return new CrawlReport(
             reportSeed,

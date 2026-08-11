@@ -45,6 +45,18 @@ internal interface ICrawlContext
     bool Discover(Uri fetchUri);
 
     /// <summary>
+    /// Offers a feed a page advertises to the frontier as extra seed material — a positive signal
+    /// only: whatever the feed lists is guaranteed into the frontier, but a URL's absence from a
+    /// feed never suppresses anything (feeds are windows onto the newest items, so absence proves
+    /// nothing). Gated like link expansion (<see cref="FollowLinks"/>) and by a small per-run
+    /// budget, because platforms advertise a per-post comments feed on every post and an unbounded
+    /// crawl of those buys nothing.
+    /// </summary>
+    /// <param name="feedUri">The exact resolved feed target.</param>
+    /// <returns><c>true</c> if the feed was new, in scope, within budget, and enqueued.</returns>
+    bool DiscoverFeed(Uri feedUri);
+
+    /// <summary>
     /// The single frontier choke point: scope check first (a URL rejected before a seed redirect
     /// widens scope must not burn its dedup key), then the atomic seen-claim, then the pending-work
     /// increment, then the channel write. Never gated by <see cref="FollowLinks"/> — seed material

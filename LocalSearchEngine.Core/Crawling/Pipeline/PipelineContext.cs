@@ -33,6 +33,8 @@ internal sealed class PipelineContext : ICrawlContext
 
     public bool Discover(Uri fetchUri) => FollowLinks && _pipeline.Enqueue(new PageDocument(fetchUri));
 
+    public bool DiscoverFeed(Uri feedUri) => FollowLinks && _pipeline.TryDiscoverFeed(feedUri);
+
     public bool Enqueue(Document document) => _pipeline.Enqueue(document);
 
     public void Submit(CrawlJob job) => _pipeline.Submit(job);

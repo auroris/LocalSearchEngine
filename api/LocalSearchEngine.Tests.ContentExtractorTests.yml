@@ -5,14 +5,17 @@ items:
   id: ContentExtractorTests
   parent: LocalSearchEngine.Tests
   children:
+  - LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
   - LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
   - LocalSearchEngine.Tests.ContentExtractorTests.Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing
+  - LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
   - LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
   - LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
+  - LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
   - LocalSearchEngine.Tests.ContentExtractorTests.Utf8_body_with_no_declarations_decodes_correctly
   - LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(System.String,System.Boolean,System.Boolean)
   langs:
@@ -439,6 +442,114 @@ items:
   nameWithType.vb: ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
   fullName.vb: LocalSearchEngine.Tests.ContentExtractorTests.XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
   name.vb: XRobotsTag_directives_are_parsed_correctly(String, Boolean, Boolean)
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  id: Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+  nameWithType: ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 165
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Advertised_rss_and_atom_feeds_are_extracted_and_resolved()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
+  id: Non_feed_link_elements_are_not_mistaken_for_feeds
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Non_feed_link_elements_are_not_mistaken_for_feeds()
+  nameWithType: ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Non_feed_link_elements_are_not_mistaken_for_feeds
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 181
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Non_feed_link_elements_are_not_mistaken_for_feeds()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Non_feed_link_elements_are_not_mistaken_for_feeds()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
+  id: Feeds_are_advertised_even_on_nofollow_pages
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Feeds_are_advertised_even_on_nofollow_pages()
+  nameWithType: ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Feeds_are_advertised_even_on_nofollow_pages
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 196
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Feeds_are_advertised_even_on_nofollow_pages()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Feeds_are_advertised_even_on_nofollow_pages()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -865,3 +976,21 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  name: Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  nameWithType: ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Non_feed_link_elements_are_not_mistaken_for_feeds
+  name: Non_feed_link_elements_are_not_mistaken_for_feeds
+  nameWithType: ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Non_feed_link_elements_are_not_mistaken_for_feeds
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Feeds_are_advertised_even_on_nofollow_pages
+  name: Feeds_are_advertised_even_on_nofollow_pages
+  nameWithType: ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages

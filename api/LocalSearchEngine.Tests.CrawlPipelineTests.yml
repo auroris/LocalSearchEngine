@@ -6,9 +6,11 @@ items:
   parent: LocalSearchEngine.Tests
   children:
   - LocalSearchEngine.Tests.CrawlPipelineTests.#ctor
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
   - LocalSearchEngine.Tests.CrawlPipelineTests.ChunkCount(System.String)
   - LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(System.String)
   - LocalSearchEngine.Tests.CrawlPipelineTests.Deep_chain_completes
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches
   - LocalSearchEngine.Tests.CrawlPipelineTests.Dispose
   - LocalSearchEngine.Tests.CrawlPipelineTests.EnsureSchemaAsync
   - LocalSearchEngine.Tests.CrawlPipelineTests.Four_workers_index_every_page_exactly_once
@@ -46,7 +48,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlPipelineTests
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -91,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Seed
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 28
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -118,7 +120,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbPath
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 30
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -145,7 +147,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connectionString
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 31
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -172,7 +174,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _provider
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 32
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -199,7 +201,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _search
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 33
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -226,7 +228,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _embedder
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 34
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -253,7 +255,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _handler
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 35
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -280,7 +282,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 36
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -307,7 +309,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 38
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -336,7 +338,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 53
+    startLine: 52
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -366,7 +368,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 64
+    startLine: 63
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -398,7 +400,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureSchemaAsync
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 70
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -426,7 +428,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunAsync
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 81
+    startLine: 80
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -477,7 +479,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ChunkCount
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 128
+    startLine: 127
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -511,7 +513,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HasCrawlState
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 138
+    startLine: 137
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -545,7 +547,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Html
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 148
+    startLine: 147
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -579,7 +581,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RedirectedTo
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 153
+    startLine: 152
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -615,7 +617,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Four_workers_index_every_page_exactly_once
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 160
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -653,7 +655,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Zero_work_crawl_terminates
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 191
+    startLine: 190
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -691,7 +693,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Deep_chain_completes
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 209
+    startLine: 208
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -729,7 +731,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Wide_fanout_completes_and_indexes_all
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 228
+    startLine: 227
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -767,7 +769,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirect_chain_is_followed_and_sources_recorded_as_aliases
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 252
+    startLine: 251
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -805,7 +807,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 271
+    startLine: 270
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -843,7 +845,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Same_host_fetches_respect_the_politeness_gap_across_workers
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 299
+    startLine: 298
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -881,7 +883,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Sitemap_entries_seed_the_frontier
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 318
+    startLine: 317
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -919,7 +921,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 338
+    startLine: 337
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -957,7 +959,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStateRowCount
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 381
+    startLine: 380
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -973,6 +975,82 @@ items:
   nameWithType.vb: CrawlPipelineTests.CrawlStateRowCount(String)
   fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount(String)
   name.vb: CrawlStateRowCount(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
+  id: Advertised_feed_is_consulted_and_pulls_unlinked_items
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Advertised_feed_is_consulted_and_pulls_unlinked_items()
+  nameWithType: CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Advertised_feed_is_consulted_and_pulls_unlinked_items
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 390
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Advertised_feed_is_consulted_and_pulls_unlinked_items()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Advertised_feed_is_consulted_and_pulls_unlinked_items() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches
+  id: Discovered_feed_budget_bounds_feed_fetches
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Discovered_feed_budget_bounds_feed_fetches()
+  nameWithType: CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Discovered_feed_budget_bounds_feed_fetches
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 419
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Discovered_feed_budget_bounds_feed_fetches()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Discovered_feed_budget_bounds_feed_fetches() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 references:
 - uid: LocalSearchEngine.Tests
   commentId: N:LocalSearchEngine.Tests
@@ -1760,3 +1838,15 @@ references:
   name: CrawlStateRowCount
   nameWithType: CrawlPipelineTests.CrawlStateRowCount
   fullName: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Advertised_feed_is_consulted_and_pulls_unlinked_items
+  name: Advertised_feed_is_consulted_and_pulls_unlinked_items
+  nameWithType: CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Advertised_feed_is_consulted_and_pulls_unlinked_items
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Discovered_feed_budget_bounds_feed_fetches
+  name: Discovered_feed_budget_bounds_feed_fetches
+  nameWithType: CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Discovered_feed_budget_bounds_feed_fetches

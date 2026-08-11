@@ -1,0 +1,177 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  id: CrawlerService.RunMode
+  parent: LocalSearchEngine.Core.Crawling
+  children:
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.AutoSites
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FeedUpdate
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  langs:
+  - csharp
+  - vb
+  name: CrawlerService.RunMode
+  nameWithType: CrawlerService.RunMode
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  type: Enum
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RunMode
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 176
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: 'How one run composes: a full sweep, a feed-may-bound-it sweep, or an explicit feed update.'
+  example: []
+  syntax:
+    content: private enum CrawlerService.RunMode
+    content.vb: Private Enum CrawlerService.RunMode
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  id: FullSites
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  langs:
+  - csharp
+  - vb
+  name: FullSites
+  nameWithType: CrawlerService.RunMode.FullSites
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FullSites
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 179
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: Sitemap + root seeds per site, links followed, prune on natural completion.
+  example: []
+  syntax:
+    content: FullSites = 0
+    return:
+      type: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.AutoSites
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.AutoSites
+  id: AutoSites
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  langs:
+  - csharp
+  - vb
+  name: AutoSites
+  nameWithType: CrawlerService.RunMode.AutoSites
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.AutoSites
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AutoSites
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 181
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: Like <xref href="LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites" data-throw-if-not-resolved="false"></xref>, unless every site's feed proves its change list complete — then exactly those changes.
+  example: []
+  syntax:
+    content: AutoSites = 1
+    return:
+      type: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FeedUpdate
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FeedUpdate
+  id: FeedUpdate
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  langs:
+  - csharp
+  - vb
+  name: FeedUpdate
+  nameWithType: CrawlerService.RunMode.FeedUpdate
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FeedUpdate
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FeedUpdate
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 183
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: The seed is a feed; fetch exactly what it lists.
+  example: []
+  syntax:
+    content: FeedUpdate = 2
+    return:
+      type: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+references:
+- uid: LocalSearchEngine.Core.Crawling
+  commentId: N:LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling
+  nameWithType: LocalSearchEngine.Core.Crawling
+  fullName: LocalSearchEngine.Core.Crawling
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  name: CrawlerService.RunMode
+  nameWithType: CrawlerService.RunMode
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  commentId: F:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html#LocalSearchEngine_Core_Crawling_CrawlerService_RunMode_FullSites
+  name: FullSites
+  nameWithType: CrawlerService.RunMode.FullSites
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.FullSites

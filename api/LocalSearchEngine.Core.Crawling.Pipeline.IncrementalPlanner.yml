@@ -1,0 +1,1525 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  id: IncrementalPlanner
+  parent: LocalSearchEngine.Core.Crawling.Pipeline
+  children:
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor(System.Net.Http.HttpClient,System.String,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync(System.Uri,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync(System.Uri,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync(System.Collections.Generic.IReadOnlyList{System.Uri},LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.List{System.Uri},System.Collections.Generic.HashSet{System.String},System.Threading.CancellationToken)
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._connectionString
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._httpClient
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._logger
+  - LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._maxBytes
+  langs:
+  - csharp
+  - vb
+  name: IncrementalPlanner
+  nameWithType: IncrementalPlanner
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IncrementalPlanner
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 30
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Decides, before a run composes, whether the site's own feeds prove the change list complete —
+
+    the positive-indicator contract. For each seed origin it fetches the root page, takes the first
+
+    in-scope feed the page advertises, and walks the feed's entries newest-first: entries not yet
+
+    covered are the changes to crawl, and the first entry we've already covered (our stored visit is
+
+    at or after the entry's own date) is the boundary proving everything older was seen too. Every
+
+    origin bounding this way means the run can be exactly the collected changes and then stop.
+
+
+    Any origin that can't prove it — no advertised feed, an unparseable one, or a feed whose window
+
+    ends before a covered entry — forfeits incremental for the whole run: an exhausted window means
+
+    there may be older changes the feed no longer lists, exactly the case where only a full crawl is
+
+    honest. The covered test is date-based on purpose: an edited old post reappearing at the top of
+
+    the feed with a fresh date must count as a change, which a mere "URL is in the index" test would
+
+    stop on and silently skip. Entries with no parseable date can never prove coverage, so date-less
+
+    feeds degrade to the full-crawl fallback rather than to guessing.
+  example: []
+  syntax:
+    content: internal sealed class IncrementalPlanner
+    content.vb: Friend NotInheritable Class IncrementalPlanner
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._httpClient
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._httpClient
+  id: _httpClient
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: _httpClient
+  nameWithType: IncrementalPlanner._httpClient
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._httpClient
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _httpClient
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly HttpClient _httpClient
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Private ReadOnly _httpClient As HttpClient
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._connectionString
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._connectionString
+  id: _connectionString
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: _connectionString
+  nameWithType: IncrementalPlanner._connectionString
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._connectionString
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _connectionString
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 33
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly string _connectionString
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _connectionString As String
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._maxBytes
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._maxBytes
+  id: _maxBytes
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: _maxBytes
+  nameWithType: IncrementalPlanner._maxBytes
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._maxBytes
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _maxBytes
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 34
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly long _maxBytes
+    return:
+      type: System.Int64
+    content.vb: Private ReadOnly _maxBytes As Long
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._logger
+  commentId: F:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._logger
+  id: _logger
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: IncrementalPlanner._logger
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner._logger
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _logger
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: private readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Private ReadOnly _logger As ILogger
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor(System.Net.Http.HttpClient,System.String,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor(System.Net.Http.HttpClient,System.String,System.Int64,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.Net.Http.HttpClient,System.String,System.Int64,Microsoft.Extensions.Logging.ILogger)'
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: IncrementalPlanner(HttpClient, string, long, ILogger)
+  nameWithType: IncrementalPlanner.IncrementalPlanner(HttpClient, string, long, ILogger)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.IncrementalPlanner(System.Net.Http.HttpClient, string, long, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: .ctor
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 37
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  syntax:
+    content: public IncrementalPlanner(HttpClient httpClient, string connectionString, long maxBytes, ILogger logger)
+    parameters:
+    - id: httpClient
+      type: System.Net.Http.HttpClient
+    - id: connectionString
+      type: System.String
+    - id: maxBytes
+      type: System.Int64
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Public Sub New(httpClient As HttpClient, connectionString As String, maxBytes As Long, logger As ILogger)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor*
+  nameWithType.vb: IncrementalPlanner.New(HttpClient, String, Long, ILogger)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.New(System.Net.Http.HttpClient, String, Long, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(HttpClient, String, Long, ILogger)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync(System.Collections.Generic.IReadOnlyList{System.Uri},LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync(System.Collections.Generic.IReadOnlyList{System.Uri},LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  id: TryPlanAsync(System.Collections.Generic.IReadOnlyList{System.Uri},LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: TryPlanAsync(IReadOnlyList<Uri>, AllowedHosts, CancellationToken)
+  nameWithType: IncrementalPlanner.TryPlanAsync(IReadOnlyList<Uri>, AllowedHosts, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync(System.Collections.Generic.IReadOnlyList<System.Uri>, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryPlanAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 55
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Attempts to plan an incremental run over the given seed origins by autodiscovery: each
+
+    origin's root page must advertise a feed, and each feed must bound its own origin.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<Uri>?> TryPlanAsync(IReadOnlyList<Uri> seeds, AllowedHosts scope, CancellationToken ct = default)
+    parameters:
+    - id: seeds
+      type: System.Collections.Generic.IReadOnlyList{System.Uri}
+      description: The seed root URLs whose origins the run covers.
+    - id: scope
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+      description: The run's host rules; out-of-scope feeds and entries are ignored.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancels the probes.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.Uri}}
+      description: >-
+        The changed items to crawl (possibly empty: the feeds prove nothing changed), or
+            <code>null</code> when any origin could not prove its change list complete and a full crawl is
+            required.
+    content.vb: Public Function TryPlanAsync(seeds As IReadOnlyList(Of Uri), scope As AllowedHosts, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of Uri))
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync*
+  nameWithType.vb: IncrementalPlanner.TryPlanAsync(IReadOnlyList(Of Uri), AllowedHosts, CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync(System.Collections.Generic.IReadOnlyList(Of System.Uri), LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Threading.CancellationToken)
+  name.vb: TryPlanAsync(IReadOnlyList(Of Uri), AllowedHosts, CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  id: TryPlanDeclaredAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: TryPlanDeclaredAsync(Uri, AllowedHosts, CancellationToken)
+  nameWithType: IncrementalPlanner.TryPlanDeclaredAsync(Uri, AllowedHosts, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync(System.Uri, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryPlanDeclaredAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 95
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Attempts to plan an incremental run from one declared change-journal feed that covers every
+
+    host in the run at once — the configuration for a site set where only one host can serve a
+
+    feed (a document server has no page to advertise one on). The same boundary rule applies to
+
+    the single feed: entries above the first already-covered one are the whole run's changes.
+
+    A journal shaped as "everything in the window plus a tail of the most recently changed items
+
+    before it" is self-anchoring — on a quiet day the tail is the immediate boundary, and after
+
+    missed runs a fully-stale tail forces the full-crawl fallback all by itself.
+  example: []
+  syntax:
+    content: public Task<IReadOnlyList<Uri>?> TryPlanDeclaredAsync(Uri feedUri, AllowedHosts scope, CancellationToken ct = default)
+    parameters:
+    - id: feedUri
+      type: System.Uri
+      description: The configured journal feed.
+    - id: scope
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+      description: The run's host rules; out-of-scope entries are ignored.
+    - id: ct
+      type: System.Threading.CancellationToken
+      description: Cancels the probes.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.Uri}}
+      description: >-
+        The changed items to crawl (possibly empty), or <code>null</code> when the feed could not
+            be fetched, parsed, or bounded — a full crawl is required.
+    content.vb: Public Function TryPlanDeclaredAsync(feedUri As Uri, scope As AllowedHosts, ct As CancellationToken = Nothing) As Task(Of IReadOnlyList(Of Uri))
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.List{System.Uri},System.Collections.Generic.HashSet{System.String},System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.List{System.Uri},System.Collections.Generic.HashSet{System.String},System.Threading.CancellationToken)
+  id: WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.List{System.Uri},System.Collections.Generic.HashSet{System.String},System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: WalkFeedAsync(SqliteConnection, Uri, AllowedHosts, List<Uri>, HashSet<string>, CancellationToken)
+  nameWithType: IncrementalPlanner.WalkFeedAsync(SqliteConnection, Uri, AllowedHosts, List<Uri>, HashSet<string>, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Uri, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Collections.Generic.List<System.Uri>, System.Collections.Generic.HashSet<string>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WalkFeedAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 112
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Fetches one feed and walks its entries newest-first: uncovered entries join
+
+    <code class="paramref">changed</code>, and the first covered entry (stored visit at or after the
+
+    entry's own date) bounds the walk.
+  example: []
+  syntax:
+    content: private Task<bool> WalkFeedAsync(SqliteConnection read, Uri feedUri, AllowedHosts scope, List<Uri> changed, HashSet<string> seenKeys, CancellationToken ct)
+    parameters:
+    - id: read
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: feedUri
+      type: System.Uri
+    - id: scope
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    - id: changed
+      type: System.Collections.Generic.List{System.Uri}
+    - id: seenKeys
+      type: System.Collections.Generic.HashSet{System.String}
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> when the feed bounded; <code>false</code> means a full crawl is required.
+    content.vb: Private Function WalkFeedAsync(read As SqliteConnection, feedUri As Uri, scope As AllowedHosts, changed As List(Of Uri), seenKeys As HashSet(Of String), ct As CancellationToken) As Task(Of Boolean)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync*
+  nameWithType.vb: IncrementalPlanner.WalkFeedAsync(SqliteConnection, Uri, AllowedHosts, List(Of Uri), HashSet(Of String), CancellationToken)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync(Microsoft.Data.Sqlite.SqliteConnection, System.Uri, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Collections.Generic.List(Of System.Uri), System.Collections.Generic.HashSet(Of String), System.Threading.CancellationToken)
+  name.vb: WalkFeedAsync(SqliteConnection, Uri, AllowedHosts, List(Of Uri), HashSet(Of String), CancellationToken)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  id: DiscoverAdvertisedFeedAsync(System.Uri,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: DiscoverAdvertisedFeedAsync(Uri, AllowedHosts, CancellationToken)
+  nameWithType: IncrementalPlanner.DiscoverAdvertisedFeedAsync(Uri, AllowedHosts, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync(System.Uri, LocalSearchEngine.Core.Crawling.Policies.AllowedHosts, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DiscoverAdvertisedFeedAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 159
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Fetches the seed's root page and returns the first in-scope feed it advertises.
+  example: []
+  syntax:
+    content: private Task<Uri?> DiscoverAdvertisedFeedAsync(Uri seed, AllowedHosts scope, CancellationToken ct)
+    parameters:
+    - id: seed
+      type: System.Uri
+    - id: scope
+      type: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Uri}
+    content.vb: Private Function DiscoverAdvertisedFeedAsync(seed As Uri, scope As AllowedHosts, ct As CancellationToken) As Task(Of Uri)
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync(System.Uri,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync(System.Uri,System.Threading.CancellationToken)
+  id: FetchFeedItemsAsync(System.Uri,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: FetchFeedItemsAsync(Uri, CancellationToken)
+  nameWithType: IncrementalPlanner.FetchFeedItemsAsync(Uri, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync(System.Uri, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FetchFeedItemsAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 178
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: Fetches and parses a feed, or <code>null</code> when it can't be had or read.
+  example: []
+  syntax:
+    content: private Task<List<FeedItem>?> FetchFeedItemsAsync(Uri feedUri, CancellationToken ct)
+    parameters:
+    - id: feedUri
+      type: System.Uri
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}}
+    content.vb: Private Function FetchFeedItemsAsync(feedUri As Uri, ct As CancellationToken) As Task(Of List(Of FeedItem))
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync(System.Uri,System.Threading.CancellationToken)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync(System.Uri,System.Threading.CancellationToken)
+  id: FetchAsync(System.Uri,System.Threading.CancellationToken)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner
+  langs:
+  - csharp
+  - vb
+  name: FetchAsync(Uri, CancellationToken)
+  nameWithType: IncrementalPlanner.FetchAsync(Uri, CancellationToken)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync(System.Uri, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: FetchAsync
+    path: LocalSearchEngine.Core/Crawling/Pipeline/IncrementalPlanner.cs
+    startLine: 186
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: One size-capped probe GET; any failure is a "can't prove it" answer, never an exception.
+  example: []
+  syntax:
+    content: private Task<byte[]?> FetchAsync(Uri uri, CancellationToken ct)
+    parameters:
+    - id: uri
+      type: System.Uri
+    - id: ct
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Byte[]}
+    content.vb: Private Function FetchAsync(uri As Uri, ct As CancellationToken) As Task(Of Byte())
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync*
+references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline
+  commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Pipeline
+  nameWithType: LocalSearchEngine.Core.Crawling.Pipeline
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline
+    name: Pipeline
+    href: LocalSearchEngine.Core.Crawling.Pipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.#ctor
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner__ctor_System_Net_Http_HttpClient_System_String_System_Int64_Microsoft_Extensions_Logging_ILogger_
+  name: IncrementalPlanner
+  nameWithType: IncrementalPlanner.IncrementalPlanner
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.IncrementalPlanner
+  nameWithType.vb: IncrementalPlanner.New
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.New
+  name.vb: New
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_TryPlanAsync_System_Collections_Generic_IReadOnlyList_System_Uri__LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_System_Threading_CancellationToken_
+  name: TryPlanAsync
+  nameWithType: IncrementalPlanner.TryPlanAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanAsync
+- uid: System.Collections.Generic.IReadOnlyList{System.Uri}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Uri}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Uri>
+  nameWithType: IReadOnlyList<Uri>
+  fullName: System.Collections.Generic.IReadOnlyList<System.Uri>
+  nameWithType.vb: IReadOnlyList(Of Uri)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of System.Uri)
+  name.vb: IReadOnlyList(Of Uri)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts.html
+  name: AllowedHosts
+  nameWithType: AllowedHosts
+  fullName: LocalSearchEngine.Core.Crawling.Policies.AllowedHosts
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.Uri}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IReadOnlyList{System.Uri}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IReadOnlyList<Uri>>
+  nameWithType: Task<IReadOnlyList<Uri>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<System.Uri>>
+  nameWithType.vb: Task(Of IReadOnlyList(Of Uri))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IReadOnlyList(Of System.Uri))
+  name.vb: Task(Of IReadOnlyList(Of Uri))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Policies
+  commentId: N:LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Core.Crawling.Policies
+  nameWithType: LocalSearchEngine.Core.Crawling.Policies
+  fullName: LocalSearchEngine.Core.Crawling.Policies
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Core
+    name: Core
+    href: LocalSearchEngine.Core.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling
+    name: Crawling
+    href: LocalSearchEngine.Core.Crawling.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.Policies
+    name: Policies
+    href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_TryPlanDeclaredAsync_System_Uri_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_System_Threading_CancellationToken_
+  name: TryPlanDeclaredAsync
+  nameWithType: IncrementalPlanner.TryPlanDeclaredAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.TryPlanDeclaredAsync
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_WalkFeedAsync_Microsoft_Data_Sqlite_SqliteConnection_System_Uri_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_System_Collections_Generic_List_System_Uri__System_Collections_Generic_HashSet_System_String__System_Threading_CancellationToken_
+  name: WalkFeedAsync
+  nameWithType: IncrementalPlanner.WalkFeedAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.WalkFeedAsync
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: System.Collections.Generic.List{System.Uri}
+  commentId: T:System.Collections.Generic.List{System.Uri}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<Uri>
+  nameWithType: List<Uri>
+  fullName: System.Collections.Generic.List<System.Uri>
+  nameWithType.vb: List(Of Uri)
+  fullName.vb: System.Collections.Generic.List(Of System.Uri)
+  name.vb: List(Of Uri)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+- uid: System.Collections.Generic.HashSet{System.String}
+  commentId: T:System.Collections.Generic.HashSet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.HashSet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<string>
+  nameWithType: HashSet<string>
+  fullName: System.Collections.Generic.HashSet<string>
+  nameWithType.vb: HashSet(Of String)
+  fullName.vb: System.Collections.Generic.HashSet(Of String)
+  name.vb: HashSet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.HashSet`1
+  commentId: T:System.Collections.Generic.HashSet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<T>
+  nameWithType: HashSet<T>
+  fullName: System.Collections.Generic.HashSet<T>
+  nameWithType.vb: HashSet(Of T)
+  fullName.vb: System.Collections.Generic.HashSet(Of T)
+  name.vb: HashSet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_DiscoverAdvertisedFeedAsync_System_Uri_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_System_Threading_CancellationToken_
+  name: DiscoverAdvertisedFeedAsync
+  nameWithType: IncrementalPlanner.DiscoverAdvertisedFeedAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.DiscoverAdvertisedFeedAsync
+- uid: System.Threading.Tasks.Task{System.Uri}
+  commentId: T:System.Threading.Tasks.Task{System.Uri}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Uri>
+  nameWithType: Task<Uri>
+  fullName: System.Threading.Tasks.Task<System.Uri>
+  nameWithType.vb: Task(Of Uri)
+  fullName.vb: System.Threading.Tasks.Task(Of System.Uri)
+  name.vb: Task(Of Uri)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Uri
+    name: Uri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_FetchFeedItemsAsync_System_Uri_System_Threading_CancellationToken_
+  name: FetchFeedItemsAsync
+  nameWithType: IncrementalPlanner.FetchFeedItemsAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchFeedItemsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.Pipeline.FeedItem}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<FeedItem>>
+  nameWithType: Task<List<FeedItem>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<LocalSearchEngine.Core.Crawling.Pipeline.FeedItem>>
+  nameWithType.vb: Task(Of List(Of FeedItem))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of LocalSearchEngine.Core.Crawling.Pipeline.FeedItem))
+  name.vb: Task(Of List(Of FeedItem))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+    name: FeedItem
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem
+    name: FeedItem
+    href: LocalSearchEngine.Core.Crawling.Pipeline.FeedItem.html
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync
+  href: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.html#LocalSearchEngine_Core_Crawling_Pipeline_IncrementalPlanner_FetchAsync_System_Uri_System_Threading_CancellationToken_
+  name: FetchAsync
+  nameWithType: IncrementalPlanner.FetchAsync
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.IncrementalPlanner.FetchAsync
+- uid: System.Threading.Tasks.Task{System.Byte[]}
+  commentId: T:System.Threading.Tasks.Task{System.Byte[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<byte[]>
+  nameWithType: Task<byte[]>
+  fullName: System.Threading.Tasks.Task<byte[]>
+  nameWithType.vb: Task(Of Byte())
+  fullName.vb: System.Threading.Tasks.Task(Of Byte())
+  name.vb: Task(Of Byte())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )

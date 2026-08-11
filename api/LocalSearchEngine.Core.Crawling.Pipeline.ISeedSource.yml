@@ -36,6 +36,7 @@ items:
     content.vb: Friend Interface ISeedSource
   derivedClasses:
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
+  - LocalSearchEngine.Core.Crawling.Pipeline.ListSeedSource
   - LocalSearchEngine.Core.Crawling.Pipeline.RootUrlSource
   - LocalSearchEngine.Core.Crawling.Pipeline.SitemapSeedSource
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource.SeedAsync(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)

@@ -8,6 +8,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.AnalyzeHtml(System.Byte[],System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CleanTitle(System.String)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.CollapseWhitespace(System.String)
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractDocx(System.Byte[])
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractHeadings(HtmlAgilityPack.HtmlDocument)
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
@@ -108,7 +109,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AnalyzeHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 71
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -164,7 +165,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadHtml
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 129
+    startLine: 138
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -216,7 +217,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetHref
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 163
+    startLine: 172
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -240,6 +241,49 @@ items:
       type: System.String
     content.vb: Private Shared Function GetHref(node As HtmlNode) As String
   overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.GetHref*
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  id: ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor
+  langs:
+  - csharp
+  - vb
+  name: ExtractAdvertisedFeeds(HtmlDocument, string, HtmlAnalysis)
+  nameWithType: ContentExtractor.ExtractAdvertisedFeeds(HtmlDocument, string, ContentExtractor.HtmlAnalysis)
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument, string, LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExtractAdvertisedFeeds
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 180
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Collects the feeds the page advertises: <code>&lt;link&gt;</code> elements whose rel tokens include
+
+    <code>alternate</code> and whose type names an RSS or Atom media type. Deduplicated per page; scope
+
+    filtering is left to the frontier's choke point so the policy lives in one place.
+  example: []
+  syntax:
+    content: private static void ExtractAdvertisedFeeds(HtmlDocument doc, string currentUrl, ContentExtractor.HtmlAnalysis analysis)
+    parameters:
+    - id: doc
+      type: HtmlAgilityPack.HtmlDocument
+    - id: currentUrl
+      type: System.String
+    - id: analysis
+      type: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+    content.vb: Private Shared Sub ExtractAdvertisedFeeds(doc As HtmlDocument, currentUrl As String, analysis As ContentExtractor.HtmlAnalysis)
+  overload: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds*
+  nameWithType.vb: ContentExtractor.ExtractAdvertisedFeeds(HtmlDocument, String, ContentExtractor.HtmlAnalysis)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds(HtmlAgilityPack.HtmlDocument, String, LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
+  name.vb: ExtractAdvertisedFeeds(HtmlDocument, String, HtmlAnalysis)
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   commentId: M:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
   id: ExtractLinks(HtmlAgilityPack.HtmlDocument,System.String,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.RobotsRules},LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis)
@@ -258,7 +302,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 171
+    startLine: 226
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -305,7 +349,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ParseRobotsDirectives
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 220
+    startLine: 275
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -345,7 +389,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveCanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 293
+    startLine: 348
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -385,7 +429,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractPdf
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 348
+    startLine: 403
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -426,7 +470,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractDocx
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 423
+    startLine: 478
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -462,7 +506,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CleanTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 435
+    startLine: 490
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -498,7 +542,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractTitle
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 445
+    startLine: 500
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -531,7 +575,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExtractHeadings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 456
+    startLine: 511
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -564,7 +608,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollapseWhitespace
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 477
+    startLine: 532
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -600,7 +644,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ResolveEncoding
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 483
+    startLine: 538
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -1182,6 +1226,12 @@ references:
   name: HtmlNode
   nameWithType: HtmlNode
   fullName: HtmlAgilityPack.HtmlNode
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds
+  href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_ExtractAdvertisedFeeds_HtmlAgilityPack_HtmlDocument_System_String_LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_
+  name: ExtractAdvertisedFeeds
+  nameWithType: ContentExtractor.ExtractAdvertisedFeeds
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.ExtractAdvertisedFeeds
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
   commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Outlinks
   href: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.html#LocalSearchEngine_Core_Crawling_Extraction_ContentExtractor_HtmlAnalysis_Outlinks

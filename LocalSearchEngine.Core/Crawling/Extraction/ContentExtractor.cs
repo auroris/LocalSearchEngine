@@ -56,6 +56,14 @@ public static class ContentExtractor
         public List<Uri> OutlinkUris = new();
         /// <summary>Gets or sets the absolute off-site (out-of-scope) http(s) links on the page, kept for optional link verification.</summary>
         public List<string> OffsiteLinks = new();
+        /// <summary>
+        /// Gets or sets the RSS/Atom feeds the page advertises via
+        /// <c>&lt;link rel="alternate" type="application/rss+xml|atom+xml"&gt;</c>. A site's own feed
+        /// is its declared change journal — a positive signal of what to (re)fetch — so the crawl
+        /// consults advertised feeds as extra seed material. Extracted regardless of nofollow (it is
+        /// discovery metadata, like the canonical link, not an endorsement-carrying anchor).
+        /// </summary>
+        public List<Uri> AdvertisedFeedUris = new();
     }
 
     /// <summary>
@@ -85,6 +93,7 @@ public static class ContentExtractor
         analysis.NoIndex = noIndex;
         analysis.NoFollow = noFollow;
         analysis.CanonicalAlias = ResolveCanonicalAlias(doc, currentUrl, allowedHosts);
+        ExtractAdvertisedFeeds(doc, currentUrl, analysis);
 
         // Strip boilerplate BEFORE harvesting headings/text/links so footer "Quick Links"
         // headings and nav chrome don't pollute the index. noscript (enable-JS banners),
@@ -163,6 +172,52 @@ public static class ContentExtractor
     /// </summary>
     private static string GetHref(HtmlNode node) =>
         HtmlEntity.DeEntitize(node.GetAttributeValue("href", "")) ?? string.Empty;
+
+    /// <summary>
+    /// Collects the feeds the page advertises: <c>&lt;link&gt;</c> elements whose rel tokens include
+    /// <c>alternate</c> and whose type names an RSS or Atom media type. Deduplicated per page; scope
+    /// filtering is left to the frontier's choke point so the policy lives in one place.
+    /// </summary>
+    private static void ExtractAdvertisedFeeds(HtmlDocument doc, string currentUrl, HtmlAnalysis analysis)
+    {
+        var linkNodes = doc.DocumentNode.SelectNodes("//link[@rel]");
+        if (linkNodes is null) return;
+
+        var baseUri = new Uri(currentUrl);
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var node in linkNodes)
+        {
+            var type = node.GetAttributeValue("type", "");
+            if (!type.Contains("rss+xml", StringComparison.OrdinalIgnoreCase)
+                && !type.Contains("atom+xml", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            // rel is a space-separated token list; "alternate stylesheet" and friends must not match.
+            var rel = node.GetAttributeValue("rel", "");
+            bool isAlternate = false;
+            foreach (var token in rel.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (string.Equals(token, "alternate", StringComparison.OrdinalIgnoreCase))
+                {
+                    isAlternate = true;
+                    break;
+                }
+            }
+            if (!isAlternate) continue;
+
+            var href = HtmlEntity.DeEntitize(node.GetAttributeValue("href", "")) ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(href)) continue;
+            if (!Uri.TryCreate(baseUri, href, out var feedUri)) continue;
+            if (feedUri.Scheme != Uri.UriSchemeHttp && feedUri.Scheme != Uri.UriSchemeHttps) continue;
+
+            if (seen.Add(UrlNormalizer.Normalize(feedUri)))
+            {
+                analysis.AdvertisedFeedUris.Add(feedUri);
+            }
+        }
+    }
 
     /// <summary>
     /// Extracts the document's links into <see cref="HtmlAnalysis.Outlinks"/> (in-scope, crawlable)

@@ -6,10 +6,8 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Pipeline
   children:
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.#ctor(System.Uri)
-  - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName(System.Xml.XmlDocument,System.String)
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.IsPage
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String)
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.WithLocation(System.Uri)
   langs:
   - csharp
@@ -25,24 +23,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FeedDocument
     path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 19
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
   summary: >-
-    An RSS/Atom feed fetch — the entry point for update crawls, where the feed is the site's change
+    An RSS/Atom feed fetch — the entry point for explicit update crawls, and the target of full-crawl
 
-    journal: every listed item is offered to the frontier and nothing else is touched. The cheapness
+    feed auto-discovery. Every listed item is offered to the frontier; the cheapness guarantee comes
 
-    guarantee comes from the items themselves, not from trusting feed dates: each enqueued item is
+    from the items themselves, not from trusting feed dates: each enqueued item is fetched with a
 
-    fetched with a conditional request (an unchanged article answers 304 for pennies) and only a
+    conditional request (an unchanged article answers 304 for pennies) and only a changed content
 
-    changed content hash re-embeds. Parsed with the same hardened settings as sitemaps (no DTDs, no
+    hash re-embeds. Item links go through <xref href="LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)" data-throw-if-not-resolved="false"></xref> — feed items are seed
 
-    external resolution). Item links go through <xref href="LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)" data-throw-if-not-resolved="false"></xref> — feed items are
+    material, exempt from the FollowLinks gate that keeps an update run from becoming a crawl.
 
-    seed material, exempt from the FollowLinks gate that keeps an update run from becoming a crawl.
+    (Deciding whether a feed proves the change list complete is the incremental planner's job,
+
+    before a run composes; by the time a FeedDocument is in the frontier the answer is "fetch what
+
+    it lists".)
   example: []
   syntax:
     content: 'internal sealed class FeedDocument : Document'
@@ -77,7 +79,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 21
+    startLine: 20
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -109,7 +111,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsPage
     path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 23
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -150,7 +152,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WithLocation
     path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -193,7 +195,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 27
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -219,85 +221,6 @@ items:
     content.vb: Public Overrides Function ProcessAsync(fetch As FetchResult, ctx As ICrawlContext, ct As CancellationToken) As Task
   overridden: LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
   overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ProcessAsync*
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName(System.Xml.XmlDocument,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName(System.Xml.XmlDocument,System.String)
-  id: ElementsByLocalName(System.Xml.XmlDocument,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
-  langs:
-  - csharp
-  - vb
-  name: ElementsByLocalName(XmlDocument, string)
-  nameWithType: FeedDocument.ElementsByLocalName(XmlDocument, string)
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName(System.Xml.XmlDocument, string)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ElementsByLocalName
-    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 87
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  summary: >-
-    Enumerates elements by local name so namespace prefixes do not change feed semantics.
-
-    Both a default-namespace <code>&lt;entry&gt;</code> and a prefixed <code>&lt;atom:entry&gt;</code>
-
-    are the same Atom element.
-  example: []
-  syntax:
-    content: private static IEnumerable<XmlNode> ElementsByLocalName(XmlDocument doc, string localName)
-    parameters:
-    - id: doc
-      type: System.Xml.XmlDocument
-    - id: localName
-      type: System.String
-    return:
-      type: System.Collections.Generic.IEnumerable{System.Xml.XmlNode}
-    content.vb: Private Shared Function ElementsByLocalName(doc As XmlDocument, localName As String) As IEnumerable(Of XmlNode)
-  overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName*
-  nameWithType.vb: FeedDocument.ElementsByLocalName(XmlDocument, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName(System.Xml.XmlDocument, String)
-  name.vb: ElementsByLocalName(XmlDocument, String)
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String)
-  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String)
-  id: TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String)
-  parent: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument
-  langs:
-  - csharp
-  - vb
-  name: TryEnqueueItem(ICrawlContext, string?)
-  nameWithType: FeedDocument.TryEnqueueItem(ICrawlContext, string?)
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, string?)
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: TryEnqueueItem
-    path: LocalSearchEngine.Core/Crawling/Pipeline/FeedDocument.cs
-    startLine: 98
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  syntax:
-    content: private bool TryEnqueueItem(ICrawlContext ctx, string? link)
-    parameters:
-    - id: ctx
-      type: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
-    - id: link
-      type: System.String
-    return:
-      type: System.Boolean
-    content.vb: Private Function TryEnqueueItem(ctx As ICrawlContext, link As String) As Boolean
-  overload: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem*
-  nameWithType.vb: FeedDocument.TryEnqueueItem(ICrawlContext, String)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem(LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, String)
-  name.vb: TryEnqueueItem(ICrawlContext, String)
 references:
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
   commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
@@ -819,161 +742,3 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName
-  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.html#LocalSearchEngine_Core_Crawling_Pipeline_FeedDocument_ElementsByLocalName_System_Xml_XmlDocument_System_String_
-  name: ElementsByLocalName
-  nameWithType: FeedDocument.ElementsByLocalName
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.ElementsByLocalName
-- uid: System.Xml.XmlDocument
-  commentId: T:System.Xml.XmlDocument
-  parent: System.Xml
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.xml.xmldocument
-  name: XmlDocument
-  nameWithType: XmlDocument
-  fullName: System.Xml.XmlDocument
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String
-- uid: System.Collections.Generic.IEnumerable{System.Xml.XmlNode}
-  commentId: T:System.Collections.Generic.IEnumerable{System.Xml.XmlNode}
-  parent: System.Collections.Generic
-  definition: System.Collections.Generic.IEnumerable`1
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: IEnumerable<XmlNode>
-  nameWithType: IEnumerable<XmlNode>
-  fullName: System.Collections.Generic.IEnumerable<System.Xml.XmlNode>
-  nameWithType.vb: IEnumerable(Of XmlNode)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Xml.XmlNode)
-  name.vb: IEnumerable(Of XmlNode)
-  spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: <
-  - uid: System.Xml.XmlNode
-    name: XmlNode
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.xml.xmlnode
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Xml.XmlNode
-    name: XmlNode
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.xml.xmlnode
-  - name: )
-- uid: System.Xml
-  commentId: N:System.Xml
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Xml
-  nameWithType: System.Xml
-  fullName: System.Xml
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Xml
-    name: Xml
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.xml
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Xml
-    name: Xml
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.xml
-- uid: System.Collections.Generic.IEnumerable`1
-  commentId: T:System.Collections.Generic.IEnumerable`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: IEnumerable<T>
-  nameWithType: IEnumerable<T>
-  fullName: System.Collections.Generic.IEnumerable<T>
-  nameWithType.vb: IEnumerable(Of T)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
-  name.vb: IEnumerable(Of T)
-  spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem
-  href: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.html#LocalSearchEngine_Core_Crawling_Pipeline_FeedDocument_TryEnqueueItem_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_String_
-  name: TryEnqueueItem
-  nameWithType: FeedDocument.TryEnqueueItem
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.FeedDocument.TryEnqueueItem

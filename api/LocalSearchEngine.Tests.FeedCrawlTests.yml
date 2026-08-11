@@ -25,6 +25,7 @@ items:
   - LocalSearchEngine.Tests.FeedCrawlTests.Rss(System.String[])
   - LocalSearchEngine.Tests.FeedCrawlTests.TryDelete(System.String)
   - LocalSearchEngine.Tests.FeedCrawlTests.Unchanged_item_costs_a_304_and_no_reembedding
+  - LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
   - LocalSearchEngine.Tests.FeedCrawlTests.Update_run_never_deletes_what_it_did_not_visit
   - LocalSearchEngine.Tests.FeedCrawlTests.Update_run_touches_exactly_the_feed_and_its_items
   - LocalSearchEngine.Tests.FeedCrawlTests._connectionString
@@ -48,7 +49,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FeedCrawlTests
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 22
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -93,7 +94,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Feed
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 24
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -120,7 +121,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Robots
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -147,7 +148,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Post1
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -174,7 +175,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Post2
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 27
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -201,7 +202,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbPath
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 29
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -228,7 +229,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connectionString
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 30
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -255,7 +256,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _provider
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 31
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -282,7 +283,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _search
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 32
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -309,7 +310,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _embedder
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 33
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -336,7 +337,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _handler
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 34
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -363,7 +364,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _httpClient
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 35
+    startLine: 34
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -390,7 +391,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 37
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -419,7 +420,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 52
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -449,7 +450,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 63
+    startLine: 62
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -481,7 +482,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NewCrawler
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 69
+    startLine: 68
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -509,7 +510,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureSchemaAsync
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 72
+    startLine: 71
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -537,7 +538,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ChunkCount
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 78
+    startLine: 77
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -571,7 +572,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Html
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 88
+    startLine: 87
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -607,7 +608,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ConditionalHtml
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 99
+    startLine: 98
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -645,7 +646,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Rss
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 104
+    startLine: 103
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -679,7 +680,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Update_run_touches_exactly_the_feed_and_its_items
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 115
+    startLine: 114
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -717,7 +718,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Update_run_never_deletes_what_it_did_not_visit
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 140
+    startLine: 139
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -755,7 +756,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Unchanged_item_costs_a_304_and_no_reembedding
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 170
+    startLine: 169
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -793,7 +794,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Changed_item_is_reembedded
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 188
+    startLine: 187
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -831,7 +832,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Item_gone_from_the_site_is_removed_from_the_index
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 204
+    startLine: 203
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -869,7 +870,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Atom_entries_are_enqueued_including_relative_hrefs
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 220
+    startLine: 219
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -907,7 +908,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Feed_seed_redirect_adopts_the_canonical_origin
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 245
+    startLine: 244
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -945,7 +946,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Hostile_or_malformed_feeds_fail_safely
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 270
+    startLine: 269
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -961,6 +962,44 @@ items:
 
       Public Function Hostile_or_malformed_feeds_fail_safely() As Task
   overload: LocalSearchEngine.Tests.FeedCrawlTests.Hostile_or_malformed_feeds_fail_safely*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
+  commentId: M:LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
+  id: Update_run_does_not_chase_feeds_advertised_by_items
+  parent: LocalSearchEngine.Tests.FeedCrawlTests
+  langs:
+  - csharp
+  - vb
+  name: Update_run_does_not_chase_feeds_advertised_by_items()
+  nameWithType: FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items()
+  fullName: LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/FeedCrawlTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Update_run_does_not_chase_feeds_advertised_by_items
+    path: LocalSearchEngine.Tests/FeedCrawlTests.cs
+    startLine: 293
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Update_run_does_not_chase_feeds_advertised_by_items()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Update_run_does_not_chase_feeds_advertised_by_items() As Task
+  overload: LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -983,7 +1022,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Out_of_scope_feed_items_are_not_fetched
     path: LocalSearchEngine.Tests/FeedCrawlTests.cs
-    startLine: 294
+    startLine: 314
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1935,6 +1974,12 @@ references:
   name: Hostile_or_malformed_feeds_fail_safely
   nameWithType: FeedCrawlTests.Hostile_or_malformed_feeds_fail_safely
   fullName: LocalSearchEngine.Tests.FeedCrawlTests.Hostile_or_malformed_feeds_fail_safely
+- uid: LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items*
+  commentId: Overload:LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
+  href: LocalSearchEngine.Tests.FeedCrawlTests.html#LocalSearchEngine_Tests_FeedCrawlTests_Update_run_does_not_chase_feeds_advertised_by_items
+  name: Update_run_does_not_chase_feeds_advertised_by_items
+  nameWithType: FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
+  fullName: LocalSearchEngine.Tests.FeedCrawlTests.Update_run_does_not_chase_feeds_advertised_by_items
 - uid: LocalSearchEngine.Tests.FeedCrawlTests.Out_of_scope_feed_items_are_not_fetched*
   commentId: Overload:LocalSearchEngine.Tests.FeedCrawlTests.Out_of_scope_feed_items_are_not_fetched
   href: LocalSearchEngine.Tests.FeedCrawlTests.html#LocalSearchEngine_Tests_FeedCrawlTests_Out_of_scope_feed_items_are_not_fetched

@@ -26,7 +26,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TextQualityExtractionStrategy
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 376
+    startLine: 431
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -72,7 +72,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _text
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 378
+    startLine: 433
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -99,7 +99,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TotalGlyphs
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 381
+    startLine: 436
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -130,7 +130,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MappableGlyphs
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 383
+    startLine: 438
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -161,7 +161,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EventOccurred
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 385
+    startLine: 440
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -198,7 +198,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetSupportedEvents
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 402
+    startLine: 457
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -238,7 +238,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetResultantText
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 403
+    startLine: 458
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -274,7 +274,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsFontUnicodeMappable
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 411
+    startLine: 466
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction

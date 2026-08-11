@@ -50,6 +50,15 @@ internal sealed class HtmlDocument : Document
             ctx.Discover(outlink);
         }
 
+        // An advertised feed is the site's own change journal: consult it as a positive signal
+        // (its items are guaranteed into the frontier, ahead of whatever link discovery would find)
+        // — never a negative one, since a feed only windows the newest items and a URL's absence
+        // from it proves nothing. Runs on noindex pages too, same as link discovery.
+        foreach (var feedUri in analysis.AdvertisedFeedUris)
+        {
+            ctx.DiscoverFeed(feedUri);
+        }
+
         if (userNoIndex || analysis.NoIndex)
         {
             ctx.Observer.OnPageNoIndex(DedupKey);

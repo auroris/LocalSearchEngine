@@ -12,8 +12,12 @@ namespace LocalSearchEngine.Core.Crawling.Pipeline;
 /// </summary>
 internal sealed class CrawlPlan
 {
-    /// <summary>Gets the crawl's scope root. For update runs this is the feed URL; its origin anchors scope either way.</summary>
-    public required Uri SeedUri { get; init; }
+    /// <summary>
+    /// Gets the crawl's scope roots — one per configured site (a no-argument run seeds every
+    /// allowed origin at once, so pruning can see the whole in-scope world in a single pass).
+    /// For update runs this is the feed URL. The first entry names the run in the report.
+    /// </summary>
+    public required IReadOnlyList<Uri> SeedUris { get; init; }
 
     /// <summary>Gets the modules that seed the frontier, run in order under the pipeline's root work token.</summary>
     public required IReadOnlyList<ISeedSource> SeedSources { get; init; }

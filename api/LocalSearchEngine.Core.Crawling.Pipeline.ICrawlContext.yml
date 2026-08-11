@@ -6,6 +6,7 @@ items:
   parent: LocalSearchEngine.Core.Crawling.Pipeline
   children:
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Discover(System.Uri)
+  - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed(System.Uri)
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.FollowLinks
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Logger
@@ -303,6 +304,52 @@ items:
       description: <code>true</code> if the link was new, in scope, and enqueued.
     content.vb: Function Discover(fetchUri As Uri) As Boolean
   overload: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Discover*
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed(System.Uri)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed(System.Uri)
+  id: DiscoverFeed(System.Uri)
+  parent: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+  langs:
+  - csharp
+  - vb
+  name: DiscoverFeed(Uri)
+  nameWithType: ICrawlContext.DiscoverFeed(Uri)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed(System.Uri)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Pipeline/ICrawlContext.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: DiscoverFeed
+    path: LocalSearchEngine.Core/Crawling/Pipeline/ICrawlContext.cs
+    startLine: 56
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Pipeline
+  summary: >-
+    Offers a feed a page advertises to the frontier as extra seed material — a positive signal
+
+    only: whatever the feed lists is guaranteed into the frontier, but a URL's absence from a
+
+    feed never suppresses anything (feeds are windows onto the newest items, so absence proves
+
+    nothing). Gated like link expansion (<xref href="LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.FollowLinks" data-throw-if-not-resolved="false"></xref>) and by a small per-run
+
+    budget, because platforms advertise a per-post comments feed on every post and an unbounded
+
+    crawl of those buys nothing.
+  example: []
+  syntax:
+    content: bool DiscoverFeed(Uri feedUri)
+    parameters:
+    - id: feedUri
+      type: System.Uri
+      description: The exact resolved feed target.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the feed was new, in scope, within budget, and enqueued.
+    content.vb: Function DiscoverFeed(feedUri As Uri) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed*
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
   commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
   id: Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
@@ -321,7 +368,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Enqueue
     path: LocalSearchEngine.Core/Crawling/Pipeline/ICrawlContext.cs
-    startLine: 56
+    startLine: 68
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -367,7 +414,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Submit
     path: LocalSearchEngine.Core/Crawling/Pipeline/ICrawlContext.cs
-    startLine: 64
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -404,7 +451,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryAcceptIndex
     path: LocalSearchEngine.Core/Crawling/Pipeline/ICrawlContext.cs
-    startLine: 76
+    startLine: 88
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -874,6 +921,12 @@ references:
   name: ICrawlContext
   nameWithType: ICrawlContext
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed
+  href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html#LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_DiscoverFeed_System_Uri_
+  name: DiscoverFeed
+  nameWithType: ICrawlContext.DiscoverFeed
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.DiscoverFeed
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.Enqueue
   href: LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext.html#LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_Enqueue_LocalSearchEngine_Core_Crawling_Pipeline_Document_

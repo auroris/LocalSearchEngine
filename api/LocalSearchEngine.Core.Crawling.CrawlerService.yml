@@ -8,10 +8,11 @@ items:
   - LocalSearchEngine.Core.Crawling.CrawlerService.#ctor(System.Net.Http.HttpClient,LocalSearchEngine.Core.Searching.VectorSearchService,Microsoft.Extensions.Logging.ILogger{LocalSearchEngine.Core.Crawling.CrawlerService},LocalSearchEngine.Core.DatabaseConfig)
   - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlFeedAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int64,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync(System.Collections.Generic.IReadOnlyList{System.String},System.Boolean,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EmptyReport(System.String,System.DateTime)
   - LocalSearchEngine.Core.Crawling.CrawlerService.EnsureCreatedAsync
   - LocalSearchEngine.Core.Crawling.CrawlerService.PruneStaleUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver,System.DateTime)
-  - LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.String,System.Boolean,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  - LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.Collections.Generic.IReadOnlyList{System.String},LocalSearchEngine.Core.Crawling.CrawlerService.RunMode,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   - LocalSearchEngine.Core.Crawling.CrawlerService.RunStallWatchdogAsync(LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat,System.Threading.PeriodicTimer)
   - LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold
   - LocalSearchEngine.Core.Crawling.CrawlerService.UserAgent
@@ -350,6 +351,96 @@ items:
   nameWithType.vb: CrawlerService.CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
   fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer, Integer)
   name.vb: CrawlAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync(System.Collections.Generic.IReadOnlyList{System.String},System.Boolean,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync(System.Collections.Generic.IReadOnlyList{System.String},System.Boolean,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  id: CrawlSitesAsync(System.Collections.Generic.IReadOnlyList{System.String},System.Boolean,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  parent: LocalSearchEngine.Core.Crawling.CrawlerService
+  langs:
+  - csharp
+  - vb
+  name: CrawlSitesAsync(IReadOnlyList<string>, bool, string?, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
+  nameWithType: CrawlerService.CrawlSitesAsync(IReadOnlyList<string>, bool, string?, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync(System.Collections.Generic.IReadOnlyList<string>, bool, string?, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, int, int)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CrawlSitesAsync
+    path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
+    startLine: 124
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling
+  summary: >-
+    Crawls one or more configured sites in a single run — the no-argument CLI path, seeded from
+
+    every allowed origin at once so post-crawl pruning sees the whole in-scope world in one pass.
+
+    With <code class="paramref">allowIncremental</code>, each site's advertised feed is consulted first as a
+
+    positive indicator: walking it newest-first, entries not yet covered are the changes, and the
+
+    first already-covered entry (stored visit at or after the entry's date) proves everything
+
+    older was seen — so the run crawls exactly those changes and stops. If any site can't prove
+
+    its change list complete (no feed, or the feed's window ends before a covered entry), the
+
+    run falls back to a normal full crawl of every site.
+  example: []
+  syntax:
+    content: public Task<CrawlReport> CrawlSitesAsync(IReadOnlyList<string> seedUrls, bool allowIncremental = false, string? incrementalFeed = null, int maxPages = 2147483647, IEnumerable<string>? allowedServers = null, IEnumerable<string>? noIndexPatterns = null, int maxPagesPerHost = 2147483647, long maxCrawlSizeBytes = 15728640, bool checkExternalLinks = false, ICrawlReporter? reporter = null, int requestDelayMs = 250, int crawlWorkers = 4)
+    parameters:
+    - id: seedUrls
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+      description: The site root URLs to crawl.
+    - id: allowIncremental
+      type: System.Boolean
+      description: Whether feeds may bound the run to just the listed changes.
+    - id: incrementalFeed
+      type: System.String
+      description: >-
+        A declared change-journal feed covering every seed host at
+            once; when set, it replaces per-site autodiscovery as the incremental proof. The site set's
+            one feed-capable host can vouch for hosts (like a bare document server) that cannot
+            advertise a feed of their own.
+    - id: maxPages
+      type: System.Int32
+      description: The maximum number of pages to index.
+    - id: allowedServers
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Optional additional allowed hosts.
+    - id: noIndexPatterns
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Optional URL glob patterns whose pages are followed for links but never indexed.
+    - id: maxPagesPerHost
+      type: System.Int32
+      description: The maximum pages to crawl on any single host.
+    - id: maxCrawlSizeBytes
+      type: System.Int64
+      description: The maximum size in bytes allowed for a crawled page/file.
+    - id: checkExternalLinks
+      type: System.Boolean
+      description: Whether to check external links after a full crawl.
+    - id: reporter
+      type: LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter
+      description: Receives live progress and phase changes.
+    - id: requestDelayMs
+      type: System.Int32
+      description: The politeness gap between same-host fetches.
+    - id: crawlWorkers
+      type: System.Int32
+      description: The number of concurrent crawl workers.
+    return:
+      type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
+      description: A <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref> summarizing the run.
+    content.vb: Public Function CrawlSitesAsync(seedUrls As IReadOnlyList(Of String), allowIncremental As Boolean = False, incrementalFeed As String = Nothing, maxPages As Integer = 2147483647, allowedServers As IEnumerable(Of String) = Nothing, noIndexPatterns As IEnumerable(Of String) = Nothing, maxPagesPerHost As Integer = 2147483647, maxCrawlSizeBytes As Long = 15728640, checkExternalLinks As Boolean = False, reporter As ICrawlReporter = Nothing, requestDelayMs As Integer = 250, crawlWorkers As Integer = 4) As Task(Of CrawlReport)
+  overload: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync*
+  nameWithType.vb: CrawlerService.CrawlSitesAsync(IReadOnlyList(Of String), Boolean, String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync(System.Collections.Generic.IReadOnlyList(Of String), Boolean, String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer, Integer)
+  name.vb: CrawlSitesAsync(IReadOnlyList(Of String), Boolean, String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlFeedAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int64,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlFeedAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int64,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   id: CrawlFeedAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int64,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
@@ -368,7 +459,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlFeedAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 115
+    startLine: 160
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -420,16 +511,16 @@ items:
   nameWithType.vb: CrawlerService.CrawlFeedAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Long, ICrawlReporter, Integer, Integer)
   fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlFeedAsync(String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Long, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer, Integer)
   name.vb: CrawlFeedAsync(String, Integer, IEnumerable(Of String), IEnumerable(Of String), Long, ICrawlReporter, Integer, Integer)
-- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.String,System.Boolean,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.String,System.Boolean,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
-  id: RunAsync(System.String,System.Boolean,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.Collections.Generic.IReadOnlyList{System.String},LocalSearchEngine.Core.Crawling.CrawlerService.RunMode,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.Collections.Generic.IReadOnlyList{System.String},LocalSearchEngine.Core.Crawling.CrawlerService.RunMode,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
+  id: RunAsync(System.Collections.Generic.IReadOnlyList{System.String},LocalSearchEngine.Core.Crawling.CrawlerService.RunMode,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   parent: LocalSearchEngine.Core.Crawling.CrawlerService
   langs:
   - csharp
   - vb
-  name: RunAsync(string, bool, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
-  nameWithType: CrawlerService.RunAsync(string, bool, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
-  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(string, bool, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, int, int)
+  name: RunAsync(IReadOnlyList<string>, RunMode, string?, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
+  nameWithType: CrawlerService.RunAsync(IReadOnlyList<string>, CrawlerService.RunMode, string?, int, IEnumerable<string>?, IEnumerable<string>?, int, long, bool, ICrawlReporter?, int, int)
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.Collections.Generic.IReadOnlyList<string>, LocalSearchEngine.Core.Crawling.CrawlerService.RunMode, string?, int, System.Collections.Generic.IEnumerable<string>?, System.Collections.Generic.IEnumerable<string>?, int, long, bool, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter?, int, int)
   type: Method
   source:
     remote:
@@ -438,26 +529,30 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 136
+    startLine: 193
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
   summary: >-
-    Composes and runs one crawl. Full crawls seed from sitemaps + the root URL, follow links,
+    Composes and runs one crawl. Full crawls seed from sitemaps + the root URL of every site,
 
-    prune on natural completion, and verify links; update crawls (a feed seed) do none of that —
+    follow links, prune on natural completion, and verify links; partial runs (an explicit feed
 
-    they fetch exactly what the feed names, index only what changed, and never delete anything
+    update, or an incremental run the sites' feeds proved complete) do none of that — they fetch
 
-    the run didn't visit.
+    exactly the named items, index only what changed, and never delete anything the run didn't
+
+    visit.
   example: []
   syntax:
-    content: private Task<CrawlReport> RunAsync(string seedUrl, bool fullCrawl, int maxPages, IEnumerable<string>? allowedServers, IEnumerable<string>? noIndexPatterns, int maxPagesPerHost, long maxCrawlSizeBytes, bool checkExternalLinks, ICrawlReporter? reporter, int requestDelayMs, int crawlWorkers)
+    content: private Task<CrawlReport> RunAsync(IReadOnlyList<string> seedUrls, CrawlerService.RunMode mode, string? incrementalFeed, int maxPages, IEnumerable<string>? allowedServers, IEnumerable<string>? noIndexPatterns, int maxPagesPerHost, long maxCrawlSizeBytes, bool checkExternalLinks, ICrawlReporter? reporter, int requestDelayMs, int crawlWorkers)
     parameters:
-    - id: seedUrl
+    - id: seedUrls
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    - id: mode
+      type: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    - id: incrementalFeed
       type: System.String
-    - id: fullCrawl
-      type: System.Boolean
     - id: maxPages
       type: System.Int32
     - id: allowedServers
@@ -478,11 +573,11 @@ items:
       type: System.Int32
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
-    content.vb: Private Function RunAsync(seedUrl As String, fullCrawl As Boolean, maxPages As Integer, allowedServers As IEnumerable(Of String), noIndexPatterns As IEnumerable(Of String), maxPagesPerHost As Integer, maxCrawlSizeBytes As Long, checkExternalLinks As Boolean, reporter As ICrawlReporter, requestDelayMs As Integer, crawlWorkers As Integer) As Task(Of CrawlReport)
+    content.vb: Private Function RunAsync(seedUrls As IReadOnlyList(Of String), mode As CrawlerService.RunMode, incrementalFeed As String, maxPages As Integer, allowedServers As IEnumerable(Of String), noIndexPatterns As IEnumerable(Of String), maxPagesPerHost As Integer, maxCrawlSizeBytes As Long, checkExternalLinks As Boolean, reporter As ICrawlReporter, requestDelayMs As Integer, crawlWorkers As Integer) As Task(Of CrawlReport)
   overload: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync*
-  nameWithType.vb: CrawlerService.RunAsync(String, Boolean, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(String, Boolean, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer, Integer)
-  name.vb: RunAsync(String, Boolean, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
+  nameWithType.vb: CrawlerService.RunAsync(IReadOnlyList(Of String), CrawlerService.RunMode, String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
+  fullName.vb: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync(System.Collections.Generic.IReadOnlyList(Of String), LocalSearchEngine.Core.Crawling.CrawlerService.RunMode, String, Integer, System.Collections.Generic.IEnumerable(Of String), System.Collections.Generic.IEnumerable(Of String), Integer, Long, Boolean, LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter, Integer, Integer)
+  name.vb: RunAsync(IReadOnlyList(Of String), RunMode, String, Integer, IEnumerable(Of String), IEnumerable(Of String), Integer, Long, Boolean, ICrawlReporter, Integer, Integer)
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.PruneStaleUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver,System.DateTime)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.PruneStaleUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver,System.DateTime)
   id: PruneStaleUrlsAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Data.Sqlite.SqliteConnection,LocalSearchEngine.Core.Crawling.Policies.AllowedHosts,LocalSearchEngine.Core.Crawling.Pipeline.RobotsDirectory,LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker,LocalSearchEngine.Core.Crawling.Reporting.ICrawlObserver,System.DateTime)
@@ -501,7 +596,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStaleUrlsAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 323
+    startLine: 454
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -562,7 +657,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmptyReport
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 358
+    startLine: 489
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -603,7 +698,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WatchdogInterval
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 364
+    startLine: 495
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -632,7 +727,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StallThreshold
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 367
+    startLine: 498
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -661,7 +756,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunStallWatchdogAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 378
+    startLine: 509
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -1547,6 +1642,75 @@ references:
   - name: " "
   - name: TResult
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_CrawlSitesAsync_System_Collections_Generic_IReadOnlyList_System_String__System_Boolean_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Int32_System_Int32_
+  name: CrawlSitesAsync
+  nameWithType: CrawlerService.CrawlSitesAsync
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlSitesAsync
+- uid: System.Collections.Generic.IReadOnlyList{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<string>
+  nameWithType: IReadOnlyList<string>
+  fullName: System.Collections.Generic.IReadOnlyList<string>
+  nameWithType.vb: IReadOnlyList(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of String)
+  name.vb: IReadOnlyList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   commentId: M:LocalSearchEngine.Core.Crawling.CrawlerService.CrawlAsync(System.String,System.Int32,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Int32,System.Int64,System.Boolean,LocalSearchEngine.Core.Crawling.Reporting.ICrawlReporter,System.Int32,System.Int32)
   isExternal: true
@@ -1719,10 +1883,33 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.CrawlerService.CrawlFeedAsync
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync
-  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_RunAsync_System_String_System_Boolean_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Int32_System_Int32_
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_RunAsync_System_Collections_Generic_IReadOnlyList_System_String__LocalSearchEngine_Core_Crawling_CrawlerService_RunMode_System_String_System_Int32_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_Int32_System_Int64_System_Boolean_LocalSearchEngine_Core_Crawling_Reporting_ICrawlReporter_System_Int32_System_Int32_
   name: RunAsync
   nameWithType: CrawlerService.RunAsync
   fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunAsync
+- uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  commentId: T:LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  name: CrawlerService.RunMode
+  nameWithType: CrawlerService.RunMode
+  fullName: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService
+    name: CrawlerService
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+    name: RunMode
+    href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
 - uid: LocalSearchEngine.Core.Crawling.CrawlerService.PruneStaleUrlsAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.CrawlerService.PruneStaleUrlsAsync
   href: LocalSearchEngine.Core.Crawling.CrawlerService.html#LocalSearchEngine_Core_Crawling_CrawlerService_PruneStaleUrlsAsync_Microsoft_Data_Sqlite_SqliteConnection_Microsoft_Data_Sqlite_SqliteConnection_LocalSearchEngine_Core_Crawling_Policies_AllowedHosts_LocalSearchEngine_Core_Crawling_Pipeline_RobotsDirectory_LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_LocalSearchEngine_Core_Crawling_Reporting_ICrawlObserver_System_DateTime_
