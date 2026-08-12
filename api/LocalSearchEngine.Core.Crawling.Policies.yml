@@ -9,6 +9,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Policies.CrawlPolicy
   - LocalSearchEngine.Core.Crawling.Policies.DocKind
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  - LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
   - LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
   - LocalSearchEngine.Core.Crawling.Policies.RobotsRules
   - LocalSearchEngine.Core.Crawling.Policies.UrlNormalizer
@@ -73,6 +74,13 @@ references:
   name: HostHealthTracker
   nameWithType: HostHealthTracker
   fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness.html
+  name: HostPoliteness
+  nameWithType: HostPoliteness
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
 - uid: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
   parent: LocalSearchEngine.Core.Crawling.Policies

@@ -111,11 +111,11 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Reporting
   summary: >-
-    Prefix for a lane waiting its turn at a host's politeness gate. A long wait here is queueing
+    Prefix for a lane waiting out a host's politeness gap. A long wait here is a crawl-delayed
 
-    behind a slow or crawl-delayed host, not a stall, so the watchdog ignores it like <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> —
+    host's backlog, not a stall, so the watchdog ignores it like <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlHeartbeat.Idle" data-throw-if-not-resolved="false"></xref> — but the
 
-    but the marked activity should still name the host so a snapshot shows where the queue is.
+    marked activity should still name the host so a snapshot shows where the queue is.
   example: []
   syntax:
     content: public const string PoliteWaitPrefix = "polite wait"

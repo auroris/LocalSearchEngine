@@ -550,11 +550,11 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
   summary: >-
-    Atomically resolves same-run duplicate ownership and reserves one global index slot. Two
+    Atomically resolves same-run duplicate ownership and reserves one index slot. Two workers
 
-    workers indexing identical content at once resolve to one accepted index entry and one
+    indexing identical content at once resolve to one accepted index entry and one alias;
 
-    alias; distinct pages cannot exceed the run's global page cap.
+    distinct pages cannot exceed the run's global page cap or their host's per-host cap.
   example: []
   syntax:
     content: public bool TryAcceptIndex(string contentHash, string url, out string? duplicateOf)
@@ -569,7 +569,7 @@ items:
       type: System.String
       description: >-
         Receives the accepted owner when this is a same-run duplicate;
-            otherwise <code>null</code>, including when the cap rejected the candidate.
+            otherwise <code>null</code>, including when a cap rejected the candidate.
     return:
       type: System.Boolean
       description: <code>true</code> if the URL owns a reserved index slot; otherwise, <code>false</code>.

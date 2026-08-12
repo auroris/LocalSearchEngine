@@ -6,6 +6,7 @@
 
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Crawling.Policies;
 using LocalSearchEngine.Core.Crawling.Reporting;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
@@ -40,6 +41,8 @@ string brokenLinksFile = crawlSettings.BrokenLinksFile;
 bool checkExternalLinks = crawlSettings.CheckExternalLinks;
 bool noLive = crawlSettings.NoLiveStats;
 int requestDelayMs = crawlSettings.RequestDelayMs;
+int requestTimeoutSeconds = crawlSettings.RequestTimeoutSeconds;
+int connectTimeoutSeconds = crawlSettings.ConnectTimeoutSeconds;
 bool feedMode = crawlSettings.Feed;
 int crawlWorkers = crawlSettings.CrawlWorkers;
 bool allowIncremental = crawlSettings.AllowIncremental;
@@ -93,6 +96,22 @@ for (int i = 0; i < args.Length; i++)
         if (i + 1 >= args.Length || !int.TryParse(args[++i], out requestDelayMs) || requestDelayMs < 0)
         {
             Console.Error.WriteLine("Error: --request-delay-ms requires a non-negative integer.");
+            return;
+        }
+    }
+    else if (arg == "--request-timeout-seconds")
+    {
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out requestTimeoutSeconds) || requestTimeoutSeconds <= 0)
+        {
+            Console.Error.WriteLine("Error: --request-timeout-seconds requires a positive integer.");
+            return;
+        }
+    }
+    else if (arg == "--connect-timeout-seconds")
+    {
+        if (i + 1 >= args.Length || !int.TryParse(args[++i], out connectTimeoutSeconds) || connectTimeoutSeconds <= 0)
+        {
+            Console.Error.WriteLine("Error: --connect-timeout-seconds requires a positive integer.");
             return;
         }
     }
@@ -187,9 +206,16 @@ if (showHelp)
     Console.WriteLine("  --max-crawl-size-bytes <n> Stop downloading/indexing a page/file if its size exceeds");
     Console.WriteLine("                           n bytes. Default is 15728640 (15 MB).");
     Console.WriteLine("                           (Can also be set via 'max-crawl-size-bytes' in appsettings.json.)");
-    Console.WriteLine("  --request-delay-ms <n>   Politeness delay in milliseconds between requests to the");
-    Console.WriteLine("                           same host. Default is 250 ms. Set to 0 to disable delay.");
+    Console.WriteLine("  --request-delay-ms <n>   Minimum politeness gap in milliseconds since the last request");
+    Console.WriteLine("                           to the same host. Default is 250 ms. Set to 0 to disable.");
     Console.WriteLine("                           (Can also be set via 'request-delay-ms' in appsettings.json.)");
+    Console.WriteLine("  --request-timeout-seconds <n>  Wall-clock limit for a single HTTP request, covering");
+    Console.WriteLine("                           headers, retries, and the streamed body. Default is 100 s.");
+    Console.WriteLine("                           (Can also be set via 'request-timeout-seconds' in appsettings.json.)");
+    Console.WriteLine("  --connect-timeout-seconds <n>  Limit for establishing each connection (DNS + TCP + TLS).");
+    Console.WriteLine("                           Default is 15 s. Hosts with no DNS entry or nothing answering");
+    Console.WriteLine("                           at the address fail fast and are not retried.");
+    Console.WriteLine("                           (Can also be set via 'connect-timeout-seconds' in appsettings.json.)");
     Console.WriteLine("  --log-file <path>        Path to the run log file. Default is 'crawl.log'. Log messages");
     Console.WriteLine("                           go here, not to the console. (Or 'log-file' in appsettings.json.)");
     Console.WriteLine("  --stats-file <path>      Base path for the end-of-run stats files; '.json' and '.txt'");
@@ -216,9 +242,9 @@ if (showHelp)
     Console.WriteLine("  --full                   Force this run to be a full crawl, ignoring allow-incremental and");
     Console.WriteLine("                           any configured change journal. Use after feed problems, suspected");
     Console.WriteLine("                           drift, or deletions the journal has already rotated out.");
-    Console.WriteLine("  --crawl-workers <n>      Number of concurrent crawl workers. Default is 4. Each host is");
-    Console.WriteLine("                           still fetched sequentially with the politeness delay, so extra");
-    Console.WriteLine("                           workers pay off when the crawl spans several hosts.");
+    Console.WriteLine("  --crawl-workers <n>      Number of concurrent crawl workers. Default is 4. Workers share");
+    Console.WriteLine("                           hosts freely; the politeness gap still limits how often any");
+    Console.WriteLine("                           single host is contacted.");
     Console.WriteLine("                           (Or 'crawl-workers' in appsettings.json.)");
     Console.WriteLine("  --no-live                Force plain progress lines instead of the live display. Not");
     Console.WriteLine("                           usually needed: the live display turns itself off automatically");
@@ -327,15 +353,26 @@ try
     services.AddHttpClient<CrawlerService>(client =>
     {
         client.DefaultRequestHeaders.Add("User-Agent", CrawlerService.UserAgent);
+        // The one configured request clock: the crawl's per-request timeout sources mirror this
+        // value, extending it over streamed bodies that HttpClient.Timeout doesn't cover.
+        client.Timeout = TimeSpan.FromSeconds(requestTimeoutSeconds);
     })
     // Advertise and transparently decompress gzip/deflate/brotli, so most pages transfer at a
-    // fraction of their raw size instead of uncompressed.
+    // fraction of their raw size instead of uncompressed. The connect timeout bounds each
+    // connection attempt separately — without it, an address that routes but never answers holds
+    // a request for the OS TCP timeout (~21 s per attempt) before failing.
     .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
     {
         AutomaticDecompression = DecompressionMethods.All,
+        ConnectTimeout = TimeSpan.FromSeconds(connectTimeoutSeconds),
     })
-    .AddPolicyHandler(HttpPolicyExtensions
-        .HandleTransientHttpError()
+    // Transient-error retries (5xx, 408, request exceptions) — except when no server took part in
+    // the exchange at all (no DNS entry, nothing accepting connections at the address): a host
+    // that isn't there answers the same on every attempt, and retrying it three times with
+    // backoff only delays the crawl and the host-health write-off.
+    .AddPolicyHandler(Policy<HttpResponseMessage>
+        .Handle<HttpRequestException>(ex => !HostHealthTracker.IsConnectionFailure(ex))
+        .OrTransientHttpStatusCode()
         .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
 
     // Local embeddings (snowflake-arctic-embed-s, 384-dim, CPU/ONNX); the model is downloaded
@@ -381,6 +418,7 @@ try
     AnsiConsole.MarkupLineInterpolated($"[grey]Stats[/]     {statsJsonPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Broken[/]    {brokenLinksPath}");
     AnsiConsole.MarkupLineInterpolated($"[grey]Request delay[/] {requestDelayMs} ms");
+    AnsiConsole.MarkupLineInterpolated($"[grey]Request timeout[/] {requestTimeoutSeconds} s (connect {connectTimeoutSeconds} s)");
     if (maxPages != int.MaxValue)
     {
         AnsiConsole.MarkupLineInterpolated($"[grey]Max pages[/] {maxPages}");
@@ -460,9 +498,17 @@ internal sealed class CrawlSettings
     [ConfigurationKeyName("max-crawl-size-bytes")]
     public long MaxCrawlSizeBytes { get; set; } = 15 * 1024 * 1024;
 
-    /// <summary>Politeness delay in milliseconds between requests to the same host. Defaults to 250.</summary>
+    /// <summary>Minimum politeness gap in milliseconds since the last request to the same host. Defaults to 250.</summary>
     [ConfigurationKeyName("request-delay-ms")]
     public int RequestDelayMs { get; set; } = 250;
+
+    /// <summary>Wall-clock limit in seconds for a single HTTP request — headers, retries, and streamed body. Defaults to 100.</summary>
+    [ConfigurationKeyName("request-timeout-seconds")]
+    public int RequestTimeoutSeconds { get; set; } = 100;
+
+    /// <summary>Limit in seconds for establishing each connection (DNS + TCP + TLS). Defaults to 15.</summary>
+    [ConfigurationKeyName("connect-timeout-seconds")]
+    public int ConnectTimeoutSeconds { get; set; } = 15;
 
     /// <summary>Additional allowed hosts as [scheme://]host[:port]; null/empty means the seed origin only.</summary>
     [ConfigurationKeyName("allowed-servers")]

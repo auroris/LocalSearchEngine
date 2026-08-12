@@ -86,6 +86,20 @@ public sealed class HostHealthTracker
     }
 
     /// <summary>
+    /// Classifies whether <paramref name="ex"/> means the request never reached a server at all:
+    /// the name didn't resolve, or nothing accepted the connection at the address (refused, dead,
+    /// or past the connect timeout). Retrying such a failure buys nothing within a crawl's
+    /// lifetime, so the crawler's transient-error retry policy skips it. Deliberately narrower than
+    /// <see cref="IsTransportFailure"/> — the write-off test — which also counts TLS failures and
+    /// mid-exchange timeouts: those prove something answered, and answering servers deserve their
+    /// retries.
+    /// </summary>
+    /// <param name="ex">The request exception to classify.</param>
+    /// <returns><c>true</c> if the failure happened before any server took part in the exchange.</returns>
+    public static bool IsConnectionFailure(HttpRequestException ex) =>
+        ex.HttpRequestError is HttpRequestError.NameResolutionError or HttpRequestError.ConnectionError;
+
+    /// <summary>
     /// Classifies whether <paramref name="ex"/> is a connection-level failure that means the host
     /// could not be reached — a DNS/connect/TLS error, a dead socket, or a timeout. A per-request
     /// timeout surfaces as a <see cref="TaskCanceledException"/>; with no crawl-wide cancellation in

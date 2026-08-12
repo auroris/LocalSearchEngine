@@ -186,7 +186,7 @@ internal sealed class IncrementalPlanner
     /// <summary>One size-capped probe GET; any failure is a "can't prove it" answer, never an exception.</summary>
     private async Task<byte[]?> FetchAsync(Uri uri, CancellationToken ct)
     {
-        using var timeout = HttpContentReader.NewRequestTimeout();
+        using var timeout = HttpContentReader.NewRequestTimeout(_httpClient);
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(timeout.Token, ct);
         try
         {

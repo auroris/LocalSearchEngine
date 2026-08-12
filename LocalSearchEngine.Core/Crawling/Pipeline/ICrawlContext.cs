@@ -77,14 +77,14 @@ internal interface ICrawlContext
     void Submit(CrawlJob job);
 
     /// <summary>
-    /// Atomically resolves same-run duplicate ownership and reserves one global index slot. Two
-    /// workers indexing identical content at once resolve to one accepted index entry and one
-    /// alias; distinct pages cannot exceed the run's global page cap.
+    /// Atomically resolves same-run duplicate ownership and reserves one index slot. Two workers
+    /// indexing identical content at once resolve to one accepted index entry and one alias;
+    /// distinct pages cannot exceed the run's global page cap or their host's per-host cap.
     /// </summary>
     /// <param name="contentHash">The extracted-content hash.</param>
     /// <param name="url">The URL claiming it.</param>
     /// <param name="duplicateOf">Receives the accepted owner when this is a same-run duplicate;
-    /// otherwise <c>null</c>, including when the cap rejected the candidate.</param>
+    /// otherwise <c>null</c>, including when a cap rejected the candidate.</param>
     /// <returns><c>true</c> if the URL owns a reserved index slot; otherwise, <c>false</c>.</returns>
     bool TryAcceptIndex(string contentHash, string url, out string? duplicateOf);
 }

@@ -339,10 +339,10 @@ items:
       description: Receives live progress and phase changes.
     - id: requestDelayMs
       type: System.Int32
-      description: The politeness gap between same-host fetches when robots.txt declares no crawl-delay.
+      description: The politeness gap between same-host request starts when robots.txt declares no crawl-delay.
     - id: crawlWorkers
       type: System.Int32
-      description: The number of concurrent crawl workers (each host still fetches sequentially).
+      description: The number of concurrent crawl workers (the politeness gap still bounds how often any one host is contacted).
     return:
       type: System.Threading.Tasks.Task{LocalSearchEngine.Core.Crawling.Reporting.CrawlReport}
       description: A <xref href="LocalSearchEngine.Core.Crawling.Reporting.CrawlReport" data-throw-if-not-resolved="false"></xref> summarizing what the crawl indexed, removed, and discovered.
@@ -429,7 +429,7 @@ items:
       description: Receives live progress and phase changes.
     - id: requestDelayMs
       type: System.Int32
-      description: The politeness gap between same-host fetches.
+      description: The politeness gap between same-host request starts.
     - id: crawlWorkers
       type: System.Int32
       description: The number of concurrent crawl workers.
@@ -499,7 +499,7 @@ items:
       description: Receives live progress and phase changes.
     - id: requestDelayMs
       type: System.Int32
-      description: The politeness gap between same-host fetches.
+      description: The politeness gap between same-host request starts.
     - id: crawlWorkers
       type: System.Int32
       description: The number of concurrent crawl workers.
@@ -765,7 +765,7 @@ items:
 
     flight past <xref href="LocalSearchEngine.Core.Crawling.CrawlerService.StallThreshold" data-throw-if-not-resolved="false"></xref>, naming the URL or phase that is stuck. Quiet lanes —
 
-    parked idle or queued at a politeness gate — are expected to sit and are never warned about.
+    parked idle or waiting out a host's politeness gap — are expected to sit and are never warned about.
 
     The loop ends when <code class="paramref">timer</code> is disposed.
   example: []

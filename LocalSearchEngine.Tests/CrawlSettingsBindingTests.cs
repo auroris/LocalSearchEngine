@@ -22,6 +22,8 @@ public class CrawlSettingsBindingTests
         "max-pages-per-host": null,
         "max-crawl-size-bytes": 15728640,
         "request-delay-ms": 500,
+        "request-timeout-seconds": 30,
+        "connect-timeout-seconds": 5,
         "allowed-servers": [ "http://coldlake.mil.ca", "http://documents.coldlake.mil.ca" ],
         "noindex-patterns": [ "http://coldlake.mil.ca/en/Documents/*", "http://coldlake.mil.ca/fr/Documents/*" ],
         "check-external-links": true,
@@ -68,6 +70,8 @@ public class CrawlSettingsBindingTests
     {
         var settings = Bind();
         Assert.Equal(500, settings.RequestDelayMs);
+        Assert.Equal(30, settings.RequestTimeoutSeconds);
+        Assert.Equal(5, settings.ConnectTimeoutSeconds);
         Assert.Equal(15728640, settings.MaxCrawlSizeBytes);
         Assert.True(settings.CheckExternalLinks);
         Assert.True(settings.NoLiveStats);
@@ -91,6 +95,8 @@ public class CrawlSettingsBindingTests
         var settings = config.GetSection("CrawlSettings").Get<CrawlSettings>() ?? new CrawlSettings();
         Assert.Equal(4, settings.CrawlWorkers);
         Assert.False(settings.Feed);
+        Assert.Equal(100, settings.RequestTimeoutSeconds);
+        Assert.Equal(15, settings.ConnectTimeoutSeconds);
     }
 
     [Fact]

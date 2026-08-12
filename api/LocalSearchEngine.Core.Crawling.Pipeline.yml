@@ -15,9 +15,6 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedParser
   - LocalSearchEngine.Core.Crawling.Pipeline.FeedSeedSource
   - LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
-  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-  - LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
   - LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
   - LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext
   - LocalSearchEngine.Core.Crawling.Pipeline.ISeedSource
@@ -129,57 +126,6 @@ references:
   name: FetchResult
   nameWithType: FetchResult
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-  parent: LocalSearchEngine.Core.Crawling.Pipeline
-  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  name: HostGate
-  nameWithType: HostGate
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  name: HostGate.HostLane
-  nameWithType: HostGate.HostLane
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    name: HostGate
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-    name: HostLane
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    name: HostGate
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-    name: HostLane
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane.html
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  name: HostGate.Releaser
-  nameWithType: HostGate.Releaser
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    name: HostGate
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-    name: Releaser
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    name: HostGate
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-    name: Releaser
-    href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser.html
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
   commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
   href: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument.html

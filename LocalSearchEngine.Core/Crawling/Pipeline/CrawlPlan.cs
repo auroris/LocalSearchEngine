@@ -48,7 +48,7 @@ internal sealed class CrawlPlan
     /// <summary>Gets a value indicating whether off-site links are probed during link verification.</summary>
     public bool CheckExternalLinks { get; init; }
 
-    /// <summary>Gets the number of concurrent crawl workers. Parallelism pays off across hosts; each single host stays sequential.</summary>
+    /// <summary>Gets the number of concurrent crawl workers. Workers share hosts freely; the politeness gap, not the worker count, bounds how often any one host is contacted.</summary>
     public int CrawlWorkers { get; init; } = 4;
 
     /// <summary>Gets the maximum pages to index this run.</summary>
@@ -60,6 +60,6 @@ internal sealed class CrawlPlan
     /// <summary>Gets the maximum size in bytes for any single download.</summary>
     public long MaxCrawlSizeBytes { get; init; } = 15 * 1024 * 1024;
 
-    /// <summary>Gets the politeness gap between same-host fetches when robots.txt declares no crawl-delay.</summary>
+    /// <summary>Gets the politeness gap between same-host request starts when robots.txt declares no crawl-delay.</summary>
     public int DefaultRequestDelayMs { get; init; } = 250;
 }

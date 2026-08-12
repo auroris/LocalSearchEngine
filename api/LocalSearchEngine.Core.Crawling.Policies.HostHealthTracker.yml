@@ -5,6 +5,7 @@ items:
   id: HostHealthTracker
   parent: LocalSearchEngine.Core.Crawling.Policies
   children:
+  - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure(System.Net.Http.HttpRequestException)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsUnreachable(System.String)
   - LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.RecordFailure(System.String,System.Exception)
@@ -310,6 +311,54 @@ items:
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
     content.vb: Public ReadOnly Property UnreachableHosts As IReadOnlyCollection(Of String)
   overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.UnreachableHosts*
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure(System.Net.Http.HttpRequestException)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure(System.Net.Http.HttpRequestException)
+  id: IsConnectionFailure(System.Net.Http.HttpRequestException)
+  parent: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
+  langs:
+  - csharp
+  - vb
+  name: IsConnectionFailure(HttpRequestException)
+  nameWithType: HostHealthTracker.IsConnectionFailure(HttpRequestException)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure(System.Net.Http.HttpRequestException)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: IsConnectionFailure
+    path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
+    startLine: 98
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Policies
+  summary: >-
+    Classifies whether <code class="paramref">ex</code> means the request never reached a server at all:
+
+    the name didn't resolve, or nothing accepted the connection at the address (refused, dead,
+
+    or past the connect timeout). Retrying such a failure buys nothing within a crawl's
+
+    lifetime, so the crawler's transient-error retry policy skips it. Deliberately narrower than
+
+    <xref href="LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)" data-throw-if-not-resolved="false"></xref> — the write-off test — which also counts TLS failures and
+
+    mid-exchange timeouts: those prove something answered, and answering servers deserve their
+
+    retries.
+  example: []
+  syntax:
+    content: public static bool IsConnectionFailure(HttpRequestException ex)
+    parameters:
+    - id: ex
+      type: System.Net.Http.HttpRequestException
+      description: The request exception to classify.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the failure happened before any server took part in the exchange.
+    content.vb: Public Shared Function IsConnectionFailure(ex As HttpRequestException) As Boolean
+  overload: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure*
 - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
   commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
   id: IsTransportFailure(System.Exception)
@@ -328,7 +377,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsTransportFailure
     path: LocalSearchEngine.Core/Crawling/Policies/HostHealthTracker.cs
-    startLine: 95
+    startLine: 109
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Policies
@@ -893,6 +942,84 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+  commentId: M:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_
+  name: IsTransportFailure(Exception)
+  nameWithType: HostHealthTracker.IsTransportFailure(Exception)
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+    name: IsTransportFailure
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsTransportFailure(System.Exception)
+    name: IsTransportFailure
+    href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsTransportFailure_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure
+  href: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.html#LocalSearchEngine_Core_Crawling_Policies_HostHealthTracker_IsConnectionFailure_System_Net_Http_HttpRequestException_
+  name: IsConnectionFailure
+  nameWithType: HostHealthTracker.IsConnectionFailure
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker.IsConnectionFailure
+- uid: System.Net.Http.HttpRequestException
+  commentId: T:System.Net.Http.HttpRequestException
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequestexception
+  name: HttpRequestException
+  nameWithType: HttpRequestException
+  fullName: System.Net.Http.HttpRequestException
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
 - uid: System.Threading.Tasks.TaskCanceledException
   commentId: T:System.Threading.Tasks.TaskCanceledException
   isExternal: true

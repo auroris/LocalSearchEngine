@@ -150,7 +150,7 @@ internal sealed class LinkVerifier
     /// <returns>A tuple containing the link's classified <see cref="LinkStatus"/> and actual HTTP status code.</returns>
     private async Task<(LinkStatus Status, int StatusCode)> ProbeLinkAsync(string url, LinkVerificationContext context)
     {
-        using var timeout = HttpContentReader.NewRequestTimeout();
+        using var timeout = HttpContentReader.NewRequestTimeout(_httpClient);
         try
         {
             using var response = await SendProbeAsync(url, timeout.Token);

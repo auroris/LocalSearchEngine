@@ -27,6 +27,8 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
   "max-pages-per-host": null,
   "max-crawl-size-bytes": 15728640,
   "request-delay-ms": 250,
+  "request-timeout-seconds": 100,
+  "connect-timeout-seconds": 15,
   "allowed-servers": [
     "example.com",
     "https://wiki.example.org:8080"
@@ -45,7 +47,9 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
 * **`max-pages`** (integer/null, default: `null`): A hard cap on how many successful pages the crawler will index this run. Stops the crawl once reached.
 * **`max-pages-per-host`** (integer/null, default: `null`): Maximum pages to download from a single origin. Useful to prevent infinite crawl loops on calendar or search filter pages.
 * **`max-crawl-size-bytes`** (integer, default: `15728640` / 15MB): The maximum size (after decompression) of an individual document or page. Large files are ignored or terminated mid-stream.
-* **`request-delay-ms`** (integer, default: `250`): The default politeness delay in milliseconds between requests to the same host when `robots.txt` does not specify a `Crawl-delay`. Set to `0` to disable the delay. Can be overridden using CLI argument `--request-delay-ms <n>`.
+* **`request-delay-ms`** (integer, default: `250`): The minimum politeness gap in milliseconds between requests to the same host when `robots.txt` does not specify a `Crawl-delay`. The gap is measured since the host was last contacted, so time spent parsing and embedding counts toward it — a worker only waits when the host would otherwise be contacted too soon. Set to `0` to disable the gap. Can be overridden using CLI argument `--request-delay-ms <n>`.
+* **`request-timeout-seconds`** (integer, default: `100`): Wall-clock limit for a single HTTP request — response headers, transient-error retries, and the streamed body all have to finish inside it. A server that stalls is logged as a failed fetch and, on first contact, written off as unreachable for the run. Lower it to spend less of a run waiting on dead-slow hosts; raise it if large documents on a slow server get cut off mid-download. Can be overridden using CLI argument `--request-timeout-seconds <n>`.
+* **`connect-timeout-seconds`** (integer, default: `15`): Limit for *establishing* each connection — DNS lookup, TCP connect, and TLS handshake. Without one, an address that routes but never answers holds a request for the operating system's TCP timeout (roughly 21 seconds per attempt on Windows). Servers that don't exist fail faster than this in practice, because connection failures are never retried: a host with no DNS entry or nothing accepting connections at its address fails its first contact immediately, is written off as unreachable, and the rest of its URLs are skipped for the run. Transient-error retries (HTTP `5xx`/`408`, dropped responses) are unaffected. Can be overridden using CLI argument `--connect-timeout-seconds <n>`.
 * **`allowed-servers`** (array of strings): Defines the scope of servers the crawler is permitted to visit. See **Crawl Scope Rules** below.
 * **`noindex-patterns`** (array of strings): URL glob patterns whose pages are crawled for their links but never indexed ("noindex, follow"). See **Noindex Patterns** below.
 * **`check-external-links`** (boolean, default: `false`): If `true`, the crawler will verify off-site links found on crawled pages (by performing a lightweight `HEAD` or `GET` request) without indexing their content.
@@ -59,7 +63,7 @@ The crawler's behaviors, bounds, and scope restrictions can be set in JSON forma
 
   The recommended journal shape is *everything changed in the window, plus a tail of the most recently changed items before it* (e.g. the last 24 hours plus the next ten most recent). That makes the feed self-anchoring: on a quiet day the tail bounds the run immediately (three requests total), and if the crawler misses enough runs that the whole tail looks new, the full-crawl fallback triggers on its own. Give the window margin over your crawl interval, and list deletions too — a listed URL that answers 404 is removed from the index.
 * **`crawl-workers`** and no-argument runs: running the crawler with **no `<url>`** seeds every entry in `allowed-servers` and crawls them in a single run (entries without a scheme are seeded over `http`). Combined with `allow-incremental: true`, a bare scheduled `crawler.exe` run does the right thing every time: incremental when the feeds prove it, full when they can't.
-* **`crawl-workers`** (integer, default: `4`): Number of concurrent crawl workers. Each host is still fetched sequentially with the politeness delay, so extra workers pay off when the crawl spans several hosts. Can be overridden using CLI argument `--crawl-workers <n>`.
+* **`crawl-workers`** (integer, default: `4`): Number of concurrent crawl workers. Workers share hosts freely — the politeness gap (`request-delay-ms` or `Crawl-delay`) limits how often any single host is contacted, not how many workers process its documents — so extra workers pay off whenever parsing and embedding, rather than the gap itself, is what a crawl spends its time on. Can be overridden using CLI argument `--crawl-workers <n>`.
 
 ---
 

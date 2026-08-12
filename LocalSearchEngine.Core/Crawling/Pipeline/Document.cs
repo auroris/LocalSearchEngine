@@ -120,8 +120,8 @@ internal abstract class Document
             && !ctx.TryAcceptIndex(contentHash, DedupKey, out duplicateOf)
             && duplicateOf is null)
         {
-            // The global cap rejected this distinct candidate. It deliberately produces no visit
-            // job: a capped run is partial and must leave the prior stored entry untouched.
+            // The global or per-host cap rejected this distinct candidate. It deliberately produces
+            // no visit job: a capped run is partial and must leave the prior stored entry untouched.
             return;
         }
         if (duplicateOf != null)

@@ -42,7 +42,7 @@ The crawler is designed to build the index incrementally while being polite to t
 ### 1. Politeness by Design
 * **`robots.txt` Compliance**: The crawler parses and adheres to `robots.txt` rules using `RobotsExclusionTools`, respecting longest-match precedence, bot-specific user-agent groups, and `Crawl-delay` directives (capped at 30 seconds).
 * **Laziness**: Host configurations (robots.txt, sitemaps) are loaded lazily on the first request to that host.
-* **Rate Limiting**: Requests to the same host are spaced by a minimum default delay of 250 milliseconds.
+* **Rate Limiting**: Requests to the same host are spaced by a minimum gap (250 milliseconds by default), measured since the host was last contacted — a host left alone longer than the gap is fetched from immediately, and time the crawler spends processing counts toward the gap.
 
 ### 2. Incremental Crawls
 To avoid re-indexing unchanged content:

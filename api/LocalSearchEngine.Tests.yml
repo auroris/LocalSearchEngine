@@ -20,7 +20,8 @@ items:
   - LocalSearchEngine.Tests.FeedCrawlTests
   - LocalSearchEngine.Tests.FeedCrawlTests.FeedFakeHandler
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests
-  - LocalSearchEngine.Tests.HostGateTests
+  - LocalSearchEngine.Tests.HostHealthTrackerTests
+  - LocalSearchEngine.Tests.HostPolitenessTests
   - LocalSearchEngine.Tests.IncrementalCrawlTests
   - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
   - LocalSearchEngine.Tests.LinkAuthorityTests
@@ -240,12 +241,18 @@ references:
   name: Fts5MatchSemanticsTests
   nameWithType: Fts5MatchSemanticsTests
   fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
-- uid: LocalSearchEngine.Tests.HostGateTests
-  commentId: T:LocalSearchEngine.Tests.HostGateTests
-  href: LocalSearchEngine.Tests.HostGateTests.html
-  name: HostGateTests
-  nameWithType: HostGateTests
-  fullName: LocalSearchEngine.Tests.HostGateTests
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests
+  commentId: T:LocalSearchEngine.Tests.HostHealthTrackerTests
+  href: LocalSearchEngine.Tests.HostHealthTrackerTests.html
+  name: HostHealthTrackerTests
+  nameWithType: HostHealthTrackerTests
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests
+- uid: LocalSearchEngine.Tests.HostPolitenessTests
+  commentId: T:LocalSearchEngine.Tests.HostPolitenessTests
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html
+  name: HostPolitenessTests
+  nameWithType: HostPolitenessTests
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests
 - uid: LocalSearchEngine.Tests.IncrementalCrawlTests
   commentId: T:LocalSearchEngine.Tests.IncrementalCrawlTests
   href: LocalSearchEngine.Tests.IncrementalCrawlTests.html

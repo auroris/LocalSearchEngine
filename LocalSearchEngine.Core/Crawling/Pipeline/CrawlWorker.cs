@@ -12,13 +12,14 @@ namespace LocalSearchEngine.Core.Crawling.Pipeline;
 
 /// <summary>
 /// One of the N concurrent crawl loops. For each dequeued document it runs the page gauntlet
-/// (per-host cap, host health, robots, conditional-request state), takes the host's politeness
-/// gate, fetches once, resolves the transport outcome uniformly, and only hands successful bodies
-/// to the document's typed processing — which runs while the host gate is still held, so each
-/// host's documents stay exactly sequential. Every path through the loop releases the document's
-/// pending-work token in a finally; the release that strikes zero completes the crawl channel and
-/// ends the crawl. One bad page never ends the loop: failures classify as a touch (or a log line
-/// for infrastructure fetches) and the worker moves on.
+/// (per-host cap, host health, robots, conditional-request state), waits out the host's politeness
+/// turn, fetches once, resolves the transport outcome uniformly, and only hands successful bodies
+/// to the document's typed processing. Politeness paces request starts and nothing more — workers
+/// fetch and process one host's documents concurrently, and the per-host page cap stays exact
+/// because <see cref="CrawlPipeline.TryAcceptIndex"/> enforces it atomically. Every path through
+/// the loop releases the document's pending-work token in a finally; the release that strikes zero
+/// completes the crawl channel and ends the crawl. One bad page never ends the loop: failures
+/// classify as a touch (or a log line for infrastructure fetches) and the worker moves on.
 /// </summary>
 internal sealed class CrawlWorker
 {
@@ -107,6 +108,8 @@ internal sealed class CrawlWorker
 
         if (document.IsPage)
         {
+            // Advisory: spares a capped host the fetch. The exact cap decision is TryAcceptIndex's,
+            // which can still reject this document after download if workers race the last slot.
             if (_pipeline.IndexedOn(host) >= _pipeline.Plan.MaxPagesPerHost)
             {
                 _pipeline.NoteHostCapSkip();
@@ -152,32 +155,22 @@ internal sealed class CrawlWorker
             return;
         }
 
-        var minGap = HostGate.ResolveDelay(robots, _pipeline.Plan.DefaultRequestDelayMs);
+        var minGap = HostPoliteness.ResolveDelay(robots, _pipeline.Plan.DefaultRequestDelayMs);
         _pipeline.Heartbeat.Mark(_lane, $"{CrawlHeartbeat.PoliteWaitPrefix} for {host}");
-        using (await _pipeline.Gate.EnterAsync(host, minGap, ct))
+        await _pipeline.Politeness.WaitTurnAsync(host, minGap, ct);
+
+        _pipeline.Heartbeat.Mark(_lane, $"fetching {document.DedupKey}");
+        var download = await _pipeline.Downloader.DownloadAsync(
+            document.FetchUri, document.DedupKey, condETag, condLastModified,
+            _pipeline.Plan.MaxCrawlSizeBytes, acceptAnyContentType: !document.IsPage);
+
+        if (document.IsPage)
         {
-            // Authoritative cap re-check: same-host work serializes on the gate, so an index that
-            // pushed the host over its cap while this document queued is only visible now.
-            if (document.IsPage && _pipeline.IndexedOn(host) >= _pipeline.Plan.MaxPagesPerHost)
-            {
-                _pipeline.NoteHostCapSkip();
-                _pipeline.Observer.OnHostCapReached(_pipeline.Plan.MaxPagesPerHost, host, document.DedupKey);
-                return;
-            }
-
-            _pipeline.Heartbeat.Mark(_lane, $"fetching {document.DedupKey}");
-            var download = await _pipeline.Downloader.DownloadAsync(
-                document.FetchUri, document.DedupKey, condETag, condLastModified,
-                _pipeline.Plan.MaxCrawlSizeBytes, acceptAnyContentType: !document.IsPage);
-
-            if (document.IsPage)
-            {
-                await HandlePageOutcomeAsync(document, priorContentHash, download, ct);
-            }
-            else
-            {
-                await HandleInfrastructureOutcomeAsync(document, download, ct);
-            }
+            await HandlePageOutcomeAsync(document, priorContentHash, download, ct);
+        }
+        else
+        {
+            await HandleInfrastructureOutcomeAsync(document, download, ct);
         }
     }
 

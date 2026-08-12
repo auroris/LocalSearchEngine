@@ -119,15 +119,6 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
     name: FetchResult
     type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    name: HostGate
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.HostLane
-    name: HostGate.HostLane
-    type: Class
-  - uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.Releaser
-    name: HostGate.Releaser
-    type: Struct
   - uid: LocalSearchEngine.Core.Crawling.Pipeline.HtmlDocument
     name: HtmlDocument
     type: Class
@@ -200,6 +191,9 @@ items:
     type: Enum
   - uid: LocalSearchEngine.Core.Crawling.Policies.HostHealthTracker
     name: HostHealthTracker
+    type: Class
+  - uid: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+    name: HostPoliteness
     type: Class
   - uid: LocalSearchEngine.Core.Crawling.Policies.NoIndexRules
     name: NoIndexRules
@@ -396,8 +390,11 @@ items:
   - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
     name: Fts5MatchSemanticsTests
     type: Class
-  - uid: LocalSearchEngine.Tests.HostGateTests
-    name: HostGateTests
+  - uid: LocalSearchEngine.Tests.HostHealthTrackerTests
+    name: HostHealthTrackerTests
+    type: Class
+  - uid: LocalSearchEngine.Tests.HostPolitenessTests
+    name: HostPolitenessTests
     type: Class
   - uid: LocalSearchEngine.Tests.IncrementalCrawlTests
     name: IncrementalCrawlTests

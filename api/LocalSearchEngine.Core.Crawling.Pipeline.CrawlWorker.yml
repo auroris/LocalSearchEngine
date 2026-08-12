@@ -30,26 +30,28 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlWorker
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
   summary: >-
     One of the N concurrent crawl loops. For each dequeued document it runs the page gauntlet
 
-    (per-host cap, host health, robots, conditional-request state), takes the host's politeness
+    (per-host cap, host health, robots, conditional-request state), waits out the host's politeness
 
-    gate, fetches once, resolves the transport outcome uniformly, and only hands successful bodies
+    turn, fetches once, resolves the transport outcome uniformly, and only hands successful bodies
 
-    to the document's typed processing — which runs while the host gate is still held, so each
+    to the document's typed processing. Politeness paces request starts and nothing more — workers
 
-    host's documents stay exactly sequential. Every path through the loop releases the document's
+    fetch and process one host's documents concurrently, and the per-host page cap stays exact
 
-    pending-work token in a finally; the release that strikes zero completes the crawl channel and
+    because <xref href="LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String%2cSystem.String%2cSystem.String%40)" data-throw-if-not-resolved="false"></xref> enforces it atomically. Every path through
 
-    ends the crawl. One bad page never ends the loop: failures classify as a touch (or a log line
+    the loop releases the document's pending-work token in a finally; the release that strikes zero
 
-    for infrastructure fetches) and the worker moves on.
+    completes the crawl channel and ends the crawl. One bad page never ends the loop: failures
+
+    classify as a touch (or a log line for infrastructure fetches) and the worker moves on.
   example: []
   syntax:
     content: internal sealed class CrawlWorker
@@ -81,7 +83,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RedirectStatusCode
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 26
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -112,7 +114,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _pipeline
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -139,7 +141,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _ctx
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -166,7 +168,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _lane
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 30
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -193,7 +195,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 32
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -229,7 +231,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 46
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -274,7 +276,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 99
+    startLine: 100
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -307,7 +309,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandlePageOutcomeAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 184
+    startLine: 177
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -349,7 +351,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandleRedirect
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 251
+    startLine: 244
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -396,7 +398,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 285
+    startLine: 278
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -435,7 +437,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandleInfrastructureOutcomeAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 315
+    startLine: 308
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -462,6 +464,62 @@ items:
     content.vb: Private Function HandleInfrastructureOutcomeAsync(document As Document, download As DownloadResult, ct As CancellationToken) As Task
   overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlWorker.HandleInfrastructureOutcomeAsync*
 references:
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String,System.String,System.String@)
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String,System.String,System.String@)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_TryAcceptIndex_System_String_System_String_System_String__
+  name: TryAcceptIndex(string, string, out string)
+  nameWithType: CrawlPipeline.TryAcceptIndex(string, string, out string)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(string, string, out string)
+  nameWithType.vb: CrawlPipeline.TryAcceptIndex(String, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(String, String, String)
+  name.vb: TryAcceptIndex(String, String, String)
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String,System.String,System.String@)
+    name: TryAcceptIndex
+    href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_TryAcceptIndex_System_String_System_String_System_String__
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex(System.String,System.String,System.String@)
+    name: TryAcceptIndex
+    href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_TryAcceptIndex_System_String_System_String_System_String__
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Pipeline
   commentId: N:LocalSearchEngine.Core.Crawling.Pipeline
   href: LocalSearchEngine.html

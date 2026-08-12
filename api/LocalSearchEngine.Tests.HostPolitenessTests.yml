@@ -1,35 +1,36 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Tests.HostGateTests
-  commentId: T:LocalSearchEngine.Tests.HostGateTests
-  id: HostGateTests
+- uid: LocalSearchEngine.Tests.HostPolitenessTests
+  commentId: T:LocalSearchEngine.Tests.HostPolitenessTests
+  id: HostPolitenessTests
   parent: LocalSearchEngine.Tests
   children:
-  - LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
-  - LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
-  - LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
-  - LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
+  - LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+  - LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped
+  - LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
+  - LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
+  - LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
   langs:
   - csharp
   - vb
-  name: HostGateTests
-  nameWithType: HostGateTests
-  fullName: LocalSearchEngine.Tests.HostGateTests
+  name: HostPolitenessTests
+  nameWithType: HostPolitenessTests
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests
   type: Class
   source:
     remote:
-      path: LocalSearchEngine.Tests/HostGateTests.cs
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: HostGateTests
-    path: LocalSearchEngine.Tests/HostGateTests.cs
-    startLine: 7
+    id: HostPolitenessTests
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 6
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   syntax:
-    content: public sealed class HostGateTests
-    content.vb: Public NotInheritable Class HostGateTests
+    content: public sealed class HostPolitenessTests
+    content.vb: Public NotInheritable Class HostPolitenessTests
   inheritance:
   - System.Object
   inheritedMembers:
@@ -39,25 +40,25 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
-  commentId: M:LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
-  id: Same_host_entries_are_spaced_by_the_gap
-  parent: LocalSearchEngine.Tests.HostGateTests
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
+  commentId: M:LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
+  id: Same_host_turns_are_spaced_by_the_gap
+  parent: LocalSearchEngine.Tests.HostPolitenessTests
   langs:
   - csharp
   - vb
-  name: Same_host_entries_are_spaced_by_the_gap()
-  nameWithType: HostGateTests.Same_host_entries_are_spaced_by_the_gap()
-  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap()
+  name: Same_host_turns_are_spaced_by_the_gap()
+  nameWithType: HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap()
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap()
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/HostGateTests.cs
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Same_host_entries_are_spaced_by_the_gap
-    path: LocalSearchEngine.Tests/HostGateTests.cs
-    startLine: 9
+    id: Same_host_turns_are_spaced_by_the_gap
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 8
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -65,37 +66,113 @@ items:
     content: >-
       [Fact]
 
-      public Task Same_host_entries_are_spaced_by_the_gap()
+      public Task Same_host_turns_are_spaced_by_the_gap()
     return:
       type: System.Threading.Tasks.Task
     content.vb: >-
       <Fact>
 
-      Public Function Same_host_entries_are_spaced_by_the_gap() As Task
-  overload: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap*
+      Public Function Same_host_turns_are_spaced_by_the_gap() As Task
+  overload: LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
-  commentId: M:LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
+  commentId: M:LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
+  id: Simultaneous_same_host_turns_space_out_instead_of_bunching
+  parent: LocalSearchEngine.Tests.HostPolitenessTests
+  langs:
+  - csharp
+  - vb
+  name: Simultaneous_same_host_turns_space_out_instead_of_bunching()
+  nameWithType: HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching()
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Simultaneous_same_host_turns_space_out_instead_of_bunching
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 24
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Simultaneous_same_host_turns_space_out_instead_of_bunching()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Simultaneous_same_host_turns_space_out_instead_of_bunching() As Task
+  overload: LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+  commentId: M:LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+  id: A_host_left_alone_longer_than_the_gap_admits_immediately
+  parent: LocalSearchEngine.Tests.HostPolitenessTests
+  langs:
+  - csharp
+  - vb
+  name: A_host_left_alone_longer_than_the_gap_admits_immediately()
+  nameWithType: HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately()
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: A_host_left_alone_longer_than_the_gap_admits_immediately
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 41
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task A_host_left_alone_longer_than_the_gap_admits_immediately()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function A_host_left_alone_longer_than_the_gap_admits_immediately() As Task
+  overload: LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
+  commentId: M:LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
   id: Different_hosts_do_not_wait_on_each_other
-  parent: LocalSearchEngine.Tests.HostGateTests
+  parent: LocalSearchEngine.Tests.HostPolitenessTests
   langs:
   - csharp
   - vb
   name: Different_hosts_do_not_wait_on_each_other()
-  nameWithType: HostGateTests.Different_hosts_do_not_wait_on_each_other()
-  fullName: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other()
+  nameWithType: HostPolitenessTests.Different_hosts_do_not_wait_on_each_other()
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other()
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/HostGateTests.cs
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Different_hosts_do_not_wait_on_each_other
-    path: LocalSearchEngine.Tests/HostGateTests.cs
-    startLine: 25
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 58
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -110,68 +187,30 @@ items:
       <Fact>
 
       Public Function Different_hosts_do_not_wait_on_each_other() As Task
-  overload: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other*
+  overload: LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
-  commentId: M:LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
-  id: Same_host_lane_is_exclusive_while_held
-  parent: LocalSearchEngine.Tests.HostGateTests
-  langs:
-  - csharp
-  - vb
-  name: Same_host_lane_is_exclusive_while_held()
-  nameWithType: HostGateTests.Same_host_lane_is_exclusive_while_held()
-  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held()
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Tests/HostGateTests.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Same_host_lane_is_exclusive_while_held
-    path: LocalSearchEngine.Tests/HostGateTests.cs
-    startLine: 39
-  assemblies:
-  - LocalSearchEngine.Tests
-  namespace: LocalSearchEngine.Tests
-  syntax:
-    content: >-
-      [Fact]
-
-      public Task Same_host_lane_is_exclusive_while_held()
-    return:
-      type: System.Threading.Tasks.Task
-    content.vb: >-
-      <Fact>
-
-      Public Function Same_host_lane_is_exclusive_while_held() As Task
-  overload: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held*
-  attributes:
-  - type: Xunit.FactAttribute
-    ctor: Xunit.FactAttribute.#ctor
-    arguments: []
-- uid: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
-  commentId: M:LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped
+  commentId: M:LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped
   id: Crawl_delay_is_honored_and_capped
-  parent: LocalSearchEngine.Tests.HostGateTests
+  parent: LocalSearchEngine.Tests.HostPolitenessTests
   langs:
   - csharp
   - vb
   name: Crawl_delay_is_honored_and_capped()
-  nameWithType: HostGateTests.Crawl_delay_is_honored_and_capped()
-  fullName: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped()
+  nameWithType: HostPolitenessTests.Crawl_delay_is_honored_and_capped()
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped()
   type: Method
   source:
     remote:
-      path: LocalSearchEngine.Tests/HostGateTests.cs
+      path: LocalSearchEngine.Tests/HostPolitenessTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Crawl_delay_is_honored_and_capped
-    path: LocalSearchEngine.Tests/HostGateTests.cs
-    startLine: 53
+    path: LocalSearchEngine.Tests/HostPolitenessTests.cs
+    startLine: 71
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -184,7 +223,7 @@ items:
       <Fact>
 
       Public Sub Crawl_delay_is_honored_and_capped()
-  overload: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped*
+  overload: LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -425,12 +464,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap*
-  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
-  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Same_host_entries_are_spaced_by_the_gap
-  name: Same_host_entries_are_spaced_by_the_gap
-  nameWithType: HostGateTests.Same_host_entries_are_spaced_by_the_gap
-  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_entries_are_spaced_by_the_gap
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap*
+  commentId: Overload:LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html#LocalSearchEngine_Tests_HostPolitenessTests_Same_host_turns_are_spaced_by_the_gap
+  name: Same_host_turns_are_spaced_by_the_gap
+  nameWithType: HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Same_host_turns_are_spaced_by_the_gap
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -476,21 +515,27 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other*
-  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
-  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Different_hosts_do_not_wait_on_each_other
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching*
+  commentId: Overload:LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html#LocalSearchEngine_Tests_HostPolitenessTests_Simultaneous_same_host_turns_space_out_instead_of_bunching
+  name: Simultaneous_same_host_turns_space_out_instead_of_bunching
+  nameWithType: HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Simultaneous_same_host_turns_space_out_instead_of_bunching
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately*
+  commentId: Overload:LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html#LocalSearchEngine_Tests_HostPolitenessTests_A_host_left_alone_longer_than_the_gap_admits_immediately
+  name: A_host_left_alone_longer_than_the_gap_admits_immediately
+  nameWithType: HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.A_host_left_alone_longer_than_the_gap_admits_immediately
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other*
+  commentId: Overload:LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html#LocalSearchEngine_Tests_HostPolitenessTests_Different_hosts_do_not_wait_on_each_other
   name: Different_hosts_do_not_wait_on_each_other
-  nameWithType: HostGateTests.Different_hosts_do_not_wait_on_each_other
-  fullName: LocalSearchEngine.Tests.HostGateTests.Different_hosts_do_not_wait_on_each_other
-- uid: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held*
-  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
-  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Same_host_lane_is_exclusive_while_held
-  name: Same_host_lane_is_exclusive_while_held
-  nameWithType: HostGateTests.Same_host_lane_is_exclusive_while_held
-  fullName: LocalSearchEngine.Tests.HostGateTests.Same_host_lane_is_exclusive_while_held
-- uid: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped*
-  commentId: Overload:LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
-  href: LocalSearchEngine.Tests.HostGateTests.html#LocalSearchEngine_Tests_HostGateTests_Crawl_delay_is_honored_and_capped
+  nameWithType: HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Different_hosts_do_not_wait_on_each_other
+- uid: LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped*
+  commentId: Overload:LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped
+  href: LocalSearchEngine.Tests.HostPolitenessTests.html#LocalSearchEngine_Tests_HostPolitenessTests_Crawl_delay_is_honored_and_capped
   name: Crawl_delay_is_honored_and_capped
-  nameWithType: HostGateTests.Crawl_delay_is_honored_and_capped
-  fullName: LocalSearchEngine.Tests.HostGateTests.Crawl_delay_is_honored_and_capped
+  nameWithType: HostPolitenessTests.Crawl_delay_is_honored_and_capped
+  fullName: LocalSearchEngine.Tests.HostPolitenessTests.Crawl_delay_is_honored_and_capped

@@ -9,7 +9,6 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Capped
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Downloader
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Enqueue(LocalSearchEngine.Core.Crawling.Pipeline.Document)
-  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Heartbeat
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.HostHealth
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.IndexedCount
@@ -21,6 +20,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Observer
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Pending
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Plan
+  - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.ReleasePending
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots
   - LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.RunAsync(System.Threading.CancellationToken)
@@ -769,35 +769,35 @@ items:
       type: LocalSearchEngine.Core.Crawling.Pipeline.PendingWorkCounter
     content.vb: Friend ReadOnly Property Pending As PendingWorkCounter
   overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Pending*
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
-  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
-  id: Gate
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
+  id: Politeness
   parent: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline
   langs:
   - csharp
   - vb
-  name: Gate
-  nameWithType: CrawlPipeline.Gate
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
+  name: Politeness
+  nameWithType: CrawlPipeline.Politeness
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Gate
+    id: Politeness
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
     startLine: 115
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
   syntax:
-    content: internal HostGate Gate { get; }
+    content: internal HostPoliteness Politeness { get; }
     parameters: []
     return:
-      type: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-    content.vb: Friend ReadOnly Property Gate As HostGate
-  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate*
+      type: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+    content.vb: Friend ReadOnly Property Politeness As HostPoliteness
+  overload: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness*
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots
   commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots
   id: Robots
@@ -1219,18 +1219,24 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryAcceptIndex
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 180
+    startLine: 183
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
   summary: >-
     Makes the atomic final decision for a newly extracted index candidate. Same-run duplicate
 
-    ownership and the global index-slot reservation share one lock so an alias can only point at
+    ownership and the index-slot reservations share one lock so an alias can only point at a URL
 
-    a URL that already owns a real slot, while distinct pages can never overshoot
+    that already owns a real slot, while distinct pages can never overshoot
 
-    <xref href="LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages" data-throw-if-not-resolved="false"></xref>.
+    <xref href="LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages" data-throw-if-not-resolved="false"></xref> or <xref href="LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost" data-throw-if-not-resolved="false"></xref>. The per-host cap
+
+    must be decided here because workers fetch a host concurrently — only this lock can stop two
+
+    of them racing the host's last slot; the worker's pre-fetch check merely spares a visibly
+
+    capped host the download.
   example: []
   syntax:
     content: internal bool TryAcceptIndex(string contentHash, string url, out string? duplicateOf)
@@ -1245,7 +1251,7 @@ items:
       type: System.String
       description: >-
         Receives the accepted same-run owner when this is a duplicate;
-            otherwise <code>null</code>, including when the cap rejected the candidate.
+            otherwise <code>null</code>, including when a cap rejected the candidate.
     return:
       type: System.Boolean
       description: <code>true</code> when the candidate owns a reserved index slot.
@@ -1272,7 +1278,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDiscoverFeed
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 223
+    startLine: 238
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1312,7 +1318,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReleasePending
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 240
+    startLine: 255
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1340,7 +1346,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlPipeline.cs
-    startLine: 257
+    startLine: 272
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -2500,19 +2506,19 @@ references:
   name: Pending
   nameWithType: CrawlPipeline.Pending
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Pending
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
-  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_Gate
-  name: Gate
-  nameWithType: CrawlPipeline.Gate
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Gate
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-  commentId: T:LocalSearchEngine.Core.Crawling.Pipeline.HostGate
-  parent: LocalSearchEngine.Core.Crawling.Pipeline
-  href: LocalSearchEngine.Core.Crawling.Pipeline.HostGate.html
-  name: HostGate
-  nameWithType: HostGate
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.HostGate
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_Politeness
+  name: Politeness
+  nameWithType: CrawlPipeline.Politeness
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Politeness
+- uid: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+  commentId: T:LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
+  parent: LocalSearchEngine.Core.Crawling.Policies
+  href: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness.html
+  name: HostPoliteness
+  nameWithType: HostPoliteness
+  fullName: LocalSearchEngine.Core.Crawling.Policies.HostPoliteness
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.Robots
   href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_Robots
@@ -2673,6 +2679,12 @@ references:
   name: MaxPages
   nameWithType: CrawlPlan.MaxPages
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPages
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  commentId: P:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
+  href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPlan_MaxPagesPerHost
+  name: MaxPagesPerHost
+  nameWithType: CrawlPlan.MaxPagesPerHost
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPlan.MaxPagesPerHost
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.TryAcceptIndex
   href: LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline.html#LocalSearchEngine_Core_Crawling_Pipeline_CrawlPipeline_TryAcceptIndex_System_String_System_String_System_String__

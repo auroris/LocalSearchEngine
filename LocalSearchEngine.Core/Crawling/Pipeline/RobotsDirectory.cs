@@ -82,7 +82,7 @@ internal sealed class RobotsDirectory
     /// </summary>
     private async Task<(RobotsRules Rules, bool Unavailable)> GetRobotsRulesAsync(Uri baseUri)
     {
-        using var timeout = HttpContentReader.NewRequestTimeout();
+        using var timeout = HttpContentReader.NewRequestTimeout(_httpClient);
         try
         {
             var robotsUrl = new Uri(baseUri, "/robots.txt");
@@ -111,7 +111,7 @@ internal sealed class RobotsDirectory
         {
             if (timeout.IsCancellationRequested)
             {
-                _logger.LogWarning("robots.txt request for {Host} timed out after {Seconds}s.", baseUri.Host, (int)HttpContentReader.RequestTimeout.TotalSeconds);
+                _logger.LogWarning("robots.txt request for {Host} timed out after {Seconds}s.", baseUri.Host, (int)_httpClient.Timeout.TotalSeconds);
             }
             if (_hostHealth.RecordFailure(baseUri.Host, ex))
             {

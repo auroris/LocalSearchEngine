@@ -113,7 +113,7 @@ internal sealed class CrawlPipeline
     public VisitedSet Visited { get; } = new();
 
     internal PendingWorkCounter Pending { get; } = new();
-    internal HostGate Gate { get; } = new();
+    internal HostPoliteness Politeness { get; } = new();
     internal RobotsDirectory Robots { get; }
     internal HostHealthTracker HostHealth { get; }
     internal ICrawlObserver Observer { get; }
@@ -169,17 +169,21 @@ internal sealed class CrawlPipeline
 
     /// <summary>
     /// Makes the atomic final decision for a newly extracted index candidate. Same-run duplicate
-    /// ownership and the global index-slot reservation share one lock so an alias can only point at
-    /// a URL that already owns a real slot, while distinct pages can never overshoot
-    /// <see cref="CrawlPlan.MaxPages"/>.
+    /// ownership and the index-slot reservations share one lock so an alias can only point at a URL
+    /// that already owns a real slot, while distinct pages can never overshoot
+    /// <see cref="CrawlPlan.MaxPages"/> or <see cref="CrawlPlan.MaxPagesPerHost"/>. The per-host cap
+    /// must be decided here because workers fetch a host concurrently — only this lock can stop two
+    /// of them racing the host's last slot; the worker's pre-fetch check merely spares a visibly
+    /// capped host the download.
     /// </summary>
     /// <param name="contentHash">The candidate's extracted-content hash.</param>
     /// <param name="url">The candidate URL.</param>
     /// <param name="duplicateOf">Receives the accepted same-run owner when this is a duplicate;
-    /// otherwise <c>null</c>, including when the cap rejected the candidate.</param>
+    /// otherwise <c>null</c>, including when a cap rejected the candidate.</param>
     /// <returns><c>true</c> when the candidate owns a reserved index slot.</returns>
     internal bool TryAcceptIndex(string contentHash, string url, out string? duplicateOf)
     {
+        Uri.TryCreate(url, UriKind.Absolute, out var indexedUri);
         lock (_indexDecisionGate)
         {
             if (_contentHashes.TryGetValue(contentHash, out var owner))
@@ -198,20 +202,31 @@ internal sealed class CrawlPipeline
                 return false;
             }
 
-            _contentHashes.Add(contentHash, url);
-            _indexedCount++;
-            if (Uri.TryCreate(url, UriKind.Absolute, out var indexedUri))
+            if (indexedUri is null || IndexedOn(indexedUri.Host) < Plan.MaxPagesPerHost)
             {
-                _indexedPerHost.AddOrUpdate(indexedUri.Host, 1, (_, n) => n + 1);
-            }
-            if (_indexedCount >= Plan.MaxPages)
-            {
-                _capped = true;
+                _contentHashes.Add(contentHash, url);
+                _indexedCount++;
+                if (indexedUri is not null)
+                {
+                    _indexedPerHost.AddOrUpdate(indexedUri.Host, 1, (_, n) => n + 1);
+                }
+                if (_indexedCount >= Plan.MaxPages)
+                {
+                    _capped = true;
+                }
+
+                duplicateOf = null;
+                return true;
             }
 
-            duplicateOf = null;
-            return true;
+            _hostCapSkipped = true;
         }
+
+        // Reported outside the lock: the observer is arbitrary reporting code and must not run
+        // under the index decision.
+        Observer.OnHostCapReached(Plan.MaxPagesPerHost, indexedUri!.Host, url);
+        duplicateOf = null;
+        return false;
     }
 
     /// <summary>

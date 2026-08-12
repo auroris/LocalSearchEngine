@@ -1,0 +1,477 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests
+  commentId: T:LocalSearchEngine.Tests.HostHealthTrackerTests
+  id: HostHealthTrackerTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries(System.Net.Http.HttpRequestError)
+  - LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures(System.Net.Http.HttpRequestError)
+  - LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  langs:
+  - csharp
+  - vb
+  name: HostHealthTrackerTests
+  nameWithType: HostHealthTrackerTests
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: HostHealthTrackerTests
+    path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+    startLine: 5
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: public sealed class HostHealthTrackerTests
+    content.vb: Public NotInheritable Class HostHealthTrackerTests
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures(System.Net.Http.HttpRequestError)
+  commentId: M:LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures(System.Net.Http.HttpRequestError)
+  id: Failures_before_any_server_answers_are_connection_failures(System.Net.Http.HttpRequestError)
+  parent: LocalSearchEngine.Tests.HostHealthTrackerTests
+  langs:
+  - csharp
+  - vb
+  name: Failures_before_any_server_answers_are_connection_failures(HttpRequestError)
+  nameWithType: HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures(HttpRequestError)
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures(System.Net.Http.HttpRequestError)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Failures_before_any_server_answers_are_connection_failures
+    path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+    startLine: 7
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { HttpRequestError.NameResolutionError })]
+
+      [InlineData(new object[] { HttpRequestError.ConnectionError })]
+
+      public void Failures_before_any_server_answers_are_connection_failures(HttpRequestError error)
+    parameters:
+    - id: error
+      type: System.Net.Http.HttpRequestError
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { HttpRequestError.NameResolutionError })>
+
+      <InlineData(New Object() { HttpRequestError.ConnectionError })>
+
+      Public Sub Failures_before_any_server_answers_are_connection_failures([error] As HttpRequestError)
+  overload: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries(System.Net.Http.HttpRequestError)
+  commentId: M:LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries(System.Net.Http.HttpRequestError)
+  id: Failures_after_a_server_answered_keep_their_retries(System.Net.Http.HttpRequestError)
+  parent: LocalSearchEngine.Tests.HostHealthTrackerTests
+  langs:
+  - csharp
+  - vb
+  name: Failures_after_a_server_answered_keep_their_retries(HttpRequestError)
+  nameWithType: HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries(HttpRequestError)
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries(System.Net.Http.HttpRequestError)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Failures_after_a_server_answered_keep_their_retries
+    path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+    startLine: 18
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(new object[] { HttpRequestError.SecureConnectionError })]
+
+      [InlineData(new object[] { HttpRequestError.InvalidResponse })]
+
+      [InlineData(new object[] { HttpRequestError.ResponseEnded })]
+
+      [InlineData(new object[] { HttpRequestError.Unknown })]
+
+      public void Failures_after_a_server_answered_keep_their_retries(HttpRequestError error)
+    parameters:
+    - id: error
+      type: System.Net.Http.HttpRequestError
+    content.vb: >-
+      <Theory>
+
+      <InlineData(New Object() { HttpRequestError.SecureConnectionError })>
+
+      <InlineData(New Object() { HttpRequestError.InvalidResponse })>
+
+      <InlineData(New Object() { HttpRequestError.ResponseEnded })>
+
+      <InlineData(New Object() { HttpRequestError.Unknown })>
+
+      Public Sub Failures_after_a_server_answered_keep_their_retries([error] As HttpRequestError)
+  overload: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  commentId: M:LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  id: Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  parent: LocalSearchEngine.Tests.HostHealthTrackerTests
+  langs:
+  - csharp
+  - vb
+  name: Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host()
+  nameWithType: HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host()
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+    path: LocalSearchEngine.Tests/HostHealthTrackerTests.cs
+    startLine: 28
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host()
+  overload: LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures*
+  commentId: Overload:LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures
+  href: LocalSearchEngine.Tests.HostHealthTrackerTests.html#LocalSearchEngine_Tests_HostHealthTrackerTests_Failures_before_any_server_answers_are_connection_failures_System_Net_Http_HttpRequestError_
+  name: Failures_before_any_server_answers_are_connection_failures
+  nameWithType: HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_before_any_server_answers_are_connection_failures
+- uid: System.Net.Http.HttpRequestError
+  commentId: T:System.Net.Http.HttpRequestError
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequesterror
+  name: HttpRequestError
+  nameWithType: HttpRequestError
+  fullName: System.Net.Http.HttpRequestError
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries*
+  commentId: Overload:LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries
+  href: LocalSearchEngine.Tests.HostHealthTrackerTests.html#LocalSearchEngine_Tests_HostHealthTrackerTests_Failures_after_a_server_answered_keep_their_retries_System_Net_Http_HttpRequestError_
+  name: Failures_after_a_server_answered_keep_their_retries
+  nameWithType: HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Failures_after_a_server_answered_keep_their_retries
+- uid: LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host*
+  commentId: Overload:LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  href: LocalSearchEngine.Tests.HostHealthTrackerTests.html#LocalSearchEngine_Tests_HostHealthTrackerTests_Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  name: Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  nameWithType: HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host
+  fullName: LocalSearchEngine.Tests.HostHealthTrackerTests.Tls_failure_is_not_a_connection_failure_but_still_writes_off_a_silent_host

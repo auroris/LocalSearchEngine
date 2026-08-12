@@ -344,7 +344,7 @@ items:
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  summary: Gets the number of concurrent crawl workers. Parallelism pays off across hosts; each single host stays sequential.
+  summary: Gets the number of concurrent crawl workers. Workers share hosts freely; the politeness gap, not the worker count, bounds how often any one host is contacted.
   example: []
   syntax:
     content: public int CrawlWorkers { get; init; }
@@ -468,7 +468,7 @@ items:
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
-  summary: Gets the politeness gap between same-host fetches when robots.txt declares no crawl-delay.
+  summary: Gets the politeness gap between same-host request starts when robots.txt declares no crawl-delay.
   example: []
   syntax:
     content: public int DefaultRequestDelayMs { get; init; }

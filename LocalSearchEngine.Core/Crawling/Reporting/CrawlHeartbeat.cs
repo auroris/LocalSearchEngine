@@ -18,9 +18,9 @@ internal sealed class CrawlHeartbeat
     public const string Idle = "idle";
 
     /// <summary>
-    /// Prefix for a lane waiting its turn at a host's politeness gate. A long wait here is queueing
-    /// behind a slow or crawl-delayed host, not a stall, so the watchdog ignores it like <see cref="Idle"/> —
-    /// but the marked activity should still name the host so a snapshot shows where the queue is.
+    /// Prefix for a lane waiting out a host's politeness gap. A long wait here is a crawl-delayed
+    /// host's backlog, not a stall, so the watchdog ignores it like <see cref="Idle"/> — but the
+    /// marked activity should still name the host so a snapshot shows where the queue is.
     /// </summary>
     public const string PoliteWaitPrefix = "polite wait";
 

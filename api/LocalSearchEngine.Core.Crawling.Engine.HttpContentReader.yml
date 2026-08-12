@@ -5,9 +5,8 @@ items:
   id: HttpContentReader
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
+  - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
   - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.ReadLimitedAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Threading.CancellationToken)
-  - LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
   langs:
   - csharp
   - vb
@@ -33,11 +32,11 @@ items:
 
     <xref href="System.Net.Http.HttpCompletionOption.ResponseHeadersRead" data-throw-if-not-resolved="false"></xref>, which <xref href="System.Net.Http.HttpClient.Timeout" data-throw-if-not-resolved="false"></xref> does
 
-    not cover, so every HTTP call wraps itself in a <xref href="LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout" data-throw-if-not-resolved="false"></xref> source whose token
+    not cover past the headers, so every HTTP call wraps itself in a <xref href="LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)" data-throw-if-not-resolved="false"></xref>
 
-    bounds the whole request — headers and body alike — turning a server that stalls mid-body into a
+    source whose token bounds the whole request — headers and body alike — turning a server that
 
-    logged failure instead of an indefinite hang.
+    stalls mid-body into a logged failure instead of an indefinite hang.
   example: []
   syntax:
     content: internal static class HttpContentReader
@@ -52,47 +51,16 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
-  commentId: F:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
-  id: RequestTimeout
+- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
+  id: NewRequestTimeout(System.Net.Http.HttpClient)
   parent: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
   langs:
   - csharp
   - vb
-  name: RequestTimeout
-  nameWithType: HttpContentReader.RequestTimeout
-  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
-  type: Field
-  source:
-    remote:
-      path: LocalSearchEngine.Core/Crawling/Engine/HttpContentReader.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: RequestTimeout
-    path: LocalSearchEngine.Core/Crawling/Engine/HttpContentReader.cs
-    startLine: 14
-  assemblies:
-  - LocalSearchEngine.Core
-  namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: >-
-    The wall-clock limit for a single crawl HTTP request, covering both the response
-        headers and the streamed body. Large files (up to the crawl size cap) must finish inside it.
-  example: []
-  syntax:
-    content: public static readonly TimeSpan RequestTimeout
-    return:
-      type: System.TimeSpan
-    content.vb: Public Shared ReadOnly RequestTimeout As TimeSpan
-- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
-  id: NewRequestTimeout
-  parent: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader
-  langs:
-  - csharp
-  - vb
-  name: NewRequestTimeout()
-  nameWithType: HttpContentReader.NewRequestTimeout()
-  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout()
+  name: NewRequestTimeout(HttpClient)
+  nameWithType: HttpContentReader.NewRequestTimeout(HttpClient)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
   type: Method
   source:
     remote:
@@ -101,21 +69,33 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NewRequestTimeout
     path: LocalSearchEngine.Core/Crawling/Engine/HttpContentReader.cs
-    startLine: 21
+    startLine: 22
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: >-
-    Creates a fresh <xref href="System.Threading.CancellationTokenSource" data-throw-if-not-resolved="false"></xref> that fires after <xref href="LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout" data-throw-if-not-resolved="false"></xref>.
+    Creates a fresh <xref href="System.Threading.CancellationTokenSource" data-throw-if-not-resolved="false"></xref> that fires after <code class="paramref">client</code>'s
 
-    This is a local per-request timeout, not crawl-wide or user cancellation; the caller disposes it.
+    own <xref href="System.Net.Http.HttpClient.Timeout" data-throw-if-not-resolved="false"></xref>, extending that single configured limit (the
+
+    <code>request-timeout-seconds</code> setting) over the streamed body it doesn't otherwise cover.
+
+    The wall clock spans the whole request — headers, retries, and body; large files (up to the
+
+    crawl size cap) must finish inside it. This is a local per-request timeout, not crawl-wide or
+
+    user cancellation; the caller disposes it.
   example: []
   syntax:
-    content: public static CancellationTokenSource NewRequestTimeout()
+    content: public static CancellationTokenSource NewRequestTimeout(HttpClient client)
+    parameters:
+    - id: client
+      type: System.Net.Http.HttpClient
+      description: The client the request will be sent on; its timeout is mirrored.
     return:
       type: System.Threading.CancellationTokenSource
       description: A timeout source the caller owns and should wrap in a <code>using</code>.
-    content.vb: Public Shared Function NewRequestTimeout() As CancellationTokenSource
+    content.vb: Public Shared Function NewRequestTimeout(client As HttpClient) As CancellationTokenSource
   overload: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout*
 - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.ReadLimitedAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Threading.CancellationToken)
   commentId: M:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.ReadLimitedAsync(System.Net.Http.HttpResponseMessage,System.Int64,System.Threading.CancellationToken)
@@ -135,7 +115,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadLimitedAsync
     path: LocalSearchEngine.Core/Crawling/Engine/HttpContentReader.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -179,23 +159,32 @@ references:
   name: Timeout
   nameWithType: HttpClient.Timeout
   fullName: System.Net.Http.HttpClient.Timeout
-- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
-  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout
-  name: NewRequestTimeout()
-  nameWithType: HttpContentReader.NewRequestTimeout()
-  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout()
+- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
+  isExternal: true
+  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout_System_Net_Http_HttpClient_
+  name: NewRequestTimeout(HttpClient)
+  nameWithType: HttpContentReader.NewRequestTimeout(HttpClient)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
   spec.csharp:
-  - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
+  - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
     name: NewRequestTimeout
-    href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout
+    href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout_System_Net_Http_HttpClient_
   - name: (
+  - uid: System.Net.Http.HttpClient
+    name: HttpClient
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
   - name: )
   spec.vb:
-  - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
+  - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout(System.Net.Http.HttpClient)
     name: NewRequestTimeout
-    href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout
+    href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout_System_Net_Http_HttpClient_
   - name: (
+  - uid: System.Net.Http.HttpClient
+    name: HttpClient
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
@@ -472,14 +461,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: System.TimeSpan
-  commentId: T:System.TimeSpan
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.timespan
-  name: TimeSpan
-  nameWithType: TimeSpan
-  fullName: System.TimeSpan
 - uid: System.Threading.CancellationTokenSource
   commentId: T:System.Threading.CancellationTokenSource
   parent: System.Threading
@@ -488,18 +469,20 @@ references:
   name: CancellationTokenSource
   nameWithType: CancellationTokenSource
   fullName: System.Threading.CancellationTokenSource
-- uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
-  commentId: F:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
-  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_RequestTimeout
-  name: RequestTimeout
-  nameWithType: HttpContentReader.RequestTimeout
-  fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.RequestTimeout
 - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
-  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout
+  href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_NewRequestTimeout_System_Net_Http_HttpClient_
   name: NewRequestTimeout
   nameWithType: HttpContentReader.NewRequestTimeout
   fullName: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.NewRequestTimeout
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
 - uid: System.Threading
   commentId: N:System.Threading
   isExternal: true
@@ -527,6 +510,43 @@ references:
     name: Threading
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
 - uid: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.ReadLimitedAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.ReadLimitedAsync
   href: LocalSearchEngine.Core.Crawling.Engine.HttpContentReader.html#LocalSearchEngine_Core_Crawling_Engine_HttpContentReader_ReadLimitedAsync_System_Net_Http_HttpResponseMessage_System_Int64_System_Threading_CancellationToken_
@@ -635,43 +655,6 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
-- uid: System.Net.Http
-  commentId: N:System.Net.Http
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Net.Http
-  nameWithType: System.Net.Http
-  fullName: System.Net.Http
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Net
-    name: Net
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.net
-  - name: .
-  - uid: System.Net.Http
-    name: Http
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.net.http
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Net
-    name: Net
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.net
-  - name: .
-  - uid: System.Net.Http
-    name: Http
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.net.http
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true

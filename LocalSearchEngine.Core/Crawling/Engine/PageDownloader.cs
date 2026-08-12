@@ -124,7 +124,7 @@ internal sealed class PageDownloader
         // A per-request timeout that covers the streamed body too — HttpClient.Timeout stops at the
         // headers under ResponseHeadersRead, so without this a server that goes quiet mid-body would
         // hang the single producer task indefinitely.
-        using var timeout = HttpContentReader.NewRequestTimeout();
+        using var timeout = HttpContentReader.NewRequestTimeout(_httpClient);
         var startedAt = Stopwatch.GetTimestamp();
 
         try
@@ -257,7 +257,7 @@ internal sealed class PageDownloader
             // (503) so the rest of the crawl treats it like any other unreachable response.
             if (timeout.IsCancellationRequested)
             {
-                _logger.LogWarning("Request to {Url} timed out after {Seconds}s.", normalizedUrl, (int)HttpContentReader.RequestTimeout.TotalSeconds);
+                _logger.LogWarning("Request to {Url} timed out after {Seconds}s.", normalizedUrl, (int)_httpClient.Timeout.TotalSeconds);
             }
             return new DownloadResult
             {

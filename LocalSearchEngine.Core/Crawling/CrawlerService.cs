@@ -77,8 +77,8 @@ public partial class CrawlerService
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
     /// <param name="checkExternalLinks">Whether to check external links after the crawl.</param>
     /// <param name="reporter">Receives live progress and phase changes.</param>
-    /// <param name="requestDelayMs">The politeness gap between same-host fetches when robots.txt declares no crawl-delay.</param>
-    /// <param name="crawlWorkers">The number of concurrent crawl workers (each host still fetches sequentially).</param>
+    /// <param name="requestDelayMs">The politeness gap between same-host request starts when robots.txt declares no crawl-delay.</param>
+    /// <param name="crawlWorkers">The number of concurrent crawl workers (the politeness gap still bounds how often any one host is contacted).</param>
     /// <returns>A <see cref="CrawlReport"/> summarizing what the crawl indexed, removed, and discovered.</returns>
     public Task<CrawlReport> CrawlAsync(
         string seedUrl,
@@ -119,7 +119,7 @@ public partial class CrawlerService
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a crawled page/file.</param>
     /// <param name="checkExternalLinks">Whether to check external links after a full crawl.</param>
     /// <param name="reporter">Receives live progress and phase changes.</param>
-    /// <param name="requestDelayMs">The politeness gap between same-host fetches.</param>
+    /// <param name="requestDelayMs">The politeness gap between same-host request starts.</param>
     /// <param name="crawlWorkers">The number of concurrent crawl workers.</param>
     /// <returns>A <see cref="CrawlReport"/> summarizing the run.</returns>
     public Task<CrawlReport> CrawlSitesAsync(
@@ -155,7 +155,7 @@ public partial class CrawlerService
     /// <param name="noIndexPatterns">Optional URL glob patterns whose pages are fetched but never indexed.</param>
     /// <param name="maxCrawlSizeBytes">The maximum size in bytes allowed for a fetched page/file.</param>
     /// <param name="reporter">Receives live progress and phase changes.</param>
-    /// <param name="requestDelayMs">The politeness gap between same-host fetches.</param>
+    /// <param name="requestDelayMs">The politeness gap between same-host request starts.</param>
     /// <param name="crawlWorkers">The number of concurrent crawl workers.</param>
     /// <returns>A <see cref="CrawlReport"/> summarizing what the update run indexed and touched.</returns>
     public Task<CrawlReport> CrawlFeedAsync(
@@ -515,7 +515,7 @@ public partial class CrawlerService
     /// <summary>
     /// Polls the heartbeat on a timer and logs a warning per lane whose current activity has been in
     /// flight past <see cref="StallThreshold"/>, naming the URL or phase that is stuck. Quiet lanes —
-    /// parked idle or queued at a politeness gate — are expected to sit and are never warned about.
+    /// parked idle or waiting out a host's politeness gap — are expected to sit and are never warned about.
     /// The loop ends when <paramref name="timer"/> is disposed.
     /// </summary>
     /// <param name="heartbeat">The shared activity marker every crawl actor bumps.</param>
