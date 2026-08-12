@@ -6,9 +6,16 @@ items:
   parent: LocalSearchEngine.Core.Searching
   children:
   - LocalSearchEngine.Core.Searching.SearchSettings.CandidatePoolSize
+  - LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.FilenameBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
+  - LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
   - LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
+  - LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+  - LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty
+  - LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
+  - LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+  - LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
   - LocalSearchEngine.Core.Searching.SearchSettings.TermInTextBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.TitleBoost
   langs:
@@ -30,11 +37,11 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Configures relevance tuning settings for search queries, including candidate pools, thresholds, and keyword boosts.
+    Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic and lexical
 
-    These boosts only order results <em>within</em> a ranking group; the two top-level tiers — web pages ahead of
+    candidates are fused by reciprocal rank, then bounded phrase, proximity, field, and document
 
-    PDFs/DOCX, then exact-phrase hits ahead of looser ones — are structural in <xref href="LocalSearchEngine.Core.Searching.SearchRanker" data-throw-if-not-resolved="false"></xref> and not tunable here.
+    signals refine their order.
   example: []
   syntax:
     content: public class SearchSettings
@@ -72,9 +79,9 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Gets or sets the number of nearest candidate chunks retrieved from the vector index before
+    Gets or sets the maximum number of chunk candidates retrieved by each semantic, broad BM25,
 
-    they are filtered by <xref href="LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance" data-throw-if-not-resolved="false"></xref> and ranked.
+    and phrase-rescue pass before candidates are deduplicated by URL and reranked.
   example: []
   syntax:
     content: public int CandidatePoolSize { get; set; }
@@ -125,6 +132,167 @@ items:
       type: System.Double
     content.vb: Public Property MaxDistance As Double
   overload: LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+  id: ReciprocalRankConstant
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: ReciprocalRankConstant
+  nameWithType: SearchSettings.ReciprocalRankConstant
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReciprocalRankConstant
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 29
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets the reciprocal-rank constant used when fusing semantic and BM25 result ranks.
+
+    Larger values make rank differences less pronounced. A value around 60 is conventional.
+  example: []
+  syntax:
+    content: public double ReciprocalRankConstant { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ReciprocalRankConstant As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
+  id: SemanticWeight
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: SemanticWeight
+  nameWithType: SearchSettings.SemanticWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SemanticWeight
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 32
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the weight of the semantic result rank in reciprocal-rank fusion.
+  example: []
+  syntax:
+    content: public double SemanticWeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property SemanticWeight As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+  id: KeywordWeight
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: KeywordWeight
+  nameWithType: SearchSettings.KeywordWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: KeywordWeight
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 35
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the weight of the BM25 keyword result rank in reciprocal-rank fusion.
+  example: []
+  syntax:
+    content: public double KeywordWeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property KeywordWeight As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
+  id: ExactPhraseBoost
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: ExactPhraseBoost
+  nameWithType: SearchSettings.ExactPhraseBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ExactPhraseBoost
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 38
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the bonus for query terms occurring as an adjacent, ordered phrase.
+  example: []
+  syntax:
+    content: public double ExactPhraseBoost { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ExactPhraseBoost As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
+  id: ProximityBoost
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: ProximityBoost
+  nameWithType: SearchSettings.ProximityBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ProximityBoost
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 44
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets the maximum bonus for query terms occurring close together. Partial term
+
+    coverage and wider spans receive a proportionally smaller bonus.
+  example: []
+  syntax:
+    content: public double ProximityBoost { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property ProximityBoost As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost*
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   id: HeadingBoost
@@ -143,7 +311,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HeadingBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 28
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -174,11 +342,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TitleBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 33
+    startLine: 54
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the relevance score boost added when a query match is found within the page's HTML title.
+  summary: Gets or sets the maximum coverage-weighted boost for query terms in the page's HTML title.
   example: []
   syntax:
     content: public double TitleBoost { get; set; }
@@ -205,11 +373,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FilenameBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 38
+    startLine: 59
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the relevance score boost added when the URL's file name contains the query terms.
+  summary: Gets or sets the maximum coverage-weighted boost for query terms in the URL's final filename or slug.
   example: []
   syntax:
     content: public double FilenameBoost { get; set; }
@@ -236,11 +404,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TermInTextBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 43
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the relevance score boost added when the literal query string is present in the text snippet.
+  summary: >-
+    Gets or sets the maximum relevance boost for query-term coverage in matching chunks.
+
+    A chunk containing only some distinct terms receives a proportional fraction.
   example: []
   syntax:
     content: public double TermInTextBoost { get; set; }
@@ -249,13 +420,75 @@ items:
       type: System.Double
     content.vb: Public Property TermInTextBoost As Double
   overload: LocalSearchEngine.Core.Searching.SearchSettings.TermInTextBoost*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+  id: MultiChunkBoost
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: MultiChunkBoost
+  nameWithType: SearchSettings.MultiChunkBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MultiChunkBoost
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 71
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets the maximum bonus for corroborating matches in multiple chunks from one URL.
+
+    The ranker applies diminishing returns and never exceeds this amount.
+  example: []
+  syntax:
+    content: public double MultiChunkBoost { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property MultiChunkBoost As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty
+  id: NonHtmlPenalty
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: NonHtmlPenalty
+  nameWithType: SearchSettings.NonHtmlPenalty
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: NonHtmlPenalty
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 77
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets the soft penalty applied to PDF and DOCX results. Unlike a hard document-type
+
+    tier, sufficiently relevant documents can still outrank weaker HTML pages.
+  example: []
+  syntax:
+    content: public double NonHtmlPenalty { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property NonHtmlPenalty As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty*
 references:
-- uid: LocalSearchEngine.Core.Searching.SearchRanker
-  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker
-  href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  name: SearchRanker
-  nameWithType: SearchRanker
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
   href: LocalSearchEngine.html
@@ -523,12 +756,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
-  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
-  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_MaxDistance
-  name: MaxDistance
-  nameWithType: SearchSettings.MaxDistance
-  fullName: LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.CandidatePoolSize*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.CandidatePoolSize
   href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_CandidatePoolSize
@@ -563,6 +790,36 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_ReciprocalRankConstant
+  name: ReciprocalRankConstant
+  nameWithType: SearchSettings.ReciprocalRankConstant
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ReciprocalRankConstant
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_SemanticWeight
+  name: SemanticWeight
+  nameWithType: SearchSettings.SemanticWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.SemanticWeight
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_KeywordWeight
+  name: KeywordWeight
+  nameWithType: SearchSettings.KeywordWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_ExactPhraseBoost
+  name: ExactPhraseBoost
+  nameWithType: SearchSettings.ExactPhraseBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_ProximityBoost
+  name: ProximityBoost
+  nameWithType: SearchSettings.ProximityBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.ProximityBoost
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
   href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_HeadingBoost
@@ -587,3 +844,15 @@ references:
   name: TermInTextBoost
   nameWithType: SearchSettings.TermInTextBoost
   fullName: LocalSearchEngine.Core.Searching.SearchSettings.TermInTextBoost
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_MultiChunkBoost
+  name: MultiChunkBoost
+  nameWithType: SearchSettings.MultiChunkBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_NonHtmlPenalty
+  name: NonHtmlPenalty
+  nameWithType: SearchSettings.NonHtmlPenalty
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.NonHtmlPenalty

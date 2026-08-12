@@ -4,14 +4,13 @@ using Xunit;
 namespace LocalSearchEngine.Tests;
 
 /// <summary>
-/// Documents the FTS5 MATCH semantics the keyword search relies on: whitespace-separated
-/// (quoted) terms are an implicit AND, not a phrase. This is why the "all terms" tier can quote
-/// each term and space-join them and still match documents where the terms aren't adjacent.
+/// Documents the FTS5 boolean semantics used by lexical candidate retrieval. In particular,
+/// OR admits partial matches for reranking while a quoted multi-token string requires adjacency.
 /// </summary>
 public class Fts5MatchSemanticsTests
 {
     [Fact]
-    public void Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
+    public void Or_is_broader_than_implicit_and_and_a_quoted_phrase()
     {
         using var conn = new SqliteConnection("Data Source=:memory:");
         conn.Open();
@@ -27,6 +26,8 @@ public class Fts5MatchSemanticsTests
         Assert.Equal(2, Match(conn, "\"foo\" AND \"bar\""));
         // ...whereas a real phrase only matches the adjacent occurrence (row 2).
         Assert.Equal(1, Match(conn, "\"foo bar\""));
+        // Broad candidate retrieval uses OR, so a one-term match remains eligible for reranking.
+        Assert.Equal(3, Match(conn, "\"foo\" OR \"bar\""));
     }
 
     private static void Exec(SqliteConnection c, string sql)

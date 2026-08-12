@@ -117,25 +117,35 @@ The web app configures the hybrid vector and keyword search ranker using the `Se
   "SearchSettings": {
     "CandidatePoolSize": 500,
     "MaxDistance": 0.6,
-    "ExactPhraseBoost": 0.5,
-    "AndTermsBoost": 0.25,
+    "ReciprocalRankConstant": 60,
+    "SemanticWeight": 1.0,
+    "KeywordWeight": 1.0,
+    "ExactPhraseBoost": 0.35,
+    "ProximityBoost": 0.15,
     "HeadingBoost": 0.3,
     "TitleBoost": 0.35,
     "FilenameBoost": 0.4,
-    "TermInTextBoost": 0.2
+    "TermInTextBoost": 0.2,
+    "MultiChunkBoost": 0.1,
+    "NonHtmlPenalty": 0.15
   }
 }
 ```
 
 ### Ranking Weights Reference
 
-The hybrid search ranks pages by combining vector search cosine similarity with keyword matching. The score begins at `0.0` and accumulates weight based on these properties:
+The searcher retrieves independent semantic and lexical candidate pools. The lexical pool uses an FTS5 OR query ordered by BM25, so useful partial matches are not excluded merely because one query term is absent. An additional adjacent-phrase pass can rescue phrase matches outside that broad pool. The re-ranker deduplicates both streams by URL, combines their URL ranks using reciprocal-rank fusion, and then applies bounded lexical and structural features.
 
-* **`CandidatePoolSize`** (integer): The number of initial semantic vector match candidates fetched from `sqlite-vec` before sorting and applying keyword and structural boosting.
-* **`MaxDistance`** (double): The cosine distance threshold (from `0.0` to `1.0`) for vector matches. Lower limits require matches to be more semantically identical to the search query.
-* **`ExactPhraseBoost`** (double): Score bonus added when the user's query matches an exact phrase in the document text verbatim.
-* **`AndTermsBoost`** (double): Score bonus added when all terms of the search query appear somewhere in the document.
+* **`CandidatePoolSize`** (integer): The maximum number of chunk candidates fetched by each semantic, broad BM25, and phrase-rescue retrieval pass before URL deduplication.
+* **`MaxDistance`** (double): The cosine distance threshold for vector matches, from `0.0` (identical direction) through `1.0` (orthogonal) to a theoretical `2.0` (opposite). Lower limits require closer semantic matches.
+* **`ReciprocalRankConstant`** (double): Controls how quickly reciprocal-rank contributions decay. Larger values reduce the difference between nearby ranks; `60` is a conventional starting value.
+* **`SemanticWeight`** (double): Weight of the semantic URL rank in reciprocal-rank fusion.
+* **`KeywordWeight`** (double): Weight of the BM25 URL rank in reciprocal-rank fusion.
+* **`ExactPhraseBoost`** (double): Bounded bonus when the query's terms occur adjacently and in order. This is not a hard tier.
+* **`ProximityBoost`** (double): Maximum bonus for query terms appearing in a tight token window. Partial coverage and wider spans receive less.
 * **`HeadingBoost`** (double): Bonus applied if query keywords match headings (`<h1>`, `<h2>`, etc.) in the document.
-* **`TitleBoost`** (double): Bonus applied if query keywords match the title of the document or webpage.
-* **`FilenameBoost`** (double): Bonus applied if query keywords appear in the document's filename or URL string.
-* **`TermInTextBoost`** (double): Bonus applied when individual query keywords match body text.
+* **`TitleBoost`** (double): Maximum coverage-weighted bonus for query terms in the document title.
+* **`FilenameBoost`** (double): Maximum coverage-weighted bonus for query terms in the URL's final filename or slug.
+* **`TermInTextBoost`** (double): Maximum bonus for distinct query-term coverage in matching chunks.
+* **`MultiChunkBoost`** (double): Maximum corroboration bonus when one URL has several distinct matching chunks; additional chunks have diminishing returns.
+* **`NonHtmlPenalty`** (double): Soft penalty for PDF and DOCX results. Strong documents can still outrank weaker HTML pages.

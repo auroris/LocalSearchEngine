@@ -9,6 +9,7 @@ items:
   - LocalSearchEngine.Core.Searching.SearchQueryParser
   - LocalSearchEngine.Core.Searching.SearchRanker
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  - LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
   - LocalSearchEngine.Core.Searching.SearchResponse
   - LocalSearchEngine.Core.Searching.SearchResultItem
   - LocalSearchEngine.Core.Searching.SearchSettings
@@ -56,6 +57,29 @@ references:
   name: SearchRanker
   nameWithType: SearchRanker
   fullName: LocalSearchEngine.Core.Searching.SearchRanker
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker.TextFeatures
+  nameWithType: SearchRanker.TextFeatures
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    name: TextFeatures
+    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    name: TextFeatures
+    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
   commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
   parent: LocalSearchEngine.Core.Searching

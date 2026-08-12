@@ -9,311 +9,312 @@ public class SearchRankerTests
     private static SearchSettings Settings() => new()
     {
         MaxDistance = 0.5,
+        ReciprocalRankConstant = 60,
+        SemanticWeight = 1.0,
+        KeywordWeight = 1.0,
+        ExactPhraseBoost = 0.35,
+        ProximityBoost = 0.15,
         HeadingBoost = 0.3,
         TitleBoost = 0.35,
         FilenameBoost = 0.4,
-        TermInTextBoost = 0.2
+        TermInTextBoost = 0.2,
+        MultiChunkBoost = 0.1,
+        NonHtmlPenalty = 0.15
     };
 
-    private static readonly KeywordCandidate[] NoKeywords = Array.Empty<KeywordCandidate>();
-    private static readonly VectorCandidate[] NoVectors = Array.Empty<VectorCandidate>();
-
-    // --- Threshold, dedup, and within-group score (one doc tier, one match tier) ---
+    private static readonly KeywordCandidate[] NoKeywords = [];
+    private static readonly VectorCandidate[] NoVectors = [];
 
     [Fact]
-    public void Excludes_results_below_similarity_threshold()
+    public void Excludes_distant_vector_results_but_keeps_lexical_candidates()
     {
         var vectors = new[]
         {
-            new VectorCandidate("https://x/a", "alpha", false, 0.10), // similarity 0.90 -> in
-            new VectorCandidate("https://x/b", "beta",  false, 0.40), // similarity 0.60 -> in
-            new VectorCandidate("https://x/c", "gamma", false, 0.80), // similarity 0.20 -> out
+            new VectorCandidate("https://x/near", "alpha", false, 0.10),
+            new VectorCandidate("https://x/rescued", "useful lexical text", false, 0.80)
+        };
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/rescued", "useful lexical text", false, Bm25: -2)
         };
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings());
+        var results = SearchRanker.Rank(vectors, keywords, "useful", Settings());
 
         Assert.Equal(2, results.Count);
-        Assert.DoesNotContain(results, r => r.Url == "https://x/c");
+        Assert.Equal(0, results.Single(result => result.Url.EndsWith("rescued")).Similarity);
     }
 
     [Fact]
-    public void Orders_by_descending_score()
+    public void Semantic_rank_is_derived_from_distance_not_input_order()
     {
         var vectors = new[]
         {
-            new VectorCandidate("https://x/b", "beta",  false, 0.40), // 0.60
-            new VectorCandidate("https://x/a", "alpha", false, 0.10), // 0.90
+            new VectorCandidate("https://x/weaker", "body", false, 0.40),
+            new VectorCandidate("https://x/stronger", "body", false, 0.10)
         };
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings());
+        var results = SearchRanker.Rank(vectors, NoKeywords, "unseen", Settings());
 
-        Assert.Equal("https://x/a", results[0].Url);
-        Assert.Equal("https://x/b", results[1].Url);
+        Assert.Equal("https://x/stronger", results[0].Url);
     }
 
     [Fact]
-    public void Returns_all_qualifying_results_with_no_count_cap()
+    public void Returns_all_qualifying_results_with_no_result_cap()
     {
         var vectors = Enumerable.Range(0, 250)
-            .Select(i => new VectorCandidate($"https://x/{i}", "t", false, 0.05))
+            .Select(i => new VectorCandidate($"https://x/{i}", "body", false, 0.05))
             .ToArray();
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings());
+        var results = SearchRanker.Rank(vectors, NoKeywords, "unseen", Settings());
 
         Assert.Equal(250, results.Count);
     }
 
     [Fact]
-    public void Filename_match_boosts_score()
-    {
-        var vectors = new[] { new VectorCandidate("https://x/installation-guide", "body", false, 0.50) }; // 0.50
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "guide", Settings());
-
-        // similarity 0.50 + filename boost 0.40
-        Assert.Equal(0.90, results[0].Score, 6);
-    }
-
-    [Fact]
-    public void Filename_match_boosts_multi_word_query_across_slug_separators()
-    {
-        // Query words are separated by spaces; the slug uses '-'. They should still match.
-        var vectors = new[] { new VectorCandidate("https://x/user-guide.html", "body", false, 0.50) }; // 0.50
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "user guide", Settings());
-
-        Assert.Equal(0.90, results[0].Score, 6); // 0.50 + filename 0.40
-    }
-
-    [Fact]
-    public void Heading_match_boosts_score()
-    {
-        var vectors = new[] { new VectorCandidate("https://x/a", "body", true, 0.40) }; // 0.60, heading
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings());
-
-        Assert.Equal(0.90, results[0].Score, 6); // 0.60 + heading 0.30
-    }
-
-    [Fact]
-    public void Query_appearing_in_text_boosts_score()
-    {
-        var vectors = new[] { new VectorCandidate("https://x/a", "the quick brown fox", false, 0.40) }; // 0.60
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "quick", Settings());
-
-        Assert.Equal(0.80, results[0].Score, 6); // 0.60 + term-in-text 0.20
-    }
-
-    [Fact]
-    public void Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+    public void Structural_fields_contribute_bounded_coverage_boosts()
     {
         var vectors = new[]
         {
-            new VectorCandidate("https://x/a", "low chunk",  false, 0.50), // 0.50
-            new VectorCandidate("https://x/a", "high chunk", false, 0.20), // 0.80
+            new VectorCandidate("https://x/user-guide.html", "body", true, 0.20)
+        };
+        var titles = new Dictionary<string, string?>
+        {
+            ["https://x/user-guide.html"] = "Complete User Guide"
         };
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings());
+        var result = Assert.Single(SearchRanker.Rank(vectors, NoKeywords, "user guide", Settings(), titles));
 
-        Assert.Single(results);
-        Assert.Equal(0.80, results[0].Similarity, 6);
-        Assert.Equal("high chunk", results[0].Text);
+        // semantic RRF 1 + heading .3 + title .35 + filename .4
+        Assert.Equal(2.05, result.Score, 6);
+        Assert.Equal("Complete User Guide", result.Title);
     }
 
     [Fact]
-    public void Title_containing_query_boosts_and_is_returned()
+    public void Text_term_coverage_is_proportional()
     {
-        var vectors = new[] { new VectorCandidate("https://x/a", "body", false, 0.40) }; // 0.60
-        var titles = new Dictionary<string, string?> { ["https://x/a"] = "Installation Guide" };
+        var vectors = new[]
+        {
+            new VectorCandidate("https://x/one", "alpha only", false, 0.10),
+            new VectorCandidate("https://x/two", "alpha and beta", false, 0.20)
+        };
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "guide", Settings(), titles);
+        var results = SearchRanker.Rank(vectors, NoKeywords, "alpha beta gamma", Settings());
 
-        Assert.Equal("Installation Guide", results[0].Title);
-        Assert.Equal(0.95, results[0].Score, 6); // 0.60 + title 0.35 (query absent from body/filename)
+        Assert.Equal("https://x/two", results[0].Url);
     }
 
-    // --- Keyword hits: exact/all-terms is now a tier, not an additive Score component ---
-
     [Fact]
-    public void Keyword_match_is_always_included_even_with_no_vector_hit()
+    public void Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
     {
-        var keywords = new[] { new KeywordCandidate("https://x/k", "irrelevant body", false) };
+        var vectors = new[]
+        {
+            new VectorCandidate("https://x/a", "weaker chunk", false, 0.50),
+            new VectorCandidate("https://x/a", "closest chunk", false, 0.20)
+        };
 
-        var results = SearchRanker.Rank(NoVectors, keywords, "nomatchhere", Settings());
+        var result = Assert.Single(SearchRanker.Rank(vectors, NoKeywords, "unseen", Settings()));
 
-        Assert.Single(results);
-        // similarity 0; the exact-phrase signal is a tier, not a boost, and the query is absent from
-        // the text/filename/title, so the fine score is 0.
-        Assert.Equal(0.0, results[0].Score, 6);
+        Assert.Equal(0.80, result.Similarity, 6);
+        Assert.Equal("closest chunk", result.Text);
     }
 
     [Fact]
-    public void Combines_vector_and_keyword_signals_for_the_same_url()
-    {
-        var vectors = new[] { new VectorCandidate("https://x/guide", "intro guide content", false, 0.30) }; // 0.70
-        var keywords = new[] { new KeywordCandidate("https://x/guide", "intro guide content", true) };       // exact + heading
-
-        var results = SearchRanker.Rank(vectors, keywords, "guide", Settings());
-
-        Assert.Single(results);
-        // 0.70 sim + 0.30 heading + 0.40 filename + 0.20 term-in-text (no exact-phrase additive boost)
-        Assert.Equal(1.60, results[0].Score, 6);
-    }
-
-    [Fact]
-    public void Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
+    public void Bm25_value_determines_lexical_rank_not_input_order()
     {
         var keywords = new[]
         {
-            new KeywordCandidate("https://x/a", "body", false, ExactPhrase: false),
-            new KeywordCandidate("https://x/a", "body", false, ExactPhrase: true),
+            new KeywordCandidate("https://x/weaker", "body", false, Bm25: -1),
+            new KeywordCandidate("https://x/stronger", "body", false, Bm25: -10)
         };
 
-        var results = SearchRanker.Rank(NoVectors, keywords, "zzz", Settings());
+        var results = SearchRanker.Rank(NoVectors, keywords, "unseen", Settings());
 
-        Assert.Single(results);
-        Assert.Equal(0.0, results[0].Score, 6); // no vector similarity, no fine-score boosts
+        Assert.Equal("https://x/stronger", results[0].Url);
     }
 
-    // --- Match tier: exact phrase ranks above all-terms / semantic-only within a doc group ---
+    [Fact]
+    public void Keyword_candidate_is_included_without_a_vector_match()
+    {
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/lexical", "rare deployment incantation", false, Bm25: -3)
+        };
+
+        var result = Assert.Single(SearchRanker.Rank(NoVectors, keywords, "deployment", Settings()));
+
+        Assert.Equal("https://x/lexical", result.Url);
+        Assert.True(result.Score > 1.0);
+        Assert.Equal(0, result.Similarity);
+    }
 
     [Fact]
-    public void Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
+    public void Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
     {
-        // Same doc type. The all-terms URL has the stronger similarity, yet the exact-phrase URL
-        // still comes first — the exact tier is hard, not a score nudge.
         var vectors = new[]
         {
-            new VectorCandidate("https://x/exact",    "body", false, 0.40), // sim 0.60
-            new VectorCandidate("https://x/allterms", "body", false, 0.10), // sim 0.90
+            new VectorCandidate("https://x/hybrid", "body", false, 0.20),
+            new VectorCandidate("https://x/semantic", "body", false, 0.10)
         };
         var keywords = new[]
         {
-            new KeywordCandidate("https://x/exact",    "body", false, ExactPhrase: true),
-            new KeywordCandidate("https://x/allterms", "body", false, ExactPhrase: false),
+            new KeywordCandidate("https://x/hybrid", "body", false, Bm25: -1)
         };
 
-        var results = SearchRanker.Rank(vectors, keywords, "zzz", Settings());
+        var results = SearchRanker.Rank(vectors, keywords, "unseen", Settings());
 
-        Assert.Equal("https://x/exact",    results[0].Url);
-        Assert.Equal("https://x/allterms", results[1].Url);
-        Assert.True(results[1].Score > results[0].Score); // proves ordering wasn't by score
+        Assert.Equal("https://x/hybrid", results[0].Url);
     }
 
     [Fact]
-    public void Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
+    public void Exact_phrase_is_a_bonus_not_a_hard_tier()
     {
-        // A semantic-only hit (no keyword match) and an all-terms hit sit in the same match tier:
-        // the higher fine score wins regardless of which signal produced it.
         var vectors = new[]
         {
-            new VectorCandidate("https://x/vectoronly", "body", false, 0.10), // sim 0.90, no keyword
-            new VectorCandidate("https://x/allterms",   "body", false, 0.40), // sim 0.60
+            new VectorCandidate("https://x/hybrid", "alpha separated from beta", false, 0.10)
         };
-        var keywords = new[] { new KeywordCandidate("https://x/allterms", "body", false, ExactPhrase: false) };
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/phrase", "alpha beta", false, ExactPhrase: true, Bm25: -2),
+            new KeywordCandidate("https://x/hybrid", "alpha separated from beta", false, Bm25: -1)
+        };
 
-        var results = SearchRanker.Rank(vectors, keywords, "zzz", Settings());
+        var results = SearchRanker.Rank(vectors, keywords, "alpha beta", Settings());
 
-        Assert.Equal("https://x/vectoronly", results[0].Url); // higher fine score, same tier
-        Assert.Equal("https://x/allterms",   results[1].Url);
+        Assert.Equal("https://x/hybrid", results[0].Url);
+        Assert.Contains(results, result => result.Url == "https://x/phrase");
     }
 
-    // --- Doc tier: web pages rank above PDFs/DOCX, dominating the match tier and fine score ---
+    [Fact]
+    public void Exact_phrase_beats_an_otherwise_comparable_loose_match()
+    {
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/loose", "alpha several words before beta", false, Bm25: -2),
+            new KeywordCandidate("https://x/phrase", "alpha beta", false, ExactPhrase: true, Bm25: -2)
+        };
+
+        var results = SearchRanker.Rank(NoVectors, keywords, "alpha beta", Settings());
+
+        Assert.Equal("https://x/phrase", results[0].Url);
+    }
 
     [Fact]
-    public void Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
+    public void Close_terms_rank_above_widely_separated_terms()
+    {
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/far", "alpha one two three four beta", false, Bm25: -2),
+            new KeywordCandidate("https://x/close", "beta alpha", false, Bm25: -2)
+        };
+
+        var results = SearchRanker.Rank(NoVectors, keywords, "alpha beta", Settings());
+
+        Assert.Equal("https://x/close", results[0].Url);
+    }
+
+    [Fact]
+    public void Better_term_coverage_can_overcome_a_one_place_bm25_difference()
+    {
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/partial", "alpha", false, Bm25: -3),
+            new KeywordCandidate("https://x/better", "alpha and beta", false, Bm25: -2)
+        };
+
+        var results = SearchRanker.Rank(NoVectors, keywords, "alpha beta gamma", Settings());
+
+        Assert.Equal("https://x/better", results[0].Url);
+    }
+
+    [Fact]
+    public void Multiple_matching_chunks_add_diminishing_evidence()
+    {
+        var oneChunk = new[]
+        {
+            new KeywordCandidate("https://x/a", "alpha", false, Bm25: -2)
+        };
+        var twoChunks = new[]
+        {
+            new KeywordCandidate("https://x/a", "alpha first", false, Bm25: -2),
+            new KeywordCandidate("https://x/a", "alpha second", false, Bm25: -1)
+        };
+
+        var one = Assert.Single(SearchRanker.Rank(NoVectors, oneChunk, "alpha", Settings()));
+        var two = Assert.Single(SearchRanker.Rank(NoVectors, twoChunks, "alpha", Settings()));
+
+        Assert.Equal(Settings().MultiChunkBoost / 2, two.Score - one.Score, 6);
+    }
+
+    [Fact]
+    public void Lexical_snippet_is_used_when_it_explains_the_query_better()
     {
         var vectors = new[]
         {
-            new VectorCandidate("https://x/page.html", "body", false, 0.40), // sim 0.60
-            new VectorCandidate("https://x/doc.pdf",   "body", false, 0.05), // sim 0.95
+            new VectorCandidate("https://x/a", "semantically related introduction", false, 0.10)
+        };
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/a", "exact deployment procedure", false, Bm25: -2)
+        };
+
+        var result = Assert.Single(SearchRanker.Rank(vectors, keywords, "deployment procedure", Settings()));
+
+        Assert.Equal("exact deployment procedure", result.Text);
+    }
+
+    [Fact]
+    public void Non_html_penalty_is_soft_not_an_absolute_tier()
+    {
+        var vectors = new[]
+        {
+            new VectorCandidate("https://x/page.html", "body", false, 0.10),
+            new VectorCandidate("https://x/authoritative.pdf", "body", false, 0.20)
+        };
+        var keywords = new[]
+        {
+            new KeywordCandidate("https://x/authoritative.pdf", "body", false, Bm25: -2)
         };
         var docKinds = new Dictionary<string, DocKind>
         {
             ["https://x/page.html"] = DocKind.Html,
-            ["https://x/doc.pdf"]   = DocKind.Pdf,
+            ["https://x/authoritative.pdf"] = DocKind.Pdf
         };
 
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings(), titles: null, docKinds: docKinds);
+        var results = SearchRanker.Rank(vectors, keywords, "unseen", Settings(), docKinds: docKinds);
 
-        Assert.Equal("https://x/page.html", results[0].Url); // web page first despite lower score
-        Assert.Equal("https://x/doc.pdf",   results[1].Url);
-        Assert.True(results[1].Score > results[0].Score);
-    }
-
-    [Fact]
-    public void Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
-    {
-        // Doc type is the OUTER tier, so a web page that only matches all-terms still beats a PDF
-        // that matches the exact phrase.
-        var vectors = new[]
-        {
-            new VectorCandidate("https://x/page.html", "body", false, 0.40), // sim 0.60
-            new VectorCandidate("https://x/doc.pdf",   "body", false, 0.10), // sim 0.90
-        };
-        var keywords = new[]
-        {
-            new KeywordCandidate("https://x/page.html", "body", false, ExactPhrase: false), // all-terms
-            new KeywordCandidate("https://x/doc.pdf",   "body", false, ExactPhrase: true),  // exact phrase
-        };
-        var docKinds = new Dictionary<string, DocKind>
-        {
-            ["https://x/page.html"] = DocKind.Html,
-            ["https://x/doc.pdf"]   = DocKind.Pdf,
-        };
-
-        var results = SearchRanker.Rank(vectors, keywords, "zzz", Settings(), titles: null, docKinds: docKinds);
-
-        Assert.Equal("https://x/page.html", results[0].Url);
-        Assert.Equal("https://x/doc.pdf",   results[1].Url);
-    }
-
-    [Fact]
-    public void Docx_is_grouped_with_pdf_below_web_pages()
-    {
-        // "Web page vs anything else" — DOCX is demoted just like PDF.
-        var vectors = new[]
-        {
-            new VectorCandidate("https://x/page.html", "body", false, 0.45), // sim 0.55
-            new VectorCandidate("https://x/doc.docx",  "body", false, 0.05), // sim 0.95
-        };
-        var docKinds = new Dictionary<string, DocKind>
-        {
-            ["https://x/page.html"] = DocKind.Html,
-            ["https://x/doc.docx"]  = DocKind.Docx,
-        };
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings(), titles: null, docKinds: docKinds);
-
-        Assert.Equal("https://x/page.html", results[0].Url);
-        Assert.Equal(DocKind.Docx, results[1].DocKind);
-    }
-
-    [Fact]
-    public void Missing_doc_kind_is_treated_as_a_web_page()
-    {
-        // A URL with no DocKind entry must not be demoted below real web pages.
-        var vectors = new[]
-        {
-            new VectorCandidate("https://x/unknown", "body", false, 0.40), // sim 0.60, no docKinds entry
-            new VectorCandidate("https://x/pdf",     "body", false, 0.05), // sim 0.95, PDF
-        };
-        var docKinds = new Dictionary<string, DocKind> { ["https://x/pdf"] = DocKind.Pdf };
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings(), titles: null, docKinds: docKinds);
-
-        Assert.Equal("https://x/unknown", results[0].Url); // treated as a web page, beats the PDF
-    }
-
-    [Fact]
-    public void Result_exposes_doc_kind()
-    {
-        var vectors = new[] { new VectorCandidate("https://x/doc.pdf", "body", false, 0.10) };
-        var docKinds = new Dictionary<string, DocKind> { ["https://x/doc.pdf"] = DocKind.Pdf };
-
-        var results = SearchRanker.Rank(vectors, NoKeywords, "zzz", Settings(), titles: null, docKinds: docKinds);
-
+        Assert.Equal("https://x/authoritative.pdf", results[0].Url);
         Assert.Equal(DocKind.Pdf, results[0].DocKind);
+    }
+
+    [Fact]
+    public void Equal_evidence_prefers_html_by_the_configured_penalty()
+    {
+        var vectors = new[]
+        {
+            new VectorCandidate("https://x/doc.pdf", "body", false, 0.10),
+            new VectorCandidate("https://x/page.html", "body", false, 0.10)
+        };
+        var docKinds = new Dictionary<string, DocKind>
+        {
+            ["https://x/doc.pdf"] = DocKind.Pdf,
+            ["https://x/page.html"] = DocKind.Html
+        };
+
+        var results = SearchRanker.Rank(vectors, NoKeywords, "unseen", Settings(), docKinds: docKinds);
+
+        Assert.Equal("https://x/page.html", results[0].Url);
+    }
+
+    [Fact]
+    public void Missing_document_kind_is_treated_as_html()
+    {
+        var result = Assert.Single(SearchRanker.Rank(
+            [new VectorCandidate("https://x/unknown", "body", false, 0.10)],
+            NoKeywords,
+            "unseen",
+            Settings(),
+            docKinds: new Dictionary<string, DocKind>()));
+
+        Assert.Equal(DocKind.Html, result.DocKind);
     }
 }

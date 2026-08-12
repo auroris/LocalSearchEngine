@@ -124,6 +124,27 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
         Assert.Empty(response.Items);
     }
 
+    [Fact]
+    public async Task Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected()
+    {
+        await SeedSchemaAndDataAsync();
+
+        // A deliberately impossible vector threshold isolates candidate generation by FTS5.
+        // The alpha document contains two of the three terms, so the former all-terms query
+        // could not retrieve it; broad OR retrieval can admit it for coverage-based reranking.
+        var lexicalOnly = new VectorSearchService(
+            new FakeEmbedder(),
+            _provider.GetRequiredService<VectorStore>(),
+            new DatabaseConfig(_connectionString),
+            Options.Create(new SearchSettings { MaxDistance = -1, CandidatePoolSize = 100 }),
+            NullLogger<VectorSearchService>.Instance);
+
+        var response = await lexicalOnly.SearchAsync("wizard grace nonexistentterm");
+
+        Assert.Contains(response.Items, item => item.Url == "https://site/alpha");
+        Assert.All(response.Items, item => Assert.Equal(0, item.Similarity));
+    }
+
     private long Count(string sql)
     {
         using var connection = new SqliteConnection(_connectionString);

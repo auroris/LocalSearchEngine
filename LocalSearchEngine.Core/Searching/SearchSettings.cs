@@ -1,15 +1,15 @@
 namespace LocalSearchEngine.Core.Searching;
 
 /// <summary>
-/// Configures relevance tuning settings for search queries, including candidate pools, thresholds, and keyword boosts.
-/// These boosts only order results <em>within</em> a ranking group; the two top-level tiers — web pages ahead of
-/// PDFs/DOCX, then exact-phrase hits ahead of looser ones — are structural in <see cref="SearchRanker"/> and not tunable here.
+/// Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic and lexical
+/// candidates are fused by reciprocal rank, then bounded phrase, proximity, field, and document
+/// signals refine their order.
 /// </summary>
 public class SearchSettings
 {
     /// <summary>
-    /// Gets or sets the number of nearest candidate chunks retrieved from the vector index before
-    /// they are filtered by <see cref="MaxDistance"/> and ranked.
+    /// Gets or sets the maximum number of chunk candidates retrieved by each semantic, broad BM25,
+    /// and phrase-rescue pass before candidates are deduplicated by URL and reranked.
     /// </summary>
     public int CandidatePoolSize { get; set; } = 500;
 
@@ -24,22 +24,56 @@ public class SearchSettings
     public double MaxDistance { get; set; } = 0.6;
 
     /// <summary>
+    /// Gets or sets the reciprocal-rank constant used when fusing semantic and BM25 result ranks.
+    /// Larger values make rank differences less pronounced. A value around 60 is conventional.
+    /// </summary>
+    public double ReciprocalRankConstant { get; set; } = 60;
+
+    /// <summary>Gets or sets the weight of the semantic result rank in reciprocal-rank fusion.</summary>
+    public double SemanticWeight { get; set; } = 1.0;
+
+    /// <summary>Gets or sets the weight of the BM25 keyword result rank in reciprocal-rank fusion.</summary>
+    public double KeywordWeight { get; set; } = 1.0;
+
+    /// <summary>Gets or sets the bonus for query terms occurring as an adjacent, ordered phrase.</summary>
+    public double ExactPhraseBoost { get; set; } = 0.35;
+
+    /// <summary>
+    /// Gets or sets the maximum bonus for query terms occurring close together. Partial term
+    /// coverage and wider spans receive a proportionally smaller bonus.
+    /// </summary>
+    public double ProximityBoost { get; set; } = 0.15;
+
+    /// <summary>
     /// Gets or sets the relevance score boost added when a match occurs in a page heading.
     /// </summary>
     public double HeadingBoost { get; set; } = 0.3;
 
     /// <summary>
-    /// Gets or sets the relevance score boost added when a query match is found within the page's HTML title.
+    /// Gets or sets the maximum coverage-weighted boost for query terms in the page's HTML title.
     /// </summary>
     public double TitleBoost { get; set; } = 0.35;
 
     /// <summary>
-    /// Gets or sets the relevance score boost added when the URL's file name contains the query terms.
+    /// Gets or sets the maximum coverage-weighted boost for query terms in the URL's final filename or slug.
     /// </summary>
     public double FilenameBoost { get; set; } = 0.4;
 
     /// <summary>
-    /// Gets or sets the relevance score boost added when the literal query string is present in the text snippet.
+    /// Gets or sets the maximum relevance boost for query-term coverage in matching chunks.
+    /// A chunk containing only some distinct terms receives a proportional fraction.
     /// </summary>
     public double TermInTextBoost { get; set; } = 0.2;
+
+    /// <summary>
+    /// Gets or sets the maximum bonus for corroborating matches in multiple chunks from one URL.
+    /// The ranker applies diminishing returns and never exceeds this amount.
+    /// </summary>
+    public double MultiChunkBoost { get; set; } = 0.1;
+
+    /// <summary>
+    /// Gets or sets the soft penalty applied to PDF and DOCX results. Unlike a hard document-type
+    /// tier, sufficiently relevant documents can still outrank weaker HTML pages.
+    /// </summary>
+    public double NonHtmlPenalty { get; set; } = 0.15;
 }

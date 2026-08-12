@@ -15,6 +15,7 @@ items:
   - LocalSearchEngine.Core.Searching.VectorSearchService.IndexUrlChunksAsync(System.String,System.String,System.Boolean)
   - LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   - LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
+  - LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm(System.String)
   - LocalSearchEngine.Core.Searching.VectorSearchService.SearchAsync(System.String)
   - LocalSearchEngine.Core.Searching.VectorSearchService.UpsertChunkRecordsAsync(System.Collections.Generic.IReadOnlyList{LocalSearchEngine.Core.Searching.TextChunkRecord})
   - LocalSearchEngine.Core.Searching.VectorSearchService._collection
@@ -570,7 +571,7 @@ items:
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Retrieves keyword candidates matching the query from the full-text search index.
+  summary: Retrieves a broad BM25-ranked keyword pool plus an adjacent-phrase rescue pool from FTS5.
   example: []
   syntax:
     content: private Task<List<KeywordCandidate>> GetKeywordHitsAsync(string query, int pool)
@@ -589,6 +590,40 @@ items:
   nameWithType.vb: VectorSearchService.GetKeywordHitsAsync(String, Integer)
   fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.GetKeywordHitsAsync(String, Integer)
   name.vb: GetKeywordHitsAsync(String, Integer)
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm(System.String)
+  commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm(System.String)
+  id: QuoteFtsTerm(System.String)
+  parent: LocalSearchEngine.Core.Searching.VectorSearchService
+  langs:
+  - csharp
+  - vb
+  name: QuoteFtsTerm(string)
+  nameWithType: VectorSearchService.QuoteFtsTerm(string)
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: QuoteFtsTerm
+    path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
+    startLine: 292
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static string QuoteFtsTerm(string term)
+    parameters:
+    - id: term
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Private Shared Function QuoteFtsTerm(term As String) As String
+  overload: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm*
+  nameWithType.vb: VectorSearchService.QuoteFtsTerm(String)
+  fullName.vb: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm(String)
+  name.vb: QuoteFtsTerm(String)
 - uid: LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
   commentId: M:LocalSearchEngine.Core.Searching.VectorSearchService.LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
   id: LoadPageMetadataAsync(System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Searching.KeywordCandidate})
@@ -607,7 +642,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadPageMetadataAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 283
+    startLine: 301
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -651,7 +686,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CollectKeywordHitsAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 315
+    startLine: 333
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -668,7 +703,7 @@ items:
       description: The FTS5 MATCH expression query.
     - id: exactPhrase
       type: System.Boolean
-      description: <code>true</code> if this matches the query literally; otherwise, <code>false</code>.
+      description: <code>true</code> if this pass requires adjacent query terms; otherwise, <code>false</code>.
     - id: limit
       type: System.Int32
       description: The maximum number of rows to retrieve.
@@ -701,7 +736,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LoadPageMetadataAsync
     path: LocalSearchEngine.Core/Searching/VectorSearchService.cs
-    startLine: 347
+    startLine: 366
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -1904,6 +1939,12 @@ references:
     href: LocalSearchEngine.Core.Searching.KeywordCandidate.html
   - name: )
   - name: )
+- uid: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm*
+  commentId: Overload:LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm
+  href: LocalSearchEngine.Core.Searching.VectorSearchService.html#LocalSearchEngine_Core_Searching_VectorSearchService_QuoteFtsTerm_System_String_
+  name: QuoteFtsTerm
+  nameWithType: VectorSearchService.QuoteFtsTerm
+  fullName: LocalSearchEngine.Core.Searching.VectorSearchService.QuoteFtsTerm
 - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
   parent: LocalSearchEngine.Core.Crawling.Policies

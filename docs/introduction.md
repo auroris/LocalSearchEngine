@@ -80,6 +80,6 @@ The search engine embeds and searches text entirely on your CPU:
 * **Vector Index**: Utilizes `sqlite-vec` (via Microsoft Semantic Kernel) to perform local k-NN search using cosine similarity.
 * **Keyword Index**: Utilizes SQLite's native **FTS5** virtual table with a Porter Stemming tokenizer for linguistic stemming (e.g. mapping "running" to "run").
 * **Hybrid Search Ranker**: Ranks search results combining:
-  1. Dense vector cosine similarity.
-  2. Sparse keyword matching (verbatim and all-terms).
-  3. Structural boosts (bonuses for keyword hits in titles, headings, and file names).
+  1. Dense vector candidates ordered by cosine distance.
+  2. Broad sparse candidates ordered by FTS5 BM25, plus adjacent-phrase rescue.
+  3. URL-level reciprocal-rank fusion with coverage, proximity, field, and document-type adjustments.

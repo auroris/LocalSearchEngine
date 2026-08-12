@@ -341,7 +341,7 @@ items:
       description: The content hash of the page's extracted indexable content, if any.
     - id: docKind
       type: LocalSearchEngine.Core.Crawling.Policies.DocKind
-      description: The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.
+      description: The classified document kind of the indexed content, used by search ranking for its configurable non-HTML penalty.
     - id: transaction
       type: Microsoft.Data.Sqlite.SqliteTransaction
       description: An open transaction to enlist this write in, or <code>null</code> to run it standalone.

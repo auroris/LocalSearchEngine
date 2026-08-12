@@ -21,11 +21,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResponse
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 213
+    startLine: 335
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Represents the query response containing ranked search results.
+  summary: Represents the response containing ranked search results.
   example: []
   syntax:
     content: public class SearchResponse
@@ -58,7 +58,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Items
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 216
+    startLine: 338
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -89,7 +89,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TotalMatches
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 218
+    startLine: 340
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

@@ -53,7 +53,7 @@ public static class CrawlStore
                     Title TEXT,
                     ContentHash TEXT,
                     -- The DocKind enum value of the page's indexed content (Html/Pdf/Docx), so search
-                    -- ranking can group web pages ahead of PDFs/DOCX without re-sniffing. NULL for rows
+                    -- ranking can apply its configurable PDF/DOCX penalty without re-sniffing. NULL for rows
                     -- that were only visited, not indexed (redirects, 404s, unsupported types).
                     DocKind INTEGER
                 );
@@ -204,7 +204,7 @@ public static class CrawlStore
     /// <param name="lastModified">The Last-Modified header value, if any.</param>
     /// <param name="title">The page title, if any.</param>
     /// <param name="contentHash">The content hash of the page's extracted indexable content, if any.</param>
-    /// <param name="docKind">The classified document kind of the indexed content, used by search ranking to group web pages ahead of PDFs/DOCX.</param>
+    /// <param name="docKind">The classified document kind of the indexed content, used by search ranking for its configurable non-HTML penalty.</param>
     /// <param name="transaction">An open transaction to enlist this write in, or <c>null</c> to run it standalone.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public static async Task RecordCrawlStateAsync(SqliteConnection connection, string url, int statusCode, string? eTag, string? lastModified, string? title, string? contentHash, DocKind docKind, SqliteTransaction? transaction = null)

@@ -5,10 +5,15 @@ items:
   id: SearchRanker
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate,System.String,LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
+  - LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText(System.Collections.Generic.IReadOnlyList{System.String},System.String)
+  - LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
   - LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate(System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate},System.String)
+  - LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName(System.String)
   - LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
-  - LocalSearchEngine.Core.Searching.SearchRanker.Slugify(System.String)
-  - LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(System.String,System.String)
+  - LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank(System.Int32,System.Double)
+  - LocalSearchEngine.Core.Searching.SearchRanker.Tokenize(System.String)
+  - LocalSearchEngine.Core.Searching.SearchRanker.WordToken
   langs:
   - csharp
   - vb
@@ -23,26 +28,20 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchRanker
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 32
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Collapses the two candidate streams of a hybrid search — semantic vector hits and keyword (FTS5)
+    Collapses semantic and BM25 candidate streams into a URL-level result list. Each stream is first
 
-    hits — into a single ranked result list. Candidates are aggregated by URL, then ordered in three
+    reduced to its best rank per URL, then combined with normalized reciprocal-rank fusion. Bounded
 
-    tiers: web pages rank ahead of every PDF/DOCX; within a doc-type group a verbatim-phrase keyword
+    lexical features refine that fused score: term coverage, phrase adjacency, proximity, matches in
 
-    hit ranks ahead of a looser all-terms or semantic-only hit; and within a group the configured
+    headings/titles/filenames, corroborating chunks, and a soft non-HTML penalty. This keeps the
 
-    fine-grained boosts (heading, title, filename, literal-term-in-snippet) layered on the semantic
-
-    similarity break the tie. The first two are hard tiers — no fine score lifts a PDF above a web
-
-    page, or an all-terms hit above a phrase hit in the same group. Pure and stateless — the same
-
-    candidates always rank the same way.
+    re-ranker inexpensive and avoids adding incompatible raw cosine-distance and BM25 scales.
   example: []
   syntax:
     content: public static class SearchRanker
@@ -57,6 +56,33 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.WordToken
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.WordToken
+  id: WordToken
+  parent: LocalSearchEngine.Core.Searching.SearchRanker
+  langs:
+  - csharp
+  - vb
+  name: WordToken
+  nameWithType: SearchRanker.WordToken
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.WordToken
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: WordToken
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static readonly Regex WordToken
+    return:
+      type: System.Text.RegularExpressions.Regex
+    content.vb: Private Shared ReadOnly WordToken As Regex
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
   id: Rank(System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate},System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate},System.String,LocalSearchEngine.Core.Searching.SearchSettings,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IReadOnlyDictionary{System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind})
@@ -75,7 +101,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Rank
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 44
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -86,13 +112,13 @@ items:
     parameters:
     - id: vectorHits
       type: System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.VectorCandidate}
-      description: The collection of semantic vector hits.
+      description: Semantic hits in nearest-neighbour order.
     - id: keywordHits
       type: System.Collections.Generic.IEnumerable{LocalSearchEngine.Core.Searching.KeywordCandidate}
-      description: The collection of keyword full-text search hits.
+      description: BM25-scored keyword hits from the broad and phrase-rescue passes.
     - id: query
       type: System.String
-      description: The raw query string.
+      description: The query text after search operators have been removed.
     - id: settings
       type: LocalSearchEngine.Core.Searching.SearchSettings
       description: The search relevance settings.
@@ -128,108 +154,238 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetOrCreate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 131
+    startLine: 179
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Retrieves or creates an aggregation record for a specific URL in the ranking pass.
-  example: []
   syntax:
     content: private static SearchRanker.Aggregate GetOrCreate(Dictionary<string, SearchRanker.Aggregate> byUrl, string url)
     parameters:
     - id: byUrl
       type: System.Collections.Generic.Dictionary{System.String,LocalSearchEngine.Core.Searching.SearchRanker.Aggregate}
-      description: The current aggregation dictionary map.
     - id: url
       type: System.String
-      description: The URL key.
     return:
       type: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-      description: The <xref href="LocalSearchEngine.Core.Searching.SearchRanker.Aggregate" data-throw-if-not-resolved="false"></xref> record.
     content.vb: Private Shared Function GetOrCreate(byUrl As Dictionary(Of String, SearchRanker.Aggregate), url As String) As SearchRanker.Aggregate
   overload: LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate*
   nameWithType.vb: SearchRanker.GetOrCreate(Dictionary(Of String, SearchRanker.Aggregate), String)
   fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate(System.Collections.Generic.Dictionary(Of String, LocalSearchEngine.Core.Searching.SearchRanker.Aggregate), String)
   name.vb: GetOrCreate(Dictionary(Of String, Aggregate), String)
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(System.String,System.String)
-  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(System.String,System.String)
-  id: UrlFileNameContains(System.String,System.String)
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate,System.String,LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate,System.String,LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
+  id: AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate,System.String,LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
   parent: LocalSearchEngine.Core.Searching.SearchRanker
   langs:
   - csharp
   - vb
-  name: UrlFileNameContains(string, string)
-  nameWithType: SearchRanker.UrlFileNameContains(string, string)
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(string, string)
+  name: AddTextEvidence(Aggregate, string, TextFeatures)
+  nameWithType: SearchRanker.AddTextEvidence(SearchRanker.Aggregate, string, SearchRanker.TextFeatures)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate, string, LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: UrlFileNameContains
+    id: AddTextEvidence
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 147
+    startLine: 189
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Determines whether the URL filename contains query keywords.
+  syntax:
+    content: private static void AddTextEvidence(SearchRanker.Aggregate agg, string text, SearchRanker.TextFeatures features)
+    parameters:
+    - id: agg
+      type: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    - id: text
+      type: System.String
+    - id: features
+      type: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    content.vb: Private Shared Sub AddTextEvidence(agg As SearchRanker.Aggregate, text As String, features As SearchRanker.TextFeatures)
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence*
+  nameWithType.vb: SearchRanker.AddTextEvidence(SearchRanker.Aggregate, String, SearchRanker.TextFeatures)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence(LocalSearchEngine.Core.Searching.SearchRanker.Aggregate, String, LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
+  name.vb: AddTextEvidence(Aggregate, String, TextFeatures)
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank(System.Int32,System.Double)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank(System.Int32,System.Double)
+  id: ReciprocalRank(System.Int32,System.Double)
+  parent: LocalSearchEngine.Core.Searching.SearchRanker
+  langs:
+  - csharp
+  - vb
+  name: ReciprocalRank(int, double)
+  nameWithType: SearchRanker.ReciprocalRank(int, double)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank(int, double)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReciprocalRank
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 201
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Normalizes reciprocal rank so the first result contributes exactly 1.0 before weighting.
   example: []
   syntax:
-    content: private static bool UrlFileNameContains(string url, string query)
+    content: private static double ReciprocalRank(int rank, double constant)
     parameters:
-    - id: url
+    - id: rank
+      type: System.Int32
+    - id: constant
+      type: System.Double
+    return:
+      type: System.Double
+    content.vb: Private Shared Function ReciprocalRank(rank As Integer, constant As Double) As Double
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank*
+  nameWithType.vb: SearchRanker.ReciprocalRank(Integer, Double)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank(Integer, Double)
+  name.vb: ReciprocalRank(Integer, Double)
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText(System.Collections.Generic.IReadOnlyList{System.String},System.String)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText(System.Collections.Generic.IReadOnlyList{System.String},System.String)
+  id: AnalyzeText(System.Collections.Generic.IReadOnlyList{System.String},System.String)
+  parent: LocalSearchEngine.Core.Searching.SearchRanker
+  langs:
+  - csharp
+  - vb
+  name: AnalyzeText(IReadOnlyList<string>, string?)
+  nameWithType: SearchRanker.AnalyzeText(IReadOnlyList<string>, string?)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText(System.Collections.Generic.IReadOnlyList<string>, string?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AnalyzeText
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 207
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static SearchRanker.TextFeatures AnalyzeText(IReadOnlyList<string> queryTokens, string? text)
+    parameters:
+    - id: queryTokens
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    - id: text
       type: System.String
-      description: The URL string.
-    - id: query
-      type: System.String
-      description: The query string.
+    return:
+      type: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    content.vb: Private Shared Function AnalyzeText(queryTokens As IReadOnlyList(Of String), text As String) As SearchRanker.TextFeatures
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText*
+  nameWithType.vb: SearchRanker.AnalyzeText(IReadOnlyList(Of String), String)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText(System.Collections.Generic.IReadOnlyList(Of String), String)
+  name.vb: AnalyzeText(IReadOnlyList(Of String), String)
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  id: ContainsSequence(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  parent: LocalSearchEngine.Core.Searching.SearchRanker
+  langs:
+  - csharp
+  - vb
+  name: ContainsSequence(IReadOnlyList<string>, IReadOnlyList<string>)
+  nameWithType: SearchRanker.ContainsSequence(IReadOnlyList<string>, IReadOnlyList<string>)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence(System.Collections.Generic.IReadOnlyList<string>, System.Collections.Generic.IReadOnlyList<string>)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ContainsSequence
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 260
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static bool ContainsSequence(IReadOnlyList<string> textTokens, IReadOnlyList<string> queryTokens)
+    parameters:
+    - id: textTokens
+      type: System.Collections.Generic.IReadOnlyList{System.String}
+    - id: queryTokens
+      type: System.Collections.Generic.IReadOnlyList{System.String}
     return:
       type: System.Boolean
-      description: <code>true</code> if the filename slug matches the query keywords; otherwise, <code>false</code>.
-    content.vb: Private Shared Function UrlFileNameContains(url As String, query As String) As Boolean
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains*
-  nameWithType.vb: SearchRanker.UrlFileNameContains(String, String)
-  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains(String, String)
-  name.vb: UrlFileNameContains(String, String)
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.Slugify(System.String)
-  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.Slugify(System.String)
-  id: Slugify(System.String)
+    content.vb: Private Shared Function ContainsSequence(textTokens As IReadOnlyList(Of String), queryTokens As IReadOnlyList(Of String)) As Boolean
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence*
+  nameWithType.vb: SearchRanker.ContainsSequence(IReadOnlyList(Of String), IReadOnlyList(Of String))
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence(System.Collections.Generic.IReadOnlyList(Of String), System.Collections.Generic.IReadOnlyList(Of String))
+  name.vb: ContainsSequence(IReadOnlyList(Of String), IReadOnlyList(Of String))
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize(System.String)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.Tokenize(System.String)
+  id: Tokenize(System.String)
   parent: LocalSearchEngine.Core.Searching.SearchRanker
   langs:
   - csharp
   - vb
-  name: Slugify(string)
-  nameWithType: SearchRanker.Slugify(string)
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Slugify(string)
+  name: Tokenize(string?)
+  nameWithType: SearchRanker.Tokenize(string?)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize(string?)
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Slugify
+    id: Tokenize
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 165
+    startLine: 277
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Normalizes dashes and underscores to spaces to fold slugs into plain text.
-  example: []
   syntax:
-    content: private static string Slugify(string value)
+    content: private static List<string> Tokenize(string? value)
     parameters:
     - id: value
       type: System.String
-      description: The string to slugify.
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Private Shared Function Tokenize(value As String) As List(Of String)
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize*
+  nameWithType.vb: SearchRanker.Tokenize(String)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize(String)
+  name.vb: Tokenize(String)
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName(System.String)
+  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName(System.String)
+  id: GetUrlFileName(System.String)
+  parent: LocalSearchEngine.Core.Searching.SearchRanker
+  langs:
+  - csharp
+  - vb
+  name: GetUrlFileName(string)
+  nameWithType: SearchRanker.GetUrlFileName(string)
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: GetUrlFileName
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 283
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: private static string GetUrlFileName(string url)
+    parameters:
+    - id: url
+      type: System.String
     return:
       type: System.String
-      description: The cleaned string with space replacements.
-    content.vb: Private Shared Function Slugify(value As String) As String
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.Slugify*
-  nameWithType.vb: SearchRanker.Slugify(String)
-  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.Slugify(String)
-  name.vb: Slugify(String)
+    content.vb: Private Shared Function GetUrlFileName(url As String) As String
+  overload: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName*
+  nameWithType.vb: SearchRanker.GetUrlFileName(String)
+  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName(String)
+  name.vb: GetUrlFileName(String)
 references:
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
@@ -498,6 +654,51 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Text.RegularExpressions.Regex
+  commentId: T:System.Text.RegularExpressions.Regex
+  parent: System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex
+  name: Regex
+  nameWithType: Regex
+  fullName: System.Text.RegularExpressions.Regex
+- uid: System.Text.RegularExpressions
+  commentId: N:System.Text.RegularExpressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.RegularExpressions
+  nameWithType: System.Text.RegularExpressions
+  fullName: System.Text.RegularExpressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.RegularExpressions
+    name: RegularExpressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.regularexpressions
 - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
   parent: LocalSearchEngine.Core.Crawling.Policies
@@ -885,29 +1086,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-  parent: LocalSearchEngine.Core.Searching
-  href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  name: SearchRanker.Aggregate
-  nameWithType: SearchRanker.Aggregate
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-  spec.csharp:
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker
-    name: SearchRanker
-    href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-    name: Aggregate
-    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
-  spec.vb:
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker
-    name: SearchRanker
-    href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
-    name: Aggregate
-    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.GetOrCreate
   href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_GetOrCreate_System_Collections_Generic_Dictionary_System_String_LocalSearchEngine_Core_Searching_SearchRanker_Aggregate__System_String_
@@ -967,6 +1145,29 @@ references:
     name: Aggregate
     href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
   - name: )
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker.Aggregate
+  nameWithType: SearchRanker.Aggregate
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    name: Aggregate
+    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+    name: Aggregate
+    href: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.html
 - uid: System.Collections.Generic.Dictionary`2
   commentId: T:System.Collections.Generic.Dictionary`2
   isExternal: true
@@ -1001,12 +1202,138 @@ references:
   - name: " "
   - name: TValue
   - name: )
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains
-  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_UrlFileNameContains_System_String_System_String_
-  name: UrlFileNameContains
-  nameWithType: SearchRanker.UrlFileNameContains
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.UrlFileNameContains
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_AddTextEvidence_LocalSearchEngine_Core_Searching_SearchRanker_Aggregate_System_String_LocalSearchEngine_Core_Searching_SearchRanker_TextFeatures_
+  name: AddTextEvidence
+  nameWithType: SearchRanker.AddTextEvidence
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.AddTextEvidence
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  name: SearchRanker.TextFeatures
+  nameWithType: SearchRanker.TextFeatures
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  spec.csharp:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    name: TextFeatures
+    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
+  spec.vb:
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker
+    name: SearchRanker
+    href: LocalSearchEngine.Core.Searching.SearchRanker.html
+  - name: .
+  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+    name: TextFeatures
+    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_ReciprocalRank_System_Int32_System_Double_
+  name: ReciprocalRank
+  nameWithType: SearchRanker.ReciprocalRank
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.ReciprocalRank
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_AnalyzeText_System_Collections_Generic_IReadOnlyList_System_String__System_String_
+  name: AnalyzeText
+  nameWithType: SearchRanker.AnalyzeText
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.AnalyzeText
+- uid: System.Collections.Generic.IReadOnlyList{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<string>
+  nameWithType: IReadOnlyList<string>
+  fullName: System.Collections.Generic.IReadOnlyList<string>
+  nameWithType.vb: IReadOnlyList(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of String)
+  name.vb: IReadOnlyList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_ContainsSequence_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyList_System_String__
+  name: ContainsSequence
+  nameWithType: SearchRanker.ContainsSequence
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.ContainsSequence
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -1018,9 +1345,50 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.Slugify*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.Slugify
-  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_Slugify_System_String_
-  name: Slugify
-  nameWithType: SearchRanker.Slugify
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Slugify
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.Tokenize
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_Tokenize_System_String_
+  name: Tokenize
+  nameWithType: SearchRanker.Tokenize
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Tokenize
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName
+  href: LocalSearchEngine.Core.Searching.SearchRanker.html#LocalSearchEngine_Core_Searching_SearchRanker_GetUrlFileName_System_String_
+  name: GetUrlFileName
+  nameWithType: SearchRanker.GetUrlFileName
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.GetUrlFileName

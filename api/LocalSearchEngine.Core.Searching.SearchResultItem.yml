@@ -25,7 +25,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResultItem
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 194
+    startLine: 318
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 197
+    startLine: 321
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -93,7 +93,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 199
+    startLine: 323
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -124,7 +124,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 201
+    startLine: 325
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -155,7 +155,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 203
+    startLine: 327
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -186,11 +186,11 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Score
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 205
+    startLine: 329
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
-  summary: Gets or sets the fine within-group relevance score. Overall ordering also applies the web-page and exact-phrase tiers ahead of this score.
+  summary: Gets or sets the final fused and feature-adjusted relevance score.
   example: []
   syntax:
     content: public double Score { get; set; }
@@ -217,7 +217,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DocKind
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 207
+    startLine: 331
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

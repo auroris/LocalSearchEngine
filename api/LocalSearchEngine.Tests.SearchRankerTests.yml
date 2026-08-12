@@ -5,28 +5,27 @@ items:
   id: SearchRankerTests
   parent: LocalSearchEngine.Tests
   children:
-  - LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-  - LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  - LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-  - LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
-  - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-  - LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-  - LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
+  - LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  - LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+  - LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+  - LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  - LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+  - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+  - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+  - LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  - LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+  - LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+  - LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
+  - LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
   - LocalSearchEngine.Tests.SearchRankerTests.NoKeywords
   - LocalSearchEngine.Tests.SearchRankerTests.NoVectors
-  - LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind
-  - LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
+  - LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+  - LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  - LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+  - LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
   - LocalSearchEngine.Tests.SearchRankerTests.Settings
-  - LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
-  - LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  - LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
+  - LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  - LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
   langs:
   - csharp
   - vb
@@ -104,7 +103,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoKeywords
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 17
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -131,7 +130,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoVectors
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 18
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -140,25 +139,25 @@ items:
     return:
       type: LocalSearchEngine.Core.Searching.VectorCandidate[]
     content.vb: Private Shared ReadOnly NoVectors As VectorCandidate()
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
-  id: Excludes_results_below_similarity_threshold
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  id: Excludes_distant_vector_results_but_keeps_lexical_candidates
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Excludes_results_below_similarity_threshold()
-  nameWithType: SearchRankerTests.Excludes_results_below_similarity_threshold()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold()
+  name: Excludes_distant_vector_results_but_keeps_lexical_candidates()
+  nameWithType: SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Excludes_results_below_similarity_threshold
+    id: Excludes_distant_vector_results_but_keeps_lexical_candidates
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 22
+    startLine: 27
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -166,35 +165,35 @@ items:
     content: >-
       [Fact]
 
-      public void Excludes_results_below_similarity_threshold()
+      public void Excludes_distant_vector_results_but_keeps_lexical_candidates()
     content.vb: >-
       <Fact>
 
-      Public Sub Excludes_results_below_similarity_threshold()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold*
+      Public Sub Excludes_distant_vector_results_but_keeps_lexical_candidates()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
-  id: Orders_by_descending_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
+  id: Semantic_rank_is_derived_from_distance_not_input_order
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Orders_by_descending_score()
-  nameWithType: SearchRankerTests.Orders_by_descending_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score()
+  name: Semantic_rank_is_derived_from_distance_not_input_order()
+  nameWithType: SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Orders_by_descending_score
+    id: Semantic_rank_is_derived_from_distance_not_input_order
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 38
+    startLine: 46
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -202,35 +201,35 @@ items:
     content: >-
       [Fact]
 
-      public void Orders_by_descending_score()
+      public void Semantic_rank_is_derived_from_distance_not_input_order()
     content.vb: >-
       <Fact>
 
-      Public Sub Orders_by_descending_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score*
+      Public Sub Semantic_rank_is_derived_from_distance_not_input_order()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
-  id: Returns_all_qualifying_results_with_no_count_cap
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+  id: Returns_all_qualifying_results_with_no_result_cap
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Returns_all_qualifying_results_with_no_count_cap()
-  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap()
+  name: Returns_all_qualifying_results_with_no_result_cap()
+  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Returns_all_qualifying_results_with_no_count_cap
+    id: Returns_all_qualifying_results_with_no_result_cap
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 53
+    startLine: 60
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -238,35 +237,35 @@ items:
     content: >-
       [Fact]
 
-      public void Returns_all_qualifying_results_with_no_count_cap()
+      public void Returns_all_qualifying_results_with_no_result_cap()
     content.vb: >-
       <Fact>
 
-      Public Sub Returns_all_qualifying_results_with_no_count_cap()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap*
+      Public Sub Returns_all_qualifying_results_with_no_result_cap()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
-  id: Filename_match_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  id: Structural_fields_contribute_bounded_coverage_boosts
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Filename_match_boosts_score()
-  nameWithType: SearchRankerTests.Filename_match_boosts_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score()
+  name: Structural_fields_contribute_bounded_coverage_boosts()
+  nameWithType: SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Filename_match_boosts_score
+    id: Structural_fields_contribute_bounded_coverage_boosts
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 65
+    startLine: 72
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -274,35 +273,35 @@ items:
     content: >-
       [Fact]
 
-      public void Filename_match_boosts_score()
+      public void Structural_fields_contribute_bounded_coverage_boosts()
     content.vb: >-
       <Fact>
 
-      Public Sub Filename_match_boosts_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score*
+      Public Sub Structural_fields_contribute_bounded_coverage_boosts()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-  id: Filename_match_boosts_multi_word_query_across_slug_separators
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
+  id: Text_term_coverage_is_proportional
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Filename_match_boosts_multi_word_query_across_slug_separators()
-  nameWithType: SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators()
+  name: Text_term_coverage_is_proportional()
+  nameWithType: SearchRankerTests.Text_term_coverage_is_proportional()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Filename_match_boosts_multi_word_query_across_slug_separators
+    id: Text_term_coverage_is_proportional
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 76
+    startLine: 91
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -310,35 +309,35 @@ items:
     content: >-
       [Fact]
 
-      public void Filename_match_boosts_multi_word_query_across_slug_separators()
+      public void Text_term_coverage_is_proportional()
     content.vb: >-
       <Fact>
 
-      Public Sub Filename_match_boosts_multi_word_query_across_slug_separators()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators*
+      Public Sub Text_term_coverage_is_proportional()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
-  id: Heading_match_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  id: Deduplicates_by_url_and_uses_the_closest_semantic_chunk
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Heading_match_boosts_score()
-  nameWithType: SearchRankerTests.Heading_match_boosts_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score()
+  name: Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
+  nameWithType: SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Heading_match_boosts_score
+    id: Deduplicates_by_url_and_uses_the_closest_semantic_chunk
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 87
+    startLine: 105
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -346,35 +345,35 @@ items:
     content: >-
       [Fact]
 
-      public void Heading_match_boosts_score()
+      public void Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
     content.vb: >-
       <Fact>
 
-      Public Sub Heading_match_boosts_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score*
+      Public Sub Deduplicates_by_url_and_uses_the_closest_semantic_chunk()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
-  id: Query_appearing_in_text_boosts_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+  id: Bm25_value_determines_lexical_rank_not_input_order
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Query_appearing_in_text_boosts_score()
-  nameWithType: SearchRankerTests.Query_appearing_in_text_boosts_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score()
+  name: Bm25_value_determines_lexical_rank_not_input_order()
+  nameWithType: SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Query_appearing_in_text_boosts_score
+    id: Bm25_value_determines_lexical_rank_not_input_order
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 97
+    startLine: 120
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -382,35 +381,35 @@ items:
     content: >-
       [Fact]
 
-      public void Query_appearing_in_text_boosts_score()
+      public void Bm25_value_determines_lexical_rank_not_input_order()
     content.vb: >-
       <Fact>
 
-      Public Sub Query_appearing_in_text_boosts_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score*
+      Public Sub Bm25_value_determines_lexical_rank_not_input_order()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  id: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+  id: Keyword_candidate_is_included_without_a_vector_match
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
-  nameWithType: SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+  name: Keyword_candidate_is_included_without_a_vector_match()
+  nameWithType: SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
+    id: Keyword_candidate_is_included_without_a_vector_match
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 107
+    startLine: 134
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -418,35 +417,35 @@ items:
     content: >-
       [Fact]
 
-      public void Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
+      public void Keyword_candidate_is_included_without_a_vector_match()
     content.vb: >-
       <Fact>
 
-      Public Sub Deduplicates_by_url_keeping_most_similar_chunk_as_snippet()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet*
+      Public Sub Keyword_candidate_is_included_without_a_vector_match()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
-  id: Title_containing_query_boosts_and_is_returned
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  id: Reciprocal_rank_fusion_rewards_agreement_between_retrievers
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Title_containing_query_boosts_and_is_returned()
-  nameWithType: SearchRankerTests.Title_containing_query_boosts_and_is_returned()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned()
+  name: Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
+  nameWithType: SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Title_containing_query_boosts_and_is_returned
+    id: Reciprocal_rank_fusion_rewards_agreement_between_retrievers
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 123
+    startLine: 149
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -454,35 +453,35 @@ items:
     content: >-
       [Fact]
 
-      public void Title_containing_query_boosts_and_is_returned()
+      public void Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
     content.vb: >-
       <Fact>
 
-      Public Sub Title_containing_query_boosts_and_is_returned()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned*
+      Public Sub Reciprocal_rank_fusion_rewards_agreement_between_retrievers()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-  id: Keyword_match_is_always_included_even_with_no_vector_hit
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+  id: Exact_phrase_is_a_bonus_not_a_hard_tier
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Keyword_match_is_always_included_even_with_no_vector_hit()
-  nameWithType: SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit()
+  name: Exact_phrase_is_a_bonus_not_a_hard_tier()
+  nameWithType: SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Keyword_match_is_always_included_even_with_no_vector_hit
+    id: Exact_phrase_is_a_bonus_not_a_hard_tier
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 137
+    startLine: 167
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -490,35 +489,35 @@ items:
     content: >-
       [Fact]
 
-      public void Keyword_match_is_always_included_even_with_no_vector_hit()
+      public void Exact_phrase_is_a_bonus_not_a_hard_tier()
     content.vb: >-
       <Fact>
 
-      Public Sub Keyword_match_is_always_included_even_with_no_vector_hit()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit*
+      Public Sub Exact_phrase_is_a_bonus_not_a_hard_tier()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-  id: Combines_vector_and_keyword_signals_for_the_same_url
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+  id: Exact_phrase_beats_an_otherwise_comparable_loose_match
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Combines_vector_and_keyword_signals_for_the_same_url()
-  nameWithType: SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url()
+  name: Exact_phrase_beats_an_otherwise_comparable_loose_match()
+  nameWithType: SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Combines_vector_and_keyword_signals_for_the_same_url
+    id: Exact_phrase_beats_an_otherwise_comparable_loose_match
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 150
+    startLine: 186
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -526,35 +525,35 @@ items:
     content: >-
       [Fact]
 
-      public void Combines_vector_and_keyword_signals_for_the_same_url()
+      public void Exact_phrase_beats_an_otherwise_comparable_loose_match()
     content.vb: >-
       <Fact>
 
-      Public Sub Combines_vector_and_keyword_signals_for_the_same_url()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url*
+      Public Sub Exact_phrase_beats_an_otherwise_comparable_loose_match()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  id: Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+  id: Close_terms_rank_above_widely_separated_terms
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
-  nameWithType: SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
+  name: Close_terms_rank_above_widely_separated_terms()
+  nameWithType: SearchRankerTests.Close_terms_rank_above_widely_separated_terms()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
+    id: Close_terms_rank_above_widely_separated_terms
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 163
+    startLine: 200
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -562,35 +561,35 @@ items:
     content: >-
       [Fact]
 
-      public void Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
+      public void Close_terms_rank_above_widely_separated_terms()
     content.vb: >-
       <Fact>
 
-      Public Sub Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result*
+      Public Sub Close_terms_rank_above_widely_separated_terms()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  id: Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  id: Better_term_coverage_can_overcome_a_one_place_bm25_difference
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
-  nameWithType: SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
+  name: Better_term_coverage_can_overcome_a_one_place_bm25_difference()
+  nameWithType: SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
+    id: Better_term_coverage_can_overcome_a_one_place_bm25_difference
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 180
+    startLine: 214
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -598,35 +597,35 @@ items:
     content: >-
       [Fact]
 
-      public void Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
+      public void Better_term_coverage_can_overcome_a_one_place_bm25_difference()
     content.vb: >-
       <Fact>
 
-      Public Sub Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score*
+      Public Sub Better_term_coverage_can_overcome_a_one_place_bm25_difference()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  id: Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
+  id: Multiple_matching_chunks_add_diminishing_evidence
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
-  nameWithType: SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
+  name: Multiple_matching_chunks_add_diminishing_evidence()
+  nameWithType: SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
+    id: Multiple_matching_chunks_add_diminishing_evidence
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 203
+    startLine: 228
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -634,35 +633,35 @@ items:
     content: >-
       [Fact]
 
-      public void Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
+      public void Multiple_matching_chunks_add_diminishing_evidence()
     content.vb: >-
       <Fact>
 
-      Public Sub Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score*
+      Public Sub Multiple_matching_chunks_add_diminishing_evidence()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  id: Web_page_ranks_above_a_pdf_with_a_higher_fine_score
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+  id: Lexical_snippet_is_used_when_it_explains_the_query_better
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
-  nameWithType: SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
+  name: Lexical_snippet_is_used_when_it_explains_the_query_better()
+  nameWithType: SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Web_page_ranks_above_a_pdf_with_a_higher_fine_score
+    id: Lexical_snippet_is_used_when_it_explains_the_query_better
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 223
+    startLine: 247
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -670,35 +669,35 @@ items:
     content: >-
       [Fact]
 
-      public void Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
+      public void Lexical_snippet_is_used_when_it_explains_the_query_better()
     content.vb: >-
       <Fact>
 
-      Public Sub Web_page_ranks_above_a_pdf_with_a_higher_fine_score()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score*
+      Public Sub Lexical_snippet_is_used_when_it_explains_the_query_better()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  id: Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+  id: Non_html_penalty_is_soft_not_an_absolute_tier
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
-  nameWithType: SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
+  name: Non_html_penalty_is_soft_not_an_absolute_tier()
+  nameWithType: SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
+    id: Non_html_penalty_is_soft_not_an_absolute_tier
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 244
+    startLine: 264
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -706,35 +705,35 @@ items:
     content: >-
       [Fact]
 
-      public void Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
+      public void Non_html_penalty_is_soft_not_an_absolute_tier()
     content.vb: >-
       <Fact>
 
-      Public Sub Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase*
+      Public Sub Non_html_penalty_is_soft_not_an_absolute_tier()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-  id: Docx_is_grouped_with_pdf_below_web_pages
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+  id: Equal_evidence_prefers_html_by_the_configured_penalty
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Docx_is_grouped_with_pdf_below_web_pages()
-  nameWithType: SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages()
+  name: Equal_evidence_prefers_html_by_the_configured_penalty()
+  nameWithType: SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Docx_is_grouped_with_pdf_below_web_pages
+    id: Equal_evidence_prefers_html_by_the_configured_penalty
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 271
+    startLine: 288
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -742,35 +741,35 @@ items:
     content: >-
       [Fact]
 
-      public void Docx_is_grouped_with_pdf_below_web_pages()
+      public void Equal_evidence_prefers_html_by_the_configured_penalty()
     content.vb: >-
       <Fact>
 
-      Public Sub Docx_is_grouped_with_pdf_below_web_pages()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages*
+      Public Sub Equal_evidence_prefers_html_by_the_configured_penalty()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
-  id: Missing_doc_kind_is_treated_as_a_web_page
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
+  id: Missing_document_kind_is_treated_as_html
   parent: LocalSearchEngine.Tests.SearchRankerTests
   langs:
   - csharp
   - vb
-  name: Missing_doc_kind_is_treated_as_a_web_page()
-  nameWithType: SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page()
+  name: Missing_document_kind_is_treated_as_html()
+  nameWithType: SearchRankerTests.Missing_document_kind_is_treated_as_html()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/SearchRankerTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Missing_doc_kind_is_treated_as_a_web_page
+    id: Missing_document_kind_is_treated_as_html
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 292
+    startLine: 307
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -778,48 +777,12 @@ items:
     content: >-
       [Fact]
 
-      public void Missing_doc_kind_is_treated_as_a_web_page()
+      public void Missing_document_kind_is_treated_as_html()
     content.vb: >-
       <Fact>
 
-      Public Sub Missing_doc_kind_is_treated_as_a_web_page()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page*
-  attributes:
-  - type: Xunit.FactAttribute
-    ctor: Xunit.FactAttribute.#ctor
-    arguments: []
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind
-  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind
-  id: Result_exposes_doc_kind
-  parent: LocalSearchEngine.Tests.SearchRankerTests
-  langs:
-  - csharp
-  - vb
-  name: Result_exposes_doc_kind()
-  nameWithType: SearchRankerTests.Result_exposes_doc_kind()
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind()
-  type: Method
-  source:
-    remote:
-      path: LocalSearchEngine.Tests/SearchRankerTests.cs
-      branch: main
-      repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Result_exposes_doc_kind
-    path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 308
-  assemblies:
-  - LocalSearchEngine.Tests
-  namespace: LocalSearchEngine.Tests
-  syntax:
-    content: >-
-      [Fact]
-
-      public void Result_exposes_doc_kind()
-    content.vb: >-
-      <Fact>
-
-      Public Sub Result_exposes_doc_kind()
-  overload: LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind*
+      Public Sub Missing_document_kind_is_treated_as_html()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -1163,117 +1126,111 @@ references:
     name: VectorCandidate
   - name: (
   - name: )
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Excludes_results_below_similarity_threshold
-  name: Excludes_results_below_similarity_threshold
-  nameWithType: SearchRankerTests.Excludes_results_below_similarity_threshold
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_results_below_similarity_threshold
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Orders_by_descending_score
-  name: Orders_by_descending_score
-  nameWithType: SearchRankerTests.Orders_by_descending_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Orders_by_descending_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Returns_all_qualifying_results_with_no_count_cap
-  name: Returns_all_qualifying_results_with_no_count_cap
-  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_count_cap
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Filename_match_boosts_score
-  name: Filename_match_boosts_score
-  nameWithType: SearchRankerTests.Filename_match_boosts_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Filename_match_boosts_multi_word_query_across_slug_separators
-  name: Filename_match_boosts_multi_word_query_across_slug_separators
-  nameWithType: SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Filename_match_boosts_multi_word_query_across_slug_separators
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Heading_match_boosts_score
-  name: Heading_match_boosts_score
-  nameWithType: SearchRankerTests.Heading_match_boosts_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Heading_match_boosts_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Query_appearing_in_text_boosts_score
-  name: Query_appearing_in_text_boosts_score
-  nameWithType: SearchRankerTests.Query_appearing_in_text_boosts_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Query_appearing_in_text_boosts_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  name: Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  nameWithType: SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_keeping_most_similar_chunk_as_snippet
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Title_containing_query_boosts_and_is_returned
-  name: Title_containing_query_boosts_and_is_returned
-  nameWithType: SearchRankerTests.Title_containing_query_boosts_and_is_returned
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Title_containing_query_boosts_and_is_returned
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Keyword_match_is_always_included_even_with_no_vector_hit
-  name: Keyword_match_is_always_included_even_with_no_vector_hit
-  nameWithType: SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Keyword_match_is_always_included_even_with_no_vector_hit
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Combines_vector_and_keyword_signals_for_the_same_url
-  name: Combines_vector_and_keyword_signals_for_the_same_url
-  nameWithType: SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Combines_vector_and_keyword_signals_for_the_same_url
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  name: Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  nameWithType: SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_and_all_terms_hits_on_one_url_collapse_to_a_single_result
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  name: Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  nameWithType: SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_ranks_above_all_terms_even_with_a_lower_fine_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  name: Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  nameWithType: SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Vector_only_hit_shares_the_tier_with_all_terms_ordered_by_fine_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  name: Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  nameWithType: SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Web_page_ranks_above_a_pdf_with_a_higher_fine_score
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  name: Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  nameWithType: SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Web_page_with_all_terms_ranks_above_a_pdf_with_an_exact_phrase
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Docx_is_grouped_with_pdf_below_web_pages
-  name: Docx_is_grouped_with_pdf_below_web_pages
-  nameWithType: SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Docx_is_grouped_with_pdf_below_web_pages
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Missing_doc_kind_is_treated_as_a_web_page
-  name: Missing_doc_kind_is_treated_as_a_web_page
-  nameWithType: SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Missing_doc_kind_is_treated_as_a_web_page
-- uid: LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind*
-  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind
-  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Result_exposes_doc_kind
-  name: Result_exposes_doc_kind
-  nameWithType: SearchRankerTests.Result_exposes_doc_kind
-  fullName: LocalSearchEngine.Tests.SearchRankerTests.Result_exposes_doc_kind
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Excludes_distant_vector_results_but_keeps_lexical_candidates
+  name: Excludes_distant_vector_results_but_keeps_lexical_candidates
+  nameWithType: SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Semantic_rank_is_derived_from_distance_not_input_order
+  name: Semantic_rank_is_derived_from_distance_not_input_order
+  nameWithType: SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Returns_all_qualifying_results_with_no_result_cap
+  name: Returns_all_qualifying_results_with_no_result_cap
+  nameWithType: SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Structural_fields_contribute_bounded_coverage_boosts
+  name: Structural_fields_contribute_bounded_coverage_boosts
+  nameWithType: SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Text_term_coverage_is_proportional
+  name: Text_term_coverage_is_proportional
+  nameWithType: SearchRankerTests.Text_term_coverage_is_proportional
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  name: Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  nameWithType: SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Deduplicates_by_url_and_uses_the_closest_semantic_chunk
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Bm25_value_determines_lexical_rank_not_input_order
+  name: Bm25_value_determines_lexical_rank_not_input_order
+  nameWithType: SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Bm25_value_determines_lexical_rank_not_input_order
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Keyword_candidate_is_included_without_a_vector_match
+  name: Keyword_candidate_is_included_without_a_vector_match
+  nameWithType: SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  name: Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  nameWithType: SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_phrase_is_a_bonus_not_a_hard_tier
+  name: Exact_phrase_is_a_bonus_not_a_hard_tier
+  nameWithType: SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Exact_phrase_beats_an_otherwise_comparable_loose_match
+  name: Exact_phrase_beats_an_otherwise_comparable_loose_match
+  nameWithType: SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Close_terms_rank_above_widely_separated_terms
+  name: Close_terms_rank_above_widely_separated_terms
+  nameWithType: SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Close_terms_rank_above_widely_separated_terms
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  name: Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  nameWithType: SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Better_term_coverage_can_overcome_a_one_place_bm25_difference
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Multiple_matching_chunks_add_diminishing_evidence
+  name: Multiple_matching_chunks_add_diminishing_evidence
+  nameWithType: SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Multiple_matching_chunks_add_diminishing_evidence
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Lexical_snippet_is_used_when_it_explains_the_query_better
+  name: Lexical_snippet_is_used_when_it_explains_the_query_better
+  nameWithType: SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Non_html_penalty_is_soft_not_an_absolute_tier
+  name: Non_html_penalty_is_soft_not_an_absolute_tier
+  nameWithType: SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Equal_evidence_prefers_html_by_the_configured_penalty
+  name: Equal_evidence_prefers_html_by_the_configured_penalty
+  nameWithType: SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Equal_evidence_prefers_html_by_the_configured_penalty
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Missing_document_kind_is_treated_as_html
+  name: Missing_document_kind_is_treated_as_html
+  nameWithType: SearchRankerTests.Missing_document_kind_is_treated_as_html
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html

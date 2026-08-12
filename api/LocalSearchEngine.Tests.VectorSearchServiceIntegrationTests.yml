@@ -6,6 +6,7 @@ items:
   parent: LocalSearchEngine.Tests
   children:
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.#ctor
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Deleting_a_url_clears_data_vector_and_fts_rows_together
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
@@ -378,6 +379,44 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  id: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected()
+  nameWithType: VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected()
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 126
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected() As Task
+  overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
   commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
   id: Count(System.String)
@@ -396,7 +435,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Count
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 126
+    startLine: 147
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -430,7 +469,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 135
+    startLine: 156
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -460,7 +499,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 144
+    startLine: 165
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -895,6 +934,12 @@ references:
   name: Site_only_query_returns_no_results
   nameWithType: VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results
   fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_only_query_returns_no_results
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  name: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  nameWithType: VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count*
   commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count
   href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Count_System_String_

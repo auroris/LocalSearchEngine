@@ -7,7 +7,7 @@ items:
   children:
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Match(Microsoft.Data.Sqlite.SqliteConnection,System.String)
-  - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
+  - LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
   langs:
   - csharp
   - vb
@@ -22,16 +22,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Fts5MatchSemanticsTests
     path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
-    startLine: 10
+    startLine: 9
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
   summary: >-
-    Documents the FTS5 MATCH semantics the keyword search relies on: whitespace-separated
+    Documents the FTS5 boolean semantics used by lexical candidate retrieval. In particular,
 
-    (quoted) terms are an implicit AND, not a phrase. This is why the "all terms" tier can quote
-
-    each term and space-join them and still match documents where the terms aren't adjacent.
+    OR admits partial matches for reranking while a quoted multi-token string requires adjacency.
   example: []
   syntax:
     content: public class Fts5MatchSemanticsTests
@@ -46,25 +44,25 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  commentId: M:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  id: Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  commentId: M:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  id: Or_is_broader_than_implicit_and_and_a_quoted_phrase
   parent: LocalSearchEngine.Tests.Fts5MatchSemanticsTests
   langs:
   - csharp
   - vb
-  name: Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
-  nameWithType: Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
-  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
+  name: Or_is_broader_than_implicit_and_and_a_quoted_phrase()
+  nameWithType: Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase()
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase()
   type: Method
   source:
     remote:
       path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
+    id: Or_is_broader_than_implicit_and_and_a_quoted_phrase
     path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
-    startLine: 12
+    startLine: 11
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -72,12 +70,12 @@ items:
     content: >-
       [Fact]
 
-      public void Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
+      public void Or_is_broader_than_implicit_and_and_a_quoted_phrase()
     content.vb: >-
       <Fact>
 
-      Public Sub Space_separated_quoted_terms_are_implicit_AND_not_a_phrase()
-  overload: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase*
+      Public Sub Or_is_broader_than_implicit_and_and_a_quoted_phrase()
+  overload: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -100,7 +98,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Exec
     path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -134,7 +132,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Match
     path: LocalSearchEngine.Tests/Fts5MatchSemanticsTests.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -412,12 +410,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase*
-  commentId: Overload:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html#LocalSearchEngine_Tests_Fts5MatchSemanticsTests_Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  name: Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  nameWithType: Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
-  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Space_separated_quoted_terms_are_implicit_AND_not_a_phrase
+- uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase*
+  commentId: Overload:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html#LocalSearchEngine_Tests_Fts5MatchSemanticsTests_Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  name: Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  nameWithType: Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
+  fullName: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Or_is_broader_than_implicit_and_and_a_quoted_phrase
 - uid: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec*
   commentId: Overload:LocalSearchEngine.Tests.Fts5MatchSemanticsTests.Exec
   href: LocalSearchEngine.Tests.Fts5MatchSemanticsTests.html#LocalSearchEngine_Tests_Fts5MatchSemanticsTests_Exec_Microsoft_Data_Sqlite_SqliteConnection_System_String_

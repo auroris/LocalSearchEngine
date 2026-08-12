@@ -213,8 +213,8 @@ public class VectorSearchService
             keywordHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
         }
 
-        // Per-URL metadata for every candidate: titles feed the title boost and the result list,
-        // doc kinds drive the web-page-first grouping in the ranker.
+        // Per-URL metadata for every candidate: titles feed the title boost and result list;
+        // document kinds feed the ranker's configurable soft penalty.
         var (titles, docKinds) = await LoadPageMetadataAsync(vectorHits, keywordHits);
 
         var items = SearchRanker.Rank(vectorHits, keywordHits, parsed.Text, _settings, titles, docKinds);
@@ -243,7 +243,7 @@ public class VectorSearchService
     }
 
     /// <summary>
-    /// Retrieves keyword candidates matching the query from the full-text search index.
+    /// Retrieves a broad BM25-ranked keyword pool plus an adjacent-phrase rescue pool from FTS5.
     /// </summary>
     /// <param name="query">The query string.</param>
     /// <param name="pool">The candidate pool limit size.</param>
@@ -253,18 +253,34 @@ public class VectorSearchService
         var keywordHits = new List<KeywordCandidate>();
         try
         {
+            // OR retrieval protects recall: a page can enter the reranking pool without containing
+            // every query term. BM25 and the ranker's term-coverage feature then decide whether that
+            // partial match is useful. Distinct terms avoid giving repetitions extra query weight
+            // in the broad pass; the ordered phrase pass retains repetitions.
+            var phraseTerms = Regex.Matches(query, @"[\p{L}\p{Nd}]+", RegexOptions.CultureInvariant)
+                .Select(match => match.Value)
+                .ToList();
+            var terms = phraseTerms
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (terms.Count == 0) return keywordHits;
+
             using var connection = new SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
 
-            // Tier 1: verbatim phrase match.
-            await CollectKeywordHitsAsync(connection, $"\"{query.Replace("\"", "\"\"")}\"", exactPhrase: true, pool, keywordHits);
+            string broadExpression = string.Join(" OR ", terms.Select(QuoteFtsTerm));
+            await CollectKeywordHitsAsync(connection, broadExpression, exactPhrase: false, pool, keywordHits);
 
-            // Tier 2: looser all-terms (AND) match. Skipped for single-term queries, where
-            // it would just duplicate the phrase tier.
-            var terms = Regex.Matches(query, @"\w+").Select(m => m.Value).ToList();
-            if (terms.Count > 1)
+            // A second, cheap FTS pass rescues adjacent phrases that fell below the broad pool's
+            // cutoff. Its phrase flag is a bounded reranking feature rather than a hard tier.
+            if (phraseTerms.Count > 1)
             {
-                await CollectKeywordHitsAsync(connection, string.Join(" AND ", terms.Select(t => $"\"{t.Replace("\"", "\"\"")}\"")), exactPhrase: false, pool, keywordHits);
+                await CollectKeywordHitsAsync(
+                    connection,
+                    $"\"{string.Join(' ', phraseTerms).Replace("\"", "\"\"")}\"",
+                    exactPhrase: true,
+                    pool,
+                    keywordHits);
             }
         }
         catch (Exception ex)
@@ -273,6 +289,8 @@ public class VectorSearchService
         }
         return keywordHits;
     }
+
+    private static string QuoteFtsTerm(string term) => $"\"{term.Replace("\"", "\"\"")}\"";
 
     /// <summary>
     /// Loads per-URL metadata (title and document kind) from the database for all candidate URLs
@@ -309,7 +327,7 @@ public class VectorSearchService
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="matchExpr">The FTS5 MATCH expression query.</param>
-    /// <param name="exactPhrase"><c>true</c> if this matches the query literally; otherwise, <c>false</c>.</param>
+    /// <param name="exactPhrase"><c>true</c> if this pass requires adjacent query terms; otherwise, <c>false</c>.</param>
     /// <param name="limit">The maximum number of rows to retrieve.</param>
     /// <param name="into">The list to append matches to.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
@@ -318,11 +336,11 @@ public class VectorSearchService
     {
         using var command = connection.CreateCommand();
         command.CommandText = @"
-            SELECT c.Url, c.Text, c.IsHeading
+            SELECT c.Url, c.Text, c.IsHeading, bm25(text_chunks_fts) AS Bm25
             FROM text_chunks_fts f
             JOIN text_chunks c ON f.Id = c.Id
             WHERE text_chunks_fts MATCH @query
-            ORDER BY f.rank
+            ORDER BY Bm25
             LIMIT @limit";
         command.Parameters.AddWithValue("@query", matchExpr);
         command.Parameters.AddWithValue("@limit", limit);
@@ -331,7 +349,8 @@ public class VectorSearchService
         while (await reader.ReadAsync())
         {
             bool isHeading = !reader.IsDBNull(2) && reader.GetBoolean(2);
-            into.Add(new KeywordCandidate(reader.GetString(0), reader.GetString(1), isHeading, exactPhrase));
+            double bm25 = reader.IsDBNull(3) ? 0 : reader.GetDouble(3);
+            into.Add(new KeywordCandidate(reader.GetString(0), reader.GetString(1), isHeading, exactPhrase, bm25));
         }
     }
 
