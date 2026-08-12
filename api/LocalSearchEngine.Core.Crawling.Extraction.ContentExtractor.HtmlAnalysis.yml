@@ -8,6 +8,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.CanonicalAlias
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.Headings
+  - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.LinkEvidence
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.NoFollow
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.NoIndex
   - LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.OffsiteLinks
@@ -29,7 +30,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HtmlAnalysis
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 33
+    startLine: 42
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -65,7 +66,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 36
+    startLine: 45
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -94,7 +95,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Headings
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 38
+    startLine: 47
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -123,7 +124,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 40
+    startLine: 49
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -152,7 +153,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoIndex
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 42
+    startLine: 51
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -181,7 +182,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoFollow
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 44
+    startLine: 53
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -210,7 +211,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CanonicalAlias
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 46
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -239,7 +240,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Outlinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 48
+    startLine: 57
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -268,7 +269,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OutlinkUris
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 55
+    startLine: 64
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -304,7 +305,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OffsiteLinks
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 57
+    startLine: 66
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -315,6 +316,38 @@ items:
     return:
       type: System.Collections.Generic.List{System.String}
     content.vb: Public OffsiteLinks As List(Of String)
+- uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.LinkEvidence
+  commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.LinkEvidence
+  id: LinkEvidence
+  parent: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis
+  langs:
+  - csharp
+  - vb
+  name: LinkEvidence
+  nameWithType: ContentExtractor.HtmlAnalysis.LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.LinkEvidence
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkEvidence
+    path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
+    startLine: 71
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Extraction
+  summary: >-
+    Gets or sets compact editorial evidence for in-scope links. At most a few distinct
+
+    contexts are retained per target; boilerplate and nofollow links never reach this list.
+  example: []
+  syntax:
+    content: public List<LinkEvidence> LinkEvidence
+    return:
+      type: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.LinkEvidence}
+    content.vb: Public LinkEvidence As List(Of LinkEvidence)
 - uid: LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
   commentId: F:LocalSearchEngine.Core.Crawling.Extraction.ContentExtractor.HtmlAnalysis.AdvertisedFeedUris
   id: AdvertisedFeedUris
@@ -333,7 +366,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: AdvertisedFeedUris
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 65
+    startLine: 79
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -767,4 +800,37 @@ references:
     name: Uri
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.uri
+  - name: )
+- uid: System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  commentId: T:System.Collections.Generic.List{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<LinkEvidence>
+  nameWithType: List<LinkEvidence>
+  fullName: System.Collections.Generic.List<LocalSearchEngine.Core.Crawling.LinkEvidence>
+  nameWithType.vb: List(Of LinkEvidence)
+  fullName.vb: System.Collections.Generic.List(Of LocalSearchEngine.Core.Crawling.LinkEvidence)
+  name.vb: List(Of LinkEvidence)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
   - name: )

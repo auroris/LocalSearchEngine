@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Engine;
 using LocalSearchEngine.Core.Crawling.Extraction;
 using LocalSearchEngine.Core.Crawling.Policies;
@@ -21,7 +22,7 @@ internal sealed class DocxDocument : Document
         {
             ctx.Observer.OnPageNoIndex(DedupKey);
             ctx.Submit(new NoIndexJob(DedupKey, fetch.StatusCode, null, fetch.ETag, fetch.LastModified,
-                null, Array.Empty<string>(), Array.Empty<string>(), DocKind.Docx));
+                null, Array.Empty<string>(), Array.Empty<string>(), Array.Empty<LinkEvidence>(), DocKind.Docx));
             return Task.CompletedTask;
         }
 

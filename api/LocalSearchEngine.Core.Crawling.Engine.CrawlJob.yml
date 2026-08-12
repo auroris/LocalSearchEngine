@@ -22,7 +22,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 10
+    startLine: 11
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -67,7 +67,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 10
+    startLine: 11
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -105,7 +105,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 10
+    startLine: 11
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -136,7 +136,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StatusCode
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 10
+    startLine: 11
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

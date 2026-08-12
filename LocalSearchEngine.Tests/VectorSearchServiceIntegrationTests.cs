@@ -1,5 +1,6 @@
 using LocalSearchEngine.Core;
 using LocalSearchEngine.Core.Crawling;
+using LocalSearchEngine.Core.Crawling.Storage;
 using LocalSearchEngine.Core.Searching;
 using LocalSearchEngine.Core.TextProcessing;
 using Microsoft.Data.Sqlite;
@@ -143,6 +144,43 @@ public sealed class VectorSearchServiceIntegrationTests : IDisposable
 
         Assert.Contains(response.Items, item => item.Url == "https://site/alpha");
         Assert.All(response.Items, item => Assert.Equal(0, item.Similarity));
+    }
+
+    [Fact]
+    public async Task Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary()
+    {
+        await SeedSchemaAndDataAsync();
+        const string source = "https://site/alpha";
+        const string target = "https://site/beta";
+
+        await using (var connection = new SqliteConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+            await CrawlStore.StoreLinksAsync(
+                connection,
+                source,
+                [target],
+                [],
+                [new LinkEvidence(
+                    target,
+                    "PKI maintenance procedure",
+                    "Follow this procedure for certificate renewal.",
+                    "Certificate Management")],
+                "Server Operations");
+        }
+
+        var inboundOnly = new VectorSearchService(
+            new FakeEmbedder(),
+            _provider.GetRequiredService<VectorStore>(),
+            new DatabaseConfig(_connectionString),
+            Options.Create(new SearchSettings { MaxDistance = -1, CandidatePoolSize = 100 }),
+            NullLogger<VectorSearchService>.Instance);
+
+        var response = await inboundOnly.SearchAsync("certificate renewal");
+
+        var result = Assert.Single(response.Items, item => item.Url == target);
+        Assert.Equal(0, result.Similarity);
+        Assert.Contains("certificate renewal", result.Text, StringComparison.OrdinalIgnoreCase);
     }
 
     private long Count(string sql)

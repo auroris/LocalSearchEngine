@@ -1,0 +1,996 @@
+### YamlMime:ManagedReference
+items:
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests
+  commentId: T:LocalSearchEngine.Tests.LinkAuthorityTests
+  id: LinkAuthorityTests
+  parent: LocalSearchEngine.Tests
+  children:
+  - LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+  - LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync(System.Boolean)
+  - LocalSearchEngine.Tests.LinkAuthorityTests.Dispose
+  - LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+  - LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  - LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  - LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  - LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  - LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+  - LocalSearchEngine.Tests.LinkAuthorityTests.Scalar(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete(System.String)
+  - LocalSearchEngine.Tests.LinkAuthorityTests._dbPath
+  langs:
+  - csharp
+  - vb
+  name: LinkAuthorityTests
+  nameWithType: LinkAuthorityTests
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests
+  type: Class
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkAuthorityTests
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 8
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: 'public sealed class LinkAuthorityTests : IDisposable'
+    content.vb: Public NotInheritable Class LinkAuthorityTests Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests._dbPath
+  commentId: F:LocalSearchEngine.Tests.LinkAuthorityTests._dbPath
+  id: _dbPath
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: _dbPath
+  nameWithType: LinkAuthorityTests._dbPath
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests._dbPath
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: _dbPath
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 10
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private readonly string _dbPath
+    return:
+      type: System.String
+    content.vb: Private ReadOnly _dbPath As String
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+  commentId: P:LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+  id: ConnectionString
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: ConnectionString
+  nameWithType: LinkAuthorityTests.ConnectionString
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ConnectionString
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 13
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private string ConnectionString { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Private ReadOnly Property ConnectionString As String
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString*
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync(System.Boolean)
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync(System.Boolean)
+  id: CreateDatabaseAsync(System.Boolean)
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: CreateDatabaseAsync(bool)
+  nameWithType: LinkAuthorityTests.CreateDatabaseAsync(bool)
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync(bool)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CreateDatabaseAsync
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 15
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task<SqliteConnection> CreateDatabaseAsync(bool oldCrawlState = false)
+    parameters:
+    - id: oldCrawlState
+      type: System.Boolean
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.Data.Sqlite.SqliteConnection}
+    content.vb: Private Function CreateDatabaseAsync(oldCrawlState As Boolean = False) As Task(Of SqliteConnection)
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync*
+  nameWithType.vb: LinkAuthorityTests.CreateDatabaseAsync(Boolean)
+  fullName.vb: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync(Boolean)
+  name.vb: CreateDatabaseAsync(Boolean)
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+  id: Existing_crawl_state_is_migrated_for_authority_scores
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: Existing_crawl_state_is_migrated_for_authority_scores()
+  nameWithType: LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores()
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Existing_crawl_state_is_migrated_for_authority_scores
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 49
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Existing_crawl_state_is_migrated_for_authority_scores()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Existing_crawl_state_is_migrated_for_authority_scores() As Task
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+  id: Recording_parsed_content_marks_link_context_extraction_current
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: Recording_parsed_content_marks_link_context_extraction_current()
+  nameWithType: LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current()
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Recording_parsed_content_marks_link_context_extraction_current
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 65
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Recording_parsed_content_marks_link_context_extraction_current()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Recording_parsed_content_marks_link_context_extraction_current() As Task
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  id: Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: Link_context_is_mirrored_to_fts_and_replaced_with_source_links()
+  nameWithType: LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links()
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 78
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Link_context_is_mirrored_to_fts_and_replaced_with_source_links()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Link_context_is_mirrored_to_fts_and_replaced_with_source_links() As Task
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  id: PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: PageRank_rewards_pages_endorsed_by_multiple_indexed_pages()
+  nameWithType: LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages()
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 106
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task PageRank_rewards_pages_endorsed_by_multiple_indexed_pages()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function PageRank_rewards_pages_endorsed_by_multiple_indexed_pages() As Task
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  id: InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: InsertIndexedPageAsync(SqliteConnection, string, string)
+  nameWithType: LinkAuthorityTests.InsertIndexedPageAsync(SqliteConnection, string, string)
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection, string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InsertIndexedPageAsync
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 137
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static Task InsertIndexedPageAsync(SqliteConnection connection, string id, string url)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: id
+      type: System.String
+    - id: url
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Shared Function InsertIndexedPageAsync(connection As SqliteConnection, id As String, url As String) As Task
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync*
+  nameWithType.vb: LinkAuthorityTests.InsertIndexedPageAsync(SqliteConnection, String, String)
+  fullName.vb: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync(Microsoft.Data.Sqlite.SqliteConnection, String, String)
+  name.vb: InsertIndexedPageAsync(SqliteConnection, String, String)
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.Scalar(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  id: Scalar(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: Scalar(SqliteConnection, string)
+  nameWithType: LinkAuthorityTests.Scalar(SqliteConnection, string)
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar(Microsoft.Data.Sqlite.SqliteConnection, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Scalar
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 151
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static long Scalar(SqliteConnection connection, string sql)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: sql
+      type: System.String
+    return:
+      type: System.Int64
+    content.vb: Private Shared Function Scalar(connection As SqliteConnection, sql As String) As Long
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar*
+  nameWithType.vb: LinkAuthorityTests.Scalar(SqliteConnection, String)
+  fullName.vb: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar(Microsoft.Data.Sqlite.SqliteConnection, String)
+  name.vb: Scalar(SqliteConnection, String)
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  id: ReadDouble(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: ReadDouble(SqliteConnection, string, string)
+  nameWithType: LinkAuthorityTests.ReadDouble(SqliteConnection, string, string)
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble(Microsoft.Data.Sqlite.SqliteConnection, string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: ReadDouble
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 158
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static double ReadDouble(SqliteConnection connection, string sql, string url)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: sql
+      type: System.String
+    - id: url
+      type: System.String
+    return:
+      type: System.Double
+    content.vb: Private Shared Function ReadDouble(connection As SqliteConnection, sql As String, url As String) As Double
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble*
+  nameWithType.vb: LinkAuthorityTests.ReadDouble(SqliteConnection, String, String)
+  fullName.vb: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble(Microsoft.Data.Sqlite.SqliteConnection, String, String)
+  name.vb: ReadDouble(SqliteConnection, String, String)
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Dispose
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.Dispose
+  id: Dispose
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: LinkAuthorityTests.Dispose()
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Dispose()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Dispose
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 167
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete(System.String)
+  commentId: M:LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete(System.String)
+  id: TryDelete(System.String)
+  parent: LocalSearchEngine.Tests.LinkAuthorityTests
+  langs:
+  - csharp
+  - vb
+  name: TryDelete(string)
+  nameWithType: LinkAuthorityTests.TryDelete(string)
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: TryDelete
+    path: LocalSearchEngine.Tests/LinkAuthorityTests.cs
+    startLine: 175
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private static void TryDelete(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Private Shared Sub TryDelete(path As String)
+  overload: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete*
+  nameWithType.vb: LinkAuthorityTests.TryDelete(String)
+  fullName.vb: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete(String)
+  name.vb: TryDelete(String)
+references:
+- uid: LocalSearchEngine.Tests
+  commentId: N:LocalSearchEngine.Tests
+  href: LocalSearchEngine.html
+  name: LocalSearchEngine.Tests
+  nameWithType: LocalSearchEngine.Tests
+  fullName: LocalSearchEngine.Tests
+  spec.csharp:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+  spec.vb:
+  - uid: LocalSearchEngine
+    name: LocalSearchEngine
+    href: LocalSearchEngine.html
+  - name: .
+  - uid: LocalSearchEngine.Tests
+    name: Tests
+    href: LocalSearchEngine.Tests.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_ConnectionString
+  name: ConnectionString
+  nameWithType: LinkAuthorityTests.ConnectionString
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.ConnectionString
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_CreateDatabaseAsync_System_Boolean_
+  name: CreateDatabaseAsync
+  nameWithType: LinkAuthorityTests.CreateDatabaseAsync
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.CreateDatabaseAsync
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.Tasks.Task{Microsoft.Data.Sqlite.SqliteConnection}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.Data.Sqlite.SqliteConnection}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SqliteConnection>
+  nameWithType: Task<SqliteConnection>
+  fullName: System.Threading.Tasks.Task<Microsoft.Data.Sqlite.SqliteConnection>
+  nameWithType.vb: Task(Of SqliteConnection)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.Data.Sqlite.SqliteConnection)
+  name.vb: Task(Of SqliteConnection)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.Data.Sqlite.SqliteConnection
+    name: SqliteConnection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Data.Sqlite.SqliteConnection
+    name: SqliteConnection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_Existing_crawl_state_is_migrated_for_authority_scores
+  name: Existing_crawl_state_is_migrated_for_authority_scores
+  nameWithType: LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Existing_crawl_state_is_migrated_for_authority_scores
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_Recording_parsed_content_marks_link_context_extraction_current
+  name: Recording_parsed_content_marks_link_context_extraction_current
+  nameWithType: LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Recording_parsed_content_marks_link_context_extraction_current
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  name: Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  nameWithType: LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Link_context_is_mirrored_to_fts_and_replaced_with_source_links
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  name: PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  nameWithType: LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.PageRank_rewards_pages_endorsed_by_multiple_indexed_pages
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_InsertIndexedPageAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_String_
+  name: InsertIndexedPageAsync
+  nameWithType: LinkAuthorityTests.InsertIndexedPageAsync
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.InsertIndexedPageAsync
+- uid: Microsoft.Data.Sqlite.SqliteConnection
+  commentId: T:Microsoft.Data.Sqlite.SqliteConnection
+  parent: Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite.sqliteconnection
+  name: SqliteConnection
+  nameWithType: SqliteConnection
+  fullName: Microsoft.Data.Sqlite.SqliteConnection
+- uid: Microsoft.Data.Sqlite
+  commentId: N:Microsoft.Data.Sqlite
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Data.Sqlite
+  nameWithType: Microsoft.Data.Sqlite
+  fullName: Microsoft.Data.Sqlite
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Data
+    name: Data
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data
+  - name: .
+  - uid: Microsoft.Data.Sqlite
+    name: Sqlite
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.data.sqlite
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.Scalar
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_Scalar_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: Scalar
+  nameWithType: LinkAuthorityTests.Scalar
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Scalar
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_ReadDouble_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_String_
+  name: ReadDouble
+  nameWithType: LinkAuthorityTests.ReadDouble
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.ReadDouble
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.Dispose*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.Dispose
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_Dispose
+  name: Dispose
+  nameWithType: LinkAuthorityTests.Dispose
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete*
+  commentId: Overload:LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html#LocalSearchEngine_Tests_LinkAuthorityTests_TryDelete_System_String_
+  name: TryDelete
+  nameWithType: LinkAuthorityTests.TryDelete
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests.TryDelete

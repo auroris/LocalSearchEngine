@@ -21,7 +21,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DocxDocument
     path: LocalSearchEngine.Core/Crawling/Pipeline/DocxDocument.cs
-    startLine: 13
+    startLine: 14
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -65,7 +65,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Pipeline/DocxDocument.cs
-    startLine: 15
+    startLine: 16
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -97,7 +97,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/DocxDocument.cs
-    startLine: 17
+    startLine: 18
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline

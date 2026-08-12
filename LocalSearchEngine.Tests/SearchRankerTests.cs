@@ -12,6 +12,10 @@ public class SearchRankerTests
         ReciprocalRankConstant = 60,
         SemanticWeight = 1.0,
         KeywordWeight = 1.0,
+        InboundLinkWeight = 0.75,
+        InboundContextBoost = 0.2,
+        InboundSourceAuthorityWeight = 0.25,
+        AuthorityWeight = 0.2,
         ExactPhraseBoost = 0.35,
         ProximityBoost = 0.15,
         HeadingBoost = 0.3,
@@ -316,5 +320,77 @@ public class SearchRankerTests
             docKinds: new Dictionary<string, DocKind>()));
 
         Assert.Equal(DocKind.Html, result.DocKind);
+    }
+
+    [Fact]
+    public void Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+    {
+        var inbound = new[]
+        {
+            new InboundLinkCandidate(
+                "https://x/opaque-target",
+                "PKI maintenance procedure certificate renewal Server Operations",
+                Bm25: -4,
+                SourceAuthority: 0.7)
+        };
+
+        var result = Assert.Single(SearchRanker.Rank(
+            NoVectors,
+            NoKeywords,
+            "certificate renewal",
+            Settings(),
+            inboundLinkHits: inbound));
+
+        Assert.Equal("https://x/opaque-target", result.Url);
+        Assert.Contains("certificate renewal", result.Text, StringComparison.OrdinalIgnoreCase);
+        Assert.True(result.Score > 0);
+    }
+
+    [Fact]
+    public void Referring_page_authority_modestly_refines_equal_inbound_matches()
+    {
+        var inbound = new[]
+        {
+            new InboundLinkCandidate("https://x/ordinary", "certificate renewal", -2, 0.0),
+            new InboundLinkCandidate("https://x/endorsed", "certificate renewal", -2, 1.0)
+        };
+
+        var results = SearchRanker.Rank(
+            NoVectors,
+            NoKeywords,
+            "certificate renewal",
+            Settings(),
+            inboundLinkHits: inbound);
+
+        Assert.Equal("https://x/endorsed", results[0].Url);
+    }
+
+    [Fact]
+    public void Target_authority_is_a_soft_bounded_reranking_signal()
+    {
+        var vectors = new[]
+        {
+            new VectorCandidate("https://x/ordinary", "body", false, 0.10),
+            new VectorCandidate("https://x/authority", "body", false, 0.10)
+        };
+        var authorities = new Dictionary<string, double>
+        {
+            ["https://x/ordinary"] = 0,
+            ["https://x/authority"] = 1
+        };
+
+        var results = SearchRanker.Rank(
+            vectors,
+            NoKeywords,
+            "unseen",
+            Settings(),
+            authorities: authorities);
+
+        Assert.Equal("https://x/authority", results[0].Url);
+        Assert.Equal(1, results[0].Authority);
+        double expectedDifference = Settings().AuthorityWeight
+            + ((Settings().ReciprocalRankConstant + 1) / (Settings().ReciprocalRankConstant + 2))
+            - 1;
+        Assert.Equal(expectedDifference, results[0].Score - results[1].Score, 6);
     }
 }

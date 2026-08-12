@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Policies;
 
 namespace LocalSearchEngine.Core.Crawling.Storage;
@@ -7,9 +8,9 @@ namespace LocalSearchEngine.Core.Crawling.Storage;
 /// <summary>
 /// The crawler's SQL layer: one static home for every query and command it issues against SQLite,
 /// keeping raw SQL out of the engine. It owns the schema it depends on — the <c>CrawlState</c> table
-/// (per-URL status, cache validators, title, and content hash), the <c>LinkIndex</c> of every link
-/// seen and its verified status, and the FTS5 mirror of the vector store's chunks with the triggers
-/// that keep it in sync — created by <see cref="EnsureSchemaAsync"/> after the vector store has made
+/// (per-URL status, cache validators, title, content hash, and link authority), the <c>LinkIndex</c>
+/// graph, compact inbound-link context, and the FTS5 mirrors of body and link text with the triggers
+/// that keep them in sync — created by <see cref="EnsureSchemaAsync"/> after the vector store has made
 /// its <c>text_chunks</c> table. The rest are focused reads and writes over those tables: record a
 /// visit, store or re-derive a page's links, find a duplicate by content hash, list URLs a crawl no
 /// longer reaches, and so on. Every method works on a connection the caller owns and opens; the write
@@ -18,6 +19,12 @@ namespace LocalSearchEngine.Core.Crawling.Storage;
 /// </summary>
 public static class CrawlStore
 {
+    /// <summary>
+    /// Version of the persisted anchor/context extraction format. HTML rows below this version are
+    /// fetched without conditional validators once so an existing database can backfill link text.
+    /// </summary>
+    public const int CurrentLinkContextVersion = 1;
+
     /// <summary>
     /// Creates the database tables, triggers, and indices for crawl state and full-text search mirrors if they do not exist.
     /// </summary>
@@ -55,7 +62,11 @@ public static class CrawlStore
                     -- The DocKind enum value of the page's indexed content (Html/Pdf/Docx), so search
                     -- ranking can apply its configurable PDF/DOCX penalty without re-sniffing. NULL for rows
                     -- that were only visited, not indexed (redirects, 404s, unsupported types).
-                    DocKind INTEGER
+                    DocKind INTEGER,
+                    -- Raw internal PageRank and its log-normalized [0,1] ranking feature.
+                    PageRank REAL NOT NULL DEFAULT 0,
+                    Authority REAL NOT NULL DEFAULT 0,
+                    LinkContextVersion INTEGER NOT NULL DEFAULT 0
                 );
 
                 -- Every link the crawler encounters: in-scope outlinks AND off-site links, each
@@ -82,6 +93,44 @@ public static class CrawlStore
 
                 -- Verify links that haven't been updated this crawl run.
                 CREATE INDEX IF NOT EXISTS idx_linkindex_lastupdated ON LinkIndex(LastUpdated);
+
+                -- Compact editorial descriptions of in-scope links. Several distinct contexts may
+                -- exist for one source/target edge, while LinkIndex deliberately keeps one graph edge.
+                CREATE TABLE IF NOT EXISTS LinkContexts (
+                    Id INTEGER PRIMARY KEY,
+                    FromUrl TEXT NOT NULL,
+                    ToUrl TEXT NOT NULL,
+                    AnchorText TEXT NOT NULL DEFAULT '',
+                    ContextText TEXT NOT NULL DEFAULT '',
+                    SectionHeading TEXT NOT NULL DEFAULT '',
+                    SourceTitle TEXT NOT NULL DEFAULT '',
+                    UNIQUE (FromUrl, ToUrl, AnchorText, ContextText, SectionHeading)
+                );
+
+                CREATE INDEX IF NOT EXISTS idx_linkcontexts_fromurl ON LinkContexts(FromUrl);
+                CREATE INDEX IF NOT EXISTS idx_linkcontexts_tourl ON LinkContexts(ToUrl);
+
+                -- Anchor text is the strongest field; context and the nearest section heading add
+                -- vocabulary for terse labels such as details or click-here. Source title is
+                -- retained as a weaker description of the referring page.
+                CREATE VIRTUAL TABLE IF NOT EXISTS link_contexts_fts USING fts5(
+                    Id UNINDEXED, AnchorText, ContextText, SectionHeading, SourceTitle,
+                    tokenize='porter unicode61');
+
+                CREATE TRIGGER IF NOT EXISTS link_contexts_ai AFTER INSERT ON LinkContexts BEGIN
+                  INSERT INTO link_contexts_fts(Id, AnchorText, ContextText, SectionHeading, SourceTitle)
+                  VALUES (new.Id, new.AnchorText, new.ContextText, new.SectionHeading, new.SourceTitle);
+                END;
+
+                CREATE TRIGGER IF NOT EXISTS link_contexts_ad AFTER DELETE ON LinkContexts BEGIN
+                  DELETE FROM link_contexts_fts WHERE Id = old.Id;
+                END;
+
+                CREATE TRIGGER IF NOT EXISTS link_contexts_au AFTER UPDATE ON LinkContexts BEGIN
+                  DELETE FROM link_contexts_fts WHERE Id = old.Id;
+                  INSERT INTO link_contexts_fts(Id, AnchorText, ContextText, SectionHeading, SourceTitle)
+                  VALUES (new.Id, new.AnchorText, new.ContextText, new.SectionHeading, new.SourceTitle);
+                END;
 
                 -- porter stemming over unicode61 so 'running' matches 'run', 'guides' matches
                 -- 'guide', etc. The URL isn't stored here: keyword hits join back to
@@ -114,18 +163,49 @@ public static class CrawlStore
             ";
             await command.ExecuteNonQueryAsync();
         }
+
+        // CREATE TABLE IF NOT EXISTS does not add columns to databases produced by older crawler
+        // versions. These idempotent migrations make an existing graph immediately PageRank-ready.
+        await EnsureColumnAsync(connection, "CrawlState", "PageRank", "REAL NOT NULL DEFAULT 0");
+        await EnsureColumnAsync(connection, "CrawlState", "Authority", "REAL NOT NULL DEFAULT 0");
+        await EnsureColumnAsync(connection, "CrawlState", "LinkContextVersion", "INTEGER NOT NULL DEFAULT 0");
+    }
+
+    private static async Task EnsureColumnAsync(
+        SqliteConnection connection, string tableName, string columnName, string declaration)
+    {
+        using (var inspect = connection.CreateCommand())
+        {
+            inspect.CommandText = $"PRAGMA table_info(\"{tableName}\")";
+            using var reader = await inspect.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                if (reader.GetString(1).Equals(columnName, StringComparison.OrdinalIgnoreCase)) return;
+            }
+        }
+
+        using var alter = connection.CreateCommand();
+        alter.CommandText = $"ALTER TABLE \"{tableName}\" ADD COLUMN \"{columnName}\" {declaration}";
+        await alter.ExecuteNonQueryAsync();
     }
 
     /// <summary>
-    /// Retrieves the ETag, Last-Modified, and ContentHash validators for a crawled URL.
+    /// Retrieves validators, content identity, document kind, and link-context schema version for a crawled URL.
     /// </summary>
     /// <param name="connection">The open database connection.</param>
     /// <param name="url">The URL whose crawl state to retrieve.</param>
-    /// <returns>A tuple containing the ETag, LastModified, and ContentHash, each null if not present.</returns>
-    public static async Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url)
+    /// <returns>The stored conditional-request and indexing state, or null/default values when absent.</returns>
+    public static async Task<(
+        string? ETag,
+        string? LastModified,
+        string? ContentHash,
+        DocKind? DocKind,
+        int LinkContextVersion)> GetCrawlStateAsync(SqliteConnection connection, string url)
     {
         using var cmd = connection.CreateCommand();
-        cmd.CommandText = "SELECT ETag, LastModified, ContentHash FROM CrawlState WHERE Url = @Url";
+        cmd.CommandText = @"
+            SELECT ETag, LastModified, ContentHash, DocKind, LinkContextVersion
+            FROM CrawlState WHERE Url = @Url";
         cmd.Parameters.AddWithValue("@Url", url);
         using var reader = await cmd.ExecuteReaderAsync();
         if (await reader.ReadAsync())
@@ -133,9 +213,11 @@ public static class CrawlStore
             return (
                 reader.IsDBNull(0) ? null : reader.GetString(0),
                 reader.IsDBNull(1) ? null : reader.GetString(1),
-                reader.IsDBNull(2) ? null : reader.GetString(2));
+                reader.IsDBNull(2) ? null : reader.GetString(2),
+                reader.IsDBNull(3) ? null : (DocKind?)reader.GetInt32(3),
+                reader.IsDBNull(4) ? 0 : reader.GetInt32(4));
         }
-        return (null, null, null);
+        return (null, null, null, null, 0);
     }
 
     /// <summary>
@@ -212,8 +294,10 @@ public static class CrawlStore
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = @"
-            INSERT INTO CrawlState (Url, LastCrawled, StatusCode, ETag, LastModified, Title, ContentHash, DocKind)
-            VALUES (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified, @Title, @ContentHash, @DocKind)
+            INSERT INTO CrawlState
+                (Url, LastCrawled, StatusCode, ETag, LastModified, Title, ContentHash, DocKind, LinkContextVersion)
+            VALUES
+                (@Url, @LastCrawled, @StatusCode, @ETag, @LastModified, @Title, @ContentHash, @DocKind, @LinkContextVersion)
             ON CONFLICT(Url) DO UPDATE SET
                 LastCrawled = excluded.LastCrawled,
                 StatusCode = excluded.StatusCode,
@@ -221,7 +305,8 @@ public static class CrawlStore
                 LastModified = excluded.LastModified,
                 Title = excluded.Title,
                 ContentHash = excluded.ContentHash,
-                DocKind = excluded.DocKind;";
+                DocKind = excluded.DocKind,
+                LinkContextVersion = excluded.LinkContextVersion;";
 
         command.Parameters.AddWithValue("@Url", url);
         command.Parameters.AddWithValue("@LastCrawled", DateTime.UtcNow);
@@ -231,7 +316,28 @@ public static class CrawlStore
         command.Parameters.AddWithValue("@Title", title ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@ContentHash", contentHash ?? (object)DBNull.Value);
         command.Parameters.AddWithValue("@DocKind", (int)docKind);
+        command.Parameters.AddWithValue("@LinkContextVersion", CurrentLinkContextVersion);
 
+        await command.ExecuteNonQueryAsync();
+    }
+
+    /// <summary>
+    /// Marks a parsed HTML page as having refreshed link-context extraction without changing its
+    /// content metadata. Used when the visible text hash is unchanged but hrefs or context may differ.
+    /// </summary>
+    public static async Task MarkLinkContextCurrentAsync(
+        SqliteConnection connection,
+        string url,
+        SqliteTransaction? transaction = null)
+    {
+        using var command = connection.CreateCommand();
+        command.Transaction = transaction;
+        command.CommandText = @"
+            UPDATE CrawlState
+            SET LinkContextVersion = @Version
+            WHERE Url = @Url";
+        command.Parameters.AddWithValue("@Version", CurrentLinkContextVersion);
+        command.Parameters.AddWithValue("@Url", url);
         await command.ExecuteNonQueryAsync();
     }
 
@@ -290,7 +396,35 @@ public static class CrawlStore
     /// <param name="offsiteLinks">Off-site target URLs (stored with <c>External=1</c>).</param>
     /// <param name="transaction">An open transaction to enlist these writes in, or <c>null</c> to run them as a standalone transaction.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static async Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, SqliteTransaction? transaction = null)
+    public static Task StoreLinksAsync(
+        SqliteConnection connection,
+        string fromUrl,
+        IReadOnlyCollection<string> inScopeLinks,
+        IReadOnlyCollection<string> offsiteLinks,
+        SqliteTransaction? transaction = null) =>
+        StoreLinksAsync(
+            connection, fromUrl, inScopeLinks, offsiteLinks,
+            Array.Empty<LinkEvidence>(), sourceTitle: null, transaction: transaction);
+
+    /// <summary>
+    /// Stores the page's graph edges and compact editorial text for its in-scope links, replacing
+    /// the source page's prior rows atomically. Link text is mirrored into FTS5 by table triggers.
+    /// </summary>
+    /// <param name="connection">The open database connection.</param>
+    /// <param name="fromUrl">The source page URL.</param>
+    /// <param name="inScopeLinks">Target URLs within the crawl scope.</param>
+    /// <param name="offsiteLinks">Off-site target URLs retained for verification.</param>
+    /// <param name="linkEvidence">Anchor and nearby editorial text for in-scope targets.</param>
+    /// <param name="sourceTitle">The referring page's title, used as a weak inbound text field.</param>
+    /// <param name="transaction">An open transaction, or <c>null</c> for a standalone transaction.</param>
+    public static async Task StoreLinksAsync(
+        SqliteConnection connection,
+        string fromUrl,
+        IReadOnlyCollection<string> inScopeLinks,
+        IReadOnlyCollection<string> offsiteLinks,
+        IReadOnlyCollection<LinkEvidence> linkEvidence,
+        string? sourceTitle,
+        SqliteTransaction? transaction = null)
     {
         bool ownTransaction = transaction is null;
         transaction ??= (SqliteTransaction)await connection.BeginTransactionAsync();
@@ -302,6 +436,14 @@ public static class CrawlStore
                 delete.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
                 delete.Parameters.AddWithValue("@From", fromUrl);
                 await delete.ExecuteNonQueryAsync();
+            }
+
+            using (var deleteContexts = connection.CreateCommand())
+            {
+                deleteContexts.Transaction = transaction;
+                deleteContexts.CommandText = "DELETE FROM LinkContexts WHERE FromUrl = @From";
+                deleteContexts.Parameters.AddWithValue("@From", fromUrl);
+                await deleteContexts.ExecuteNonQueryAsync();
             }
 
             if (inScopeLinks.Count > 0 || offsiteLinks.Count > 0)
@@ -326,6 +468,36 @@ public static class CrawlStore
                 {
                     toParam.Value = to;
                     await insert.ExecuteNonQueryAsync();
+                }
+            }
+
+            if (linkEvidence.Count > 0 && inScopeLinks.Count > 0)
+            {
+                var allowedTargets = inScopeLinks.ToHashSet(StringComparer.OrdinalIgnoreCase);
+                using var insertContext = connection.CreateCommand();
+                insertContext.Transaction = transaction;
+                insertContext.CommandText = @"
+                    INSERT OR IGNORE INTO LinkContexts
+                        (FromUrl, ToUrl, AnchorText, ContextText, SectionHeading, SourceTitle)
+                    VALUES
+                        (@From, @To, @Anchor, @Context, @Heading, @SourceTitle)";
+                var fromParam = insertContext.Parameters.Add("@From", SqliteType.Text);
+                var toParam = insertContext.Parameters.Add("@To", SqliteType.Text);
+                var anchorParam = insertContext.Parameters.Add("@Anchor", SqliteType.Text);
+                var contextParam = insertContext.Parameters.Add("@Context", SqliteType.Text);
+                var headingParam = insertContext.Parameters.Add("@Heading", SqliteType.Text);
+                var sourceTitleParam = insertContext.Parameters.Add("@SourceTitle", SqliteType.Text);
+                fromParam.Value = fromUrl;
+                sourceTitleParam.Value = sourceTitle ?? string.Empty;
+
+                foreach (var evidence in linkEvidence)
+                {
+                    if (!allowedTargets.Contains(evidence.ToUrl)) continue;
+                    toParam.Value = evidence.ToUrl;
+                    anchorParam.Value = evidence.AnchorText;
+                    contextParam.Value = evidence.ContextText;
+                    headingParam.Value = evidence.SectionHeading;
+                    await insertContext.ExecuteNonQueryAsync();
                 }
             }
 
@@ -354,7 +526,9 @@ public static class CrawlStore
     {
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = "DELETE FROM LinkIndex WHERE FromUrl = @From";
+        command.CommandText = @"
+            DELETE FROM LinkContexts WHERE FromUrl = @From;
+            DELETE FROM LinkIndex WHERE FromUrl = @From;";
         command.Parameters.AddWithValue("@From", fromUrl);
         await command.ExecuteNonQueryAsync();
     }
@@ -542,6 +716,141 @@ public static class CrawlStore
         }
 
         return (indexedUrls, crawlStateRows);
+    }
+
+    /// <summary>
+    /// Recomputes query-independent authority over the indexed internal-link graph using PageRank.
+    /// Only URLs with stored text chunks are graph nodes, and only internal edges whose source and
+    /// target are both nodes vote. Raw PageRank and a log-normalized [0,1] feature are persisted on
+    /// <c>CrawlState</c> in one transaction.
+    /// </summary>
+    /// <param name="connection">The open writable database connection.</param>
+    /// <param name="damping">The probability of following a graph edge rather than teleporting.</param>
+    /// <param name="maximumIterations">The iteration ceiling for convergence.</param>
+    /// <param name="tolerance">The L1 score-delta convergence threshold.</param>
+    /// <returns>Counts of graph nodes, retained edges, and iterations performed.</returns>
+    public static async Task<(int NodeCount, int EdgeCount, int Iterations)> RecomputePageRankAsync(
+        SqliteConnection connection,
+        double damping = 0.85,
+        int maximumIterations = 100,
+        double tolerance = 1e-8)
+    {
+        if (damping is < 0 or >= 1) throw new ArgumentOutOfRangeException(nameof(damping));
+        if (maximumIterations <= 0) throw new ArgumentOutOfRangeException(nameof(maximumIterations));
+        if (tolerance < 0) throw new ArgumentOutOfRangeException(nameof(tolerance));
+
+        var nodes = new List<string>();
+        using (var nodeCommand = connection.CreateCommand())
+        {
+            nodeCommand.CommandText = @"
+                SELECT DISTINCT cs.Url
+                FROM CrawlState cs
+                JOIN text_chunks tc ON tc.Url = cs.Url
+                ORDER BY cs.Url";
+            using var reader = await nodeCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync()) nodes.Add(reader.GetString(0));
+        }
+
+        var nodeIndices = new Dictionary<string, int>(nodes.Count, StringComparer.OrdinalIgnoreCase);
+        for (int i = 0; i < nodes.Count; i++) nodeIndices[nodes[i]] = i;
+
+        var outgoing = new List<int>?[nodes.Count];
+        int edgeCount = 0;
+        using (var edgeCommand = connection.CreateCommand())
+        {
+            edgeCommand.CommandText = "SELECT FromUrl, ToUrl FROM LinkIndex WHERE External = 0";
+            using var reader = await edgeCommand.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                if (!nodeIndices.TryGetValue(reader.GetString(0), out int from)) continue;
+                if (!nodeIndices.TryGetValue(reader.GetString(1), out int to)) continue;
+                if (from == to) continue; // a page does not endorse itself
+                (outgoing[from] ??= new List<int>()).Add(to);
+                edgeCount++;
+            }
+        }
+
+        double[] ranks = nodes.Count == 0
+            ? Array.Empty<double>()
+            : Enumerable.Repeat(1.0 / nodes.Count, nodes.Count).ToArray();
+        int iterations = 0;
+
+        for (; iterations < maximumIterations && nodes.Count > 0; iterations++)
+        {
+            double danglingMass = 0;
+            for (int i = 0; i < ranks.Length; i++)
+            {
+                if (outgoing[i] is not { Count: > 0 }) danglingMass += ranks[i];
+            }
+
+            double baseScore = ((1.0 - damping) + (damping * danglingMass)) / nodes.Count;
+            var next = Enumerable.Repeat(baseScore, nodes.Count).ToArray();
+            for (int from = 0; from < outgoing.Length; from++)
+            {
+                if (outgoing[from] is not { Count: > 0 } targets) continue;
+                double vote = damping * ranks[from] / targets.Count;
+                foreach (int to in targets) next[to] += vote;
+            }
+
+            double delta = 0;
+            for (int i = 0; i < ranks.Length; i++) delta += Math.Abs(next[i] - ranks[i]);
+            ranks = next;
+            if (delta <= tolerance)
+            {
+                iterations++;
+                break;
+            }
+        }
+
+        var authorities = new double[ranks.Length];
+        if (ranks.Length > 0)
+        {
+            // N * PR is 1 for an average page. log1p compresses hubs before min/max scaling,
+            // preserving useful distinctions without allowing a single root page to dominate.
+            var compressed = ranks.Select(rank => Math.Log(1.0 + (rank * ranks.Length))).ToArray();
+            double minimum = compressed.Min();
+            double maximum = compressed.Max();
+            double range = maximum - minimum;
+            if (range > double.Epsilon)
+            {
+                for (int i = 0; i < authorities.Length; i++)
+                {
+                    authorities[i] = (compressed[i] - minimum) / range;
+                }
+            }
+        }
+
+        using var transaction = connection.BeginTransaction();
+        using (var clear = connection.CreateCommand())
+        {
+            clear.Transaction = transaction;
+            clear.CommandText = "UPDATE CrawlState SET PageRank = 0, Authority = 0";
+            await clear.ExecuteNonQueryAsync();
+        }
+
+        if (nodes.Count > 0)
+        {
+            using var update = connection.CreateCommand();
+            update.Transaction = transaction;
+            update.CommandText = @"
+                UPDATE CrawlState
+                SET PageRank = @PageRank, Authority = @Authority
+                WHERE Url = @Url";
+            var pageRankParameter = update.Parameters.Add("@PageRank", SqliteType.Real);
+            var authorityParameter = update.Parameters.Add("@Authority", SqliteType.Real);
+            var urlParameter = update.Parameters.Add("@Url", SqliteType.Text);
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                pageRankParameter.Value = ranks[i];
+                authorityParameter.Value = authorities[i];
+                urlParameter.Value = nodes[i];
+                await update.ExecuteNonQueryAsync();
+            }
+        }
+
+        await transaction.CommitAsync();
+        return (nodes.Count, edgeCount, iterations);
     }
 
     /// <summary>

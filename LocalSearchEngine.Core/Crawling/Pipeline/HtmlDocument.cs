@@ -63,11 +63,12 @@ internal sealed class HtmlDocument : Document
         {
             ctx.Observer.OnPageNoIndex(DedupKey);
             ctx.Submit(new NoIndexJob(DedupKey, fetch.StatusCode, analysis.Title, fetch.ETag,
-                fetch.LastModified, null, analysis.Outlinks, analysis.OffsiteLinks, DocKind.Html));
+                fetch.LastModified, null, analysis.Outlinks, analysis.OffsiteLinks,
+                analysis.LinkEvidence, DocKind.Html));
             return Task.CompletedTask;
         }
 
         return EmitIndexableAsync(fetch, ctx, analysis.Title, analysis.Headings, analysis.Text,
-            analysis.Outlinks, analysis.OffsiteLinks, DocKind.Html);
+            analysis.Outlinks, analysis.OffsiteLinks, DocKind.Html, analysis.LinkEvidence);
     }
 }

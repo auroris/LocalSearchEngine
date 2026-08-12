@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Engine;
 using LocalSearchEngine.Core.Crawling.Policies;
 using LocalSearchEngine.Core.Crawling.Storage;
@@ -84,11 +85,14 @@ internal abstract class Document
     /// <param name="outlinks">The in-scope outlinks (normalized), for the link rows.</param>
     /// <param name="offsiteLinks">The off-site links, for optional verification.</param>
     /// <param name="kind">The classified document kind.</param>
+    /// <param name="linkEvidence">Anchor and nearby text describing HTML outlinks; empty for non-HTML documents.</param>
     private protected async Task EmitIndexableAsync(
         FetchResult fetch, ICrawlContext ctx,
         string? title, string headings, string text,
-        IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind)
+        IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind,
+        IReadOnlyCollection<LinkEvidence>? linkEvidence = null)
     {
+        linkEvidence ??= Array.Empty<LinkEvidence>();
         string contentHash = ComputeContentHash(title, headings, text);
 
         // The fallback for servers that ignore ETag/If-Modified-Since and answer 200 with an
@@ -101,7 +105,8 @@ internal abstract class Document
             && await CrawlStore.UrlHasChunksAsync(ctx.Read, DedupKey))
         {
             ctx.Observer.OnPageUnchangedHash(DedupKey);
-            ctx.Submit(new TouchJob(DedupKey, fetch.StatusCode));
+            ctx.Submit(new TouchJob(
+                DedupKey, fetch.StatusCode, title, outlinks, offsiteLinks, linkEvidence));
             return;
         }
 
@@ -132,7 +137,7 @@ internal abstract class Document
 
         ctx.Observer.OnPageIndexed(DedupKey, outlinks.Count);
         ctx.Submit(new IndexJob(DedupKey, fetch.StatusCode, title, headings, text,
-            fetch.ETag, fetch.LastModified, contentHash, outlinks, offsiteLinks, kind));
+            fetch.ETag, fetch.LastModified, contentHash, outlinks, offsiteLinks, linkEvidence, kind));
     }
 
     /// <summary>

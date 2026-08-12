@@ -137,10 +137,13 @@ internal sealed class CrawlWorker
             var state = await CrawlStore.GetCrawlStateAsync(_ctx.Read, document.DedupKey);
             priorContentHash = state.ContentHash;
 
-            // A user noindex rule means we re-fetch the page in full every run: we must re-extract
-            // its links and ensure any content indexed before the rule existed is dropped. Skip
-            // conditional request headers so the server can't answer 304 with no body.
-            bool suppressConditional = _pipeline.Plan.NoIndexRules.Matches(document.DedupKey);
+            // A user noindex rule requires a body every run. An HTML row from before link-context
+            // indexing also needs one unconditional response so anchor and nearby editorial text
+            // can be backfilled; once parsed, its stored version restores normal cheap 304s.
+            bool needsLinkContextBackfill = state.DocKind == DocKind.Html
+                && state.LinkContextVersion < CrawlStore.CurrentLinkContextVersion;
+            bool suppressConditional = _pipeline.Plan.NoIndexRules.Matches(document.DedupKey)
+                || needsLinkContextBackfill;
             condETag = suppressConditional ? null : state.ETag;
             condLastModified = suppressConditional ? null : state.LastModified;
         }

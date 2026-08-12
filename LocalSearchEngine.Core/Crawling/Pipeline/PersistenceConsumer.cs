@@ -128,11 +128,13 @@ internal sealed class PersistenceConsumer
         {
             case IndexJob j:
                 await CrawlStore.RecordCrawlStateAsync(_write, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, j.DocKind, tx);
-                await CrawlStore.StoreLinksAsync(_write, j.Url, j.Outlinks, j.OffsiteLinks, tx);
+                await CrawlStore.StoreLinksAsync(
+                    _write, j.Url, j.Outlinks, j.OffsiteLinks, j.LinkEvidence, j.Title, tx);
                 break;
 
             case NoIndexJob j:
-                await CrawlStore.StoreLinksAsync(_write, j.Url, j.Outlinks, j.OffsiteLinks, tx);
+                await CrawlStore.StoreLinksAsync(
+                    _write, j.Url, j.Outlinks, j.OffsiteLinks, j.LinkEvidence, j.Title, tx);
                 await CrawlStore.RecordCrawlStateAsync(_write, j.Url, j.StatusCode, j.ETag, j.LastModified, j.Title, j.ContentHash, j.DocKind, tx);
                 break;
 
@@ -145,7 +147,16 @@ internal sealed class PersistenceConsumer
                 break;
 
             case TouchJob j:
+                if (j.Outlinks != null && j.OffsiteLinks != null && j.LinkEvidence != null)
+                {
+                    await CrawlStore.StoreLinksAsync(
+                        _write, j.Url, j.Outlinks, j.OffsiteLinks, j.LinkEvidence, j.SourceTitle, tx);
+                }
                 await CrawlStore.RecordVisitAsync(_write, j.Url, j.StatusCode, clearMetadata: false, tx);
+                if (j.LinkEvidence != null)
+                {
+                    await CrawlStore.MarkLinkContextCurrentAsync(_write, j.Url, tx);
+                }
                 break;
         }
 

@@ -142,6 +142,68 @@ public sealed class CrawlerServiceIntegrationTests : IDisposable
     }
 
     [Fact]
+    public async Task Old_html_row_is_fetched_once_to_backfill_link_context_then_resumes_304s()
+    {
+        await EnsureSchemaAsync();
+
+        const string html = "<title>Home</title><h2>Certificates</h2>" +
+            "<p>Renew the production certificate with <a href=\"/page2\">the PKI procedure</a>.</p>";
+        _handler.Routes[Seed] = _ => Html(html, etag: "\"v1\"");
+        _handler.Routes[Page2] = _ => Html("<title>Procedure</title><p>steps</p>");
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        // Simulate a CrawlState row written before link-context extraction existed.
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE CrawlState SET LinkContextVersion = 0 WHERE Url = @Url;
+                DELETE FROM LinkContexts WHERE FromUrl = @Url;";
+            command.Parameters.AddWithValue("@Url", Seed);
+            command.ExecuteNonQuery();
+        }
+
+        bool backfillWasConditional = true;
+        _handler.Routes[Seed] = request =>
+        {
+            backfillWasConditional = request.Headers.IfNoneMatch.Any();
+            return backfillWasConditional
+                ? new HttpResponseMessage(HttpStatusCode.NotModified)
+                : Html(html, etag: "\"v1\"");
+        };
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.False(backfillWasConditional);
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT cs.LinkContextVersion,
+                       (SELECT COUNT(*) FROM LinkContexts lc WHERE lc.FromUrl = cs.Url)
+                FROM CrawlState cs WHERE cs.Url = @Url";
+            command.Parameters.AddWithValue("@Url", Seed);
+            using var reader = command.ExecuteReader();
+            Assert.True(reader.Read());
+            Assert.Equal(CrawlStore.CurrentLinkContextVersion, reader.GetInt32(0));
+            Assert.True(reader.GetInt64(1) > 0);
+        }
+
+        bool nextFetchWasConditional = false;
+        _handler.Routes[Seed] = request =>
+        {
+            nextFetchWasConditional = request.Headers.IfNoneMatch.Any();
+            return nextFetchWasConditional
+                ? new HttpResponseMessage(HttpStatusCode.NotModified)
+                : Html(html, etag: "\"v1\"");
+        };
+        await NewCrawler().CrawlAsync(Seed, maxPages: 5);
+
+        Assert.True(nextFetchWasConditional);
+    }
+
+    [Fact]
     public async Task Unchanged_content_skips_reembedding()
     {
         await EnsureSchemaAsync();

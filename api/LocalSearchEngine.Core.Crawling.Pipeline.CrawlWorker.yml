@@ -307,7 +307,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandlePageOutcomeAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 181
+    startLine: 184
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -349,7 +349,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandleRedirect
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 248
+    startLine: 251
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -396,7 +396,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnqueueStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 282
+    startLine: 285
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -435,7 +435,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HandleInfrastructureOutcomeAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/CrawlWorker.cs
-    startLine: 312
+    startLine: 315
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline

@@ -428,7 +428,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ApplyChunksAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
-    startLine: 157
+    startLine: 168
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -463,7 +463,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ChunkActionFor
     path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
-    startLine: 179
+    startLine: 190
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -496,7 +496,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ClassifyLinkStatus
     path: LocalSearchEngine.Core/Crawling/Pipeline/PersistenceConsumer.cs
-    startLine: 187
+    startLine: 198
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline

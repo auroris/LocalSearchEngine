@@ -10,6 +10,7 @@ items:
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count(System.String)
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Deleting_a_url_clears_data_vector_and_fts_rows_together
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Dispose
+  - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.SeedSchemaAndDataAsync
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Self_match_ranks_first_with_near_zero_distance
   - LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Site_filter_restricts_results_to_the_named_host
@@ -33,7 +34,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorSearchServiceIntegrationTests
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -80,7 +81,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _dbPath
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -107,7 +108,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _connectionString
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 23
+    startLine: 24
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -134,7 +135,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _provider
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -161,7 +162,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _service
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -188,7 +189,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 27
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -217,7 +218,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SeedSchemaAndDataAsync
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 42
+    startLine: 43
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -245,7 +246,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Self_match_ranks_first_with_near_zero_distance
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 54
+    startLine: 55
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -283,7 +284,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Deleting_a_url_clears_data_vector_and_fts_rows_together
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 69
+    startLine: 70
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -321,7 +322,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Site_filter_restricts_results_to_the_named_host
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 97
+    startLine: 98
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -359,7 +360,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Site_only_query_returns_no_results
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 115
+    startLine: 116
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -397,7 +398,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 126
+    startLine: 127
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -413,6 +414,44 @@ items:
 
       Public Function Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected() As Task
   overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  commentId: M:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  id: Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  parent: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests
+  langs:
+  - csharp
+  - vb
+  name: Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary()
+  nameWithType: VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary()
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+    path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
+    startLine: 148
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary() As Task
+  overload: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -435,7 +474,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Count
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 147
+    startLine: 185
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -469,7 +508,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Dispose
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 156
+    startLine: 194
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -499,7 +538,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TryDelete
     path: LocalSearchEngine.Tests/VectorSearchServiceIntegrationTests.cs
-    startLine: 165
+    startLine: 203
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -940,6 +979,12 @@ references:
   name: Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
   nameWithType: VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
   fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Broad_lexical_pool_recovers_a_partial_match_when_vectors_are_rejected
+- uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary*
+  commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  name: Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  nameWithType: VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
+  fullName: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Inbound_anchor_context_recovers_a_target_with_different_body_vocabulary
 - uid: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count*
   commentId: Overload:LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.Count
   href: LocalSearchEngine.Tests.VectorSearchServiceIntegrationTests.html#LocalSearchEngine_Tests_VectorSearchServiceIntegrationTests_Count_System_String_

@@ -4,6 +4,7 @@ items:
   commentId: N:LocalSearchEngine.Core.Searching
   id: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate
   - LocalSearchEngine.Core.Searching.KeywordCandidate
   - LocalSearchEngine.Core.Searching.ParsedQuery
   - LocalSearchEngine.Core.Searching.SearchQueryParser
@@ -51,6 +52,13 @@ references:
   name: KeywordCandidate
   nameWithType: KeywordCandidate
   fullName: LocalSearchEngine.Core.Searching.KeywordCandidate
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+  commentId: T:LocalSearchEngine.Core.Searching.InboundLinkCandidate
+  parent: LocalSearchEngine.Core.Searching
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html
+  name: InboundLinkCandidate
+  nameWithType: InboundLinkCandidate
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate
 - uid: LocalSearchEngine.Core.Searching.SearchRanker
   commentId: T:LocalSearchEngine.Core.Searching.SearchRanker
   href: LocalSearchEngine.Core.Searching.SearchRanker.html

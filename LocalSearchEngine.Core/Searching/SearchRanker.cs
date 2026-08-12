@@ -29,11 +29,25 @@ public readonly record struct KeywordCandidate(
     double Bm25 = 0);
 
 /// <summary>
+/// Represents a target described by anchor text and nearby content on another crawled page.
+/// </summary>
+/// <param name="Url">The in-scope target URL being endorsed.</param>
+/// <param name="Text">The compact anchor, context, section-heading, and source-title text.</param>
+/// <param name="Bm25">The field-weighted FTS5 BM25 value; smaller values are more relevant.</param>
+/// <param name="SourceAuthority">The normalized PageRank of the referring page.</param>
+public readonly record struct InboundLinkCandidate(
+    string Url,
+    string Text,
+    double Bm25,
+    double SourceAuthority);
+
+/// <summary>
 /// Collapses semantic and BM25 candidate streams into a URL-level result list. Each stream is first
 /// reduced to its best rank per URL, then combined with normalized reciprocal-rank fusion. Bounded
 /// lexical features refine that fused score: term coverage, phrase adjacency, proximity, matches in
-/// headings/titles/filenames, corroborating chunks, and a soft non-HTML penalty. This keeps the
-/// re-ranker inexpensive and avoids adding incompatible raw cosine-distance and BM25 scales.
+/// headings/titles/filenames, corroborating chunks, inbound anchor context, internal PageRank, and
+/// a soft non-HTML penalty. This keeps the re-ranker inexpensive and avoids adding incompatible raw
+/// cosine-distance and BM25 scales.
 /// </summary>
 public static class SearchRanker
 {
@@ -50,6 +64,8 @@ public static class SearchRanker
     /// <param name="settings">The search relevance settings.</param>
     /// <param name="titles">Optional dictionary map of page URLs to titles.</param>
     /// <param name="docKinds">Optional dictionary map of page URLs to their <see cref="DocKind"/>; URLs absent from it are treated as web pages.</param>
+    /// <param name="authorities">Optional dictionary map of page URLs to normalized internal PageRank.</param>
+    /// <param name="inboundLinkHits">Optional inbound anchor/context candidates with field-weighted BM25 scores.</param>
     /// <returns>A sorted list of ranked search result items.</returns>
     public static List<SearchResultItem> Rank(
         IEnumerable<VectorCandidate> vectorHits,
@@ -57,7 +73,9 @@ public static class SearchRanker
         string query,
         SearchSettings settings,
         IReadOnlyDictionary<string, string?>? titles = null,
-        IReadOnlyDictionary<string, DocKind>? docKinds = null)
+        IReadOnlyDictionary<string, DocKind>? docKinds = null,
+        IReadOnlyDictionary<string, double>? authorities = null,
+        IEnumerable<InboundLinkCandidate>? inboundLinkHits = null)
     {
         ArgumentNullException.ThrowIfNull(vectorHits);
         ArgumentNullException.ThrowIfNull(keywordHits);
@@ -112,6 +130,31 @@ public static class SearchRanker
             }
         }
 
+        // Inbound descriptions form an independent lexical retrieval stream. Authority of the
+        // referring page changes BM25 magnitude only modestly, so a strong textual endorsement from
+        // an ordinary page remains more valuable than a weak mention from a hub.
+        int nextInboundRank = 0;
+        var inboundRankedUrls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (inboundLinkHits != null)
+        {
+            foreach (var hit in inboundLinkHits.OrderBy(candidate =>
+                         AdjustedInboundBm25(candidate, settings.InboundSourceAuthorityWeight)))
+            {
+                var agg = GetOrCreate(byUrl, hit.Url);
+                if (inboundRankedUrls.Add(hit.Url)) agg.InboundRank = ++nextInboundRank;
+
+                var features = AnalyzeText(queryTokens, hit.Text);
+                double quality = (0.60 * features.Coverage)
+                    + (0.25 * features.Proximity)
+                    + (features.ExactPhrase ? 0.15 : 0);
+                if (quality > agg.InboundQuality || agg.InboundText.Length == 0)
+                {
+                    agg.InboundQuality = quality;
+                    agg.InboundText = hit.Text;
+                }
+            }
+        }
+
         foreach (var agg in byUrl.Values)
         {
             string? title = null;
@@ -120,6 +163,10 @@ public static class SearchRanker
 
             if (docKinds != null && docKinds.TryGetValue(agg.Url, out var kind)) agg.Kind = kind;
             else agg.Kind = DocKind.Html;
+            if (authorities != null && authorities.TryGetValue(agg.Url, out double authority))
+            {
+                agg.Authority = Math.Clamp(authority, 0, 1);
+            }
 
             var titleFeatures = AnalyzeText(queryTokens, title);
             var filenameFeatures = AnalyzeText(queryTokens, GetUrlFileName(agg.Url));
@@ -133,6 +180,11 @@ public static class SearchRanker
             {
                 score += settings.KeywordWeight * ReciprocalRank(agg.KeywordRank, settings.ReciprocalRankConstant);
             }
+            if (agg.InboundRank > 0)
+            {
+                score += settings.InboundLinkWeight * ReciprocalRank(agg.InboundRank, settings.ReciprocalRankConstant);
+                score += settings.InboundContextBoost * agg.InboundQuality;
+            }
 
             if (agg.ExactPhrase) score += settings.ExactPhraseBoost;
             score += settings.TermInTextBoost * agg.TextCoverage;
@@ -140,6 +192,7 @@ public static class SearchRanker
             if (agg.MatchedHeading) score += settings.HeadingBoost;
             score += settings.TitleBoost * titleFeatures.Coverage;
             score += settings.FilenameBoost * filenameFeatures.Coverage;
+            score += settings.AuthorityWeight * agg.Authority;
 
             // Each additional distinct matching chunk adds less than the previous one. The bonus
             // approaches, but never exceeds, MultiChunkBoost.
@@ -158,6 +211,7 @@ public static class SearchRanker
                 (agg.ExactPhrase || agg.KeywordSnippetQuality >= vectorFeatures.Coverage + vectorFeatures.Proximity)
                     ? agg.KeywordText
                     : agg.VectorText;
+            if (agg.Text.Length == 0) agg.Text = agg.InboundText;
         }
 
         return byUrl.Values
@@ -172,6 +226,7 @@ public static class SearchRanker
                 Text = a.Text,
                 Similarity = a.Similarity,
                 Score = a.Score,
+                Authority = a.Authority,
                 DocKind = a.Kind
             })
             .ToList();
@@ -203,6 +258,13 @@ public static class SearchRanker
     {
         double safeConstant = Math.Max(0, constant);
         return (safeConstant + 1.0) / (safeConstant + rank);
+    }
+
+    private static double AdjustedInboundBm25(InboundLinkCandidate candidate, double sourceAuthorityWeight)
+    {
+        double sourceAuthority = Math.Clamp(candidate.SourceAuthority, 0, 1);
+        double boundedWeight = Math.Max(0, sourceAuthorityWeight);
+        return candidate.Bm25 * (1.0 + (boundedWeight * sourceAuthority));
     }
 
     private static TextFeatures AnalyzeText(IReadOnlyList<string> queryTokens, string? text)
@@ -305,10 +367,14 @@ public static class SearchRanker
         public double BestBm25 = double.PositiveInfinity;
         public int VectorRank;
         public int KeywordRank;
+        public int InboundRank;
         public bool ExactPhrase;
         public bool MatchedHeading;
         public double TextCoverage;
         public double Proximity;
+        public string InboundText = string.Empty;
+        public double InboundQuality;
+        public double Authority;
         public HashSet<string> EvidenceChunks { get; } = new(StringComparer.Ordinal);
         public DocKind Kind;
         public double Score;
@@ -328,6 +394,8 @@ public class SearchResultItem
     public double Similarity { get; set; }
     /// <summary>Gets or sets the final fused and feature-adjusted relevance score.</summary>
     public double Score { get; set; }
+    /// <summary>Gets or sets normalized internal PageRank in the range [0,1].</summary>
+    public double Authority { get; set; }
     /// <summary>Gets or sets the document kind (web page, PDF, or DOCX) of the result.</summary>
     public DocKind DocKind { get; set; }
 }

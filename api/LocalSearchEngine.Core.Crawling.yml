@@ -6,6 +6,7 @@ items:
   children:
   - LocalSearchEngine.Core.Crawling.CrawlerService
   - LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
+  - LocalSearchEngine.Core.Crawling.LinkEvidence
   langs:
   - csharp
   - vb
@@ -46,6 +47,13 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
     name: RunMode
     href: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode.html
+- uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+  commentId: T:LocalSearchEngine.Core.Crawling.LinkEvidence
+  parent: LocalSearchEngine.Core.Crawling
+  href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  name: LinkEvidence
+  nameWithType: LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.LinkEvidence
 - uid: LocalSearchEngine.Core.Crawling
   commentId: N:LocalSearchEngine.Core.Crawling
   href: LocalSearchEngine.html

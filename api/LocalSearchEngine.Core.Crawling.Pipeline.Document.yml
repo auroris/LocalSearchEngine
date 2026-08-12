@@ -8,7 +8,7 @@ items:
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.#ctor(System.Uri)
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.ComputeContentHash(System.String,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.DedupKey
-  - LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  - LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.FetchUri
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.IsPage
   - LocalSearchEngine.Core.Crawling.Pipeline.Document.ProcessAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.Threading.CancellationToken)
@@ -27,7 +27,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Document
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 28
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -97,7 +97,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FetchUri
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -128,7 +128,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DedupKey
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -159,7 +159,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 36
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -191,7 +191,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsPage
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -231,7 +231,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProcessAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 58
+    startLine: 59
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -274,7 +274,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WithLocation
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 68
+    startLine: 69
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -298,16 +298,16 @@ items:
       description: An equivalent document at the new location.
     content.vb: Public Overridable Function WithLocation(fetchUri As Uri) As Document
   overload: LocalSearchEngine.Core.Crawling.Pipeline.Document.WithLocation*
-- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  id: EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+- uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
+  commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
+  id: EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult,LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind,System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
   parent: LocalSearchEngine.Core.Crawling.Pipeline.Document
   langs:
   - csharp
   - vb
-  name: EmitIndexableAsync(FetchResult, ICrawlContext, string?, string, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
-  nameWithType: Document.EmitIndexableAsync(FetchResult, ICrawlContext, string?, string, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
-  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, string?, string, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name: EmitIndexableAsync(FetchResult, ICrawlContext, string?, string, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, IReadOnlyCollection<LinkEvidence>?)
+  nameWithType: Document.EmitIndexableAsync(FetchResult, ICrawlContext, string?, string, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind, IReadOnlyCollection<LinkEvidence>?)
+  fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, string?, string, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>?)
   type: Method
   source:
     remote:
@@ -316,7 +316,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmitIndexableAsync
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 86
+    startLine: 88
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -334,7 +334,7 @@ items:
     an <xref href="LocalSearchEngine.Core.Crawling.Engine.IndexJob" data-throw-if-not-resolved="false"></xref> that (re-)embeds.
   example: []
   syntax:
-    content: private protected Task EmitIndexableAsync(FetchResult fetch, ICrawlContext ctx, string? title, string headings, string text, IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind)
+    content: private protected Task EmitIndexableAsync(FetchResult fetch, ICrawlContext ctx, string? title, string headings, string text, IReadOnlyCollection<string> outlinks, IReadOnlyCollection<string> offsiteLinks, DocKind kind, IReadOnlyCollection<LinkEvidence>? linkEvidence = null)
     parameters:
     - id: fetch
       type: LocalSearchEngine.Core.Crawling.Pipeline.FetchResult
@@ -360,13 +360,16 @@ items:
     - id: kind
       type: LocalSearchEngine.Core.Crawling.Policies.DocKind
       description: The classified document kind.
+    - id: linkEvidence
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+      description: Anchor and nearby text describing HTML outlinks; empty for non-HTML documents.
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Private Protected Function EmitIndexableAsync(fetch As FetchResult, ctx As ICrawlContext, title As String, headings As String, text As String, outlinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), kind As DocKind) As Task
+    content.vb: Private Protected Function EmitIndexableAsync(fetch As FetchResult, ctx As ICrawlContext, title As String, headings As String, text As String, outlinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), kind As DocKind, linkEvidence As IReadOnlyCollection(Of LinkEvidence) = Nothing) As Task
   overload: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync*
-  nameWithType.vb: Document.EmitIndexableAsync(FetchResult, ICrawlContext, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  name.vb: EmitIndexableAsync(FetchResult, ICrawlContext, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
+  nameWithType.vb: Document.EmitIndexableAsync(FetchResult, ICrawlContext, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, IReadOnlyCollection(Of LinkEvidence))
+  fullName.vb: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync(LocalSearchEngine.Core.Crawling.Pipeline.FetchResult, LocalSearchEngine.Core.Crawling.Pipeline.ICrawlContext, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind, System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence))
+  name.vb: EmitIndexableAsync(FetchResult, ICrawlContext, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind, IReadOnlyCollection(Of LinkEvidence))
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.ComputeContentHash(System.String,System.String,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Pipeline.Document.ComputeContentHash(System.String,System.String,System.String)
   id: ComputeContentHash(System.String,System.String,System.String)
@@ -385,7 +388,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ComputeContentHash
     path: LocalSearchEngine.Core/Crawling/Pipeline/Document.cs
-    startLine: 148
+    startLine: 153
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Pipeline
@@ -1001,7 +1004,7 @@ references:
   fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob
 - uid: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync
-  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_EmitIndexableAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_
+  href: LocalSearchEngine.Core.Crawling.Pipeline.Document.html#LocalSearchEngine_Core_Crawling_Pipeline_Document_EmitIndexableAsync_LocalSearchEngine_Core_Crawling_Pipeline_FetchResult_LocalSearchEngine_Core_Crawling_Pipeline_ICrawlContext_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Crawling_LinkEvidence__
   name: EmitIndexableAsync
   nameWithType: Document.EmitIndexableAsync
   fullName: LocalSearchEngine.Core.Crawling.Pipeline.Document.EmitIndexableAsync
@@ -1047,6 +1050,39 @@ references:
   name: DocKind
   nameWithType: DocKind
   fullName: LocalSearchEngine.Core.Crawling.Policies.DocKind
+- uid: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<LinkEvidence>
+  nameWithType: IReadOnlyCollection<LinkEvidence>
+  fullName: System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>
+  nameWithType.vb: IReadOnlyCollection(Of LinkEvidence)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence)
+  name.vb: IReadOnlyCollection(Of LinkEvidence)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: )
 - uid: System.Collections.Generic.IReadOnlyCollection`1
   commentId: T:System.Collections.Generic.IReadOnlyCollection`1
   isExternal: true

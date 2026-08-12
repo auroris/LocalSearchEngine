@@ -24,7 +24,9 @@ items:
   - LocalSearchEngine.Tests.CrawlPipelineTests.Same_host_fetches_respect_the_politeness_gap_across_workers
   - LocalSearchEngine.Tests.CrawlPipelineTests.Seed
   - LocalSearchEngine.Tests.CrawlPipelineTests.Sitemap_entries_seed_the_frontier
+  - LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks(System.String)
   - LocalSearchEngine.Tests.CrawlPipelineTests.TryDelete(System.String)
+  - LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
   - LocalSearchEngine.Tests.CrawlPipelineTests.Wide_fanout_completes_and_indexes_all
   - LocalSearchEngine.Tests.CrawlPipelineTests.Zero_work_crawl_terminates
   - LocalSearchEngine.Tests.CrawlPipelineTests._connectionString
@@ -529,6 +531,40 @@ items:
   nameWithType.vb: CrawlPipelineTests.HasCrawlState(String)
   fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.HasCrawlState(String)
   name.vb: HasCrawlState(String)
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks(System.String)
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks(System.String)
+  id: StoredOutlinks(System.String)
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: StoredOutlinks(string)
+  nameWithType: CrawlPipelineTests.StoredOutlinks(string)
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks(string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StoredOutlinks
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 147
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: private Task<List<string>> StoredOutlinks(string fromUrl)
+    parameters:
+    - id: fromUrl
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+    content.vb: Private Function StoredOutlinks(fromUrl As String) As Task(Of List(Of String))
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks*
+  nameWithType.vb: CrawlPipelineTests.StoredOutlinks(String)
+  fullName.vb: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks(String)
+  name.vb: StoredOutlinks(String)
 - uid: LocalSearchEngine.Tests.CrawlPipelineTests.Html(System.String)
   commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Html(System.String)
   id: Html(System.String)
@@ -547,7 +583,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Html
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 147
+    startLine: 154
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -581,7 +617,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RedirectedTo
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 152
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -617,7 +653,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Four_workers_index_every_page_exactly_once
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 159
+    startLine: 166
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -655,7 +691,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Zero_work_crawl_terminates
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 190
+    startLine: 197
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -693,7 +729,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Deep_chain_completes
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 208
+    startLine: 215
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -731,7 +767,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Wide_fanout_completes_and_indexes_all
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 227
+    startLine: 234
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -769,7 +805,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Redirect_chain_is_followed_and_sources_recorded_as_aliases
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 251
+    startLine: 258
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -807,7 +843,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MaxPages_cap_stops_the_crawl_and_forfeits_natural_completion
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 270
+    startLine: 277
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -845,7 +881,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Same_host_fetches_respect_the_politeness_gap_across_workers
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 298
+    startLine: 305
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -883,7 +919,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Sitemap_entries_seed_the_frontier
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 317
+    startLine: 324
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -921,7 +957,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 337
+    startLine: 344
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -937,6 +973,44 @@ items:
 
       Public Function Href_escaping_survives_to_the_wire_while_the_database_stores_display_form() As Task
   overload: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  commentId: M:LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  id: Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  parent: LocalSearchEngine.Tests.CrawlPipelineTests
+  langs:
+  - csharp
+  - vb
+  name: Unchanged_visible_text_still_refreshes_link_destinations_and_context()
+  nameWithType: CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context()
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Unchanged_visible_text_still_refreshes_link_destinations_and_context
+    path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
+    startLine: 387
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task Unchanged_visible_text_still_refreshes_link_destinations_and_context()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function Unchanged_visible_text_still_refreshes_link_destinations_and_context() As Task
+  overload: LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -959,7 +1033,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStateRowCount
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 380
+    startLine: 418
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -993,7 +1067,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Advertised_feed_is_consulted_and_pulls_unlinked_items
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 390
+    startLine: 428
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1031,7 +1105,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Discovered_feed_budget_bounds_feed_fetches
     path: LocalSearchEngine.Tests/CrawlPipelineTests.cs
-    startLine: 419
+    startLine: 457
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -1758,6 +1832,61 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_StoredOutlinks_System_String_
+  name: StoredOutlinks
+  nameWithType: CrawlPipelineTests.StoredOutlinks
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.StoredOutlinks
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<string>>
+  nameWithType: Task<List<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+  nameWithType.vb: Task(Of List(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of String))
+  name.vb: Task(Of List(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
 - uid: LocalSearchEngine.Tests.CrawlPipelineTests.Html*
   commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Html
   href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Html_System_String_
@@ -1832,6 +1961,12 @@ references:
   name: Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
   nameWithType: CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
   fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Href_escaping_survives_to_the_wire_while_the_database_stores_display_form
+- uid: LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context*
+  commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  name: Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  nameWithType: CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
+  fullName: LocalSearchEngine.Tests.CrawlPipelineTests.Unchanged_visible_text_still_refreshes_link_destinations_and_context
 - uid: LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount*
   commentId: Overload:LocalSearchEngine.Tests.CrawlPipelineTests.CrawlStateRowCount
   href: LocalSearchEngine.Tests.CrawlPipelineTests.html#LocalSearchEngine_Tests_CrawlPipelineTests_CrawlStateRowCount_System_String_

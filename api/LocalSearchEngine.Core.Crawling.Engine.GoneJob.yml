@@ -20,7 +20,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GoneJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 55
+    startLine: 58
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 55
+    startLine: 58
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine

@@ -5,12 +5,13 @@ items:
   id: IndexJob
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  - LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},LocalSearchEngine.Core.Crawling.Policies.DocKind)
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.ContentHash
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.DocKind
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.ETag
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.Headings
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.LastModified
+  - LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.OffsiteLinks
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.Outlinks
   - LocalSearchEngine.Core.Crawling.Engine.IndexJob.Text
@@ -29,7 +30,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IndexJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 26
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -53,16 +54,16 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  id: '#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},LocalSearchEngine.Core.Crawling.Policies.DocKind)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  id: '#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},LocalSearchEngine.Core.Crawling.Policies.DocKind)'
   parent: LocalSearchEngine.Core.Crawling.Engine.IndexJob
   langs:
   - csharp
   - vb
-  name: IndexJob(string, int, string?, string, string, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
-  nameWithType: IndexJob.IndexJob(string, int, string?, string, string, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, DocKind)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.IndexJob(string, int, string?, string, string, string?, string?, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name: IndexJob(string, int, string?, string, string, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, IReadOnlyCollection<LinkEvidence>, DocKind)
+  nameWithType: IndexJob.IndexJob(string, int, string?, string, string, string?, string?, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, IReadOnlyCollection<LinkEvidence>, DocKind)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.IndexJob(string, int, string?, string, string, string?, string?, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>, LocalSearchEngine.Core.Crawling.Policies.DocKind)
   type: Constructor
   source:
     remote:
@@ -71,14 +72,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 26
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
   summary: Represents a job classification to fully index the page content and outlinks.
   example: []
   syntax:
-    content: public IndexJob(string Url, int StatusCode, string? Title, string Headings, string Text, string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks, DocKind DocKind)
+    content: public IndexJob(string Url, int StatusCode, string? Title, string Headings, string Text, string? ETag, string? LastModified, string ContentHash, IReadOnlyCollection<string> Outlinks, IReadOnlyCollection<string> OffsiteLinks, IReadOnlyCollection<LinkEvidence> LinkEvidence, DocKind DocKind)
     parameters:
     - id: Url
       type: System.String
@@ -110,14 +111,17 @@ items:
     - id: OffsiteLinks
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
       description: List of extracted out-of-scope/offsite links.
+    - id: LinkEvidence
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+      description: Anchor and nearby text describing the in-scope outlinks.
     - id: DocKind
       type: LocalSearchEngine.Core.Crawling.Policies.DocKind
       description: The classified document kind (Html/Pdf/Docx) of the indexed content.
-    content.vb: Public Sub New(Url As String, StatusCode As Integer, Title As String, Headings As String, Text As String, ETag As String, LastModified As String, ContentHash As String, Outlinks As IReadOnlyCollection(Of String), OffsiteLinks As IReadOnlyCollection(Of String), DocKind As DocKind)
+    content.vb: Public Sub New(Url As String, StatusCode As Integer, Title As String, Headings As String, Text As String, ETag As String, LastModified As String, ContentHash As String, Outlinks As IReadOnlyCollection(Of String), OffsiteLinks As IReadOnlyCollection(Of String), LinkEvidence As IReadOnlyCollection(Of LinkEvidence), DocKind As DocKind)
   overload: LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor*
-  nameWithType.vb: IndexJob.New(String, Integer, String, String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.IndexJob.New(String, Integer, String, String, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), LocalSearchEngine.Core.Crawling.Policies.DocKind)
-  name.vb: New(String, Integer, String, String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), DocKind)
+  nameWithType.vb: IndexJob.New(String, Integer, String, String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence), DocKind)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.IndexJob.New(String, Integer, String, String, String, String, String, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence), LocalSearchEngine.Core.Crawling.Policies.DocKind)
+  name.vb: New(String, Integer, String, String, String, String, String, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence), DocKind)
 - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.Title
   commentId: P:LocalSearchEngine.Core.Crawling.Engine.IndexJob.Title
   id: Title
@@ -136,7 +140,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 27
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -167,7 +171,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Headings
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 27
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -198,7 +202,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 27
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -229,7 +233,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ETag
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 28
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -260,7 +264,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastModified
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 28
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -291,7 +295,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ContentHash
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 28
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -322,7 +326,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Outlinks
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 28
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -353,7 +357,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OffsiteLinks
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -366,6 +370,37 @@ items:
       type: System.Collections.Generic.IReadOnlyCollection{System.String}
     content.vb: Public Property OffsiteLinks As IReadOnlyCollection(Of String)
   overload: LocalSearchEngine.Core.Crawling.Engine.IndexJob.OffsiteLinks*
+- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
+  id: LinkEvidence
+  parent: LocalSearchEngine.Core.Crawling.Engine.IndexJob
+  langs:
+  - csharp
+  - vb
+  name: LinkEvidence
+  nameWithType: IndexJob.LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkEvidence
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 31
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Anchor and nearby text describing the in-scope outlinks.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<LinkEvidence> LinkEvidence { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+    content.vb: Public Property LinkEvidence As IReadOnlyCollection(Of LinkEvidence)
+  overload: LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence*
 - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.DocKind
   commentId: P:LocalSearchEngine.Core.Crawling.Engine.IndexJob.DocKind
   id: DocKind
@@ -384,7 +419,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DocKind
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
@@ -766,7 +801,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.IndexJob.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html#LocalSearchEngine_Core_Crawling_Engine_IndexJob__ctor_System_String_System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__LocalSearchEngine_Core_Crawling_Policies_DocKind_
+  href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html#LocalSearchEngine_Core_Crawling_Engine_IndexJob__ctor_System_String_System_Int32_System_String_System_String_System_String_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Crawling_LinkEvidence__LocalSearchEngine_Core_Crawling_Policies_DocKind_
   name: IndexJob
   nameWithType: IndexJob.IndexJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.IndexJob
@@ -829,6 +864,39 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<LinkEvidence>
+  nameWithType: IReadOnlyCollection<LinkEvidence>
+  fullName: System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>
+  nameWithType.vb: IReadOnlyCollection(Of LinkEvidence)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence)
+  name.vb: IReadOnlyCollection(Of LinkEvidence)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
@@ -988,6 +1056,12 @@ references:
   name: OffsiteLinks
   nameWithType: IndexJob.OffsiteLinks
   fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.OffsiteLinks
+- uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
+  href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html#LocalSearchEngine_Core_Crawling_Engine_IndexJob_LinkEvidence
+  name: LinkEvidence
+  nameWithType: IndexJob.LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.Engine.IndexJob.LinkEvidence
 - uid: LocalSearchEngine.Core.Crawling.Engine.IndexJob.DocKind*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.IndexJob.DocKind
   href: LocalSearchEngine.Core.Crawling.Engine.IndexJob.html#LocalSearchEngine_Core_Crawling_Engine_IndexJob_DocKind

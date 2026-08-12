@@ -129,7 +129,9 @@ Used to decode the page when the HTTP response did not specify a charset. (A met
 
 ### Content vs. boilerplate
 
-Titles (`<title>`) and headings (`<h1>`–`<h6>`) are extracted and given ranking weight. Before text and links are harvested, chrome is stripped so it never reaches the index: `script`, `style`, `nav`, `footer`, `header`, `svg`, `noscript`, `template`, and `aside`, plus form **controls** (`input`, `select`, `textarea`, `button`, `label`, `datalist`, `output`). Whole `<form>` elements are deliberately *not* removed, so pages that wrap their entire body in one form (Oracle APEX, ASP.NET WebForms) are still indexed.
+Titles (`<title>`) and headings (`<h1>`–`<h6>`) are extracted and given ranking weight. For each followed in-scope link, the crawler also stores a compact description made from its anchor or accessible label, nearest paragraph-like block, nearest preceding heading, and source-page title. Search treats that inbound description as evidence about the target page.
+
+Before text and links are harvested, chrome is stripped so it never reaches either the body index or link evidence: `script`, `style`, `nav`, `footer`, `header`, `svg`, `noscript`, `template`, and `aside`, plus form **controls** (`input`, `select`, `textarea`, `button`, `label`, `datalist`, `output`). Whole `<form>` elements are deliberately *not* removed, so pages that wrap their entire body in one form (Oracle APEX, ASP.NET WebForms) are still indexed.
 
 ---
 

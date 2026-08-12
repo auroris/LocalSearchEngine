@@ -113,6 +113,40 @@ public class ContentExtractorTests
     }
 
     [Fact]
+    public void In_scope_links_capture_anchor_block_context_and_nearest_heading()
+    {
+        var html = "<html><head><title>Server Operations</title></head><body>" +
+                   "<h2>Certificate Management</h2>" +
+                   "<p>For certificate renewal, follow the <a href=\"/pki\"><strong>PKI maintenance procedure</strong></a>.</p>" +
+                   "</body></html>";
+
+        var analysis = Analyze(Encoding.UTF8.GetBytes(html), null);
+
+        var evidence = Assert.Single(analysis.LinkEvidence);
+        Assert.Equal("http://test.local/pki", evidence.ToUrl);
+        Assert.Equal("PKI maintenance procedure", evidence.AnchorText);
+        Assert.Equal("For certificate renewal, follow the PKI maintenance procedure.", evidence.ContextText);
+        Assert.Equal("Certificate Management", evidence.SectionHeading);
+    }
+
+    [Fact]
+    public void Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+    {
+        var html = "<html><body>" +
+                   "<nav><a href=\"/navigation\">Navigation</a></nav>" +
+                   "<p><a href=\"/private\" rel=\"nofollow\">Private</a></p>" +
+                   "<p><a href=\"/editorial\">Editorial</a></p>" +
+                   "</body></html>";
+
+        var analysis = Analyze(Encoding.UTF8.GetBytes(html), null);
+
+        var evidence = Assert.Single(analysis.LinkEvidence);
+        Assert.Equal("http://test.local/editorial", evidence.ToUrl);
+        Assert.DoesNotContain(analysis.Outlinks, url => url.EndsWith("navigation"));
+        Assert.DoesNotContain(analysis.Outlinks, url => url.EndsWith("private"));
+    }
+
+    [Fact]
     public void Meta_robots_name_is_matched_case_insensitively()
     {
         var html = "<html><head><meta name=\"ROBOTS\" content=\"noindex\"><title>T</title></head><body><p>x</p></body></html>";

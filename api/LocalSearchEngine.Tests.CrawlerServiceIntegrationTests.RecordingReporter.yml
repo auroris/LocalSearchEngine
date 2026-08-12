@@ -27,7 +27,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordingReporter
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1227
+    startLine: 1289
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -68,7 +68,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _gate
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1229
+    startLine: 1291
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -95,7 +95,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _lastEmbedProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1230
+    startLine: 1292
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -122,7 +122,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: _lastEmbedQueued
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1231
+    startLine: 1293
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -149,7 +149,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastEmbedProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1233
+    startLine: 1295
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -178,7 +178,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: LastEmbedQueued
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1234
+    startLine: 1296
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -207,7 +207,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PhaseChanged
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1236
+    startLine: 1298
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -244,7 +244,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PageProcessed
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1237
+    startLine: 1299
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -287,7 +287,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmbedProgress
     path: LocalSearchEngine.Tests/CrawlerServiceIntegrationTests.cs
-    startLine: 1238
+    startLine: 1300
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests

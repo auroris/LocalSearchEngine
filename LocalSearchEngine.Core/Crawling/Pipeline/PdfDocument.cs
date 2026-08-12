@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Engine;
 using LocalSearchEngine.Core.Crawling.Extraction;
 using LocalSearchEngine.Core.Crawling.Policies;
@@ -24,7 +25,7 @@ internal sealed class PdfDocument : Document
         {
             ctx.Observer.OnPageNoIndex(DedupKey);
             ctx.Submit(new NoIndexJob(DedupKey, fetch.StatusCode, null, fetch.ETag, fetch.LastModified,
-                null, Array.Empty<string>(), Array.Empty<string>(), DocKind.Pdf));
+                null, Array.Empty<string>(), Array.Empty<string>(), Array.Empty<LinkEvidence>(), DocKind.Pdf));
             return Task.CompletedTask;
         }
 
@@ -33,7 +34,7 @@ internal sealed class PdfDocument : Document
         {
             ctx.Observer.OnPageLowQualityText(DedupKey, pdf.MappableFraction, pdf.TotalGlyphs);
             ctx.Submit(new NoIndexJob(DedupKey, fetch.StatusCode, pdf.Title, fetch.ETag, fetch.LastModified,
-                null, Array.Empty<string>(), Array.Empty<string>(), DocKind.Pdf));
+                null, Array.Empty<string>(), Array.Empty<string>(), Array.Empty<LinkEvidence>(), DocKind.Pdf));
             return Task.CompletedTask;
         }
 

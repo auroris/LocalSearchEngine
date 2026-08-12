@@ -7,10 +7,12 @@ items:
   children:
   - LocalSearchEngine.Tests.ContentExtractorTests.Advertised_rss_and_atom_feeds_are_extracted_and_resolved
   - LocalSearchEngine.Tests.ContentExtractorTests.Analyze(System.Byte[],System.String)
+  - LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
   - LocalSearchEngine.Tests.ContentExtractorTests.Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing
   - LocalSearchEngine.Tests.ContentExtractorTests.Feeds_are_advertised_even_on_nofollow_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
   - LocalSearchEngine.Tests.ContentExtractorTests.Http_header_charset_wins_over_meta_declaration
+  - LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
   - LocalSearchEngine.Tests.ContentExtractorTests.Matching_meta_charset_does_not_break_utf8_pages
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_charset_is_honored_when_http_header_is_silent
   - LocalSearchEngine.Tests.ContentExtractorTests.Meta_http_equiv_content_type_charset_is_honored
@@ -308,6 +310,78 @@ items:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
     arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
+  id: In_scope_links_capture_anchor_block_context_and_nearest_heading
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: In_scope_links_capture_anchor_block_context_and_nearest_heading()
+  nameWithType: ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: In_scope_links_capture_anchor_block_context_and_nearest_heading
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 114
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void In_scope_links_capture_anchor_block_context_and_nearest_heading()
+    content.vb: >-
+      <Fact>
+
+      Public Sub In_scope_links_capture_anchor_block_context_and_nearest_heading()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  id: Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  parent: LocalSearchEngine.Tests.ContentExtractorTests
+  langs:
+  - csharp
+  - vb
+  name: Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+  nameWithType: ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+    path: LocalSearchEngine.Tests/ContentExtractorTests.cs
+    startLine: 131
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Boilerplate_and_nofollow_links_do_not_create_inbound_evidence()
+  overload: LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   commentId: M:LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   id: Meta_robots_name_is_matched_case_insensitively
@@ -326,7 +400,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Meta_robots_name_is_matched_case_insensitively
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 114
+    startLine: 148
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -362,7 +436,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Bot_specific_meta_name_targets_this_crawler_regardless_of_token_casing
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 125
+    startLine: 159
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -398,7 +472,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: XRobotsTag_directives_are_parsed_correctly
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 145
+    startLine: 179
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -460,7 +534,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Advertised_rss_and_atom_feeds_are_extracted_and_resolved
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 165
+    startLine: 199
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -496,7 +570,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Non_feed_link_elements_are_not_mistaken_for_feeds
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 181
+    startLine: 215
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -532,7 +606,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Feeds_are_advertised_even_on_nofollow_pages
     path: LocalSearchEngine.Tests/ContentExtractorTests.cs
-    startLine: 196
+    startLine: 230
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -947,6 +1021,18 @@ references:
   name: Href_entities_are_decoded_before_the_url_is_parsed
   nameWithType: ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
   fullName: LocalSearchEngine.Tests.ContentExtractorTests.Href_entities_are_decoded_before_the_url_is_parsed
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_In_scope_links_capture_anchor_block_context_and_nearest_heading
+  name: In_scope_links_capture_anchor_block_context_and_nearest_heading
+  nameWithType: ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.In_scope_links_capture_anchor_block_context_and_nearest_heading
+- uid: LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence*
+  commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  name: Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  nameWithType: ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
+  fullName: LocalSearchEngine.Tests.ContentExtractorTests.Boilerplate_and_nofollow_links_do_not_create_inbound_evidence
 - uid: LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively*
   commentId: Overload:LocalSearchEngine.Tests.ContentExtractorTests.Meta_robots_name_is_matched_case_insensitively
   href: LocalSearchEngine.Tests.ContentExtractorTests.html#LocalSearchEngine_Tests_ContentExtractorTests_Meta_robots_name_is_matched_case_insensitively

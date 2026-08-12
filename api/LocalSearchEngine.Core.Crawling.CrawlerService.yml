@@ -44,13 +44,13 @@ items:
 
     the channel <xref href="LocalSearchEngine.Core.Crawling.Pipeline.CrawlPipeline" data-throw-if-not-resolved="false"></xref> (N crawl workers feeding one persistence consumer), then
 
-    runs the post-crawl passes — robots-ban removal, stale pruning, database optimization, and link
+    runs the post-crawl passes — robots-ban removal, stale pruning, internal PageRank, database
 
-    verification — which write ungated only because they start after the pipeline's single writer has
+    optimization, and link verification — which write ungated only because they start after the
 
-    drained. The public surface is the stable facade: how a run behaves is decided entirely by the
+    pipeline's single writer has drained. The public surface is the stable facade: how a run behaves
 
-    plan's composition of seed sources and policy flags.
+    is decided entirely by the plan's composition of seed sources and policy flags.
   example: []
   syntax:
     content: public class CrawlerService
@@ -596,7 +596,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PruneStaleUrlsAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 454
+    startLine: 468
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -657,7 +657,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EmptyReport
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 489
+    startLine: 503
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -698,7 +698,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: WatchdogInterval
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 495
+    startLine: 509
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -727,7 +727,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StallThreshold
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 498
+    startLine: 512
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling
@@ -756,7 +756,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RunStallWatchdogAsync
     path: LocalSearchEngine.Core/Crawling/CrawlerService.cs
-    startLine: 509
+    startLine: 523
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling

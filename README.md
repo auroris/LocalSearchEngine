@@ -14,7 +14,8 @@ A console crawler builds a knowledge base from web pages and documents into a si
 * **Feed-Driven Updates**: Point the crawler at your site's `rss.xml` with `--feed` and only the items the feed lists are fetched and re-indexed — nothing else is touched, so routine updates cost a handful of requests instead of a full crawl. Full crawls also auto-discover feeds advertised in page metadata and consult them as a positive freshness signal.
 * **Automatic Incremental Crawls**: With `allow-incremental` enabled, a bare `crawler.exe` run seeds every configured site, walks each site's advertised feed newest-first, and — when the feed reaches back to an item already covered — crawls exactly the newer items and stops. When a feed can't prove the change list complete, the run falls back to a full crawl on its own.
 * **Local AI Embeddings**: Uses `snowflake-arctic-embed-s` (384-dim, int8 ONNX) running locally on CPU via ONNX Runtime.
-* **Hybrid Search Ranker**: Unions dense semantic candidates (`sqlite-vec`) with broad BM25 lexical candidates (SQLite FTS5), then applies reciprocal-rank fusion, phrase/proximity signals, term coverage, and structural field boosts.
+* **Hybrid Search Ranker**: Unions dense semantic candidates (`sqlite-vec`) with BM25 matches from page text and inbound link descriptions (SQLite FTS5), then applies reciprocal-rank fusion, phrase/proximity signals, term coverage, structural field boosts, and bounded internal PageRank authority.
+* **Link-Graph Signals**: Persists internal links together with anchor text, nearby prose, and section headings. This can recover a relevant page even when neither its body text nor embedding uses the query's vocabulary.
 
 ---
 

@@ -5,10 +5,14 @@ items:
   id: SearchSettings
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
   - LocalSearchEngine.Core.Searching.SearchSettings.CandidatePoolSize
   - LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.FilenameBoost
   - LocalSearchEngine.Core.Searching.SearchSettings.HeadingBoost
+  - LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+  - LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+  - LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
   - LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
   - LocalSearchEngine.Core.Searching.SearchSettings.MaxDistance
   - LocalSearchEngine.Core.Searching.SearchSettings.MultiChunkBoost
@@ -37,11 +41,11 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic and lexical
+    Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic, page-text, and
 
-    candidates are fused by reciprocal rank, then bounded phrase, proximity, field, and document
+    inbound-link candidates are fused by reciprocal rank, then bounded phrase, proximity, field,
 
-    signals refine their order.
+    document, and internal-authority signals refine their order.
   example: []
   syntax:
     content: public class SearchSettings
@@ -79,9 +83,9 @@ items:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Gets or sets the maximum number of chunk candidates retrieved by each semantic, broad BM25,
+    Gets or sets the maximum number of candidates retrieved by each semantic, broad page-text
 
-    and phrase-rescue pass before candidates are deduplicated by URL and reranked.
+    BM25, phrase-rescue, and inbound-link pass before candidates are deduplicated by URL and reranked.
   example: []
   syntax:
     content: public int CandidatePoolSize { get; set; }
@@ -150,12 +154,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReciprocalRankConstant
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
   summary: >-
-    Gets or sets the reciprocal-rank constant used when fusing semantic and BM25 result ranks.
+    Gets or sets the reciprocal-rank constant used when fusing semantic, page-text BM25, and
+
+    inbound-link BM25 result ranks.
 
     Larger values make rank differences less pronounced. A value around 60 is conventional.
   example: []
@@ -184,7 +190,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SemanticWeight
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 32
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -215,7 +221,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: KeywordWeight
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 35
+    startLine: 36
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -228,6 +234,136 @@ items:
       type: System.Double
     content.vb: Public Property KeywordWeight As Double
   overload: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+  id: InboundLinkWeight
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: InboundLinkWeight
+  nameWithType: SearchSettings.InboundLinkWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundLinkWeight
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 39
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the weight of the inbound anchor/context BM25 rank in reciprocal-rank fusion.
+  example: []
+  syntax:
+    content: public double InboundLinkWeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property InboundLinkWeight As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+  id: InboundContextBoost
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: InboundContextBoost
+  nameWithType: SearchSettings.InboundContextBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundContextBoost
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 45
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets the maximum bounded bonus for coverage, proximity, and phrase quality in the
+
+    best inbound-link description of a target.
+  example: []
+  syntax:
+    content: public double InboundContextBoost { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property InboundContextBoost As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
+  id: InboundSourceAuthorityWeight
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: InboundSourceAuthorityWeight
+  nameWithType: SearchSettings.InboundSourceAuthorityWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundSourceAuthorityWeight
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 51
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: >-
+    Gets or sets how strongly the referring page's normalized authority may improve an inbound
+
+    candidate's BM25 ordering. A value of 0.25 changes its magnitude by at most 25%.
+  example: []
+  syntax:
+    content: public double InboundSourceAuthorityWeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property InboundSourceAuthorityWeight As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight*
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
+  commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
+  id: AuthorityWeight
+  parent: LocalSearchEngine.Core.Searching.SearchSettings
+  langs:
+  - csharp
+  - vb
+  name: AuthorityWeight
+  nameWithType: SearchSettings.AuthorityWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: AuthorityWeight
+    path: LocalSearchEngine.Core/Searching/SearchSettings.cs
+    startLine: 56
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets the maximum query-independent boost from the target page's normalized PageRank.
+  example: []
+  syntax:
+    content: public double AuthorityWeight { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property AuthorityWeight As Double
+  overload: LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight*
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   commentId: P:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   id: ExactPhraseBoost
@@ -246,7 +382,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExactPhraseBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 38
+    startLine: 59
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -277,7 +413,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ProximityBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 44
+    startLine: 65
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -311,7 +447,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: HeadingBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 49
+    startLine: 70
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -342,7 +478,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TitleBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 54
+    startLine: 75
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -373,7 +509,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FilenameBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 59
+    startLine: 80
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -404,7 +540,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TermInTextBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 65
+    startLine: 86
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -438,7 +574,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MultiChunkBoost
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 71
+    startLine: 92
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -472,7 +608,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NonHtmlPenalty
     path: LocalSearchEngine.Core/Searching/SearchSettings.cs
-    startLine: 77
+    startLine: 98
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -808,6 +944,30 @@ references:
   name: KeywordWeight
   nameWithType: SearchSettings.KeywordWeight
   fullName: LocalSearchEngine.Core.Searching.SearchSettings.KeywordWeight
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_InboundLinkWeight
+  name: InboundLinkWeight
+  nameWithType: SearchSettings.InboundLinkWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundLinkWeight
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_InboundContextBoost
+  name: InboundContextBoost
+  nameWithType: SearchSettings.InboundContextBoost
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundContextBoost
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_InboundSourceAuthorityWeight
+  name: InboundSourceAuthorityWeight
+  nameWithType: SearchSettings.InboundSourceAuthorityWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.InboundSourceAuthorityWeight
+- uid: LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
+  href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_AuthorityWeight
+  name: AuthorityWeight
+  nameWithType: SearchSettings.AuthorityWeight
+  fullName: LocalSearchEngine.Core.Searching.SearchSettings.AuthorityWeight
 - uid: LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchSettings.ExactPhraseBoost
   href: LocalSearchEngine.Core.Searching.SearchSettings.html#LocalSearchEngine_Core_Searching_SearchSettings_ExactPhraseBoost

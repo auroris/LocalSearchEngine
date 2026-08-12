@@ -5,7 +5,11 @@ items:
   id: TouchJob
   parent: LocalSearchEngine.Core.Crawling.Engine
   children:
-  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32)
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+  - LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
   langs:
   - csharp
   - vb
@@ -20,11 +24,16 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TouchJob
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 73
+    startLine: 82
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Represents a job classification for unchanged pages (304) or transient errors.
+  summary: >-
+    Represents a job classification for unchanged pages (304) or transient errors. A parsed 200
+
+    response may carry refreshed links even when its indexable text hash is unchanged; an HTTP 304
+
+    carries null collections and preserves the stored links.
   example: []
   syntax:
     content: 'internal sealed record TouchJob : CrawlJob, IEquatable<CrawlJob>, IEquatable<TouchJob>'
@@ -44,16 +53,16 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32)
-  commentId: M:LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32)
-  id: '#ctor(System.String,System.Int32)'
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
+  commentId: M:LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})
+  id: '#ctor(System.String,System.Int32,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence})'
   parent: LocalSearchEngine.Core.Crawling.Engine.TouchJob
   langs:
   - csharp
   - vb
-  name: TouchJob(string, int)
-  nameWithType: TouchJob.TouchJob(string, int)
-  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.TouchJob(string, int)
+  name: TouchJob(string, int, string?, IReadOnlyCollection<string>?, IReadOnlyCollection<string>?, IReadOnlyCollection<LinkEvidence>?)
+  nameWithType: TouchJob.TouchJob(string, int, string?, IReadOnlyCollection<string>?, IReadOnlyCollection<string>?, IReadOnlyCollection<LinkEvidence>?)
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.TouchJob(string, int, string?, System.Collections.Generic.IReadOnlyCollection<string>?, System.Collections.Generic.IReadOnlyCollection<string>?, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>?)
   type: Constructor
   source:
     remote:
@@ -62,14 +71,19 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
-    startLine: 73
+    startLine: 82
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Engine
-  summary: Represents a job classification for unchanged pages (304) or transient errors.
+  summary: >-
+    Represents a job classification for unchanged pages (304) or transient errors. A parsed 200
+
+    response may carry refreshed links even when its indexable text hash is unchanged; an HTTP 304
+
+    carries null collections and preserves the stored links.
   example: []
   syntax:
-    content: public TouchJob(string Url, int StatusCode)
+    content: public TouchJob(string Url, int StatusCode, string? SourceTitle = null, IReadOnlyCollection<string>? Outlinks = null, IReadOnlyCollection<string>? OffsiteLinks = null, IReadOnlyCollection<LinkEvidence>? LinkEvidence = null)
     parameters:
     - id: Url
       type: System.String
@@ -77,11 +91,147 @@ items:
     - id: StatusCode
       type: System.Int32
       description: The response HTTP status code.
-    content.vb: Public Sub New(Url As String, StatusCode As Integer)
+    - id: SourceTitle
+      type: System.String
+      description: The current source-page title when the response was parsed.
+    - id: Outlinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: Fresh in-scope outlinks, or <code>null</code> when the page was not parsed.
+    - id: OffsiteLinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: Fresh off-site outlinks, or <code>null</code> when the page was not parsed.
+    - id: LinkEvidence
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+      description: Fresh anchor/context evidence, or <code>null</code> when the page was not parsed.
+    content.vb: Public Sub New(Url As String, StatusCode As Integer, SourceTitle As String = Nothing, Outlinks As IReadOnlyCollection(Of String) = Nothing, OffsiteLinks As IReadOnlyCollection(Of String) = Nothing, LinkEvidence As IReadOnlyCollection(Of LinkEvidence) = Nothing)
   overload: LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor*
-  nameWithType.vb: TouchJob.New(String, Integer)
-  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.TouchJob.New(String, Integer)
-  name.vb: New(String, Integer)
+  nameWithType.vb: TouchJob.New(String, Integer, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence))
+  fullName.vb: LocalSearchEngine.Core.Crawling.Engine.TouchJob.New(String, Integer, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence))
+  name.vb: New(String, Integer, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence))
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
+  id: SourceTitle
+  parent: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  langs:
+  - csharp
+  - vb
+  name: SourceTitle
+  nameWithType: TouchJob.SourceTitle
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SourceTitle
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 85
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: The current source-page title when the response was parsed.
+  example: []
+  syntax:
+    content: public string? SourceTitle { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SourceTitle As String
+  overload: LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle*
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+  id: Outlinks
+  parent: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  langs:
+  - csharp
+  - vb
+  name: Outlinks
+  nameWithType: TouchJob.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Outlinks
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 86
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Fresh in-scope outlinks, or <code>null</code> when the page was not parsed.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<string>? Outlinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: Public Property Outlinks As IReadOnlyCollection(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks*
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+  id: OffsiteLinks
+  parent: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  langs:
+  - csharp
+  - vb
+  name: OffsiteLinks
+  nameWithType: TouchJob.OffsiteLinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: OffsiteLinks
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 87
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Fresh off-site outlinks, or <code>null</code> when the page was not parsed.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<string>? OffsiteLinks { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+    content.vb: Public Property OffsiteLinks As IReadOnlyCollection(Of String)
+  overload: LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks*
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence
+  commentId: P:LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence
+  id: LinkEvidence
+  parent: LocalSearchEngine.Core.Crawling.Engine.TouchJob
+  langs:
+  - csharp
+  - vb
+  name: LinkEvidence
+  nameWithType: TouchJob.LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: LinkEvidence
+    path: LocalSearchEngine.Core/Crawling/Engine/CrawlJob.cs
+    startLine: 88
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Engine
+  summary: Fresh anchor/context evidence, or <code>null</code> when the page was not parsed.
+  example: []
+  syntax:
+    content: public IReadOnlyCollection<LinkEvidence>? LinkEvidence { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+    content.vb: Public Property LinkEvidence As IReadOnlyCollection(Of LinkEvidence)
+  overload: LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence*
 references:
 - uid: LocalSearchEngine.Core.Crawling.Engine
   commentId: N:LocalSearchEngine.Core.Crawling.Engine
@@ -451,7 +601,7 @@ references:
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.TouchJob.#ctor
-  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob__ctor_System_String_System_Int32_
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob__ctor_System_String_System_Int32_System_String_System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__System_Collections_Generic_IReadOnlyCollection_LocalSearchEngine_Core_Crawling_LinkEvidence__
   name: TouchJob
   nameWithType: TouchJob.TouchJob
   fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.TouchJob
@@ -480,3 +630,160 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
+- uid: System.Collections.Generic.IReadOnlyCollection{System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<string>
+  nameWithType: IReadOnlyCollection<string>
+  fullName: System.Collections.Generic.IReadOnlyCollection<string>
+  nameWithType.vb: IReadOnlyCollection(Of String)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of String)
+  name.vb: IReadOnlyCollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<LinkEvidence>
+  nameWithType: IReadOnlyCollection<LinkEvidence>
+  fullName: System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>
+  nameWithType.vb: IReadOnlyCollection(Of LinkEvidence)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence)
+  name.vb: IReadOnlyCollection(Of LinkEvidence)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob_SourceTitle
+  name: SourceTitle
+  nameWithType: TouchJob.SourceTitle
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.SourceTitle
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob_Outlinks
+  name: Outlinks
+  nameWithType: TouchJob.Outlinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.Outlinks
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob_OffsiteLinks
+  name: OffsiteLinks
+  nameWithType: TouchJob.OffsiteLinks
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.OffsiteLinks
+- uid: LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence
+  href: LocalSearchEngine.Core.Crawling.Engine.TouchJob.html#LocalSearchEngine_Core_Crawling_Engine_TouchJob_LinkEvidence
+  name: LinkEvidence
+  nameWithType: TouchJob.LinkEvidence
+  fullName: LocalSearchEngine.Core.Crawling.Engine.TouchJob.LinkEvidence

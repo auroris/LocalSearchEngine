@@ -19,10 +19,10 @@ namespace LocalSearchEngine.Core.Crawling;
 /// <summary>
 /// Orchestrates a crawl: composes a <see cref="CrawlPlan"/> from the requested options, runs it on
 /// the channel <see cref="CrawlPipeline"/> (N crawl workers feeding one persistence consumer), then
-/// runs the post-crawl passes — robots-ban removal, stale pruning, database optimization, and link
-/// verification — which write ungated only because they start after the pipeline's single writer has
-/// drained. The public surface is the stable facade: how a run behaves is decided entirely by the
-/// plan's composition of seed sources and policy flags.
+/// runs the post-crawl passes — robots-ban removal, stale pruning, internal PageRank, database
+/// optimization, and link verification — which write ungated only because they start after the
+/// pipeline's single writer has drained. The public surface is the stable facade: how a run behaves
+/// is decided entirely by the plan's composition of seed sources and policy flags.
 /// </summary>
 public partial class CrawlerService
 {
@@ -398,6 +398,20 @@ public partial class CrawlerService
             }
         }
         observer.OnPhaseChanged(CrawlPhase.Optimizing);
+
+        try
+        {
+            var authority = await CrawlStore.RecomputePageRankAsync(writeConnection);
+            _logger.LogInformation(
+                "Computed internal PageRank for {Nodes} indexed URLs across {Edges} links in {Iterations} iterations.",
+                authority.NodeCount, authority.EdgeCount, authority.Iterations);
+        }
+        catch (Exception ex)
+        {
+            // Authority refines search but must never turn a successful crawl into a failed one.
+            _logger.LogWarning(ex, "Failed to recompute internal PageRank; existing authority scores were preserved.");
+        }
+
         await CrawlStore.OptimizeDatabaseAsync(writeConnection, _logger);
 
         var linkVerifier = new LinkVerifier(_httpClient);

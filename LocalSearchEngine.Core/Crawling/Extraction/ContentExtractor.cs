@@ -1,5 +1,6 @@
 using HtmlAgilityPack;
 using System.Text;
+using LocalSearchEngine.Core.Crawling;
 using LocalSearchEngine.Core.Crawling.Policies;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
@@ -20,6 +21,14 @@ namespace LocalSearchEngine.Core.Crawling.Extraction;
 public static class ContentExtractor
 {
     private static readonly char[] WordSeparators = { ' ', '\n', '\r', '\t' };
+    private static readonly HashSet<string> LinkContextBlocks = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "p", "li", "dd", "dt", "td", "th", "blockquote", "figcaption"
+    };
+    private const int MaxAnchorLength = 200;
+    private const int MaxContextLength = 500;
+    private const int MaxHeadingLength = 200;
+    private const int MaxContextsPerTarget = 3;
 
     static ContentExtractor()
     {
@@ -56,6 +65,11 @@ public static class ContentExtractor
         public List<Uri> OutlinkUris = new();
         /// <summary>Gets or sets the absolute off-site (out-of-scope) http(s) links on the page, kept for optional link verification.</summary>
         public List<string> OffsiteLinks = new();
+        /// <summary>
+        /// Gets or sets compact editorial evidence for in-scope links. At most a few distinct
+        /// contexts are retained per target; boilerplate and nofollow links never reach this list.
+        /// </summary>
+        public List<LinkEvidence> LinkEvidence = new();
         /// <summary>
         /// Gets or sets the RSS/Atom feeds the page advertises via
         /// <c>&lt;link rel="alternate" type="application/rss+xml|atom+xml"&gt;</c>. A site's own feed
@@ -235,6 +249,8 @@ public static class ContentExtractor
         var baseForLinks = new Uri(currentUrl);
         var seenInScope = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var seenOffsite = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var evidenceCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        var seenEvidence = new HashSet<string>(StringComparer.Ordinal);
 
         foreach (var link in linkNodes)
         {
@@ -267,7 +283,63 @@ public static class ContentExtractor
                 analysis.Outlinks.Add(normalizedUrl);
                 analysis.OutlinkUris.Add(absoluteUri);
             }
+
+            evidenceCounts.TryGetValue(normalizedUrl, out int evidenceCount);
+            if (evidenceCount >= MaxContextsPerTarget) continue;
+
+            var evidence = ExtractLinkEvidence(link, normalizedUrl);
+            if (evidence.AnchorText.Length == 0 && evidence.ContextText.Length == 0 && evidence.SectionHeading.Length == 0)
+            {
+                continue;
+            }
+
+            string evidenceKey = string.Concat(
+                normalizedUrl, "\0", evidence.AnchorText, "\0", evidence.ContextText, "\0", evidence.SectionHeading);
+            if (seenEvidence.Add(evidenceKey))
+            {
+                analysis.LinkEvidence.Add(evidence);
+                evidenceCounts[normalizedUrl] = evidenceCount + 1;
+            }
         }
+    }
+
+    private static LinkEvidence ExtractLinkEvidence(HtmlNode link, string normalizedUrl)
+    {
+        string anchor = CleanLinkText(link.InnerText, MaxAnchorLength);
+        if (anchor.Length == 0)
+        {
+            anchor = CleanLinkText(link.GetAttributeValue("aria-label", ""), MaxAnchorLength);
+        }
+        if (anchor.Length == 0)
+        {
+            anchor = CleanLinkText(link.GetAttributeValue("title", ""), MaxAnchorLength);
+        }
+        if (anchor.Length == 0)
+        {
+            anchor = CleanLinkText(
+                link.SelectSingleNode(".//img[@alt]")?.GetAttributeValue("alt", "") ?? string.Empty,
+                MaxAnchorLength);
+        }
+
+        var block = link.Ancestors().FirstOrDefault(node => LinkContextBlocks.Contains(node.Name));
+        string context = CleanLinkText(block?.InnerText ?? link.ParentNode?.InnerText ?? string.Empty, MaxContextLength);
+
+        // The preceding axis is reverse-ordered, so [1] is the closest earlier heading in document order.
+        var heading = link.SelectSingleNode(
+            "preceding::*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or self::h6][1]");
+        string sectionHeading = CleanLinkText(heading?.InnerText ?? string.Empty, MaxHeadingLength);
+
+        return new LinkEvidence(normalizedUrl, anchor, context, sectionHeading);
+    }
+
+    private static string CleanLinkText(string text, int maximumLength)
+    {
+        string cleaned = CollapseWhitespace(HtmlEntity.DeEntitize(text ?? string.Empty));
+        if (cleaned.Length <= maximumLength) return cleaned;
+
+        int cut = cleaned.LastIndexOf(' ', maximumLength - 1, maximumLength);
+        if (cut < maximumLength / 2) cut = maximumLength;
+        return cleaned[..cut].TrimEnd();
     }
 
     /// <summary>

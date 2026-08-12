@@ -17,6 +17,9 @@ items:
   - uid: LocalSearchEngine.Core.Crawling.CrawlerService.RunMode
     name: CrawlerService.RunMode
     type: Enum
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    type: Struct
 - uid: LocalSearchEngine.Core.Crawling.Engine
   name: LocalSearchEngine.Core.Crawling.Engine
   type: Namespace
@@ -264,6 +267,9 @@ items:
   name: LocalSearchEngine.Core.Searching
   type: Namespace
   items:
+  - uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+    name: InboundLinkCandidate
+    type: Struct
   - uid: LocalSearchEngine.Core.Searching.KeywordCandidate
     name: KeywordCandidate
     type: Struct
@@ -398,6 +404,9 @@ items:
     type: Class
   - uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
     name: IncrementalCrawlTests.CountingFakeHandler
+    type: Class
+  - uid: LocalSearchEngine.Tests.LinkAuthorityTests
+    name: LinkAuthorityTests
     type: Class
   - uid: LocalSearchEngine.Tests.NoIndexRulesTests
     name: NoIndexRulesTests

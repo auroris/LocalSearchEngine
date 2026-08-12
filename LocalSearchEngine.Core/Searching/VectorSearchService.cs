@@ -44,8 +44,9 @@ public class TextChunkRecord
 /// the batch into the SQLite vector store in one transaction — whose triggers keep the FTS5 mirror in
 /// step; a companion delete clears a URL's existing chunks first, so a re-crawl replaces rather than
 /// duplicates. On the read side it runs a hybrid query: the text (minus any <c>site:</c> filters) is
-/// embedded for a semantic nearest-neighbour pass and matched against FTS5 for keywords, then the two
-/// candidate pools and their titles are handed to <see cref="SearchRanker"/> and blended into a ranked
+/// embedded for a semantic nearest-neighbour pass and matched against FTS5 for page keywords and
+/// inbound-link descriptions. Those three candidate pools, their page metadata, and internal
+/// authority scores are handed to <see cref="SearchRanker"/> and blended into a ranked
 /// <see cref="SearchResponse"/>.
 /// </summary>
 public class VectorSearchService
@@ -180,7 +181,8 @@ public class VectorSearchService
         => UpsertChunkRecordsAsync(BuildChunkRecords(url, fullText, isHeading));
 
     /// <summary>
-    /// Performs a hybrid search (semantic vector + FTS5 keyword) for the specified query and ranks the results.
+    /// Performs a hybrid search over semantic vectors, page-text FTS5, and inbound-link FTS5 for the
+    /// specified query, then re-ranks with lexical, structural, and internal-authority signals.
     /// <c>site:host</c> tokens in the query restrict results to that host and its subdomains.
     /// </summary>
     /// <param name="query">The search query text.</param>
@@ -203,6 +205,7 @@ public class VectorSearchService
         // and the embedding is synchronous CPU work, so plain sequential awaits keep that honest.
         var keywordHits = await GetKeywordHitsAsync(parsed.Text, pool);
         var vectorHits = await GetVectorHitsAsync(parsed.Text, pool);
+        var inboundLinkHits = await GetInboundLinkHitsAsync(parsed.Text, pool);
 
         // Site filtering is applied to the retrieved candidates, not pushed into the queries:
         // off-site candidates simply drop out here. They did occupy candidate-pool slots, so
@@ -211,13 +214,17 @@ public class VectorSearchService
         {
             vectorHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
             keywordHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
+            inboundLinkHits.RemoveAll(h => !parsed.MatchesSite(h.Url));
         }
 
         // Per-URL metadata for every candidate: titles feed the title boost and result list;
         // document kinds feed the ranker's configurable soft penalty.
-        var (titles, docKinds) = await LoadPageMetadataAsync(vectorHits, keywordHits);
+        var (titles, docKinds, authorities) = await LoadPageMetadataAsync(
+            vectorHits, keywordHits, inboundLinkHits);
 
-        var items = SearchRanker.Rank(vectorHits, keywordHits, parsed.Text, _settings, titles, docKinds);
+        var items = SearchRanker.Rank(
+            vectorHits, keywordHits, parsed.Text, _settings, titles, docKinds,
+            authorities, inboundLinkHits);
         return new SearchResponse { Items = items, TotalMatches = items.Count };
     }
 
@@ -293,33 +300,122 @@ public class VectorSearchService
     private static string QuoteFtsTerm(string term) => $"\"{term.Replace("\"", "\"\"")}\"";
 
     /// <summary>
-    /// Loads per-URL metadata (title and document kind) from the database for all candidate URLs
-    /// gathered in the semantic and keyword passes.
+    /// Retrieves targets whose inbound anchor or nearby source-page context matches the query.
+    /// Anchor, surrounding block, section heading, and source title have descending BM25 weights.
+    /// </summary>
+    private async Task<List<InboundLinkCandidate>> GetInboundLinkHitsAsync(string query, int pool)
+    {
+        var hits = new List<InboundLinkCandidate>();
+        try
+        {
+            var terms = Regex.Matches(query, @"[\p{L}\p{Nd}]+", RegexOptions.CultureInvariant)
+                .Select(match => match.Value)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (terms.Count == 0) return hits;
+
+            using var connection = new SqliteConnection(_dbConfig.ConnectionString);
+            await connection.OpenAsync();
+            using (var existence = connection.CreateCommand())
+            {
+                existence.CommandText = @"
+                    SELECT 1 FROM sqlite_master
+                    WHERE type = 'table' AND name = 'LinkContexts'";
+                if (await existence.ExecuteScalarAsync() is null) return hits;
+            }
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT lc.ToUrl,
+                       lc.AnchorText,
+                       lc.ContextText,
+                       lc.SectionHeading,
+                       lc.SourceTitle,
+                       COALESCE(source.Authority, 0) AS SourceAuthority,
+                       bm25(link_contexts_fts, 0.0, 4.0, 1.5, 2.0, 0.5) AS Bm25
+                FROM link_contexts_fts f
+                JOIN LinkContexts lc ON f.Id = lc.Id
+                LEFT JOIN CrawlState source ON source.Url = lc.FromUrl
+                WHERE link_contexts_fts MATCH @Query
+                  AND EXISTS (SELECT 1 FROM text_chunks target WHERE target.Url = lc.ToUrl)
+                ORDER BY Bm25
+                LIMIT @Limit";
+            command.Parameters.AddWithValue(
+                "@Query", string.Join(" OR ", terms.Select(QuoteFtsTerm)));
+            command.Parameters.AddWithValue("@Limit", pool);
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                string text = string.Join(' ', new[]
+                    {
+                        reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4)
+                    }
+                    .Where(value => !string.IsNullOrWhiteSpace(value)));
+                hits.Add(new InboundLinkCandidate(
+                    reader.GetString(0),
+                    text,
+                    reader.IsDBNull(6) ? 0 : reader.GetDouble(6),
+                    reader.IsDBNull(5) ? 0 : reader.GetDouble(5)));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to fetch inbound-link matches from SQLite for query {Query}", query);
+        }
+        return hits;
+    }
+
+    /// <summary>
+    /// Loads per-URL metadata (title, document kind, and normalized authority) from the database for
+    /// all candidate URLs gathered in the semantic, page-text, and inbound-link passes.
     /// </summary>
     /// <param name="vectorHits">The collection of vector hits.</param>
     /// <param name="keywordHits">The collection of keyword hits.</param>
-    /// <returns>A tuple of two dictionaries: URLs to their titles, and URLs to their <see cref="DocKind"/>.</returns>
-    private async Task<(Dictionary<string, string?> Titles, Dictionary<string, DocKind> DocKinds)> LoadPageMetadataAsync(
-        IReadOnlyCollection<VectorCandidate> vectorHits, IReadOnlyCollection<KeywordCandidate> keywordHits)
+    /// <param name="inboundLinkHits">The collection of target URLs found through inbound link descriptions.</param>
+    /// <returns>Dictionaries mapping URLs to titles, document kinds, and normalized authority.</returns>
+    private async Task<(
+        Dictionary<string, string?> Titles,
+        Dictionary<string, DocKind> DocKinds,
+        Dictionary<string, double> Authorities)> LoadPageMetadataAsync(
+        IReadOnlyCollection<VectorCandidate> vectorHits,
+        IReadOnlyCollection<KeywordCandidate> keywordHits,
+        IReadOnlyCollection<InboundLinkCandidate> inboundLinkHits)
     {
         var titles = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
         var docKinds = new Dictionary<string, DocKind>(StringComparer.OrdinalIgnoreCase);
+        var authorities = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
         try
         {
             var urls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var v in vectorHits) urls.Add(v.Url);
             foreach (var k in keywordHits) urls.Add(k.Url);
-            if (urls.Count == 0) return (titles, docKinds);
+            foreach (var inbound in inboundLinkHits) urls.Add(inbound.Url);
+            if (urls.Count == 0) return (titles, docKinds, authorities);
 
             using var connection = new SqliteConnection(_dbConfig.ConnectionString);
             await connection.OpenAsync();
-            await LoadPageMetadataAsync(connection, urls, titles, docKinds);
+            bool hasAuthority = await HasColumnAsync(connection, "CrawlState", "Authority");
+            await LoadPageMetadataAsync(connection, urls, titles, docKinds, authorities, hasAuthority);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to fetch result metadata from SQLite.");
         }
-        return (titles, docKinds);
+        return (titles, docKinds, authorities);
+    }
+
+    private static async Task<bool> HasColumnAsync(
+        SqliteConnection connection, string tableName, string columnName)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = $"PRAGMA table_info(\"{tableName}\")";
+        using var reader = await command.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            if (reader.GetString(1).Equals(columnName, StringComparison.OrdinalIgnoreCase)) return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -366,7 +462,10 @@ public class VectorSearchService
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     private static async Task LoadPageMetadataAsync(
         SqliteConnection connection, IReadOnlyCollection<string> urls,
-        Dictionary<string, string?> titles, Dictionary<string, DocKind> docKinds)
+        Dictionary<string, string?> titles,
+        Dictionary<string, DocKind> docKinds,
+        Dictionary<string, double> authorities,
+        bool hasAuthority)
     {
         if (urls.Count == 0) return;
 
@@ -377,7 +476,9 @@ public class VectorSearchService
         {
             int count = Math.Min(batchSize, list.Count - start);
             using var command = connection.CreateCommand();
-            var sb = new StringBuilder("SELECT Url, Title, DocKind FROM CrawlState WHERE Url IN (");
+            var sb = new StringBuilder(hasAuthority
+                ? "SELECT Url, Title, DocKind, Authority FROM CrawlState WHERE Url IN ("
+                : "SELECT Url, Title, DocKind FROM CrawlState WHERE Url IN (");
             for (int i = 0; i < count; i++)
             {
                 if (i > 0) sb.Append(',');
@@ -394,6 +495,7 @@ public class VectorSearchService
                 var url = reader.GetString(0);
                 titles[url] = reader.IsDBNull(1) ? null : reader.GetString(1);
                 if (!reader.IsDBNull(2)) docKinds[url] = (DocKind)reader.GetInt32(2);
+                if (hasAuthority && !reader.IsDBNull(3)) authorities[url] = reader.GetDouble(3);
             }
         }
     }

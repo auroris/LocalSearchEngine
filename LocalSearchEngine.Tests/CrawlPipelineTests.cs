@@ -145,6 +145,13 @@ public sealed class CrawlPipelineTests : IDisposable
         return Convert.ToInt32(await cmd.ExecuteScalarAsync()) > 0;
     }
 
+    private async Task<List<string>> StoredOutlinks(string fromUrl)
+    {
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        return await CrawlStore.GetStoredOutlinksAsync(connection, fromUrl);
+    }
+
     private static HttpResponseMessage Html(string body) => new(HttpStatusCode.OK)
     {
         Content = new StringContent($"<html><head>{body}</head><body>{body}</body></html>", Encoding.UTF8, "text/html"),
@@ -376,6 +383,37 @@ public sealed class CrawlPipelineTests : IDisposable
         Assert.Equal(1, await CrawlStateRowCount("http://test.local/café/menu.html"));
         Assert.Equal(1, await CrawlStateRowCount("http://test.local/a b.html"));
         Assert.Equal(1, await CrawlStateRowCount("http://test.local/reports/2024"));
+    }
+
+    [Fact]
+    public async Task Unchanged_visible_text_still_refreshes_link_destinations_and_context()
+    {
+        await EnsureSchemaAsync();
+        const string oldTarget = "http://test.local/old-target";
+        const string newTarget = "http://test.local/new-target";
+
+        _handler.Routes[Seed] = _ => Html(
+            "<title>Home</title><h2>Procedures</h2><p>Use the <a href=\"/old-target\">maintenance guide</a>.</p>");
+        _handler.Routes[oldTarget] = _ => Html("<title>Old</title><p>old target body</p>");
+        _handler.Routes[newTarget] = _ => Html("<title>New</title><p>new target body</p>");
+
+        await RunAsync(Seed, includeSitemapSource: false);
+        Assert.Equal([oldTarget], await StoredOutlinks(Seed));
+
+        // Only href changes. Title, headings, visible body, and therefore ContentHash are identical,
+        // so the seed takes the parsed TouchJob path rather than being re-embedded.
+        _handler.Routes[Seed] = _ => Html(
+            "<title>Home</title><h2>Procedures</h2><p>Use the <a href=\"/new-target\">maintenance guide</a>.</p>");
+
+        await RunAsync(Seed, includeSitemapSource: false);
+
+        Assert.Equal([newTarget], await StoredOutlinks(Seed));
+        await using var connection = new SqliteConnection(_connectionString);
+        await connection.OpenAsync();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT ToUrl FROM LinkContexts WHERE FromUrl = @From";
+        command.Parameters.AddWithValue("@From", Seed);
+        Assert.Equal(newTarget, Convert.ToString(await command.ExecuteScalarAsync()));
     }
 
     private async Task<int> CrawlStateRowCount(string url)

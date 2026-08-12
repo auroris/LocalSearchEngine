@@ -5,8 +5,10 @@ items:
   id: CrawlStore
   parent: LocalSearchEngine.Core.Crawling.Storage
   children:
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.CurrentLinkContextVersion
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EscapeLike(System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.FindIndexedDuplicateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String)
@@ -18,11 +20,14 @@ items:
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetReportableLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetStoredOutlinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetUrlsNotCrawledSinceAsync(Microsoft.Data.Sqlite.SqliteConnection,System.DateTime)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.ReadPragmaLongAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Double,System.Int32,System.Double)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.String,System.String,System.String,System.String,LocalSearchEngine.Core.Crawling.Policies.DocKind,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},Microsoft.Data.Sqlite.SqliteTransaction)
+  - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UpdateLinkStatusByDestinationAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Int32,Microsoft.Data.Sqlite.SqliteTransaction)
   - LocalSearchEngine.Core.Crawling.Storage.CrawlStore.UrlHasChunksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   langs:
@@ -39,7 +44,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: CrawlStore
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 18
+    startLine: 19
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -48,11 +53,11 @@ items:
 
     keeping raw SQL out of the engine. It owns the schema it depends on — the <code>CrawlState</code> table
 
-    (per-URL status, cache validators, title, and content hash), the <code>LinkIndex</code> of every link
+    (per-URL status, cache validators, title, content hash, and link authority), the <code>LinkIndex</code>
 
-    seen and its verified status, and the FTS5 mirror of the vector store's chunks with the triggers
+    graph, compact inbound-link context, and the FTS5 mirrors of body and link text with the triggers
 
-    that keep it in sync — created by <xref href="LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)" data-throw-if-not-resolved="false"></xref> after the vector store has made
+    that keep them in sync — created by <xref href="LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)" data-throw-if-not-resolved="false"></xref> after the vector store has made
 
     its <code>text_chunks</code> table. The rest are focused reads and writes over those tables: record a
 
@@ -77,6 +82,38 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.CurrentLinkContextVersion
+  commentId: F:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.CurrentLinkContextVersion
+  id: CurrentLinkContextVersion
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: CurrentLinkContextVersion
+  nameWithType: CrawlStore.CurrentLinkContextVersion
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.CurrentLinkContextVersion
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: CurrentLinkContextVersion
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 25
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Version of the persisted anchor/context extraction format. HTML rows below this version are
+
+    fetched without conditional validators once so an existing database can backfill link text.
+  example: []
+  syntax:
+    content: public const int CurrentLinkContextVersion = 1
+    return:
+      type: System.Int32
+    content.vb: Public Const CurrentLinkContextVersion As Integer = 1
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(System.String)
   id: EnsureSchemaAsync(System.String)
@@ -95,7 +132,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EnsureSchemaAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 26
+    startLine: 33
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -119,6 +156,46 @@ items:
   nameWithType.vb: CrawlStore.EnsureSchemaAsync(String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureSchemaAsync(String)
   name.vb: EnsureSchemaAsync(String)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.String)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.String)
+  id: EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.String,System.String)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: EnsureColumnAsync(SqliteConnection, string, string, string)
+  nameWithType: CrawlStore.EnsureColumnAsync(SqliteConnection, string, string, string)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection, string, string, string)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: EnsureColumnAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 173
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  syntax:
+    content: private static Task EnsureColumnAsync(SqliteConnection connection, string tableName, string columnName, string declaration)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: tableName
+      type: System.String
+    - id: columnName
+      type: System.String
+    - id: declaration
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Private Shared Function EnsureColumnAsync(connection As SqliteConnection, tableName As String, columnName As String, declaration As String) As Task
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync*
+  nameWithType.vb: CrawlStore.EnsureColumnAsync(SqliteConnection, String, String, String)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync(Microsoft.Data.Sqlite.SqliteConnection, String, String, String)
+  name.vb: EnsureColumnAsync(SqliteConnection, String, String, String)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
   id: GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String)
@@ -137,14 +214,14 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 124
+    startLine: 197
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
-  summary: Retrieves the ETag, Last-Modified, and ContentHash validators for a crawled URL.
+  summary: Retrieves validators, content identity, document kind, and link-context schema version for a crawled URL.
   example: []
   syntax:
-    content: public static Task<(string? ETag, string? LastModified, string? ContentHash)> GetCrawlStateAsync(SqliteConnection connection, string url)
+    content: public static Task<(string? ETag, string? LastModified, string? ContentHash, DocKind? DocKind, int LinkContextVersion)> GetCrawlStateAsync(SqliteConnection connection, string url)
     parameters:
     - id: connection
       type: Microsoft.Data.Sqlite.SqliteConnection
@@ -153,9 +230,9 @@ items:
       type: System.String
       description: The URL whose crawl state to retrieve.
     return:
-      type: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
-      description: A tuple containing the ETag, LastModified, and ContentHash, each null if not present.
-    content.vb: Public Shared Function GetCrawlStateAsync(connection As SqliteConnection, url As String) As Task(Of (ETag As String, LastModified As String, ContentHash As String))
+      type: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}}
+      description: The stored conditional-request and indexing state, or null/default values when absent.
+    content.vb: Public Shared Function GetCrawlStateAsync(connection As SqliteConnection, url As String) As Task(Of (ETag As String, LastModified As String, ContentHash As String, DocKind As DocKind?, LinkContextVersion As Integer))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync*
   nameWithType.vb: CrawlStore.GetCrawlStateAsync(SqliteConnection, String)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String)
@@ -178,7 +255,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetLastCrawledAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 148
+    startLine: 230
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -224,7 +301,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UrlHasChunksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 168
+    startLine: 250
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -265,7 +342,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: FindIndexedDuplicateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 183
+    startLine: 265
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -309,7 +386,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 209
+    startLine: 291
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -353,6 +430,49 @@ items:
   nameWithType.vb: CrawlStore.RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, SqliteTransaction)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Integer, String, String, String, String, LocalSearchEngine.Core.Crawling.Policies.DocKind, Microsoft.Data.Sqlite.SqliteTransaction)
   name.vb: RecordCrawlStateAsync(SqliteConnection, String, Integer, String, String, String, String, DocKind, SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: MarkLinkContextCurrentAsync(SqliteConnection, string, SqliteTransaction?)
+  nameWithType: CrawlStore.MarkLinkContextCurrentAsync(SqliteConnection, string, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection, string, Microsoft.Data.Sqlite.SqliteTransaction?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: MarkLinkContextCurrentAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 327
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Marks a parsed HTML page as having refreshed link-context extraction without changing its
+
+    content metadata. Used when the visible text hash is unchanged but hrefs or context may differ.
+  example: []
+  syntax:
+    content: public static Task MarkLinkContextCurrentAsync(SqliteConnection connection, string url, SqliteTransaction? transaction = null)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+    - id: url
+      type: System.String
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function MarkLinkContextCurrentAsync(connection As SqliteConnection, url As String, transaction As SqliteTransaction = Nothing) As Task
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync*
+  nameWithType.vb: CrawlStore.MarkLinkContextCurrentAsync(SqliteConnection, String, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync(Microsoft.Data.Sqlite.SqliteConnection, String, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: MarkLinkContextCurrentAsync(SqliteConnection, String, SqliteTransaction)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
   id: RecordVisitAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Int32,System.Boolean,Microsoft.Data.Sqlite.SqliteTransaction)
@@ -371,7 +491,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: RecordVisitAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 246
+    startLine: 352
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -421,7 +541,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: StoreLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 292
+    startLine: 398
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -464,6 +584,64 @@ items:
   nameWithType.vb: CrawlStore.StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), SqliteTransaction)
   fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), Microsoft.Data.Sqlite.SqliteTransaction)
   name.vb: StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), SqliteTransaction)
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  id: StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{System.String},System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence},System.String,Microsoft.Data.Sqlite.SqliteTransaction)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, IReadOnlyCollection<LinkEvidence>, string?, SqliteTransaction?)
+  nameWithType: CrawlStore.StoreLinksAsync(SqliteConnection, string, IReadOnlyCollection<string>, IReadOnlyCollection<string>, IReadOnlyCollection<LinkEvidence>, string?, SqliteTransaction?)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, string, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>, string?, Microsoft.Data.Sqlite.SqliteTransaction?)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: StoreLinksAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 419
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Stores the page's graph edges and compact editorial text for its in-scope links, replacing
+
+    the source page's prior rows atomically. Link text is mirrored into FTS5 by table triggers.
+  example: []
+  syntax:
+    content: public static Task StoreLinksAsync(SqliteConnection connection, string fromUrl, IReadOnlyCollection<string> inScopeLinks, IReadOnlyCollection<string> offsiteLinks, IReadOnlyCollection<LinkEvidence> linkEvidence, string? sourceTitle, SqliteTransaction? transaction = null)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The open database connection.
+    - id: fromUrl
+      type: System.String
+      description: The source page URL.
+    - id: inScopeLinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: Target URLs within the crawl scope.
+    - id: offsiteLinks
+      type: System.Collections.Generic.IReadOnlyCollection{System.String}
+      description: Off-site target URLs retained for verification.
+    - id: linkEvidence
+      type: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+      description: Anchor and nearby editorial text for in-scope targets.
+    - id: sourceTitle
+      type: System.String
+      description: The referring page's title, used as a weak inbound text field.
+    - id: transaction
+      type: Microsoft.Data.Sqlite.SqliteTransaction
+      description: An open transaction, or <code>null</code> for a standalone transaction.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function StoreLinksAsync(connection As SqliteConnection, fromUrl As String, inScopeLinks As IReadOnlyCollection(Of String), offsiteLinks As IReadOnlyCollection(Of String), linkEvidence As IReadOnlyCollection(Of LinkEvidence), sourceTitle As String, transaction As SqliteTransaction = Nothing) As Task
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync*
+  nameWithType.vb: CrawlStore.StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence), String, SqliteTransaction)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.StoreLinksAsync(Microsoft.Data.Sqlite.SqliteConnection, String, System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of String), System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence), String, Microsoft.Data.Sqlite.SqliteTransaction)
+  name.vb: StoreLinksAsync(SqliteConnection, String, IReadOnlyCollection(Of String), IReadOnlyCollection(Of String), IReadOnlyCollection(Of LinkEvidence), String, SqliteTransaction)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
   id: DeleteLinksAsync(Microsoft.Data.Sqlite.SqliteConnection,System.String,Microsoft.Data.Sqlite.SqliteTransaction)
@@ -482,7 +660,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 352
+    startLine: 524
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -526,7 +704,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetStoredOutlinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 368
+    startLine: 542
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -570,7 +748,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: UpdateLinkStatusByDestinationAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 393
+    startLine: 567
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -625,7 +803,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetLinksToVerifyAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 413
+    startLine: 587
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -671,7 +849,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetReportableLinksAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 436
+    startLine: 610
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -717,7 +895,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetUrlsNotCrawledSinceAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 457
+    startLine: 631
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -761,7 +939,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCrawledUrlsWithPrefixAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 482
+    startLine: 656
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -811,7 +989,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EscapeLike
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 502
+    startLine: 676
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -852,7 +1030,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DeleteCrawlStateAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 512
+    startLine: 686
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -896,7 +1074,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: GetCountsAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 527
+    startLine: 701
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -916,6 +1094,60 @@ items:
       description: A tuple of the distinct indexed URL count and the crawl-state row count.
     content.vb: Public Shared Function GetCountsAsync(connection As SqliteConnection) As Task(Of (IndexedUrls As Long, CrawlStateRows As Long))
   overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCountsAsync*
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Double,System.Int32,System.Double)
+  commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Double,System.Int32,System.Double)
+  id: RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Double,System.Int32,System.Double)
+  parent: LocalSearchEngine.Core.Crawling.Storage.CrawlStore
+  langs:
+  - csharp
+  - vb
+  name: RecomputePageRankAsync(SqliteConnection, double, int, double)
+  nameWithType: CrawlStore.RecomputePageRankAsync(SqliteConnection, double, int, double)
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection, double, int, double)
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: RecomputePageRankAsync
+    path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
+    startLine: 731
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Crawling.Storage
+  summary: >-
+    Recomputes query-independent authority over the indexed internal-link graph using PageRank.
+
+    Only URLs with stored text chunks are graph nodes, and only internal edges whose source and
+
+    target are both nodes vote. Raw PageRank and a log-normalized [0,1] feature are persisted on
+
+    <code>CrawlState</code> in one transaction.
+  example: []
+  syntax:
+    content: public static Task<(int NodeCount, int EdgeCount, int Iterations)> RecomputePageRankAsync(SqliteConnection connection, double damping = 0.85, int maximumIterations = 100, double tolerance = 1E-08)
+    parameters:
+    - id: connection
+      type: Microsoft.Data.Sqlite.SqliteConnection
+      description: The open writable database connection.
+    - id: damping
+      type: System.Double
+      description: The probability of following a graph edge rather than teleporting.
+    - id: maximumIterations
+      type: System.Int32
+      description: The iteration ceiling for convergence.
+    - id: tolerance
+      type: System.Double
+      description: The L1 score-delta convergence threshold.
+    return:
+      type: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32,System.Int32}}
+      description: Counts of graph nodes, retained edges, and iterations performed.
+    content.vb: Public Shared Function RecomputePageRankAsync(connection As SqliteConnection, damping As Double = 0.85, maximumIterations As Integer = 100, tolerance As Double = 1E-08) As Task(Of (NodeCount As Integer, EdgeCount As Integer, Iterations As Integer))
+  overload: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync*
+  nameWithType.vb: CrawlStore.RecomputePageRankAsync(SqliteConnection, Double, Integer, Double)
+  fullName.vb: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync(Microsoft.Data.Sqlite.SqliteConnection, Double, Integer, Double)
+  name.vb: RecomputePageRankAsync(SqliteConnection, Double, Integer, Double)
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   commentId: M:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
   id: OptimizeDatabaseAsync(Microsoft.Data.Sqlite.SqliteConnection,Microsoft.Extensions.Logging.ILogger)
@@ -934,7 +1166,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: OptimizeDatabaseAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 552
+    startLine: 861
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -972,7 +1204,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ReadPragmaLongAsync
     path: LocalSearchEngine.Core/Crawling/Storage/CrawlStore.cs
-    startLine: 584
+    startLine: 893
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Storage
@@ -1346,6 +1578,17 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -1415,12 +1658,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync*
-  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
-  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
-  name: GetCrawlStateAsync
-  nameWithType: CrawlStore.GetCrawlStateAsync
-  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_EnsureColumnAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_String_System_String_
+  name: EnsureColumnAsync
+  nameWithType: CrawlStore.EnsureColumnAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.EnsureColumnAsync
 - uid: Microsoft.Data.Sqlite.SqliteConnection
   commentId: T:Microsoft.Data.Sqlite.SqliteConnection
   parent: Microsoft.Data.Sqlite
@@ -1429,17 +1672,23 @@ references:
   name: SqliteConnection
   nameWithType: SqliteConnection
   fullName: Microsoft.Data.Sqlite.SqliteConnection
-- uid: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
-  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String}}
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_GetCrawlStateAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_
+  name: GetCrawlStateAsync
+  nameWithType: CrawlStore.GetCrawlStateAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.GetCrawlStateAsync
+- uid: System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}}
   parent: System.Threading.Tasks
   definition: System.Threading.Tasks.Task`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<(string ETag, string LastModified, string ContentHash)>
-  nameWithType: Task<(string ETag, string LastModified, string ContentHash)>
-  fullName: System.Threading.Tasks.Task<(string ETag, string LastModified, string ContentHash)>
-  nameWithType.vb: Task(Of (ETag As String, LastModified As String, ContentHash As String))
-  fullName.vb: System.Threading.Tasks.Task(Of (ETag As String, LastModified As String, ContentHash As String))
-  name.vb: Task(Of (ETag As String, LastModified As String, ContentHash As String))
+  name: Task<(string ETag, string LastModified, string ContentHash, DocKind? DocKind, int LinkContextVersion)>
+  nameWithType: Task<(string ETag, string LastModified, string ContentHash, DocKind? DocKind, int LinkContextVersion)>
+  fullName: System.Threading.Tasks.Task<(string ETag, string LastModified, string ContentHash, LocalSearchEngine.Core.Crawling.Policies.DocKind? DocKind, int LinkContextVersion)>
+  nameWithType.vb: Task(Of (ETag As String, LastModified As String, ContentHash As String, DocKind As DocKind?, LinkContextVersion As Integer))
+  fullName.vb: System.Threading.Tasks.Task(Of (ETag As String, LastModified As String, ContentHash As String, DocKind As LocalSearchEngine.Core.Crawling.Policies.DocKind?, LinkContextVersion As Integer))
+  name.vb: Task(Of (ETag As String, LastModified As String, ContentHash As String, DocKind As DocKind?, LinkContextVersion As Integer))
   spec.csharp:
   - uid: System.Threading.Tasks.Task`1
     name: Task
@@ -1452,9 +1701,9 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: " "
-  - uid: System.ValueTuple{System.String,System.String,System.String}.ETag
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.ETag
     name: ETag
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.etag
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.etag
   - name: ','
   - name: " "
   - uid: System.String
@@ -1462,9 +1711,9 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: " "
-  - uid: System.ValueTuple{System.String,System.String,System.String}.LastModified
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.LastModified
     name: LastModified
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.lastmodified
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.lastmodified
   - name: ','
   - name: " "
   - uid: System.String
@@ -1472,9 +1721,29 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: " "
-  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentHash
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.ContentHash
     name: ContentHash
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenthash
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.contenthash
+  - name: ','
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: '?'
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.DocKind
+    name: DocKind
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.dockind
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.LinkContextVersion
+    name: LinkContextVersion
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.linkcontextversion
   - name: )
   - name: '>'
   spec.vb:
@@ -1486,9 +1755,9 @@ references:
   - name: Of
   - name: " "
   - name: (
-  - uid: System.ValueTuple{System.String,System.String,System.String}.ETag
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.ETag
     name: ETag
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.etag
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.etag
   - name: " "
   - name: As
   - name: " "
@@ -1498,9 +1767,9 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
-  - uid: System.ValueTuple{System.String,System.String,System.String}.LastModified
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.LastModified
     name: LastModified
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.lastmodified
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.lastmodified
   - name: " "
   - name: As
   - name: " "
@@ -1510,9 +1779,9 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
-  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentHash
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.ContentHash
     name: ContentHash
-    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenthash
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.contenthash
   - name: " "
   - name: As
   - name: " "
@@ -1520,6 +1789,30 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.DocKind
+    name: DocKind
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.dockind
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
+    name: DocKind
+    href: LocalSearchEngine.Core.Crawling.Policies.DocKind.html
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String,System.Nullable{LocalSearchEngine.Core.Crawling.Policies.DocKind},System.Int32}.LinkContextVersion
+    name: LinkContextVersion
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string,system.nullable-localsearchengine.core.crawling.policies.dockind-,system.int32-.linkcontextversion
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   - name: )
 - uid: System.Threading.Tasks.Task`1
@@ -1681,17 +1974,6 @@ references:
   name: RecordCrawlStateAsync
   nameWithType: CrawlStore.RecordCrawlStateAsync
   fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordCrawlStateAsync
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
 - uid: LocalSearchEngine.Core.Crawling.Policies.DocKind
   commentId: T:LocalSearchEngine.Core.Crawling.Policies.DocKind
   parent: LocalSearchEngine.Core.Crawling.Policies
@@ -1737,6 +2019,12 @@ references:
   - uid: LocalSearchEngine.Core.Crawling.Policies
     name: Policies
     href: LocalSearchEngine.Core.Crawling.Policies.html
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_MarkLinkContextCurrentAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_Microsoft_Data_Sqlite_SqliteTransaction_
+  name: MarkLinkContextCurrentAsync
+  nameWithType: CrawlStore.MarkLinkContextCurrentAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.MarkLinkContextCurrentAsync
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecordVisitAsync
   href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecordVisitAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_System_Int32_System_Boolean_Microsoft_Data_Sqlite_SqliteTransaction_
@@ -1866,6 +2154,39 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{LocalSearchEngine.Core.Crawling.LinkEvidence}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<LinkEvidence>
+  nameWithType: IReadOnlyCollection<LinkEvidence>
+  fullName: System.Collections.Generic.IReadOnlyCollection<LocalSearchEngine.Core.Crawling.LinkEvidence>
+  nameWithType.vb: IReadOnlyCollection(Of LinkEvidence)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of LocalSearchEngine.Core.Crawling.LinkEvidence)
+  name.vb: IReadOnlyCollection(Of LinkEvidence)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: LocalSearchEngine.Core.Crawling.LinkEvidence
+    name: LinkEvidence
+    href: LocalSearchEngine.Core.Crawling.LinkEvidence.html
+  - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync*
   commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.DeleteLinksAsync
   href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_DeleteLinksAsync_Microsoft_Data_Sqlite_SqliteConnection_System_String_Microsoft_Data_Sqlite_SqliteTransaction_
@@ -2358,6 +2679,116 @@ references:
     name: Long
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  - name: )
+- uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync*
+  commentId: Overload:LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync
+  href: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.html#LocalSearchEngine_Core_Crawling_Storage_CrawlStore_RecomputePageRankAsync_Microsoft_Data_Sqlite_SqliteConnection_System_Double_System_Int32_System_Double_
+  name: RecomputePageRankAsync
+  nameWithType: CrawlStore.RecomputePageRankAsync
+  fullName: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.RecomputePageRankAsync
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32,System.Int32}}
+  commentId: T:System.Threading.Tasks.Task{System.ValueTuple{System.Int32,System.Int32,System.Int32}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<(int NodeCount, int EdgeCount, int Iterations)>
+  nameWithType: Task<(int NodeCount, int EdgeCount, int Iterations)>
+  fullName: System.Threading.Tasks.Task<(int NodeCount, int EdgeCount, int Iterations)>
+  nameWithType.vb: Task(Of (NodeCount As Integer, EdgeCount As Integer, Iterations As Integer))
+  fullName.vb: System.Threading.Tasks.Task(Of (NodeCount As Integer, EdgeCount As Integer, Iterations As Integer))
+  name.vb: Task(Of (NodeCount As Integer, EdgeCount As Integer, Iterations As Integer))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.NodeCount
+    name: NodeCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.nodecount
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.EdgeCount
+    name: EdgeCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.edgecount
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.Iterations
+    name: Iterations
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.iterations
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.NodeCount
+    name: NodeCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.nodecount
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.EdgeCount
+    name: EdgeCount
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.edgecount
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32}.Iterations
+    name: Iterations
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32-.iterations
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
   - name: )
   - name: )
 - uid: LocalSearchEngine.Core.Crawling.Storage.CrawlStore.OptimizeDatabaseAsync*

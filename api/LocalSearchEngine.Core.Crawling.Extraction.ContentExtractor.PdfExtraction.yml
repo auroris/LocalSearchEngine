@@ -27,7 +27,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: PdfExtraction
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -66,7 +66,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -113,7 +113,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -144,7 +144,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -175,7 +175,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TotalGlyphs
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -206,7 +206,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MappableGlyphs
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 379
+    startLine: 451
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -237,7 +237,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MinMappableFraction
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 385
+    startLine: 457
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -264,7 +264,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MappableFraction
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 388
+    startLine: 460
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction
@@ -295,7 +295,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: IsLowQualityText
     path: LocalSearchEngine.Core/Crawling/Extraction/ContentExtractor.cs
-    startLine: 395
+    startLine: 467
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Crawling.Extraction

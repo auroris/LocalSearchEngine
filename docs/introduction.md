@@ -49,6 +49,7 @@ To avoid re-indexing unchanged content:
 * **Conditional HTTP Requests**: Sends `If-None-Match` (ETag) and `If-Modified-Since` (Last-Modified) headers.
 * **Content Hashing**: A SHA-256 hash of the extracted page content is verified against previously indexed hashes. If identical, re-embedding is skipped.
 * **Outlink Storage**: If a page is unchanged (304), the engine re-loads its previously discovered links from the database to keep traversing the site.
+* **Link Evidence**: Internal links retain their anchor text, nearby paragraph or list-item text, nearest section heading, and source-page title. Boilerplate and `nofollow` links do not contribute evidence.
 
 ### 3. Page Directives
 * **Meta robots**: Honors `<meta name="robots" content="noindex, nofollow">` tags and `X-Robots-Tag` headers.
@@ -82,4 +83,7 @@ The search engine embeds and searches text entirely on your CPU:
 * **Hybrid Search Ranker**: Ranks search results combining:
   1. Dense vector candidates ordered by cosine distance.
   2. Broad sparse candidates ordered by FTS5 BM25, plus adjacent-phrase rescue.
-  3. URL-level reciprocal-rank fusion with coverage, proximity, field, and document-type adjustments.
+  3. Inbound-link candidates ordered by weighted BM25 over anchor text, surrounding prose, section heading, and source title. This is also a recall path for pages missed by body and vector retrieval.
+  4. URL-level reciprocal-rank fusion with coverage, proximity, field, document-type, and bounded link-authority adjustments.
+
+At the end of each crawl, the crawler recomputes PageRank over internal links whose source and target are both indexed. The raw probability is stored for inspection; search uses a log-compressed, normalized authority feature so a highly linked hub cannot overwhelm query relevance. Authority also gives a modest preference to matching link descriptions written by stronger source pages.

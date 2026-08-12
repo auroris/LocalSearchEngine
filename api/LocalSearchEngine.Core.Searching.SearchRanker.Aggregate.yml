@@ -5,9 +5,13 @@ items:
   id: SearchRanker.Aggregate
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Authority
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.BestBm25
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.EvidenceChunks
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.ExactPhrase
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundQuality
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundRank
+  - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundText
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.KeywordRank
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.KeywordSnippetQuality
   - LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.KeywordText
@@ -36,7 +40,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Aggregate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 295
+    startLine: 357
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -70,7 +74,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 297
+    startLine: 359
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -97,7 +101,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 298
+    startLine: 360
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -124,7 +128,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 299
+    startLine: 361
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -151,7 +155,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorText
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 300
+    startLine: 362
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -178,7 +182,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: KeywordText
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 301
+    startLine: 363
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -205,7 +209,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: KeywordSnippetQuality
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 302
+    startLine: 364
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -232,7 +236,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 303
+    startLine: 365
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -259,7 +263,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: BestBm25
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 304
+    startLine: 366
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -286,7 +290,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: VectorRank
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 305
+    startLine: 367
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -313,7 +317,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: KeywordRank
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 306
+    startLine: 368
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -322,6 +326,33 @@ items:
     return:
       type: System.Int32
     content.vb: Public KeywordRank As Integer
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundRank
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundRank
+  id: InboundRank
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: InboundRank
+  nameWithType: SearchRanker.Aggregate.InboundRank
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundRank
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundRank
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 369
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: public int InboundRank
+    return:
+      type: System.Int32
+    content.vb: Public InboundRank As Integer
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.ExactPhrase
   commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.ExactPhrase
   id: ExactPhrase
@@ -340,7 +371,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: ExactPhrase
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 307
+    startLine: 370
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -367,7 +398,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: MatchedHeading
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 308
+    startLine: 371
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -394,7 +425,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: TextCoverage
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 309
+    startLine: 372
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -421,7 +452,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Proximity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 310
+    startLine: 373
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -430,6 +461,87 @@ items:
     return:
       type: System.Double
     content.vb: Public Proximity As Double
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundText
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundText
+  id: InboundText
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: InboundText
+  nameWithType: SearchRanker.Aggregate.InboundText
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundText
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundText
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 374
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: public string InboundText
+    return:
+      type: System.String
+    content.vb: Public InboundText As String
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundQuality
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundQuality
+  id: InboundQuality
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: InboundQuality
+  nameWithType: SearchRanker.Aggregate.InboundQuality
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.InboundQuality
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: InboundQuality
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 375
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: public double InboundQuality
+    return:
+      type: System.Double
+    content.vb: Public InboundQuality As Double
+- uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Authority
+  commentId: F:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Authority
+  id: Authority
+  parent: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate
+  langs:
+  - csharp
+  - vb
+  name: Authority
+  nameWithType: SearchRanker.Aggregate.Authority
+  fullName: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.Authority
+  type: Field
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Authority
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 376
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  syntax:
+    content: public double Authority
+    return:
+      type: System.Double
+    content.vb: Public Authority As Double
 - uid: LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.EvidenceChunks
   commentId: P:LocalSearchEngine.Core.Searching.SearchRanker.Aggregate.EvidenceChunks
   id: EvidenceChunks
@@ -448,7 +560,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: EvidenceChunks
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 311
+    startLine: 377
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -477,7 +589,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Kind
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 312
+    startLine: 378
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -504,7 +616,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Score
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 313
+    startLine: 379
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching

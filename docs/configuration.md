@@ -120,6 +120,10 @@ The web app configures the hybrid vector and keyword search ranker using the `Se
     "ReciprocalRankConstant": 60,
     "SemanticWeight": 1.0,
     "KeywordWeight": 1.0,
+    "InboundLinkWeight": 0.75,
+    "InboundContextBoost": 0.2,
+    "InboundSourceAuthorityWeight": 0.25,
+    "AuthorityWeight": 0.2,
     "ExactPhraseBoost": 0.35,
     "ProximityBoost": 0.15,
     "HeadingBoost": 0.3,
@@ -134,13 +138,17 @@ The web app configures the hybrid vector and keyword search ranker using the `Se
 
 ### Ranking Weights Reference
 
-The searcher retrieves independent semantic and lexical candidate pools. The lexical pool uses an FTS5 OR query ordered by BM25, so useful partial matches are not excluded merely because one query term is absent. An additional adjacent-phrase pass can rescue phrase matches outside that broad pool. The re-ranker deduplicates both streams by URL, combines their URL ranks using reciprocal-rank fusion, and then applies bounded lexical and structural features.
+The searcher retrieves independent semantic, page-text, and inbound-link candidate pools. The page-text pool uses an FTS5 OR query ordered by BM25, so useful partial matches are not excluded merely because one query term is absent. An additional adjacent-phrase pass can rescue phrase matches outside that broad pool. The inbound pool searches anchor text, nearby source prose, the nearest section heading, and the source-page title with different BM25 field weights. The re-ranker deduplicates all streams by target URL, combines their URL ranks using reciprocal-rank fusion, and then applies bounded lexical, structural, and authority features.
 
-* **`CandidatePoolSize`** (integer): The maximum number of chunk candidates fetched by each semantic, broad BM25, and phrase-rescue retrieval pass before URL deduplication.
+* **`CandidatePoolSize`** (integer): The maximum number of candidates fetched by each semantic, broad page-text BM25, phrase-rescue, and inbound-link retrieval pass before URL deduplication.
 * **`MaxDistance`** (double): The cosine distance threshold for vector matches, from `0.0` (identical direction) through `1.0` (orthogonal) to a theoretical `2.0` (opposite). Lower limits require closer semantic matches.
 * **`ReciprocalRankConstant`** (double): Controls how quickly reciprocal-rank contributions decay. Larger values reduce the difference between nearby ranks; `60` is a conventional starting value.
 * **`SemanticWeight`** (double): Weight of the semantic URL rank in reciprocal-rank fusion.
 * **`KeywordWeight`** (double): Weight of the BM25 URL rank in reciprocal-rank fusion.
+* **`InboundLinkWeight`** (double): Weight of the inbound anchor/context URL rank in reciprocal-rank fusion. Set to `0` to prevent inbound descriptions from contributing a rank stream.
+* **`InboundContextBoost`** (double): Maximum bounded bonus for query-term coverage, proximity, and phrase quality in the target's best matching inbound-link description.
+* **`InboundSourceAuthorityWeight`** (double): How strongly the referring page's normalized authority refines otherwise similar inbound BM25 matches. At `0.25`, authority changes the match magnitude by at most 25 percent.
+* **`AuthorityWeight`** (double): Maximum query-independent bonus from the target page's normalized internal PageRank. It is intentionally small so authority breaks close relevance decisions instead of replacing relevance.
 * **`ExactPhraseBoost`** (double): Bounded bonus when the query's terms occur adjacently and in order. This is not a hard tier.
 * **`ProximityBoost`** (double): Maximum bonus for query terms appearing in a tight token window. Partial coverage and wider spans receive less.
 * **`HeadingBoost`** (double): Bonus applied if query keywords match headings (`<h1>`, `<h2>`, etc.) in the document.
@@ -149,3 +157,9 @@ The searcher retrieves independent semantic and lexical candidate pools. The lex
 * **`TermInTextBoost`** (double): Maximum bonus for distinct query-term coverage in matching chunks.
 * **`MultiChunkBoost`** (double): Maximum corroboration bonus when one URL has several distinct matching chunks; additional chunks have diminishing returns.
 * **`NonHtmlPenalty`** (double): Soft penalty for PDF and DOCX results. Strong documents can still outrank weaker HTML pages.
+
+### Link-Signal Backfill After Upgrading
+
+An existing database already contains the internal link graph, so PageRank can be computed immediately. It does not contain the new anchor and surrounding-context records. Each older HTML row is therefore fetched once without its stored ETag or Last-Modified validator when the crawler next reaches it; unchanged visible text still skips re-embedding, and normal conditional requests resume afterward.
+
+Run one full crawl after upgrading if you want link context populated for the entire existing index. An incremental or feed-driven run only backfills the pages it visits. The backfill respects the usual robots, scope, page-size, and politeness rules.

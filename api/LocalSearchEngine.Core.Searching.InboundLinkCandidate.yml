@@ -1,37 +1,40 @@
 ### YamlMime:ManagedReference
 items:
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
-  commentId: T:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
-  id: SearchRanker.TextFeatures
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+  commentId: T:LocalSearchEngine.Core.Searching.InboundLinkCandidate
+  id: InboundLinkCandidate
   parent: LocalSearchEngine.Core.Searching
   children:
-  - LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor(System.Double,System.Boolean,System.Double)
-  - LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
-  - LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
-  - LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor(System.String,System.String,System.Double,System.Double)
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
+  - LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
   langs:
   - csharp
   - vb
-  name: SearchRanker.TextFeatures
-  nameWithType: SearchRanker.TextFeatures
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+  name: InboundLinkCandidate
+  nameWithType: InboundLinkCandidate
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate
   type: Struct
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: TextFeatures
+    id: InboundLinkCandidate
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 355
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
+  summary: Represents a target described by anchor text and nearby content on another crawled page.
+  example: []
   syntax:
-    content: 'private readonly record struct SearchRanker.TextFeatures : IEquatable<SearchRanker.TextFeatures>'
-    content.vb: Private Structure SearchRanker.TextFeatures Implements IEquatable(Of SearchRanker.TextFeatures)
+    content: 'public readonly record struct InboundLinkCandidate : IEquatable<InboundLinkCandidate>'
+    content.vb: Public Structure InboundLinkCandidate Implements IEquatable(Of InboundLinkCandidate)
   implements:
-  - System.IEquatable{LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures}
+  - System.IEquatable{LocalSearchEngine.Core.Searching.InboundLinkCandidate}
   inheritedMembers:
   - System.ValueType.Equals(System.Object)
   - System.ValueType.GetHashCode
@@ -39,16 +42,16 @@ items:
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor(System.Double,System.Boolean,System.Double)
-  commentId: M:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor(System.Double,System.Boolean,System.Double)
-  id: '#ctor(System.Double,System.Boolean,System.Double)'
-  parent: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor(System.String,System.String,System.Double,System.Double)
+  commentId: M:LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor(System.String,System.String,System.Double,System.Double)
+  id: '#ctor(System.String,System.String,System.Double,System.Double)'
+  parent: LocalSearchEngine.Core.Searching.InboundLinkCandidate
   langs:
   - csharp
   - vb
-  name: TextFeatures(double, bool, double)
-  nameWithType: SearchRanker.TextFeatures.TextFeatures(double, bool, double)
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.TextFeatures(double, bool, double)
+  name: InboundLinkCandidate(string, string, double, double)
+  nameWithType: InboundLinkCandidate.InboundLinkCandidate(string, string, double, double)
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.InboundLinkCandidate(string, string, double, double)
   type: Constructor
   source:
     remote:
@@ -57,111 +60,156 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: .ctor
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 355
+    startLine: 37
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
+  summary: Represents a target described by anchor text and nearby content on another crawled page.
+  example: []
   syntax:
-    content: public TextFeatures(double Coverage, bool ExactPhrase, double Proximity)
+    content: public InboundLinkCandidate(string Url, string Text, double Bm25, double SourceAuthority)
     parameters:
-    - id: Coverage
+    - id: Url
+      type: System.String
+      description: The in-scope target URL being endorsed.
+    - id: Text
+      type: System.String
+      description: The compact anchor, context, section-heading, and source-title text.
+    - id: Bm25
       type: System.Double
-    - id: ExactPhrase
-      type: System.Boolean
-    - id: Proximity
+      description: The field-weighted FTS5 BM25 value; smaller values are more relevant.
+    - id: SourceAuthority
       type: System.Double
-    content.vb: Public Sub New(Coverage As Double, ExactPhrase As Boolean, Proximity As Double)
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor*
-  nameWithType.vb: SearchRanker.TextFeatures.New(Double, Boolean, Double)
-  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.New(Double, Boolean, Double)
-  name.vb: New(Double, Boolean, Double)
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
-  commentId: P:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
-  id: Coverage
-  parent: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+      description: The normalized PageRank of the referring page.
+    content.vb: Public Sub New(Url As String, Text As String, Bm25 As Double, SourceAuthority As Double)
+  overload: LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor*
+  nameWithType.vb: InboundLinkCandidate.New(String, String, Double, Double)
+  fullName.vb: LocalSearchEngine.Core.Searching.InboundLinkCandidate.New(String, String, Double, Double)
+  name.vb: New(String, String, Double, Double)
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
+  commentId: P:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
+  id: Url
+  parent: LocalSearchEngine.Core.Searching.InboundLinkCandidate
   langs:
   - csharp
   - vb
-  name: Coverage
-  nameWithType: SearchRanker.TextFeatures.Coverage
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
+  name: Url
+  nameWithType: InboundLinkCandidate.Url
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Coverage
+    id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 355
+    startLine: 38
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
+  summary: The in-scope target URL being endorsed.
+  example: []
   syntax:
-    content: public double Coverage { get; init; }
+    content: public string Url { get; init; }
     parameters: []
     return:
-      type: System.Double
-    content.vb: Public Property Coverage As Double
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage*
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
-  commentId: P:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
-  id: ExactPhrase
-  parent: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+      type: System.String
+    content.vb: Public Property Url As String
+  overload: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url*
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
+  commentId: P:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
+  id: Text
+  parent: LocalSearchEngine.Core.Searching.InboundLinkCandidate
   langs:
   - csharp
   - vb
-  name: ExactPhrase
-  nameWithType: SearchRanker.TextFeatures.ExactPhrase
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
+  name: Text
+  nameWithType: InboundLinkCandidate.Text
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: ExactPhrase
+    id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 355
+    startLine: 39
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
+  summary: The compact anchor, context, section-heading, and source-title text.
+  example: []
   syntax:
-    content: public bool ExactPhrase { get; init; }
+    content: public string Text { get; init; }
     parameters: []
     return:
-      type: System.Boolean
-    content.vb: Public Property ExactPhrase As Boolean
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase*
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
-  commentId: P:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
-  id: Proximity
-  parent: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text*
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
+  commentId: P:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
+  id: Bm25
+  parent: LocalSearchEngine.Core.Searching.InboundLinkCandidate
   langs:
   - csharp
   - vb
-  name: Proximity
-  nameWithType: SearchRanker.TextFeatures.Proximity
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
+  name: Bm25
+  nameWithType: InboundLinkCandidate.Bm25
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
   type: Property
   source:
     remote:
       path: LocalSearchEngine.Core/Searching/SearchRanker.cs
       branch: main
       repo: https://github.com/auroris/LocalSearchEngine.git
-    id: Proximity
+    id: Bm25
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 355
+    startLine: 40
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
+  summary: The field-weighted FTS5 BM25 value; smaller values are more relevant.
+  example: []
   syntax:
-    content: public double Proximity { get; init; }
+    content: public double Bm25 { get; init; }
     parameters: []
     return:
       type: System.Double
-    content.vb: Public Property Proximity As Double
-  overload: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity*
+    content.vb: Public Property Bm25 As Double
+  overload: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25*
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority
+  commentId: P:LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority
+  id: SourceAuthority
+  parent: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+  langs:
+  - csharp
+  - vb
+  name: SourceAuthority
+  nameWithType: InboundLinkCandidate.SourceAuthority
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: SourceAuthority
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 41
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: The normalized PageRank of the referring page.
+  example: []
+  syntax:
+    content: public double SourceAuthority { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property SourceAuthority As Double
+  overload: LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority*
 references:
 - uid: LocalSearchEngine.Core.Searching
   commentId: N:LocalSearchEngine.Core.Searching
@@ -193,30 +241,26 @@ references:
   - uid: LocalSearchEngine.Core.Searching
     name: Searching
     href: LocalSearchEngine.Core.Searching.html
-- uid: System.IEquatable{LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures}
-  commentId: T:System.IEquatable{LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures}
+- uid: System.IEquatable{LocalSearchEngine.Core.Searching.InboundLinkCandidate}
+  commentId: T:System.IEquatable{LocalSearchEngine.Core.Searching.InboundLinkCandidate}
   parent: System
   definition: System.IEquatable`1
   href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
-  name: IEquatable<SearchRanker.TextFeatures>
-  nameWithType: IEquatable<SearchRanker.TextFeatures>
-  fullName: System.IEquatable<LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures>
-  nameWithType.vb: IEquatable(Of SearchRanker.TextFeatures)
-  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures)
-  name.vb: IEquatable(Of SearchRanker.TextFeatures)
+  name: IEquatable<InboundLinkCandidate>
+  nameWithType: IEquatable<InboundLinkCandidate>
+  fullName: System.IEquatable<LocalSearchEngine.Core.Searching.InboundLinkCandidate>
+  nameWithType.vb: IEquatable(Of InboundLinkCandidate)
+  fullName.vb: System.IEquatable(Of LocalSearchEngine.Core.Searching.InboundLinkCandidate)
+  name.vb: IEquatable(Of InboundLinkCandidate)
   spec.csharp:
   - uid: System.IEquatable`1
     name: IEquatable
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
   - name: <
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker
-    name: SearchRanker
-    href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
-    name: TextFeatures
-    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
+  - uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+    name: InboundLinkCandidate
+    href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html
   - name: '>'
   spec.vb:
   - uid: System.IEquatable`1
@@ -226,13 +270,9 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker
-    name: SearchRanker
-    href: LocalSearchEngine.Core.Searching.SearchRanker.html
-  - name: .
-  - uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures
-    name: TextFeatures
-    href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html
+  - uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate
+    name: InboundLinkCandidate
+    href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html
   - name: )
 - uid: System.ValueType.Equals(System.Object)
   commentId: M:System.ValueType.Equals(System.Object)
@@ -479,15 +519,26 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.#ctor
-  href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html#LocalSearchEngine_Core_Searching_SearchRanker_TextFeatures__ctor_System_Double_System_Boolean_System_Double_
-  name: TextFeatures
-  nameWithType: SearchRanker.TextFeatures.TextFeatures
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.TextFeatures
-  nameWithType.vb: SearchRanker.TextFeatures.New
-  fullName.vb: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.New
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor*
+  commentId: Overload:LocalSearchEngine.Core.Searching.InboundLinkCandidate.#ctor
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html#LocalSearchEngine_Core_Searching_InboundLinkCandidate__ctor_System_String_System_String_System_Double_System_Double_
+  name: InboundLinkCandidate
+  nameWithType: InboundLinkCandidate.InboundLinkCandidate
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.InboundLinkCandidate
+  nameWithType.vb: InboundLinkCandidate.New
+  fullName.vb: LocalSearchEngine.Core.Searching.InboundLinkCandidate.New
   name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: System.Double
   commentId: T:System.Double
   parent: System
@@ -499,32 +550,27 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
-  href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html#LocalSearchEngine_Core_Searching_SearchRanker_TextFeatures_Coverage
-  name: Coverage
-  nameWithType: SearchRanker.TextFeatures.Coverage
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Coverage
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
-  href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html#LocalSearchEngine_Core_Searching_SearchRanker_TextFeatures_ExactPhrase
-  name: ExactPhrase
-  nameWithType: SearchRanker.TextFeatures.ExactPhrase
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.ExactPhrase
-- uid: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity*
-  commentId: Overload:LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
-  href: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.html#LocalSearchEngine_Core_Searching_SearchRanker_TextFeatures_Proximity
-  name: Proximity
-  nameWithType: SearchRanker.TextFeatures.Proximity
-  fullName: LocalSearchEngine.Core.Searching.SearchRanker.TextFeatures.Proximity
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url*
+  commentId: Overload:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html#LocalSearchEngine_Core_Searching_InboundLinkCandidate_Url
+  name: Url
+  nameWithType: InboundLinkCandidate.Url
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Url
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text*
+  commentId: Overload:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html#LocalSearchEngine_Core_Searching_InboundLinkCandidate_Text
+  name: Text
+  nameWithType: InboundLinkCandidate.Text
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Text
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25*
+  commentId: Overload:LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html#LocalSearchEngine_Core_Searching_InboundLinkCandidate_Bm25
+  name: Bm25
+  nameWithType: InboundLinkCandidate.Bm25
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.Bm25
+- uid: LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority*
+  commentId: Overload:LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority
+  href: LocalSearchEngine.Core.Searching.InboundLinkCandidate.html#LocalSearchEngine_Core_Searching_InboundLinkCandidate_SourceAuthority
+  name: SourceAuthority
+  nameWithType: InboundLinkCandidate.SourceAuthority
+  fullName: LocalSearchEngine.Core.Searching.InboundLinkCandidate.SourceAuthority

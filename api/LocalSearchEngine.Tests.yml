@@ -23,6 +23,7 @@ items:
   - LocalSearchEngine.Tests.HostGateTests
   - LocalSearchEngine.Tests.IncrementalCrawlTests
   - LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
+  - LocalSearchEngine.Tests.LinkAuthorityTests
   - LocalSearchEngine.Tests.NoIndexRulesTests
   - LocalSearchEngine.Tests.PdfTextQualityTests
   - LocalSearchEngine.Tests.PendingWorkCounterTests
@@ -274,6 +275,12 @@ references:
   - uid: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler
     name: CountingFakeHandler
     href: LocalSearchEngine.Tests.IncrementalCrawlTests.CountingFakeHandler.html
+- uid: LocalSearchEngine.Tests.LinkAuthorityTests
+  commentId: T:LocalSearchEngine.Tests.LinkAuthorityTests
+  href: LocalSearchEngine.Tests.LinkAuthorityTests.html
+  name: LinkAuthorityTests
+  nameWithType: LinkAuthorityTests
+  fullName: LocalSearchEngine.Tests.LinkAuthorityTests
 - uid: LocalSearchEngine.Tests.NoIndexRulesTests
   commentId: T:LocalSearchEngine.Tests.NoIndexRulesTests
   href: LocalSearchEngine.Tests.NoIndexRulesTests.html

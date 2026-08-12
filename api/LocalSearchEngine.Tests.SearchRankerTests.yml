@@ -13,6 +13,7 @@ items:
   - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_beats_an_otherwise_comparable_loose_match
   - LocalSearchEngine.Tests.SearchRankerTests.Exact_phrase_is_a_bonus_not_a_hard_tier
   - LocalSearchEngine.Tests.SearchRankerTests.Excludes_distant_vector_results_but_keeps_lexical_candidates
+  - LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
   - LocalSearchEngine.Tests.SearchRankerTests.Keyword_candidate_is_included_without_a_vector_match
   - LocalSearchEngine.Tests.SearchRankerTests.Lexical_snippet_is_used_when_it_explains_the_query_better
   - LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
@@ -21,10 +22,12 @@ items:
   - LocalSearchEngine.Tests.SearchRankerTests.NoVectors
   - LocalSearchEngine.Tests.SearchRankerTests.Non_html_penalty_is_soft_not_an_absolute_tier
   - LocalSearchEngine.Tests.SearchRankerTests.Reciprocal_rank_fusion_rewards_agreement_between_retrievers
+  - LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
   - LocalSearchEngine.Tests.SearchRankerTests.Returns_all_qualifying_results_with_no_result_cap
   - LocalSearchEngine.Tests.SearchRankerTests.Semantic_rank_is_derived_from_distance_not_input_order
   - LocalSearchEngine.Tests.SearchRankerTests.Settings
   - LocalSearchEngine.Tests.SearchRankerTests.Structural_fields_contribute_bounded_coverage_boosts
+  - LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal
   - LocalSearchEngine.Tests.SearchRankerTests.Text_term_coverage_is_proportional
   langs:
   - csharp
@@ -103,7 +106,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoKeywords
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 24
+    startLine: 28
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -130,7 +133,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: NoVectors
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 25
+    startLine: 29
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -157,7 +160,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Excludes_distant_vector_results_but_keeps_lexical_candidates
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 27
+    startLine: 31
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -193,7 +196,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Semantic_rank_is_derived_from_distance_not_input_order
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 46
+    startLine: 50
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -229,7 +232,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Returns_all_qualifying_results_with_no_result_cap
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 60
+    startLine: 64
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -265,7 +268,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Structural_fields_contribute_bounded_coverage_boosts
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 72
+    startLine: 76
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -301,7 +304,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text_term_coverage_is_proportional
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 91
+    startLine: 95
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -337,7 +340,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Deduplicates_by_url_and_uses_the_closest_semantic_chunk
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 105
+    startLine: 109
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -373,7 +376,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Bm25_value_determines_lexical_rank_not_input_order
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 120
+    startLine: 124
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -409,7 +412,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Keyword_candidate_is_included_without_a_vector_match
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 134
+    startLine: 138
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -445,7 +448,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Reciprocal_rank_fusion_rewards_agreement_between_retrievers
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 149
+    startLine: 153
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -481,7 +484,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Exact_phrase_is_a_bonus_not_a_hard_tier
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 167
+    startLine: 171
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -517,7 +520,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Exact_phrase_beats_an_otherwise_comparable_loose_match
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 186
+    startLine: 190
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -553,7 +556,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Close_terms_rank_above_widely_separated_terms
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 200
+    startLine: 204
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -589,7 +592,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Better_term_coverage_can_overcome_a_one_place_bm25_difference
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 214
+    startLine: 218
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -625,7 +628,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Multiple_matching_chunks_add_diminishing_evidence
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 228
+    startLine: 232
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -661,7 +664,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Lexical_snippet_is_used_when_it_explains_the_query_better
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 247
+    startLine: 251
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -697,7 +700,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Non_html_penalty_is_soft_not_an_absolute_tier
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 264
+    startLine: 268
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -733,7 +736,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Equal_evidence_prefers_html_by_the_configured_penalty
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 288
+    startLine: 292
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -769,7 +772,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Missing_document_kind_is_treated_as_html
     path: LocalSearchEngine.Tests/SearchRankerTests.cs
-    startLine: 307
+    startLine: 311
   assemblies:
   - LocalSearchEngine.Tests
   namespace: LocalSearchEngine.Tests
@@ -783,6 +786,114 @@ items:
 
       Public Sub Missing_document_kind_is_treated_as_html()
   overload: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  id: Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+  nameWithType: SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 324
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
+  id: Referring_page_authority_modestly_refines_equal_inbound_matches
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Referring_page_authority_modestly_refines_equal_inbound_matches()
+  nameWithType: SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Referring_page_authority_modestly_refines_equal_inbound_matches
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 348
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Referring_page_authority_modestly_refines_equal_inbound_matches()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Referring_page_authority_modestly_refines_equal_inbound_matches()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal
+  commentId: M:LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal
+  id: Target_authority_is_a_soft_bounded_reranking_signal
+  parent: LocalSearchEngine.Tests.SearchRankerTests
+  langs:
+  - csharp
+  - vb
+  name: Target_authority_is_a_soft_bounded_reranking_signal()
+  nameWithType: SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal()
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal()
+  type: Method
+  source:
+    remote:
+      path: LocalSearchEngine.Tests/SearchRankerTests.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Target_authority_is_a_soft_bounded_reranking_signal
+    path: LocalSearchEngine.Tests/SearchRankerTests.cs
+    startLine: 367
+  assemblies:
+  - LocalSearchEngine.Tests
+  namespace: LocalSearchEngine.Tests
+  syntax:
+    content: >-
+      [Fact]
+
+      public void Target_authority_is_a_soft_bounded_reranking_signal()
+    content.vb: >-
+      <Fact>
+
+      Public Sub Target_authority_is_a_soft_bounded_reranking_signal()
+  overload: LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal*
   attributes:
   - type: Xunit.FactAttribute
     ctor: Xunit.FactAttribute.#ctor
@@ -1234,3 +1345,21 @@ references:
   name: Missing_document_kind_is_treated_as_html
   nameWithType: SearchRankerTests.Missing_document_kind_is_treated_as_html
   fullName: LocalSearchEngine.Tests.SearchRankerTests.Missing_document_kind_is_treated_as_html
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  name: Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  nameWithType: SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Inbound_context_can_retrieve_a_target_missed_by_body_and_vector_search
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Referring_page_authority_modestly_refines_equal_inbound_matches
+  name: Referring_page_authority_modestly_refines_equal_inbound_matches
+  nameWithType: SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Referring_page_authority_modestly_refines_equal_inbound_matches
+- uid: LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal*
+  commentId: Overload:LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal
+  href: LocalSearchEngine.Tests.SearchRankerTests.html#LocalSearchEngine_Tests_SearchRankerTests_Target_authority_is_a_soft_bounded_reranking_signal
+  name: Target_authority_is_a_soft_bounded_reranking_signal
+  nameWithType: SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal
+  fullName: LocalSearchEngine.Tests.SearchRankerTests.Target_authority_is_a_soft_bounded_reranking_signal

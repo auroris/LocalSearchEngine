@@ -1,15 +1,15 @@
 namespace LocalSearchEngine.Core.Searching;
 
 /// <summary>
-/// Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic and lexical
-/// candidates are fused by reciprocal rank, then bounded phrase, proximity, field, and document
-/// signals refine their order.
+/// Configures candidate retrieval and the lightweight hybrid re-ranker. Semantic, page-text, and
+/// inbound-link candidates are fused by reciprocal rank, then bounded phrase, proximity, field,
+/// document, and internal-authority signals refine their order.
 /// </summary>
 public class SearchSettings
 {
     /// <summary>
-    /// Gets or sets the maximum number of chunk candidates retrieved by each semantic, broad BM25,
-    /// and phrase-rescue pass before candidates are deduplicated by URL and reranked.
+    /// Gets or sets the maximum number of candidates retrieved by each semantic, broad page-text
+    /// BM25, phrase-rescue, and inbound-link pass before candidates are deduplicated by URL and reranked.
     /// </summary>
     public int CandidatePoolSize { get; set; } = 500;
 
@@ -24,7 +24,8 @@ public class SearchSettings
     public double MaxDistance { get; set; } = 0.6;
 
     /// <summary>
-    /// Gets or sets the reciprocal-rank constant used when fusing semantic and BM25 result ranks.
+    /// Gets or sets the reciprocal-rank constant used when fusing semantic, page-text BM25, and
+    /// inbound-link BM25 result ranks.
     /// Larger values make rank differences less pronounced. A value around 60 is conventional.
     /// </summary>
     public double ReciprocalRankConstant { get; set; } = 60;
@@ -34,6 +35,26 @@ public class SearchSettings
 
     /// <summary>Gets or sets the weight of the BM25 keyword result rank in reciprocal-rank fusion.</summary>
     public double KeywordWeight { get; set; } = 1.0;
+
+    /// <summary>Gets or sets the weight of the inbound anchor/context BM25 rank in reciprocal-rank fusion.</summary>
+    public double InboundLinkWeight { get; set; } = 0.75;
+
+    /// <summary>
+    /// Gets or sets the maximum bounded bonus for coverage, proximity, and phrase quality in the
+    /// best inbound-link description of a target.
+    /// </summary>
+    public double InboundContextBoost { get; set; } = 0.2;
+
+    /// <summary>
+    /// Gets or sets how strongly the referring page's normalized authority may improve an inbound
+    /// candidate's BM25 ordering. A value of 0.25 changes its magnitude by at most 25%.
+    /// </summary>
+    public double InboundSourceAuthorityWeight { get; set; } = 0.25;
+
+    /// <summary>
+    /// Gets or sets the maximum query-independent boost from the target page's normalized PageRank.
+    /// </summary>
+    public double AuthorityWeight { get; set; } = 0.2;
 
     /// <summary>Gets or sets the bonus for query terms occurring as an adjacent, ordered phrase.</summary>
     public double ExactPhraseBoost { get; set; } = 0.35;

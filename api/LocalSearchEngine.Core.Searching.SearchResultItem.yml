@@ -5,6 +5,7 @@ items:
   id: SearchResultItem
   parent: LocalSearchEngine.Core.Searching
   children:
+  - LocalSearchEngine.Core.Searching.SearchResultItem.Authority
   - LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
   - LocalSearchEngine.Core.Searching.SearchResultItem.Score
   - LocalSearchEngine.Core.Searching.SearchResultItem.Similarity
@@ -25,7 +26,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: SearchResultItem
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 318
+    startLine: 384
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -62,7 +63,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Url
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 321
+    startLine: 387
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -93,7 +94,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Title
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 323
+    startLine: 389
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -124,7 +125,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Text
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 325
+    startLine: 391
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -155,7 +156,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Similarity
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 327
+    startLine: 393
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -186,7 +187,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: Score
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 329
+    startLine: 395
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -199,6 +200,37 @@ items:
       type: System.Double
     content.vb: Public Property Score As Double
   overload: LocalSearchEngine.Core.Searching.SearchResultItem.Score*
+- uid: LocalSearchEngine.Core.Searching.SearchResultItem.Authority
+  commentId: P:LocalSearchEngine.Core.Searching.SearchResultItem.Authority
+  id: Authority
+  parent: LocalSearchEngine.Core.Searching.SearchResultItem
+  langs:
+  - csharp
+  - vb
+  name: Authority
+  nameWithType: SearchResultItem.Authority
+  fullName: LocalSearchEngine.Core.Searching.SearchResultItem.Authority
+  type: Property
+  source:
+    remote:
+      path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+      branch: main
+      repo: https://github.com/auroris/LocalSearchEngine.git
+    id: Authority
+    path: LocalSearchEngine.Core/Searching/SearchRanker.cs
+    startLine: 397
+  assemblies:
+  - LocalSearchEngine.Core
+  namespace: LocalSearchEngine.Core.Searching
+  summary: Gets or sets normalized internal PageRank in the range [0,1].
+  example: []
+  syntax:
+    content: public double Authority { get; set; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Authority As Double
+  overload: LocalSearchEngine.Core.Searching.SearchResultItem.Authority*
 - uid: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
   commentId: P:LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
   id: DocKind
@@ -217,7 +249,7 @@ items:
       repo: https://github.com/auroris/LocalSearchEngine.git
     id: DocKind
     path: LocalSearchEngine.Core/Searching/SearchRanker.cs
-    startLine: 331
+    startLine: 399
   assemblies:
   - LocalSearchEngine.Core
   namespace: LocalSearchEngine.Core.Searching
@@ -550,6 +582,12 @@ references:
   name: Score
   nameWithType: SearchResultItem.Score
   fullName: LocalSearchEngine.Core.Searching.SearchResultItem.Score
+- uid: LocalSearchEngine.Core.Searching.SearchResultItem.Authority*
+  commentId: Overload:LocalSearchEngine.Core.Searching.SearchResultItem.Authority
+  href: LocalSearchEngine.Core.Searching.SearchResultItem.html#LocalSearchEngine_Core_Searching_SearchResultItem_Authority
+  name: Authority
+  nameWithType: SearchResultItem.Authority
+  fullName: LocalSearchEngine.Core.Searching.SearchResultItem.Authority
 - uid: LocalSearchEngine.Core.Searching.SearchResultItem.DocKind*
   commentId: Overload:LocalSearchEngine.Core.Searching.SearchResultItem.DocKind
   href: LocalSearchEngine.Core.Searching.SearchResultItem.html#LocalSearchEngine_Core_Searching_SearchResultItem_DocKind
