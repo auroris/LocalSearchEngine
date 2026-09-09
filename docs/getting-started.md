@@ -20,9 +20,8 @@ First, clone the repository, restore NuGet packages, and build the solution:
 git clone <repository-url>
 cd LocalSearchEngine
 
-# Restore tools and packages
+# Restore packages
 dotnet restore
-dotnet tool restore
 
 # Build the solution
 dotnet build
@@ -77,16 +76,3 @@ Once running, navigate to:
 * **Stats API**: `http://localhost:5000/api/stats`
 
 The web application opens the SQLite database in multi-user WAL mode, allowing you to search the index while a crawl is actively running and updating the database.
-
----
-
-## 4. Serving Documentation Locally
-
-To build and view this documentation website locally with API references:
-
-```bash
-# Build and serve DocFX
-dotnet tool run docfx docfx.json --serve
-```
-
-Then open `http://localhost:8080` in your web browser.

@@ -21,26 +21,11 @@ A console crawler builds a knowledge base from web pages and documents into a si
 
 ## Documentation
 
-Comprehensive conceptual and API documentation is built using **DocFX** and is available in the repository.
-
-### Viewing the Docs Locally
-
-To run the documentation portal locally:
-
-1. Restore the DocFX CLI tool:
-   ```bash
-   dotnet tool restore
-   ```
-2. Build and serve the docs:
-   ```bash
-   dotnet docfx docfx.json --serve
-   ```
-3. Open `http://localhost:8080` in your web browser.
-
 Conceptual guides are located in the `docs/` directory:
 * [Introduction & Architecture](docs/introduction.md)
 * [Getting Started Guide](docs/getting-started.md)
 * [Configuration Guide](docs/configuration.md)
+* [Crawl Directives & Compliance](docs/crawl-directives.md)
 
 ---
 
